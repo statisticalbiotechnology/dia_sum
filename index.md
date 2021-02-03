@@ -8876,7 +8876,37 @@ ToDo before bedtime:
 
 Added shared folder for virtualBox and started process for converting all .wiff files for .mzml.
 
+### 2021-02-01
 
+Trying to mount the docker on the new harddrive using the following command:
+
+(base) ptruong@planck:~/git/dia_sum$ docker run --name osw_tutorial --rm -v /hdd_14T/:/data -i -t openswath/openswath:latest
+docker: Error response from daemon: error while creating mount source path '/hdd_14T': mkdir /hdd_14T: read-only file system.
+
+There seem to be some error relating to mounting docker on a seperate drive.
+
+https://github.com/moby/moby/issues/34427 - this webpage tells me to remove my snap version of docker and reinstall non-snap version of docker for it to work correctly.
+
+Removed snap version of docker and installed docker according to https://docs.docker.com/engine/install/ubuntu/.
+
+Now the problem is fixed!
+
+Started the conversion process.
+
+Started OpenSwathWorkflow
+
+```python
+
+#!/bin/bash
+
+for filename in *.mzML
+do
+  OpenSwathWorkflow -in $filename -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_fixed_curated_decoy.TraML -out_tsv osw_output_$filename.tsv -readOptions cacheWorkingInMemory -batchSize 1000 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -rt_extraction_window 600 -mz_extraction_window 30 -threads 6 -ppm
+
+done;
+```
+
+### 2021-02-02
 
 
 ```python
