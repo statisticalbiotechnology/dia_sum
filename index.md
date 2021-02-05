@@ -8906,7 +8906,61 @@ do
 done;
 ```
 
-### 2021-02-02
+### 2021-02-03
+
+Looking into TRIC,
+Looking at the data,
+Reading Deanna paper.
+
+### 2021-02-04
+Looking into the data again... what is peptide identification quality.
+
+I think I actually need to run percolator for me to know idenfication quality. I should probabily read the percolator paper again and see if i understand it better.
+
+For PercolatorAdapter to run in the OSW-pipeline I need to have .PQP format for the library.
+
+To obtain this I use
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952$ TargetedFileConverter -in test.TraML -out test.PQP
+TargetedFileConverter took 22.72 s (wall), 21.38 s (CPU), 0.32 s (system), 21.06 s (user); Peak Memory Usage: 601 MB.
+
+Where "test.TraML" is the supplied spectral library in PXD002952.
+
+Started OpenSwathWorkflow with .out_osw output.
+
+I need the .osw output to run Percolator on the data. 
+
+TRIC should be used on percolator output for .osw file.
+
+Looked at a youtube tutorial for svm as a reminder.
+
+Read about Percolator.
+
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/percolatorAdapter_test$ PercolatorAdapter -in_osw osw_output_HYE110_TTOF6600_32fix_lgillet_I160308_003_Pedro_Sample_A___32_fixed.mzML.osw -out percolatorAdapter_output.osw
+Prepared percolator input.
+Standard output: Running: /usr/bin/percolator -U -m /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_target_pout_psms.tab -M /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_decoy_pout_psms.tab /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_pin.tab
+
+Standard error: Percolator version 3.02.nightly-4-2a55db2, Build Date Nov 27 2018 17:02:04
+Copyright (c) 2006-9 University of Washington. All rights reserved.
+Written by Lukas Käll (lukall@u.washington.edu) in the
+Department of Genome Sciences at the University of Washington.
+Issued command:
+/usr/bin/percolator -U -m /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_target_pout_psms.tab -M /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_decoy_pout_psms.tab /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_pin.tab
+Started Thu Feb  4 15:42:08 2021
+Hyperparameters: selectionFdr=0.01, Cpos=0, Cneg=0, maxNiter=10
+Reading tab-delimited input from datafile /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_pin.tab
+Features:
+VAR_BSERIES_SCORE VAR_DOTPROD_SCORE VAR_ELUTION_MODEL_FIT_SCORE VAR_INTENSITY_SCORE VAR_ISOTOPE_CORRELATION_SCORE VAR_ISOTOPE_OVERLAP_SCORE VAR_LIBRARY_CORR VAR_LIBRARY_DOTPROD VAR_LIBRARY_MANHATTAN VAR_LIBRARY_RMSD VAR_LIBRARY_ROOTMEANSQUARE VAR_LIBRARY_SANGLE VAR_LOG_SN_SCORE VAR_MANHATTAN_SCORE VAR_MASSDEV_SCORE VAR_MASSDEV_SCORE_WEIGHTED VAR_MI_RATIO_SCORE VAR_MI_SCORE VAR_MI_WEIGHTED_SCORE VAR_NORM_RT_SCORE VAR_SONAR_LAG VAR_SONAR_LOG_DIFF VAR_SONAR_LOG_SN VAR_SONAR_LOG_TREND VAR_SONAR_RSQ VAR_SONAR_SHAPE VAR_XCORR_COELUTION VAR_XCORR_COELUTION_WEIGHTED VAR_XCORR_SHAPE VAR_XCORR_SHAPE_WEIGHTED VAR_YSERIES_SCORE 
+Found 307724 PSMs
+Concatenated search input detected, skipping both target-decoy competition and mix-max.
+Train/test set contains 307724 positives and 0 negatives, size ratio=inf and pi0=1
+Exception caught: Error: no decoy PSMs were provided.
+
+Process '/usr/bin/percolator' did not finish successfully (exit code: ). Please check the log.
+
+PercolatorAdapter took 02:23 m (wall), 02:10 m (CPU), 1.41 s (system), 02:09 m (user); Peak Memory Usage: 161 MB.
+### 2021-02-05
 
 
 ```python
