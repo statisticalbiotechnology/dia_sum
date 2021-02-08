@@ -1,9 +1,37 @@
 # About
 
+
+Quantitative mass spectrometry is a formidiable approach to identify differentially abundance proteins from shotgun proteomics experiments ([Liu et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3833812/), ([Mann et al. 2013](https://pubmed.ncbi.nlm.nih.gov/23438854/))). A common problem for shotgun proteomics experiment has been low reproducibility due to the complexity of samples analyzed ([Liu et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15253663/),[Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/), [Amodei et al. 2019](https://link.springer.com/article/10.1007/s13361-018-2122-8), [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/), ([Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/)) as well as the available method for analyzing data. For example [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/) has found that only about 16 % of the detectable peptides are typically fragmented using data dependent LC-MS/MS methods, and there is typically low reproducibility (35-60% overlap of peptide identification) between experiment ([Tabb et al. 2010](https://pubmed.ncbi.nlm.nih.gov/19921851/)). This problem is especially prominent in data dependent acquisition (DDA) methods. Attempts at solving these issues have been made by the introduction of data independent acquisition (DIA) methods ([Venable et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15782151/), [Plumb et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16755610/), [Distler et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24336358/), [Moran et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24129072/), [Pak et al. 2013](https://pubmed.ncbi.nlm.nih.gov/24006250/), [Geiger et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2953918/), [Panchaud et al. 2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3217585/), [Weisbrod et al. 2012](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3319072/), [Carvalho et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2832823/), [Egertson et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3881977/)), where spectras are acquired to a predefined fixed window. These methods have been shown to have superior reproducibility to DDA. 
+
+[Triqler](https://pubmed.ncbi.nlm.nih.gov/30482846/) is a novel software for protein quantification. It uses probabilistic graphical models to generate posterior distributions for fold changes between treatment groups, highlighting uncertainty rather than hiding it. Conventional (frequentist) methods use filters, tresholds and imputations to control error rate and often ignore certain error sources. This project aims to benchmark Triqler against commonly used softwares for DIA protein quantification. 
+
+We have been supplied by with data by biognosys for this benchmarking project. The data set consists of 10 samples containing mixtures of Arabidopsis Thaliana, Caenorhabditis Elegans and Homo Sapiens proteins. The concentration levels are known and quantified using Spectronaut. Theoretically, the results from Triqler should be more representative of the protein quantification, since no filters or imputations methods are used, but previous attempts at showing this fact ([here](https://patruong.github.io/bayesProtQuant/)) have shown that imputation methods could severely impact the results obtained by Spectronaut, making it look either much worse or much better by giving it an unfair advantage or disadvantage. One important aspect of this research is therefore how to make a fair comparison of Triqler and Spectronaut. Sub-tasks to answer relating to this aspect is "How do we make a fair imputation if we need to impute values?" and "How do we visualize the comparison in a meaningful and comprehensible way?".
+
+## Problem
+Triqler is a novel software that uses a Bayesian model for protein quantification. Previous efforts for DIA protein quantification has been dependent on spectral libraries for peptide and protein identification, as well as the construction of pseudo-MS/MS which are similar to DDA spectras and therefore allows for peptide and protein identification with conventional search-engine algorithms. 
+
+[read up more on DIA and fill in from Navarro et al. 217, Kuharev et al. 2015 annd Gotti et al. 2020].
+
+The use of bayesian modeling for protein quantification has not yet been shown better than existing methods, but the fact that Triqler is handling errors in multiple steps in a more theoretical sound way than the most commonly used protein quantification pipelines gives indication that it is better. A benchmark of said Triqler is therefore needed to show its performance. 
+
+(Specifically, it is interesting to benchmarking against DIA proteomics pipeline (such as directDIA, Spectronaut, DIA-Umpire etc.) as DIA provides more false positives, false negatives and complex spectra.)
+
+## Preliminary Research Question
+The research aims to answer the following questions:
+- Is Triqler a better alternative for protein quantifcation than existing methods?
+
+This question will be answered by investigating following sub-questions:
+- How do we benchmark Triqler, a bayesian model, against existing methods, such as Spectronaut?
+- What performance metrics is relevant to benchmark against?
+- How to we show the comparison in a fair manner?
+
+## Data
+
+<!---
 [Triqler](https://pubmed.ncbi.nlm.nih.gov/30482846/) is a novel software for protein quantification and differential protein identification. It uses probabilistic graphical models to generate posterior distributions for fold changes between treatment groups, highlighting uncertainty rather than hiding it. Conventional (frequentist) methods use filters and imputations to control error rate and often ignore certain error sources. This project aims to benchmark Triqler against MaxQuant (A commonly used tool for protein quantification). 
 
 For this purpose, a data set with 10 samples containing mixtures of Arabidopsis Thaliana, Caenorhabditis Elegans and Homo Sapiens proteins are used. The concentration levels are known. Theoretically, the results from Triqler should be more representative of the de facto protein quantification, since no filters or imputations methods are used, but previous attempts at showing this fact ([here](https://patruong.github.io/bayesProtQuant/)) have shown that imputation methods could severely impact the results obtained by MaxQuant, making it look either much worse or much better by giving it an unfair advantage or disadvantage. One important aspect of this research is therefore how to make a fair comparison of Triqler and MaxQuant. Sub-tasks to answer relating to this aspect is "How do we make a fair imputation if we need to impute values?" and "How do we visualize the comparison in a meaningful and comprehensible way?".
-
+-->
 
 
 ## Related studies and papers
@@ -8960,7 +8988,522 @@ Exception caught: Error: no decoy PSMs were provided.
 Process '/usr/bin/percolator' did not finish successfully (exit code: ). Please check the log.
 
 PercolatorAdapter took 02:23 m (wall), 02:10 m (CPU), 1.41 s (system), 02:09 m (user); Peak Memory Usage: 161 MB.
+
 ### 2021-02-05
+
+Bugg report... rerunning the whole pipeline to get all the commands and outputs in one log.
+
+1. Converting the spectral library to .TraML and .PQP
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ TargetedFileConverter -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.tsv -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
+Progress of 'conversion to internal data representation':
+-- done [took 0.93 s (CPU), 0.94 s (Wall)] -- 
+TargetedFileConverter took 8.23 s (wall), 8.17 s (CPU), 0.67 s (system), 7.50 s (user); Peak Memory Usage: 503 MB.
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ TargetedFileConverter -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.tsv -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.pqp
+Progress of 'conversion to internal data representation':
+-- done [took 0.98 s (CPU), 0.98 s (Wall)] -- 
+TargetedFileConverter took 24.13 s (wall), 22.41 s (CPU), 0.53 s (system), 21.88 s (user); Peak Memory Usage: 662 MB.
+
+2. Append decoy assays to the TraML file for OpenSWATH
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse -separate 
+Loading targets from file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
+Generate decoys
+Progress of 'Generating decoy peptides':
+-- done [took 0.13 s (CPU), 0.13 s (Wall)] -- 
+Progress of 'Generating decoy transitions':
+-- done [took 9.08 s (CPU), 9.28 s (Wall)] -- 
+Number of target peptides: 46000
+Number of decoy peptides: 45992
+Number of target proteins: 6921
+Number of decoy proteins: 6921
+Writing only decoys to file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML
+OpenSwathDecoyGenerator took 37.49 s (wall), 36.95 s (CPU), 0.90 s (system), 36.05 s (user); Peak Memory Usage: 698 MB.
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse 
+Loading targets from file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
+Generate decoys
+Progress of 'Generating decoy peptides':
+-- done [took 0.12 s (CPU), 0.12 s (Wall)] -- 
+Progress of 'Generating decoy transitions':
+-- done [took 8.61 s (CPU), 8.65 s (Wall)] -- 
+Number of target peptides: 46000
+Number of decoy peptides: 45992
+Number of target proteins: 6921
+Number of decoy proteins: 6921
+Writing targets and decoys to file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML
+OpenSwathDecoyGenerator took 42.90 s (wall), 39.96 s (CPU), 1.45 s (system), 38.51 s (user); Peak Memory Usage: 952 MB.
+
+According to:
+
+https://abibuilder.informatik.uni-tuebingen.de/archive/openms/Documentation/release/latest/html/TOPP_OpenSwathDecoyGenerator.html
+
+-seperate creates a seperate target file.
+
+2.1 Checking the file size.
+
+362M ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy_sep.TraML
+721M ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML
+ 36M ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.pqp
+359M ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
+ 59M ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.tsv
+
+target_decoy.TraML seem to be about double the size of decoy and target files. So this looks correct.
+
+3. OpenSwathAnalyser
+3.1 .tsv output
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_tsv osw_output.tsv  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
+Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
+Progress of 'Load TraML file':
+-- done [took 26.06 s (CPU), 26.14 s (Wall)] -- 
+Loaded 13842 proteins, 91992 compounds with 551952 transitions.
+Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
+Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+-- done [took 01:25 m (CPU), 02:23 m (Wall)] -- 
+Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Read chromatogram while reading SWATH files, did not expect that!
+
+  -- done [took 21:58 m (CPU), 17:00 m (Wall)] -- 
+Will analyze 551952 transitions in total.
+
+  Progress of 'Extracting and scoring transitions':
+Use non-nested loop with 6 threads.
+    3.03 %               Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 0 out of 2)
+Thread 0_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 0 out of 1)
+Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 1 out of 2)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 0 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 0 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 0 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 0 out of 3)
+Thread 0_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 1 out of 1)
+Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 2 out of 2)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 1 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 1 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 1 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 1 out of 3)
+6.06 %               Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 2 out of 3)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 2 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 2 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 2 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 3 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 3 out of 3)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 3 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 3 out of 3)
+18.18 %               Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 0 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 0 out of 3)
+21.21 %               Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 1 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 1 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 2 out of 3)
+Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 2 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 3 out of 3)
+Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 3 out of 3)
+          27.27 %               Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 0 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 0 out of 4)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 0 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 0 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 1 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 1 out of 4)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 1 out of 3)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 0 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 1 out of 3)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 2 out of 3)
+Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 0 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 2 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 2 out of 4)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 1 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 2 out of 3)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 3 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 3 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 3 out of 4)
+Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 1 out of 3)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 2 out of 3)
+    30.30 %               Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 3 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 4 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 4 out of 4)
+    36.36 %               Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 3 out of 3)
+    39.39 %               Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 2 out of 3)
+  42.42 %               Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 3 out of 3)
+  45.45 %               Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 0 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 1 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 2 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 3 out of 3)
+  48.48 %               Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 0 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 0 out of 2)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 0 out of 2)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 0 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 1 out of 2)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 1 out of 3)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 1 out of 2)
+Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 0 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 1 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 2 out of 2)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 2 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 0 out of 3)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 2 out of 2)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 2 out of 3)
+  51.52 %               Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 1 out of 3)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 3 out of 3)
+    54.55 %               Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 1 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 3 out of 3)
+60.61 %               Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 2 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 2 out of 3)
+Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 3 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 3 out of 3)
+63.64 %               Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 0 out of 2)
+Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 1 out of 2)
+Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 2 out of 2)
+69.70 %               Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 0 out of 2)
+Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 1 out of 2)
+Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 2 out of 2)
+Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 0 out of 2)
+  72.73 %               Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 1 out of 2)
+Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 0 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 0 out of 2)
+Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 0 out of 2)
+Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 2 out of 2)
+Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 1 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 1 out of 2)
+    75.76 %               Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 2 out of 2)
+Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 1 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 2 out of 2)
+                  81.82 %               Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 2 out of 2)
+Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 0 out of 2)
+                  84.85 %               Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 1 out of 2)
+Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 2 out of 2)
+                  87.88 %               Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 0 out of 1)
+Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 1 out of 1)
+                  90.91 %               Thread 4_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 0 out of 1)
+Thread 4_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 1 out of 1)
+Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 0 out of 1)
+Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 0 out of 1)
+                93.94 %               Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
+                96.97 %               Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
+                100.00 %               
+              -- done [took 11:17 m (CPU), 06:14 m (Wall)] -- 
+OpenSwathWorkflow took 26:04 m (wall), 35:08 m (CPU), 01:40 m (system), 33:28 m (user); Peak Memory Usage: 22756 MB.
+
+3.2 .osw output
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_tsv osw_output.tsv  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
+Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
+Progress of 'Load TraML file':
+-- done [took 26.06 s (CPU), 26.14 s (Wall)] -- 
+Loaded 13842 proteins, 91992 compounds with 551952 transitions.
+Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
+Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+-- done [took 01:25 m (CPU), 02:23 m (Wall)] -- 
+Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Read chromatogram while reading SWATH files, did not expect that!
+
+  -- done [took 21:58 m (CPU), 17:00 m (Wall)] -- 
+Will analyze 551952 transitions in total.
+
+  Progress of 'Extracting and scoring transitions':
+Use non-nested loop with 6 threads.
+    3.03 %               Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 0 out of 2)
+Thread 0_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 0 out of 1)
+Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 1 out of 2)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 0 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 0 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 0 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 0 out of 3)
+Thread 0_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 1 out of 1)
+Thread 3_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 2 out of 2)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 1 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 1 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 1 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 1 out of 3)
+6.06 %               Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 2 out of 3)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 2 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 2 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 2 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 3 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 3 out of 3)
+Thread 1_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 3 out of 3)
+Thread 2_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 3 out of 3)
+18.18 %               Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 0 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 0 out of 3)
+21.21 %               Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 1 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 1 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 2 out of 3)
+Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 2 out of 3)
+Thread 3_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 3 out of 3)
+Thread 0_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 3 out of 3)
+          27.27 %               Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 0 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 0 out of 4)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 0 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 0 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 1 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 1 out of 4)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 1 out of 3)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 0 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 1 out of 3)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 2 out of 3)
+Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 0 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 2 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 2 out of 4)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 1 out of 3)
+Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 2 out of 3)
+Thread 1_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 3 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 3 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 3 out of 4)
+Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 1 out of 3)
+Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 2 out of 3)
+    30.30 %               Thread 2_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 3 out of 3)
+Thread 5_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 4 out of 4)
+Thread 4_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 4 out of 4)
+    36.36 %               Thread 3_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 3 out of 3)
+    39.39 %               Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 2 out of 3)
+  42.42 %               Thread 0_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 3 out of 3)
+  45.45 %               Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 0 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 1 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 2 out of 3)
+Thread 1_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 3 out of 3)
+  48.48 %               Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 0 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 0 out of 2)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 0 out of 2)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 0 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 1 out of 2)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 1 out of 3)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 1 out of 2)
+Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 0 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 1 out of 3)
+Thread 2_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 2 out of 2)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 2 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 0 out of 3)
+Thread 3_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 2 out of 2)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 2 out of 3)
+  51.52 %               Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 1 out of 3)
+Thread 4_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 3 out of 3)
+    54.55 %               Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 1 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 3 out of 3)
+60.61 %               Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 2 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 2 out of 3)
+Thread 0_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 3 out of 3)
+Thread 1_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 3 out of 3)
+63.64 %               Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 0 out of 2)
+Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 1 out of 2)
+Thread 2_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 2 out of 2)
+69.70 %               Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 0 out of 2)
+Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 1 out of 2)
+Thread 3_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 2 out of 2)
+Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 0 out of 2)
+  72.73 %               Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 1 out of 2)
+Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 0 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 0 out of 2)
+Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 0 out of 2)
+Thread 4_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 2 out of 2)
+Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 1 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 1 out of 2)
+    75.76 %               Thread 5_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 2 out of 2)
+Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 1 out of 2)
+Thread 1_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 2 out of 2)
+                  81.82 %               Thread 0_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 2 out of 2)
+Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 0 out of 2)
+                  84.85 %               Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 1 out of 2)
+Thread 2_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 2 out of 2)
+                  87.88 %               Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 0 out of 1)
+Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 1 out of 1)
+                  90.91 %               Thread 4_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 0 out of 1)
+Thread 4_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 1 out of 1)
+Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 0 out of 1)
+Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 0 out of 1)
+                93.94 %               Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
+                96.97 %               Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
+                100.00 %               
+              -- done [took 11:17 m (CPU), 06:14 m (Wall)] -- 
+OpenSwathWorkflow took 26:04 m (wall), 35:08 m (CPU), 01:40 m (system), 33:28 m (user); Peak Memory Usage: 22756 MB.
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_osw osw_output.osw  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
+Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
+Error: Unexpected internal error (OSW output files can only be generated in combination with PQP input files (-tr).)
+
+3.3 Generating the .pqp file from the target_decoy .TraML.
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ TargetedFileConverter -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.pqp
+TargetedFileConverter took 47.63 s (wall), 45.86 s (CPU), 0.86 s (system), 45.00 s (user); Peak Memory Usage: 1173 MB.
+
+3.4 Generating .osw output with openSwath
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.pqp -out_osw osw_output.osw  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
+Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
+Progress of 'Load PQP file':
+-- done [took 11.81 s (CPU), 11.82 s (Wall)] -- 
+Loaded 13842 proteins, 91992 compounds with 551952 transitions.
+Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
+Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
+-- done [took 01:26 m (CPU), 02:23 m (Wall)] -- 
+Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
+Read chromatogram while reading SWATH files, did not expect that!
+
+  -- done [took 21:58 m (CPU), 17:01 m (Wall)] -- 
+Will analyze 551952 transitions in total.
+
+  Progress of 'Extracting and scoring transitions':
+Use non-nested loop with 6 threads.
+    3.03 %               Thread 2_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 0 out of 2)
+Thread 3_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 0 out of 1)
+Thread 0_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 0 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 0 out of 3)
+Thread 1_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 0 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 0 out of 3)
+Thread 3_0 will analyze 1828 compounds and 10968 transitions from SWATH 1 (batch 1 out of 1)
+Thread 2_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 1 out of 2)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 1 out of 3)
+Thread 0_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 1 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 1 out of 3)
+Thread 1_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 1 out of 3)
+  6.06 %               Thread 2_0 will analyze 2421 compounds and 14526 transitions from SWATH 2 (batch 2 out of 2)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 2 out of 3)
+Thread 0_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 2 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 2 out of 3)
+Thread 3_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 0 out of 3)
+    9.09 %               Thread 1_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 2 out of 3)
+Thread 4_0 will analyze 3261 compounds and 19566 transitions from SWATH 3 (batch 3 out of 3)
+Thread 0_0 will analyze 3443 compounds and 20658 transitions from SWATH 6 (batch 3 out of 3)
+Thread 2_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 0 out of 3)
+Thread 5_0 will analyze 3192 compounds and 19152 transitions from SWATH 4 (batch 3 out of 3)
+    12.12 %               Thread 3_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 1 out of 3)
+Thread 1_0 will analyze 3945 compounds and 23670 transitions from SWATH 5 (batch 3 out of 3)
+        18.18 %               Thread 2_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 1 out of 3)
+Thread 3_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 2 out of 3)
+    21.21 %               Thread 2_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 2 out of 3)
+Thread 3_0 will analyze 3476 compounds and 20856 transitions from SWATH 7 (batch 3 out of 3)
+        24.24 %               Thread 2_0 will analyze 3872 compounds and 23232 transitions from SWATH 8 (batch 3 out of 3)
+        27.27 %               Thread 4_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 0 out of 4)
+Thread 4_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 1 out of 4)
+Thread 4_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 2 out of 4)
+Thread 0_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 0 out of 4)
+Thread 5_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 0 out of 3)
+Thread 4_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 3 out of 4)
+Thread 1_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 0 out of 3)
+Thread 0_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 1 out of 4)
+Thread 5_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 1 out of 3)
+Thread 2_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 0 out of 3)
+Thread 4_0 will analyze 4088 compounds and 24528 transitions from SWATH 9 (batch 4 out of 4)
+Thread 3_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 0 out of 3)
+Thread 1_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 1 out of 3)
+  30.30 %               Thread 0_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 2 out of 4)
+Thread 5_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 2 out of 3)
+Thread 2_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 1 out of 3)
+Thread 3_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 1 out of 3)
+Thread 4_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 0 out of 3)
+Thread 1_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 2 out of 3)
+Thread 0_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 3 out of 4)
+Thread 5_0 will analyze 3759 compounds and 22554 transitions from SWATH 11 (batch 3 out of 3)
+Thread 2_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 2 out of 3)
+Thread 3_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 2 out of 3)
+Thread 4_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 1 out of 3)
+Thread 1_0 will analyze 3636 compounds and 21816 transitions from SWATH 12 (batch 3 out of 3)
+        33.33 %               Thread 0_0 will analyze 4131 compounds and 24786 transitions from SWATH 10 (batch 4 out of 4)
+Thread 2_0 will analyze 3239 compounds and 19434 transitions from SWATH 14 (batch 3 out of 3)
+Thread 3_0 will analyze 3615 compounds and 21690 transitions from SWATH 13 (batch 3 out of 3)
+        36.36 %               Thread 4_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 2 out of 3)
+        45.45 %               Thread 4_0 will analyze 3104 compounds and 18624 transitions from SWATH 15 (batch 3 out of 3)
+        48.48 %               Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 0 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 1 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 2 out of 3)
+Thread 1_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 0 out of 3)
+Thread 3_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 0 out of 3)
+Thread 5_0 will analyze 3623 compounds and 21738 transitions from SWATH 16 (batch 3 out of 3)
+Thread 0_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 0 out of 2)
+Thread 1_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 1 out of 3)
+  51.52 %               Thread 2_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 0 out of 2)
+Thread 3_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 1 out of 3)
+Thread 0_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 1 out of 2)
+Thread 1_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 2 out of 3)
+Thread 2_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 1 out of 2)
+Thread 3_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 2 out of 3)
+Thread 4_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 0 out of 3)
+Thread 0_0 will analyze 2765 compounds and 16590 transitions from SWATH 18 (batch 2 out of 2)
+Thread 1_0 will analyze 3319 compounds and 19914 transitions from SWATH 17 (batch 3 out of 3)
+Thread 2_0 will analyze 2951 compounds and 17706 transitions from SWATH 19 (batch 2 out of 2)
+Thread 3_0 will analyze 3081 compounds and 18486 transitions from SWATH 20 (batch 3 out of 3)
+Thread 5_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 0 out of 2)
+Thread 4_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 1 out of 3)
+  63.64 %               Thread 5_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 1 out of 2)
+Thread 4_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 2 out of 3)
+Thread 5_0 will analyze 2888 compounds and 17328 transitions from SWATH 22 (batch 2 out of 2)
+Thread 4_0 will analyze 3017 compounds and 18102 transitions from SWATH 21 (batch 3 out of 3)
+  69.70 %               Thread 3_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 0 out of 2)
+Thread 0_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 0 out of 2)
+Thread 2_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 0 out of 2)
+Thread 1_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 0 out of 2)
+Thread 3_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 1 out of 2)
+Thread 2_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 1 out of 2)
+Thread 0_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 1 out of 2)
+Thread 1_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 1 out of 2)
+Thread 3_0 will analyze 2491 compounds and 14946 transitions from SWATH 25 (batch 2 out of 2)
+Thread 2_0 will analyze 2356 compounds and 14136 transitions from SWATH 26 (batch 2 out of 2)
+Thread 0_0 will analyze 2756 compounds and 16536 transitions from SWATH 23 (batch 2 out of 2)
+Thread 4_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 0 out of 2)
+Thread 5_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 0 out of 2)
+Thread 1_0 will analyze 2377 compounds and 14262 transitions from SWATH 24 (batch 2 out of 2)
+81.82 %               Thread 4_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 1 out of 2)
+Thread 5_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 1 out of 2)
+Thread 4_0 will analyze 2172 compounds and 13032 transitions from SWATH 27 (batch 2 out of 2)
+Thread 5_0 will analyze 2029 compounds and 12174 transitions from SWATH 28 (batch 2 out of 2)
+87.88 %               Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 0 out of 1)
+Thread 2_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 0 out of 1)
+Thread 3_0 will analyze 1529 compounds and 9174 transitions from SWATH 29 (batch 1 out of 1)
+Thread 2_0 will analyze 1577 compounds and 9462 transitions from SWATH 30 (batch 1 out of 1)
+Thread 0_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 0 out of 1)
+  90.91 %               Thread 1_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 0 out of 1)
+  93.94 %               Thread 0_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
+Thread 1_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
+-- done [took 12:33 m (CPU), 08:57 m (Wall)] -- 
+OpenSwathWorkflow took 28:35 m (wall), 36:11 m (CPU), 01:39 m (system), 34:31 m (user); Peak Memory Usage: 22485 MB.
+
+3.5 PercolatorAdapter
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ PercolatorAdapter -in_osw osw_output.osw -out percolatorAdapter.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 14:35 m (wall), 10:03 m (CPU), 2.63 s (system), 10:00 m (user); Peak Memory Usage: 448 MB.
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 14:35 m (wall), 10:03 m (CPU), 2.63 s (system), 10:00 m (user); Peak Memory Usage: 448 MB.
+
+
+#### Run every library for specific file.
+
+I think I matched wrong .mzML with wrong spectra library because some have variable window, some have fixed and they should have same amount of SWATHs.
+
+E.g. spectral library for 32var should be used for:
+
+ls HYE110_TTOF6600_32var**.mzML
+
+this set.
+
+The run_osw_output.sh script is adjusted accordingly and run again. The files contained in this should work with percolatorAdapter
+
+## 2021-02-07 Making script for doing the same procedure for the whole dataset.
+Greated scripts for running the whole pipeline with all files so that all files have different spectral libraries.
+
+Note 64w_fixed spectral library is in .csv file, and need to be changed to .txt before running this.
+
+Scripts should be run in order.
+- spectral_library_txt_to_csv.sh - converts .txt to tsv.
+- convert_spectral_lib.sh - created .TraML files from .tsv files.
+- make_decoy_spectral_library.sh - appends decoys with pseudo-reverse method to .TraML files.
+- make_pqp_from_decoy_spectral_library.sh - converts the .TraML with decoys to .pqp files.
+- openSwath_run.sh - runs openswath with correct spectral library for different window size.
+
+openSwath_run.sh run in progress...
+
+Next step edit about text and refresh the project description.
+
+## 2021-02-08 openSwath.sh run crashed.
+
+Forgot to make tmp folder, runs crashed... created tmp folder. Rerunning openSwath.sh.
+
 
 
 ```python
