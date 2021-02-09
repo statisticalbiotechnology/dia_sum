@@ -53,7 +53,9 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 
 ## 2021-02-09 PercolatorAdapter running and want to get TRIC working.
 
-openSwath_run.sh script works now. 
+openSwath_run.sh script works now. Errors from before:
+- Had not matched correct spectral library to correct data sets. Used one for alla data sets.
+- had not created a tmp folder for tempCache 
 
 Some files in the run is crashing... I will link to log when the run is finished.
 
@@ -78,6 +80,31 @@ Using 64 fixed windows DIA run and running percolator on that set with the scrip
 Creating a log folder in github, so I can store and make this log more compact.
 
 [percolator_on_osw_results_log](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/percolator_on_osw_results_log_20200209.txt)
+
+Next up... convert .osw file to .tsv using PyProphet.
+
+This seemed to fail... I did not finish the log because it froze the terminal. The log seemed to indicate something about failed SQL queries. I guess it has to do with PercolatorAdapter not using the same columns as mProphet. I will use PyProphet for statistical validation.
+
+Produced script pyprophet_on_osw_results.sh to perform PyProphet statistical validation on .osw results.
+
+According to docs pyprophet_on_osw_results.sh methods was wrong. The .sh file is removed.
+
+We should merge all the .osw file for scoring. 
+
+New scripts produced:
+- pyprophet_merge.sh - for merging all the .osw files (should be without merged.osw output in folder)
+- pyprophet_score.sh - for scoring merged.osw and outputting merged.scored.osw
+
+
+
+About pyprophet run:
+http://openswath.org/en/latest/docs/pyprophet.html
+
+About converting sqlite .osw format to .tsv (only for pyprophet output)
+http://openswath.org/en/latest/docs/sqlite.html
+
+
+
 
 
 ## 2021-02-08 openSwath.sh run crashed.
