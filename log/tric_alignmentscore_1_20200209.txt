@@ -1,0 +1,19 @@
+WARNING: cannot import optimized MST alignment, will use Python version (slower).
+Setting max_fdr_quality automatically to fdr_cutoff of 0.01
+Parsing input files
+Run 4452353505855042766_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_001_Pedro_Sample_A.mzML
+Run 3342977048281373714_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_002_Pedro_Sample_B.mzML
+Run 8130832369743334326_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_003_Pedro_Sample_A.mzML
+Run 8241597296569089596_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_004_Pedro_Sample_B.mzML
+Run 310799758220564807_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_005_Pedro_Sample_A.mzML
+Run 1794007569569149914_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_006_Pedro_Sample_B.mzML
+Found 6 runs, read 2551260 lines and skipped 0 lines
+Reading the input files took 41.30s
+Mapping the precursors took 1.61s
+WARNING: cannot import CyDataCacher, will use Python version (slower).
+Computing tree took 0.00s
+Computed Tree: [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5)]
+WARNING: cannot import CyLightTransformationData, will use Python version (slower).
+===================================
+Warning, zero data! Consider increasing the anchor point cutoff (--alignment_score) to include more peptides.
+===================================

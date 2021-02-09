@@ -118,6 +118,9 @@ Running TRIC. (see [this](http://openswath.org/en/latest/docs/tric.html))
 
 ~/tools/msproteomicstools/analysis/alignment/feature_alignment.py --in MERGED.tsv --out aligned.csv --method LocalMST --realign_method lowess_cython --max_rt_diff 60
 
+[tric_default_20200209_log.txt](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/tric_default_20200209.txt)
+
+
 
 
 ## 2021-02-08 openSwath.sh run crashed.
