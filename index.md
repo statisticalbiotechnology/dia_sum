@@ -77,6 +77,7 @@ Using 64 fixed windows DIA run and running percolator on that set with the scrip
 
 Creating a log folder in github, so I can store and make this log more compact.
 
+[percolator_on_osw_results_log](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/percolator_on_osw_results_log_20200209.txt)
 
 
 ## 2021-02-08 openSwath.sh run crashed.
