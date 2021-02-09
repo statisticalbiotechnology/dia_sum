@@ -1,0 +1,108 @@
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/64fix$ ls -sh
+total 4.1G
+398M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_001_Pedro_Sample_A.mzML.osw  1.7G merged.osw
+418M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_002_Pedro_Sample_B.mzML.osw  4.0K osw_to_tsv.sh
+377M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_003_Pedro_Sample_A.mzML.osw  4.0K percolator_on_osw_results.sh
+396M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_004_Pedro_Sample_B.mzML.osw  4.0K percolator_results
+380M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_005_Pedro_Sample_A.mzML.osw  4.0K pyprophet_merge.sh
+399M 20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_006_Pedro_Sample_B.mzML.osw  4.0K pyprophet_score.sh
+ 75M ecolihumanyeast_concat_mayu_IRR_cons_openswath_64w_fixed_curated_target_decoy.pqp
+(base) ptruong@planck:/hdd_14T/data/PXD002952/64fix$ vi pyprophet_score.sh 
+(base) ptruong@planck:/hdd_14T/data/PXD002952/64fix$ vi pyprophet_score.sh 
+(base) ptruong@planck:/hdd_14T/data/PXD002952/64fix$ ./pyprophet_score.sh 
+PyProhet merge...
+Info: Learn and apply classifier from input data.
+Warning: Column var_im_ms1_delta_score contains only invalid/missing values. Column will be dropped.
+Info: Data set contains 240302 decoy and 243169 target groups.
+Info: Summary of input data:
+Info: 2551260 peak groups
+Info: 483471 group ids
+Info: 12 scores including main score
+Info: Semi-supervised learning of weights:
+Info: Start learning on 10 folds using 1 processes.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Finished learning.
+Info: Data set contains 240302 decoy and 243169 target groups.
+Info: Mean qvalue = 9.651151e-01, std_dev qvalue = 9.553481e-03
+Info: Mean svalue = 9.314106e-01, std_dev svalue = 2.156281e-01
+Info: Finished scoring and estimation statistics.
+Info: Processing input data finished.
+Info: Time needed: 00:01:57.2
+================================================================================
+   qvalue    pvalue  svalue  pep       fdr  fnr       fpr           tp             tn             fp          fn    cutoff
+0    0.00  0.503583     1.0  1.0  0.951086  0.0  0.503583  6159.990114  118069.626478  119774.009886 -834.626478 -0.014709
+1    0.01       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+2    0.02       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+3    0.05       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+4    0.10       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+5    0.20       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+6    0.30       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+7    0.40       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+8    0.50       NaN     NaN  NaN       NaN  NaN       NaN          NaN            NaN            NaN         NaN       NaN
+================================================================================
+Info: merged.osw written.
+Info: merged_ms1_report.pdf written.
+Info: Total time: 117 seconds and 191 msecs wall time
+Info: Learn and apply classifier from input data.
+Warning: Column var_mi_ratio_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_elution_model_fit_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_xcorr_shape contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_xcorr_coelution contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_delta_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_lag contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_shape contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_sn contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_diff contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_trend contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_rsq contains only invalid/missing values. Column will be dropped.
+Info: Data set contains 240302 decoy and 243169 target groups.
+Info: Summary of input data:
+Info: 2551260 peak groups
+Info: 483471 group ids
+Info: 23 scores including main score
+Info: Semi-supervised learning of weights:
+Info: Start learning on 10 folds using 1 processes.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Learning on cross-validation fold.
+Info: Finished learning.
+Info: Data set contains 240302 decoy and 243169 target groups.
+Info: Mean qvalue = 9.479220e-01, std_dev qvalue = 2.128684e-02
+Info: Mean svalue = 9.396661e-01, std_dev svalue = 1.917483e-01
+Info: Finished scoring and estimation statistics.
+Info: Processing input data finished.
+Info: Time needed: 00:02:7.1
+================================================================================
+   qvalue    pvalue    svalue       pep       fdr       fnr       fpr        tp             tn        fp           fn     cutoff
+0    0.00  0.000008  0.000269  0.629112  0.490179  0.031193  0.000008  2.039285  235579.857467  1.960715  7585.142533  11.434458
+1    0.01       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+2    0.02       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+3    0.05       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+4    0.10       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+5    0.20       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+6    0.30       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+7    0.40       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+8    0.50       NaN       NaN       NaN       NaN       NaN       NaN       NaN            NaN       NaN          NaN        NaN
+================================================================================
+Info: merged.osw written.
+Info: merged_ms2_report.pdf written.
+Info: Total time: 127 seconds and 90 msecs wall time
+Info: Learn and apply classifier from input data.
+Error: Empty input file supplied.
