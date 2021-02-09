@@ -103,7 +103,20 @@ http://openswath.org/en/latest/docs/sqlite.html
 
 PyProphet scoring seemed to have worked for ms1 and ms2, but not transition(?). ([log here](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/pyprophet_score_log_20200209.txt))
 
+Results pdf:
+[ms1 results](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/result/20200209_pyprophet_score/merged_ms1_report.pdf)
+[ms2 results](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/result/20200209_pyprophet_score/merged_ms2_report.pdf)
 
+Converting merged.scored.osw to .tsv with pyprophet_export_tsv.sh.
+
+Check this warning
+```
+By default, IPF results on peptidoform-level will be used if available. This can be disabled by setting --ipf=disable. The IPF results require different properties for TRIC. Please ensure that you want to analyze the results in the context of IPF, else, use the --ipf=disable or --ipf=augmented settings.
+```
+
+Running TRIC. (see [this](http://openswath.org/en/latest/docs/tric.html))
+
+~/tools/msproteomicstools/analysis/alignment/feature_alignment.py --in MERGED.tsv --out aligned.csv --method LocalMST --realign_method lowess_cython --max_rt_diff 60
 
 
 
