@@ -95,13 +95,13 @@ New scripts produced:
 - pyprophet_merge.sh - for merging all the .osw files (should be without merged.osw output in folder)
 - pyprophet_score.sh - for scoring merged.osw and outputting merged.scored.osw
 
-
-
 About pyprophet run:
 http://openswath.org/en/latest/docs/pyprophet.html
 
 About converting sqlite .osw format to .tsv (only for pyprophet output)
 http://openswath.org/en/latest/docs/sqlite.html
+
+PyProphet scoring seemed to have worked for ms1 and ms2, but not transition(?). ([log here](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/pyprophet_score_log_20200209.txt))
 
 
 
