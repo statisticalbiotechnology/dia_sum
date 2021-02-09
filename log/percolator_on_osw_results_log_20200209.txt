@@ -1,0 +1,27 @@
+
+(base) ptruong@planck:/hdd_14T/data/PXD002952/64fix$ ./percolator_on_osw_results.sh 
+Statistical validation using Percolator...
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 11:52 m (wall), 06:32 m (CPU), 2.54 s (system), 06:29 m (user); Peak Memory Usage: 297 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_001_Pedro_Sample_A.mzML.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 12:13 m (wall), 06:59 m (CPU), 2.82 s (system), 06:56 m (user); Peak Memory Usage: 326 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_002_Pedro_Sample_B.mzML.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 08:43 m (wall), 05:46 m (CPU), 2.06 s (system), 05:44 m (user); Peak Memory Usage: 296 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_003_Pedro_Sample_A.mzML.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 14:07 m (wall), 06:07 m (CPU), 2.93 s (system), 06:04 m (user); Peak Memory Usage: 291 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_004_Pedro_Sample_B.mzML.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 10:39 m (wall), 06:32 m (CPU), 2.33 s (system), 06:29 m (user); Peak Memory Usage: 295 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_005_Pedro_Sample_A.mzML.osw
+Prepared percolator input.
+PercolatorAdapter finished successfully!
+PercolatorAdapter took 10:19 m (wall), 06:31 m (CPU), 2.43 s (system), 06:29 m (user); Peak Memory Usage: 308 MB.
+Generated percolator_output_20210207_osw_output.HYE110_TTOF6600_64fix_lgillet_I160310_006_Pedro_Sample_B.mzML.osw

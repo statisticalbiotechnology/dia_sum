@@ -48,11 +48,44 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 ## ToDO:
 - make a write-up about details about the projects.
 
-# Blog
+# Blog 
+(line 52 as reference)
+
+## 2021-02-09 PercolatorAdapter running and want to get TRIC working.
+
+openSwath_run.sh script works now. 
+
+Some files in the run is crashing... I will link to log when the run is finished.
+
+The following error message is shown:
+
+
+```
+Thread 2_0 will analyze 6733 compounds and 40398 transitions from SWATH 4 (batch 6 out of 6)
+      18.18 %               Thread 1_0 will analyze 6573 compounds and 39438 transitions from SWATH 7 (batch 3 out of 6)
+      21.21 %               Thread 1_0 will analyze 6573 compounds and 39438 transitions from SWATH 7 (batch 4 out of 6)
+Thread 1_0 will analyze 6573 compounds and 39438 transitions from SWATH 7 (batch 5 out of 6)
+Thread 5_0 will analyze 6041 compounds and 36246 transitions from SWATH 8 (batch 0 out of 6)
+./openSwath_run.sh: line 6: 346530 Killed
+```
+
+Not sure why it is killed, but it might not matter because I have a full set from the experiment with 64 fixed windows DIA run.
+
+Using 64 fixed windows DIA run and running percolator on that set with the scripts.
+
+- percolator_on_osw_results.sh - (NOTE: for loop prefix of files need to be specified in the script for new files)
+
+Creating a log folder in github, so I can store and make this log more compact.
+
+
 
 ## 2021-02-08 openSwath.sh run crashed.
 
 Forgot to make tmp folder, runs crashed... created tmp folder. Rerunning openSwath.sh.
+
+Copied from project description and slightly rewrote About section.
+
+Reordered blog entries so that we do not need to scroll all the way down.
 
 ## 2021-02-07 Making script for doing the same procedure for the whole dataset.
 Greated scripts for running the whole pipeline with all files so that all files have different spectral libraries.
@@ -9519,7 +9552,7 @@ I should also ask my PI if the PSSS3 results from last year are still relevant.
 
 Setting up a Rmarkdown log for this project. 
 
-
-
 ## Historical log
 https://patruong.github.io/bayesProtQuant/
+
+```
