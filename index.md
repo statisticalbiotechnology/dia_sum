@@ -138,7 +138,18 @@ Success!
 
 Now, the question is why do i have to have so high alignment_score, fdr_cutoff and what is d-score?
 
+d-score
+p.8 of [OpenSWATH enabled automated...](https://static-content.springer.com/esm/art%3A10.1038%2Fnbt.2841/MediaObjects/41587_2014_BFnbt2841_MOESM36_ESM.pdf); says it is the discriminating meta score of mProphet (the score from the semi-supervised algorithm used in mProphet [Rosenberger et al. 2017](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5581544/)).
 
+I should perhaps read the mProphet paper ([Reiter et al. 2011](https://www.nature.com/articles/nmeth.1584))... I will check this in group meeting tomorrow.
+
+What is next step:
+- How do I set alignment score?
+- How do I set fdr cutoff?
+- Why do I need to have the fdr cutoff so high? (Have I messed up some parameter?).
+- Parse the triq-results to triqler?
+- What is the next step for results after TRIC?
+- Check description and continue rewriting it.
 
 
 ## 2021-02-08 openSwath.sh run crashed.
