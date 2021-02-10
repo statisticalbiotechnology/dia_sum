@@ -131,6 +131,16 @@ Running TRIC. (see [this](http://openswath.org/en/latest/docs/tric.html))
 ~/tools/msproteomicstools/analysis/alignment/feature_alignment.py --in MERGED.tsv --out aligned.csv --method LocalMST --realign_method lowess_cython --max_rt_diff 60 --alignment_score 1 --fdr_cutoff 1 > tric_alignmentscore_1_fdrcutoff_1_20200209.txt
 [tric alignment 1.0 fdrcutoff 1.0](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/tric_alignmentscore_1_fdrcutoff_1_20200209.txt)
 
+~/tools/msproteomicstools/analysis/alignment/feature_alignment.py --in MERGED.tsv --out aligned.csv --method LocalMST --realign_method lowess_cython --max_rt_diff 60 --alignment_score 1 --fdr_cutoff 1 > tric_alignmentscore_1_fdrcutoff_1_cylowess_installed_20200209.tx
+[tric alignment 1.0 fdrcutoff 1.0](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/tric_alignmentscore_1_fdrcutoff_1_cylowess_installed_20200209.txt)
+
+Success!
+
+Now, the question is why do i have to have so high alignment_score, fdr_cutoff and what is d-score?
+
+
+
+
 ## 2021-02-08 openSwath.sh run crashed.
 
 Forgot to make tmp folder, runs crashed... created tmp folder. Rerunning openSwath.sh.
