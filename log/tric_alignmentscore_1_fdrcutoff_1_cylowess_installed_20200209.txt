@@ -1,0 +1,48 @@
+WARNING: cannot import optimized MST alignment, will use Python version (slower).
+Setting max_fdr_quality automatically to fdr_cutoff of 1.0
+Parsing input files
+Run 4452353505855042766_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_001_Pedro_Sample_A.mzML
+Run 3342977048281373714_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_002_Pedro_Sample_B.mzML
+Run 8130832369743334326_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_003_Pedro_Sample_A.mzML
+Run 8241597296569089596_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_004_Pedro_Sample_B.mzML
+Run 310799758220564807_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_005_Pedro_Sample_A.mzML
+Run 1794007569569149914_0 maps to HYE110_TTOF6600_64fix_lgillet_I160310_006_Pedro_Sample_B.mzML
+Found 6 runs, read 2551260 lines and skipped 0 lines
+Reading the input files took 41.03s
+Mapping the precursors took 4.33s
+WARNING: cannot import CyDataCacher, will use Python version (slower).
+Computing tree took 4.84s
+Computed Tree: [(4, 2), (0, 1), (0, 4), (0, 3), (4, 5)]
+WARNING: cannot import CyLightTransformationData, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+stdev for 310799758220564807_0 8130832369743334326_0 72.55705354917113  /  68.89175959641778 on data length 1693
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+stdev for 4452353505855042766_0 3342977048281373714_0 75.47948198085126  /  73.53535711524265 on data length 1503
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+stdev for 4452353505855042766_0 310799758220564807_0 68.4548553610721  /  69.53452719443396 on data length 1579
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+stdev for 4452353505855042766_0 8241597296569089596_0 82.48828748606188  /  69.10157352349235 on data length 1604
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+WARNING: cannot import CyLinearInterpolateWrapper, will use Python version (slower).
+stdev for 310799758220564807_0 1794007569569149914_0 80.91768663081173  /  68.41178839577584 on data length 1589
+Computing transformations for all edges took 0.45s
+WARNING: cannot utilize optimized MST alignment (needs readmethod = cminimal), will use Python version (slower).
+Re-aligning peak groups took 26.31s
+Filtering took 1.78s
+===========================================================================
+===========================================================================
+Total we have 6 runs with 45008 peakgroups quantified in at least 1 run(s) below m_score (q-value) 100.0000 %, giving maximally nr peakgroups 270048
+We were able to quantify 232662 / 270048 peakgroups of which we aligned 0
+  The order of 118734 peakgroups was changed, 37386 could not be aligned and 10507 were removed. Ambigous cases: 291854, multiple suitable peakgroups: 291854
+We were able to quantify 45008 / 45008 precursors in 1 runs, and 29875 in all runs (up from 34387 before alignment)
+We were able to quantify 42810 / 42810 peptides in 1 runs, and 28766 in all runs (up from 32986 before alignment)
+We were able to quantify 6971 / 6971 proteins in 1 runs, and 6193 in all runs (up from 6474 before alignment)
+Of these 6971 proteins, 5023 were multiple hits and 1948 were single hits.
+Decoy percentage of peakgroups that are fully aligned 50.5061 % (182916 out of 362166) which roughly corresponds to a peakgroup FDR of 101.61482246854308 %
+Decoy percentage of peakgroups that are partially aligned 49.8109 % (230909 out of 463571) which roughly corresponds to a peakgroup FDR of 100.21613384015173 %
+There were 44474 decoy precursors identified out of 89482 precursors which is 49.7016 %
+Writing output took 49.51s
