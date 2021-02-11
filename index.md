@@ -78,6 +78,12 @@ note
 -FP:7379
 
 Lets look at another data set and se if we can find a dataset with iRT.TraMLva
+
+Checking the pyprophet with iRT.TraML file for PASS00779.
+
+
+
+
 ## 2021-02-10 Experiments in experiment folder conducted.
 
 Experiments and experiment log in folder...
