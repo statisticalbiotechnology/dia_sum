@@ -51,6 +51,38 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-02-11 Experiment cont.
+
+Potential errors to check.
+
+OpenSwathDecoyGenerator
+
+.tsv output files
+
+
+Potential errors:
+- missing a file hroest_DIA_iRT.tsv
+- OpenSwathDecoyGenerator method.
+
+Just realized the pyprophet for py27 and py3 is not the same.
+
+Tutorial is using the legacy pyprophet for py27. This could, but should not matter...
+
+Generating new results for a random sample overview statistics:
+
+qvalue	svalue	TP	FP	TN	FN	FDR	sens	cutoff
+0	0.722734178065634	4917	7379	29586.5112258576	1886.48877414245	0.600107229722898	0.722717441482039	0.848865877072642
+
+note 
+-TP:4917
+-FP:7379
+
+Lets look at another data set and se if we can find a dataset with iRT.TraMLva
+## 2021-02-10 Experiments in experiment folder conducted.
+
+Experiments and experiment log in folder...
+
+
 ## 2021-02-09 PercolatorAdapter running and want to get TRIC working.
 
 openSwath_run.sh script works now. Errors from before:
