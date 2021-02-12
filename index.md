@@ -130,6 +130,15 @@ IMPORTANT NOTES:
 - the pyprophet used in tutorials are the py27 (parameter args are different for py36).
 - msproteomicstools (tric) can only be used with py36
 
+Triqler input mapping (thoughts):
+{run: run_id,
+condition: filename,
+charge: Charge,
+searchScore: var_dotprod_score or var_library_corr or var_library_dotprod or var_library_manhattan or var_library_rmsd or var_library rootmeansq or var_library_sangle., m_score (mProphet q-value score, d_score - discriminant score.),
+intensity: intensity,
+peptide: FullPeptideName,
+protein: ProteinName
+}
 ## 2021-02-10 Experiments in experiment folder conducted.
 
 Experiments and experiment log in folder...
