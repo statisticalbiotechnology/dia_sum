@@ -81,6 +81,14 @@ Lets look at another data set and se if we can find a dataset with iRT.TraMLva
 
 Checking the pyprophet with iRT.TraML file for PASS00779.
 
+Experiment_sampleA_sampleA results:
+
+[merged_ms1_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms1_report.pdf)
+[merged_ms2_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms2_report.pdf)
+[HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML, report ms2 report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/test_report.pdf)
+[osw_001_sampleA.tsv var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/var_dotprod_score_histogram_20210211.png)
+
+PASS00779 results:
 
 
 
