@@ -9,9 +9,11 @@ Quantitative mass spectrometry is a formidiable approach to identify differentia
 ## Problem
 Triqler is a novel software that uses a Bayesian model for protein quantification. Previous efforts for DIA protein quantification has been dependent on spectral libraries for peptide and protein identification, as well as the construction of pseudo-MS/MS which are similar to DDA spectras and therefore allows for peptide and protein identification with conventional search-engine algorithms. 
 
-[read up more on DIA and fill in from Navarro et al. 217, Kuharev et al. 2015 annd Gotti et al. 2020].
+<!--[read up more on DIA and fill in from Navarro et al. 217, Kuharev et al. 2015 annd Gotti et al. 2020].-->
 
-The use of bayesian modeling for protein quantification has not yet been shown better than existing methods, but the fact that Triqler is handling errors in multiple steps in a more theoretical sound way than the most commonly used protein quantification pipelines gives indication that it is better. A benchmark of said Triqler is therefore needed to show its performance. 
+The use of bayesian modeling for protein quantification has not yet been shown better than existing methods. It is therefore interesting to investigate the performance of Triqler as a protein quantification tool for DIA data.
+
+<!-- but the fact that Triqler is handling errors in multiple steps in a more theoretical sound way than the most commonly used protein quantification pipelines gives indication that it is better. A benchmark of said Triqler is therefore needed to show its performance. --> 
 
 
 ## Preliminary Research Question
