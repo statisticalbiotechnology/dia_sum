@@ -13,7 +13,6 @@ Triqler is a novel software that uses a Bayesian model for protein quantificatio
 
 The use of bayesian modeling for protein quantification has not yet been shown better than existing methods, but the fact that Triqler is handling errors in multiple steps in a more theoretical sound way than the most commonly used protein quantification pipelines gives indication that it is better. A benchmark of said Triqler is therefore needed to show its performance. 
 
-(Specifically, it is interesting to benchmarking against DIA proteomics pipeline (such as directDIA, Spectronaut, DIA-Umpire etc.) as DIA provides more false positives, false negatives and complex spectra.)
 
 ## Preliminary Research Question
 The research aims to answer the following questions:
@@ -93,7 +92,8 @@ pyprophet results
 pyprophet results
 - [osw_001_sampleA.tsv var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/var_dotprod_score_histogram_20210211.png)
 
-
+summary stats:
+- [test summary stats](https://github.com/statisticalbiotechnology/dia_sum/blob/main/experiments/experiment_20210210_sampleA_sampleA/test_summary_stat.csv)
 PASS00779 results:
 
 pyprophet results
@@ -106,13 +106,25 @@ osw results
 -[osw_7](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/osw_007_report.pdf)
 -[osw_13](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/osw_013_report.pdf)
 
+summary stats:
+-[osw_1](https://github.com/statisticalbiotechnology/dia_sum/blob/main/experiments/experiment_20210211_PASS00779/osw_001_summary_stat.csv)
+-[osw_7](https://github.com/statisticalbiotechnology/dia_sum/blob/main/experiments/experiment_20210211_PASS00779/osw_007_summary_stat.csv)
+-[osw_13](https://github.com/statisticalbiotechnology/dia_sum/blob/main/experiments/experiment_20210211_PASS00779/osw_013_summary_stat.csv)
 We notice the difference that PXD002952 histograms perfectly overlap, PASS00779 histograms have a slight shift between target and decoy.
 
 Looking at the pyprophet results, we see that the results from PASS00779 have a much larger shift in Top Peak Groups d_score density for all results than the results shown in "test report" for PXD002952. The "test report" however does have a slight shift in d_score. 
 
-According to [Röst et al. 2016](https://www.biorxiv.org/content/10.1101/044552v2.full.pdf) 
+Also looking at the summary statistics we see that there is more FP and TP for PXD002952. Indicating something is wrong.
 
+According to [Röst et al. 2016](https://www.biorxiv.org/content/10.1101/044552v2.full.pdf). The report step provides an opportunity to identify common errors, such as using an assay library without decoys or using an assay library unsuited for the measured sample (e.g., from another organism).
 
+The library for PXD002952 used is the one provided in the PXD002952 repo. Therefore, it should be correct. The only file I have not used is the hroest_DIA_iRT.TraML for rt normalization in the openswath run, which could be the culprit for the error in pyprophet statistical validation for PXD002952. In successful runs, the target and decoy d_score should be clearly seperated as in the PASS00779 results. 
+
+The tric cross-run alignment worked for PASS00779 [log](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/tric_log_20210211.md).
+
+IMPORTANT NOTES:
+- the pyprophet used in tutorials are the py27 (parameter args are different for py36).
+- msproteomicstools (tric) can only be used with py36
 
 ## 2021-02-10 Experiments in experiment folder conducted.
 
