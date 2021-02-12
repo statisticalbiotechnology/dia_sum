@@ -83,12 +83,34 @@ Checking the pyprophet with iRT.TraML file for PASS00779.
 
 Experiment_sampleA_sampleA results:
 
-[merged_ms1_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms1_report.pdf)
-[merged_ms2_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms2_report.pdf)
-[HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML, report ms2 report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/test_report.pdf)
-[osw_001_sampleA.tsv var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/var_dotprod_score_histogram_20210211.png)
+PXD002952 results:
+
+pyprophet results
+- [merged_ms1_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms1_report.pdf)
+- [merged_ms2_report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/merged_ms2_report.pdf)
+- [test report (non-merged) HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML, report ms2 report](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/test_report.pdf)
+
+pyprophet results
+- [osw_001_sampleA.tsv var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210210_sampleA_sampleA/var_dotprod_score_histogram_20210211.png)
+
 
 PASS00779 results:
+
+pyprophet results
+-[osw_1 var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/var_dotprod_score_PASS00779_osw1.png)
+-[osw_7 var_dotprod_score histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/var_dotprod_score_PASS00779_osw7.png)
+-[osw_13 var_dotprod_score_histogram](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/var_dotprod_score_PASS00779_osw7.png)
+
+osw results
+-[osw_1](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/osw_001_report.pdf)
+-[osw_7](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/osw_007_report.pdf)
+-[osw_13](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/osw_013_report.pdf)
+
+We notice the difference that PXD002952 histograms perfectly overlap, PASS00779 histograms have a slight shift between target and decoy.
+
+Looking at the pyprophet results, we see that the results from PASS00779 have a much larger shift in Top Peak Groups d_score density for all results than the results shown in "test report" for PXD002952. The "test report" however does have a slight shift in d_score. 
+
+According to [Röst et al. 2016](https://www.biorxiv.org/content/10.1101/044552v2.full.pdf) 
 
 
 
