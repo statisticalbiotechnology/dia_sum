@@ -52,6 +52,33 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+
+## 2021-02-13 Looking for dataset.
+
+Looking for DIA data set.
+
+Investigating OpenSWATH**.tsv files in PXD002952. These seem to be the results from tric for the plot used in the paper. I can not find a iRT-normazliation file in the repo.
+
+Just found [Barkovitz et al. 2020](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6944235/) with the dataset PXD014956. I will try quantify these proteins using OpenSWATH to see if I get better results than before.
+
+[link to instructions to run openswath on PXD014956](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6944235/bin/155027_1_supp_412482_pzgndj.pdf)
+
+## 2021-02-12 Creating triqler parser for TRIC output.
+Meeting.
+
+I should check the difference between rt for different peptides in PXD002952 and PASS00779.
+
+I'll start with creating a triqler parser.
+
+Compare:
+- aligned_osw.tsv (PASS00779)
+- ecolihumanyeast_concat_mayu_IR... (PXD002952)
+- iRTassays.tsv (PASS00779)
+- Mtb_TubercuList-R27_iRT_UPS_dec... (PASS00779)
+- osw_output.tsv (PXD002952)
+
+To get a feeling for what iRT normaliztion does. 
+
 ## 2021-02-11 Experiment cont.
 
 Potential errors to check.
