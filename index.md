@@ -52,6 +52,31 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-02-17 
+
+Can we use docker for end-results?
+
+Can we interface triqler from multiple methods quickly?
+
+converting in PASS01508/results/pyProphetOutput/... [log here]()
+
+## 2021-02-15 Creating sh script. 
+
+Triqler did not work because PASS00779 had only one condition. It requires at least two samples per condition and at least two conditions.
+
+The PXD014956 set I found before has all the spectralLibraries with normalized iRT build in them(?), but it does not have window size files.
+
+I do not really understand the window size of 49 between 350-1400mz range, but I will create a script to try to run OpenSwathAnalyzer on both settings
+
+Created swath_window generation script.
+
+Started running script for PXD014956.
+
+Started downloading PASS01508
+
+Just found another OpenSwath Tutorial paper with a data sets with 2 condition (S. pyogenes frown in 0% and 10% human plasma grown in duplicates), 4 technical replicates for each sample. Thus, the dataset has 15 runs in total.
+
+
 
 ## 2021-02-13 Looking for dataset.
 

@@ -1,0 +1,113 @@
+pyProphet export --in=merged.osw --out=merged.tsv
+
+(base) ptruong@planck:/hdd_14T/data/PASS01508/results/pyProphetOutput$ ls
+merged_ms1ms2_report.pdf
+merged.osw
+merged.osw_1006404389538767196_run-specific_peptide.pdf
+merged.osw_1006404389538767196_run-specific_protein.pdf
+merged.osw_1895217364647358706_run-specific_peptide.pdf
+merged.osw_1895217364647358706_run-specific_protein.pdf
+merged.osw_1993070538656663830_run-specific_peptide.pdf
+merged.osw_1993070538656663830_run-specific_protein.pdf
+merged.osw_2086104329746226633_run-specific_peptide.pdf
+merged.osw_2086104329746226633_run-specific_protein.pdf
+merged.osw_2895829782584737863_run-specific_peptide.pdf
+merged.osw_2895829782584737863_run-specific_protein.pdf
+merged.osw_3312727970122698354_run-specific_peptide.pdf
+merged.osw_3312727970122698354_run-specific_protein.pdf
+merged.osw_3384946816235683019_run-specific_peptide.pdf
+merged.osw_3384946816235683019_run-specific_protein.pdf
+merged.osw_4228224315318701854_run-specific_peptide.pdf
+merged.osw_4228224315318701854_run-specific_protein.pdf
+merged.osw_6061028540430771831_run-specific_peptide.pdf
+merged.osw_6061028540430771831_run-specific_protein.pdf
+merged.osw_690411522375919463_run-specific_peptide.pdf
+merged.osw_690411522375919463_run-specific_protein.pdf
+merged.osw_8196394674452833952_run-specific_peptide.pdf
+merged.osw_8196394674452833952_run-specific_protein.pdf
+merged.osw_8238807937114849326_run-specific_peptide.pdf
+merged.osw_8238807937114849326_run-specific_protein.pdf
+merged.osw_8292393358414978236_run-specific_peptide.pdf
+merged.osw_8292393358414978236_run-specific_protein.pdf
+merged.osw_8627438106464817423_run-specific_peptide.pdf
+merged.osw_8627438106464817423_run-specific_protein.pdf
+merged.osw_8749089703153095849_run-specific_peptide.pdf
+merged.osw_8749089703153095849_run-specific_protein.pdf
+merged.osw_8889961272137748833_run-specific_peptide.pdf
+merged.osw_8889961272137748833_run-specific_protein.pdf
+merged.osw_experiment-wide_peptide.pdf
+merged.osw_experiment-wide_protein.pdf
+merged.osw_global_peptide.pdf
+merged.osw_global_protein.pdf
+pyprophetScreenOut.txt
+
+
+(base) ptruong@planck:/hdd_14T/data/PASS01508/results/pyProphetOutput$ pyprophet export --in=merged.osw --out=merged.tsv
+Info: Reading peak group-level results.
+Info: Reading transition-level results.
+Info: Reading protein identifiers.
+Info: Reading peptide-level results.
+Info: Reading protein-level results.
+(base) ptruong@planck:/hdd_14T/data/PASS01508/results/pyProphetOutput$ ls
+hroest_K120808_Strep0%PlasmaBiolRepl1_R01_SW.mzML.gz.tsv
+hroest_K120808_Strep0%PlasmaBiolRepl1_R02_SW.mzML.gz.tsv
+hroest_K120808_Strep0%PlasmaBiolRepl1_R03_SW.mzML.gz.tsv
+hroest_K120808_Strep0%PlasmaBiolRepl2_R01_SW.mzML.gz.tsv
+hroest_K120808_Strep0%PlasmaBiolRepl2_R02_SW.mzML.gz.tsv
+hroest_K120808_Strep0%PlasmaBiolRepl2_R03_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl1_R01_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl1_R02_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl1_R03_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl2_R01_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl2_R02_SW.mzML.gz.tsv
+hroest_K120808_Strep10%PlasmaBiolRepl2_R03_SW.mzML.gz.tsv
+hroest_K120809_Strep0%PlasmaBiolRepl1_R04_SW.mzML.gz.tsv
+hroest_K120809_Strep0%PlasmaBiolRepl2_R04_SW.mzML.gz.tsv
+hroest_K120809_Strep10%PlasmaBiolRepl1_R04_SW.mzML.gz.tsv
+hroest_K120809_Strep10%PlasmaBiolRepl2_R04_SW.mzML.gz.tsv
+merged_ms1ms2_report.pdf
+merged.osw
+merged.osw_1006404389538767196_run-specific_peptide.pdf
+merged.osw_1006404389538767196_run-specific_protein.pdf
+merged.osw_1895217364647358706_run-specific_peptide.pdf
+merged.osw_1895217364647358706_run-specific_protein.pdf
+merged.osw_1993070538656663830_run-specific_peptide.pdf
+merged.osw_1993070538656663830_run-specific_protein.pdf
+merged.osw_2086104329746226633_run-specific_peptide.pdf
+merged.osw_2086104329746226633_run-specific_protein.pdf
+merged.osw_2895829782584737863_run-specific_peptide.pdf
+merged.osw_2895829782584737863_run-specific_protein.pdf
+merged.osw_3312727970122698354_run-specific_peptide.pdf
+merged.osw_3312727970122698354_run-specific_protein.pdf
+merged.osw_3384946816235683019_run-specific_peptide.pdf
+merged.osw_3384946816235683019_run-specific_protein.pdf
+merged.osw_4228224315318701854_run-specific_peptide.pdf
+merged.osw_4228224315318701854_run-specific_protein.pdf
+merged.osw_6061028540430771831_run-specific_peptide.pdf
+merged.osw_6061028540430771831_run-specific_protein.pdf
+merged.osw_690411522375919463_run-specific_peptide.pdf
+merged.osw_690411522375919463_run-specific_protein.pdf
+merged.osw_8196394674452833952_run-specific_peptide.pdf
+merged.osw_8196394674452833952_run-specific_protein.pdf
+merged.osw_8238807937114849326_run-specific_peptide.pdf
+merged.osw_8238807937114849326_run-specific_protein.pdf
+merged.osw_8292393358414978236_run-specific_peptide.pdf
+merged.osw_8292393358414978236_run-specific_protein.pdf
+merged.osw_8627438106464817423_run-specific_peptide.pdf
+merged.osw_8627438106464817423_run-specific_protein.pdf
+merged.osw_8749089703153095849_run-specific_peptide.pdf
+merged.osw_8749089703153095849_run-specific_protein.pdf
+merged.osw_8889961272137748833_run-specific_peptide.pdf
+merged.osw_8889961272137748833_run-specific_protein.pdf
+merged.osw_experiment-wide_peptide.pdf
+merged.osw_experiment-wide_protein.pdf
+merged.osw_global_peptide.pdf
+merged.osw_global_protein.pdf
+pyprophetScreenOut.txt
+
+
+we generate the .tsv files:
+
+hroest_K120808_Strep0%PlasmaBiolRepl1_R01_SW.mzML.gz.tsv
+
+
