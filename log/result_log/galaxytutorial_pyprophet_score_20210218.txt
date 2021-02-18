@@ -1,0 +1,1023 @@
+
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ ls -sh
+total 34G
+163M HEK_Ecoli_lib.pqp	 805M Sample1.mzML.osw	801M Sample3.mzML.osw  804M Sample5.mzML.osw  800M Sample7.mzML.osw
+ 24K iRTassays.tsv	 1.4G Sample1.raw	1.4G Sample3.raw       1.4G Sample5.raw       1.3G Sample7.raw
+4.0K osw_run.sh		 2.1G Sample2.mzML	2.2G Sample4.mzML      2.0G Sample6.mzML      2.1G Sample8.mzML
+4.0K pyprophet_merge.sh  803M Sample2.mzML.osw	804M Sample4.mzML.osw  800M Sample6.mzML.osw  802M Sample8.mzML.osw
+4.0K results		 1.4G Sample2.raw	1.5G Sample4.raw       1.3G Sample6.raw       1.3G Sample8.raw
+2.2G Sample1.mzML	 2.1G Sample3.mzML	2.2G Sample5.mzML      2.1G Sample7.mzML      4.0K Sample_annotation.txt
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ vi pyprophet_merge.sh 
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ ./pyprophet_merge.sh 
+Calling pre scored osws merge function
+Info: Merged runs of file Sample1.mzML.osw to merged.osw.
+Info: Merged runs of file Sample2.mzML.osw to merged.osw.
+Info: Merged runs of file Sample3.mzML.osw to merged.osw.
+Info: Merged runs of file Sample4.mzML.osw to merged.osw.
+Info: Merged runs of file Sample5.mzML.osw to merged.osw.
+Info: Merged runs of file Sample6.mzML.osw to merged.osw.
+Info: Merged runs of file Sample7.mzML.osw to merged.osw.
+Info: Merged runs of file Sample8.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample1.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample2.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample3.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample4.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample5.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample6.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample7.mzML.osw to merged.osw.
+Info: Merged generic features of file Sample8.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample1.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample2.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample3.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample4.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample5.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample6.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample7.mzML.osw to merged.osw.
+Info: Merged MS1 features of file Sample8.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample1.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample2.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample3.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample4.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample5.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample6.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample7.mzML.osw to merged.osw.
+Info: Merged MS2 features of file Sample8.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample1.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample2.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample3.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample4.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample5.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample6.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample7.mzML.osw to merged.osw.
+Info: Merged transition features of file Sample8.mzML.osw to merged.osw.
+Info: All OSWS files were merged.
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ cp pyprophet_merge.sh pyprophet_score.sh 
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ vi pyprophet_score.sh 
+(base) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files$ ./pyprophet_score.sh 
+Info: Enable number of transitions & precursor / product charge scores for XGBoost-based classifier
+Info: Learn and apply classifier from input data.
+Warning: Column var_mi_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_mi_weighted_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_mi_ratio_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_elution_model_fit_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_xcorr_shape contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_xcorr_coelution contains only invalid/missing values. Column will be dropped.
+Warning: Column var_im_delta_score contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_lag contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_shape contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_sn contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_diff contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_log_trend contains only invalid/missing values. Column will be dropped.
+Warning: Column var_sonar_rsq contains only invalid/missing values. Column will be dropped.
+Info: Data set contains 747054 decoy and 750845 target groups.
+Info: Summary of input data:
+Info: 7173492 peak groups
+Info: 1497899 group ids
+Info: 23 scores including main score
+Info: Semi-supervised learning of weights:
+Info: Start learning on 10 folds using 1 processes.
+Info: Learning on cross-validation fold.
+[19:33:14] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:34:29] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:35:55] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:36:53] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:38:06] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:39:18] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:40:42] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:42:18] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:44:00] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:45:39] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:47:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[19:49:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:50:12] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:51:06] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:52:20] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:53:29] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:54:41] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:55:58] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:57:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[19:58:53] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:00:28] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:02:06] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[20:04:07] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:04:48] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:05:41] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:06:41] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:07:42] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:08:51] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:10:04] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:11:23] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:13:01] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:14:40] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:16:19] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[20:18:18] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:19:28] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:20:34] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:21:26] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:22:39] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:23:38] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:25:05] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:26:41] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:28:19] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:29:42] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:31:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[20:33:12] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:34:37] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:36:02] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:36:55] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:38:02] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:39:14] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:40:24] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:41:58] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:43:15] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:44:49] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:46:29] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[20:48:08] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:49:00] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:49:55] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:51:07] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:52:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:53:37] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:55:12] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:56:27] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:57:50] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[20:59:29] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:01:10] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[21:03:06] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:04:21] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:05:36] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:06:41] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:07:56] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:08:55] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:10:30] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:12:06] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:13:37] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:15:15] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:16:54] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[21:18:54] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:19:42] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:20:32] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:21:30] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:22:37] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:23:51] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:25:04] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:26:36] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:28:08] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:29:47] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:31:10] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[21:33:09] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:34:04] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:35:03] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:36:01] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:37:14] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:38:30] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:39:55] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:41:32] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:42:57] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:44:35] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:46:14] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Learning on cross-validation fold.
+[21:48:14] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:49:17] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:50:03] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:50:58] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:52:01] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:53:13] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:54:22] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:55:42] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:57:12] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[21:58:49] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+[22:00:20] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Finished learning.
+Info: Learning on cross-validated scores.
+[22:02:12] WARNING: ../src/learner.cc:541: 
+Parameters: { silent } might not be used.
+
+  This may not be accurate due to some parameters are only used in language bindings but
+  passed down to XGBoost core.  Or some parameters are not used but slip through this
+  verification. Please open an issue if you find above cases.
+
+
+Info: Importance of var_library_manhattan: 548.7405365954468
+Info: Importance of var_yseries_score: 104.50375224955046
+Info: Importance of var_intensity_score: 65.66629685450681
+Info: Importance of var_isotope_correlation_score: 43.29907103099935
+Info: Importance of var_isotope_overlap_score: 37.40197763932318
+Info: Importance of var_dotprod_score: 23.40834918658401
+Info: Importance of var_bseries_score: 23.276813460836735
+Info: Importance of var_norm_rt_score: 13.221369157709503
+Info: Importance of var_library_dotprod: 11.215200878287115
+Info: Importance of var_massdev_score_weighted: 10.96700870882174
+Info: Importance of main_var_xcorr_shape: 9.041372764775097
+Info: Importance of var_library_rootmeansquare: 7.538509475428466
+Info: Importance of var_xcorr_coelution_weighted: 6.743026537098986
+Info: Importance of var_massdev_score: 6.3327710155581345
+Info: Importance of var_xcorr_coelution: 6.056549929995203
+Info: Importance of var_xcorr_shape_weighted: 5.72429217516667
+Info: Importance of var_manhattan_score: 5.660242141531047
+Info: Importance of var_library_rmsd: 5.151662662843275
+Info: Importance of var_log_sn_score: 4.071338405901771
+Info: Importance of var_library_sangle: 3.9351698234130454
+Info: Importance of var_library_corr: 3.570249268097272
+Info: Importance of var_precursor_charge: 3.3995556624888894
+Info: Data set contains 747054 decoy and 750845 target groups.
+Info: Mean qvalue = 5.763152e-01, std_dev qvalue = 1.695465e-01
+Info: Mean svalue = 9.746431e-01, std_dev svalue = 9.946994e-02
+Info: Finished scoring and estimation statistics.
+Info: Processing input data finished.
+Info: Time needed: 02:33:37.8
+================================================================================
+   qvalue    pvalue    svalue       pep       fdr  ...             tp             tn             fp             fn    cutoff
+0    0.00  0.000001  0.287694  0.000020  0.000010  ...   68284.312641  513493.858095       0.687359  169066.141905  5.675145
+1    0.01  0.003116  0.667106  0.092928  0.010005  ...  158337.827453  511894.372908    1600.172547   79012.627092  3.859576
+2    0.02  0.006772  0.717945  0.184691  0.019998  ...  170404.649092  510017.194546    3477.350908   66945.805454  3.481865
+3    0.05  0.018946  0.778761  0.404883  0.050002  ...  184839.115881  503765.661336    9728.884119   52511.338664  2.880337
+4    0.10  0.042484  0.827191  0.571589  0.100002  ...  196333.589222  491679.134676   21815.410778   41016.865324  2.281774
+5    0.20  0.103468  0.895431  0.725687  0.199992  ...  212530.872345  460364.417799   53130.127655   24819.582201  1.412947
+6    0.30  0.187517  0.946592  0.836770  0.300004  ...  224669.266655  417205.812110   96288.733345   12681.187890  0.740179
+7    0.40  0.301619  0.978853  0.924828  0.400003  ...  232317.069032  358614.614487  154879.930968    5033.385513  0.214628
+8    0.50  0.462162  1.000000  0.980754  0.499999  ...  237318.313777  276176.859232  237317.686223      32.140768 -0.223689
+
+[9 rows x 12 columns]
+================================================================================
+Info: merged.osw written.
+Info: merged_ms2_report.pdf written.
+Info: Total time: 9217 seconds and 808 msecs wall time
