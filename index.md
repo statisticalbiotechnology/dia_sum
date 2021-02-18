@@ -52,13 +52,41 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-02-18
+
+...also filling in log from 2021-02-07 evening session.
+
+Downloaded https://training.galaxyproject.org/training-material/topics/proteomics/tutorials/DIA_Analysis_OSW/tutorial.html#get-data
+
+It is now in "\hdd_14T\galaxyTutorial\"
+
+Converted file with msconvert using instructions from the webpage.
+
+Started OpenSwathWorkflow with the parameters specified in webpage.
+
+Parsed PASS01508 data to triqler format and ran triqler.
+
+Output was a matrix of 1.0 
+
+Matthew suggested log-transforming m_score or using percolator to concatenate multiple m_scores to one consensus score before running triqler for better results.
+
+
+
 ## 2021-02-17 
 
 Can we use docker for end-results?
 
 Can we interface triqler from multiple methods quickly?
 
-converting in PASS01508/results/pyProphetOutput/... [log here]()
+converting in PASS01508/results/pyProphetOutput/... [log here](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/PASS01508/20210217_conversion_in_pyProphetOutput.txt)
+
+I suspect the data files are corrupt from the ftp download. I cannot convert the .mzML.gz to .mzML and I cannot convert all .wiff files. (PASS01508)
+
+I will try to convert the results files in the folder while I'm waiting for files to download and convert.
+
+
+
+
 
 ## 2021-02-15 Creating sh script. 
 
