@@ -70,6 +70,8 @@ Output was a matrix of 1.0
 
 Matthew suggested log-transforming m_score or using percolator to concatenate multiple m_scores to one consensus score before running triqler for better results.
 
+OSW output results [log here](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/log/result_log/galaxyTutorial_osw_run_20210218.txt)
+
 
 
 ## 2021-02-17 

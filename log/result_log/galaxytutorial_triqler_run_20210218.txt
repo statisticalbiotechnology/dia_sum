@@ -1,0 +1,171 @@
+
+(py36_triqler) ptruong@planck:/hdd_14T/data/galaxyTutorial/zenodo.org/record/4301690/files/results$ python -m triqler --decoy_pattern DECOY_ triqler_format.csv 
+Triqler version 0.6.1
+Copyright (c) 2018-2020 Matthew The. All rights reserved.
+Written by Matthew The (matthew.the@scilifelab.se) in the
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+Royal Institute of Technology in Stockholm.
+Issued command: triqler.py --decoy_pattern DECOY_ triqler_format.csv
+Parsing triqler input file
+  Reading row 0
+Calculating identification PEPs
+  Identified 0 PSMs at 1% FDR
+Selecting best feature per run and spectrum
+  featureGroupIdx: 0
+Dividing intensities by 10000 for increased readability
+Calculating peptide-level identification PEPs
+  Identified 0 peptides at 1% FDR
+Writing peptide quant rows to file: triqler_format.csv.pqr.tsv
+Calculating protein-level identification PEPs
+  Identified 4150 proteins at 1% FDR
+Fitting hyperparameters
+  params["muDetect"], params["sigmaDetect"] = 0.418320, 0.285569
+  params["muXIC"], params["sigmaXIC"] = 1.660966, 0.737390
+  params["muProtein"], params["sigmaProtein"] = -0.011017, 0.147685
+  params["muFeatureDiff"], params["sigmaFeatureDiff"] = -0.013331, 0.112137
+  params["shapeInGroupStdevs"], params["scaleInGroupStdevs"] = 4.731761, 0.024781
+Minimum advisable --fold_change_eval: 0.87
+Calculating protein posteriors
+  50 / 6899 0.72%
+Warning: failed to converge for protein sp|P0AG67|RS1_ECOLI
+  100 / 6899 1.45%
+  150 / 6899 2.17%
+Warning: failed to converge for protein sp|Q92841|DDX17_HUMAN
+  200 / 6899 2.90%
+  250 / 6899 3.62%
+  300 / 6899 4.35%
+  350 / 6899 5.07%
+  400 / 6899 5.80%
+  450 / 6899 6.52%
+  500 / 6899 7.25%
+  550 / 6899 7.97%
+  600 / 6899 8.70%
+  650 / 6899 9.42%
+  700 / 6899 10.15%
+  750 / 6899 10.87%
+  800 / 6899 11.60%
+  850 / 6899 12.32%
+  900 / 6899 13.05%
+  950 / 6899 13.77%
+  1000 / 6899 14.49%
+  1050 / 6899 15.22%
+  1100 / 6899 15.94%
+  1150 / 6899 16.67%
+  1200 / 6899 17.39%
+  1250 / 6899 18.12%
+  1300 / 6899 18.84%
+  1350 / 6899 19.57%
+  1400 / 6899 20.29%
+  1450 / 6899 21.02%
+  1500 / 6899 21.74%
+  1550 / 6899 22.47%
+  1600 / 6899 23.19%
+  1650 / 6899 23.92%
+  1700 / 6899 24.64%
+  1750 / 6899 25.37%
+  1800 / 6899 26.09%
+  1850 / 6899 26.82%
+  1900 / 6899 27.54%
+  1950 / 6899 28.26%
+  2000 / 6899 28.99%
+  2050 / 6899 29.71%
+  2100 / 6899 30.44%
+  2150 / 6899 31.16%
+  2200 / 6899 31.89%
+  2250 / 6899 32.61%
+  2300 / 6899 33.34%
+  2350 / 6899 34.06%
+  2400 / 6899 34.79%
+  2450 / 6899 35.51%
+  2500 / 6899 36.24%
+  2550 / 6899 36.96%
+  2600 / 6899 37.69%
+  2650 / 6899 38.41%
+  2700 / 6899 39.14%
+  2750 / 6899 39.86%
+  2800 / 6899 40.59%
+  2850 / 6899 41.31%
+  2900 / 6899 42.04%
+  2950 / 6899 42.76%
+  3000 / 6899 43.48%
+  3050 / 6899 44.21%
+  3100 / 6899 44.93%
+  3150 / 6899 45.66%
+  3200 / 6899 46.38%
+  3250 / 6899 47.11%
+  3300 / 6899 47.83%
+  3350 / 6899 48.56%
+  3400 / 6899 49.28%
+  3450 / 6899 50.01%
+  3500 / 6899 50.73%
+  3550 / 6899 51.46%
+  3600 / 6899 52.18%
+  3650 / 6899 52.91%
+  3700 / 6899 53.63%
+  3750 / 6899 54.36%
+  3800 / 6899 55.08%
+  3850 / 6899 55.81%
+  3900 / 6899 56.53%
+  3950 / 6899 57.25%
+  4000 / 6899 57.98%
+  4050 / 6899 58.70%
+  4100 / 6899 59.43%
+  4150 / 6899 60.15%
+  4200 / 6899 60.88%
+  4250 / 6899 61.60%
+  4300 / 6899 62.33%
+  4350 / 6899 63.05%
+  4400 / 6899 63.78%
+  4450 / 6899 64.50%
+  4500 / 6899 65.23%
+  4550 / 6899 65.95%
+  4600 / 6899 66.68%
+  4650 / 6899 67.40%
+  4700 / 6899 68.13%
+  4750 / 6899 68.85%
+  4800 / 6899 69.58%
+  4850 / 6899 70.30%
+  4900 / 6899 71.02%
+  4950 / 6899 71.75%
+  5000 / 6899 72.47%
+  5050 / 6899 73.20%
+  5100 / 6899 73.92%
+  5150 / 6899 74.65%
+  5200 / 6899 75.37%
+  5250 / 6899 76.10%
+  5300 / 6899 76.82%
+  5350 / 6899 77.55%
+  5400 / 6899 78.27%
+  5450 / 6899 79.00%
+  5500 / 6899 79.72%
+  5550 / 6899 80.45%
+  5600 / 6899 81.17%
+  5650 / 6899 81.90%
+  5700 / 6899 82.62%
+  5750 / 6899 83.35%
+  5800 / 6899 84.07%
+  5850 / 6899 84.79%
+  5900 / 6899 85.52%
+  5950 / 6899 86.24%
+  6000 / 6899 86.97%
+  6050 / 6899 87.69%
+  6100 / 6899 88.42%
+  6150 / 6899 89.14%
+  6200 / 6899 89.87%
+  6250 / 6899 90.59%
+  6300 / 6899 91.32%
+  6350 / 6899 92.04%
+  6400 / 6899 92.77%
+  6450 / 6899 93.49%
+  6500 / 6899 94.22%
+  6550 / 6899 94.94%
+  6600 / 6899 95.67%
+  6650 / 6899 96.39%
+  6700 / 6899 97.12%
+  6750 / 6899 97.84%
+  6800 / 6899 98.57%
+  6850 / 6899 99.29%
+Comparing A to B
+  output file: proteins.tsv
+  Found 964 target proteins as differentially abundant at 5% FDR
+Triqler execution took 321.62657764414325 seconds wall clock time
