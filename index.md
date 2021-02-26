@@ -23,7 +23,7 @@ This question will be answered by investigating following sub-questions:
 - What performance metrics is relevant to benchmark against?
 - How to we show the comparison in a fair manner?
 
-REWRITE TO FORMULATE WHAT WE WANT TO ACCOMPLISH....
+<!---REWRITE TO FORMULATE WHAT WE WANT TO ACCOMPLISH....-->
 
 
 ## Data
