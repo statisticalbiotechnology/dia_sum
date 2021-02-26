@@ -1,31 +1,45 @@
 # About
 
 
-Quantitative mass spectrometry is a formidiable approach to identify differentially abundance proteins from shotgun proteomics experiments ([Liu et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3833812/), ([Mann et al. 2013](https://pubmed.ncbi.nlm.nih.gov/23438854/))). A common problem for shotgun proteomics experiment has been low reproducibility due to the complexity of samples analyzed ([Liu et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15253663/),[Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/), [Amodei et al. 2019](https://link.springer.com/article/10.1007/s13361-018-2122-8), [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/), ([Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/)) as well as the available method for analyzing data. For example [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/) has found that only about 16 % of the detectable peptides are typically fragmented using data dependent LC-MS/MS methods, and there is typically low reproducibility (35-60% overlap of peptide identification) between experiment ([Tabb et al. 2010](https://pubmed.ncbi.nlm.nih.gov/19921851/)). This problem is especially prominent in data dependent acquisition (DDA) methods. Attempts at solving these issues have been made by the introduction of data independent acquisition (DIA) methods ([Venable et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15782151/), [Plumb et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16755610/), [Distler et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24336358/), [Moran et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24129072/), [Pak et al. 2013](https://pubmed.ncbi.nlm.nih.gov/24006250/), [Geiger et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2953918/), [Panchaud et al. 2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3217585/), [Weisbrod et al. 2012](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3319072/), [Carvalho et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2832823/), [Egertson et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3881977/)), where spectras are acquired to a predefined fixed window. These methods have been shown to have superior reproducibility to DDA. 
-
-[Triqler](https://pubmed.ncbi.nlm.nih.gov/30482846/) is a novel software for protein quantification. It uses probabilistic graphical models to generate posterior distributions for fold changes between treatment groups, highlighting uncertainty rather than hiding it. Conventional (frequentist) methods use filters, tresholds and imputations to control error rate and often ignore certain error sources. This project aims to benchmark Triqler against commonly used softwares for DIA protein quantification. 
+Quantitative mass spectrometry is a formidiable approach to identify differentially abundance proteins from shotgun proteomics experiments ([Liu et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3833812/), ([Mann et al. 2013](https://pubmed.ncbi.nlm.nih.gov/23438854/))). A common problem for shotgun proteomics experiment has been low reproducibility due to the complexity of samples analyzed ([Liu et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15253663/),[Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/), [Amodei et al. 2019](https://link.springer.com/article/10.1007/s13361-018-2122-8), [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/), ([Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/)) as well as the available method for analyzing data. For example [Michalski et al. 2011](https://pubmed.ncbi.nlm.nih.gov/21309581/) has found that only about 16 % of the detectable peptides are typically fragmented using data dependent LC-MS/MS methods, and there is typically low reproducibility (35-60% overlap of peptide identification) between experiment ([Tabb et al. 2010](https://pubmed.ncbi.nlm.nih.gov/19921851/)). This problem is especially prominent in data dependent acquisition (DDA) methods. Attempts at solving these issues have been made by the introduction of data independent acquisition (DIA) methods ([Venable et al. 2004](https://pubmed.ncbi.nlm.nih.gov/15782151/), [Plumb et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16755610/), [Distler et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24336358/), [Moran et al. 2014](https://pubmed.ncbi.nlm.nih.gov/24129072/), [Pak et al. 2013](https://pubmed.ncbi.nlm.nih.gov/24006250/), [Geiger et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2953918/), [Panchaud et al. 2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3217585/), [Weisbrod et al. 2012](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3319072/), [Carvalho et al. 2010](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2832823/), [Egertson et al. 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3881977/)), where spectras are acquired to a predefined fixed window. These methods have been shown to have superior reproducibility to DDA. [Navarro et al. 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5120688/pdf/emss-69887.pdf) benchmarked five DIA protein quantification methods; four peptide-centric query tools (OpenSwath, SWATH2.0, Skuline, Spectronaut) and one data-centric approach DIA-umpire. The peptide-centric methods use MS/MS libraries to match peptides followed by statistical analysis to distinguise true from false discoveries. While the data-centric approaches generates "pseudo" MS/MS spectra that can be identified and quantified using convential database searching and protein inference tools (without assay libraries, but requiring FASTA database similar to conventional DDA search engines) [Zhong Li et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19294629/)[iTsou et al. 2015](https://www.nature.com/articles/nmeth.3255). These DIA protein quantification processes are multistep procedures often incorporating imputation, filtering and tresholding procedures and various stages. These procedures often ignore the error sources. These imputations causes errors to propagate down the processing pipeline [The et al. 2018](https://www.biorxiv.org/content/10.1101/357285v2). To solve this issue [Triqler](https://pubmed.ncbi.nlm.nih.gov/30482846/) a novel software for protein quantification has been developed. It uses probabilistic graphical models to generate posterior distributions for fold changes between treatment groups. By using probabilistical graphical model triqler eliminates the need for data imputation. This project aims to benchmark Triqler against commonly used softwares for DIA protein quantification. 
 
 
 ## Problem
-Triqler is a novel software that uses a Bayesian model for protein quantification. Previous efforts for DIA protein quantification has been dependent on spectral libraries for peptide and protein identification, as well as the construction of pseudo-MS/MS which are similar to DDA spectras and therefore allows for peptide and protein identification with conventional search-engine algorithms. 
+Triqler is a novel software that uses a probabilistical graphipcal models for protein quantification, effectively eliminating the need for filtering, tresholding and imputational procedures. Previous efforts for DIA protein quantification has been dependent on spectral libraries for peptide and protein identification, as well as the construction of pseudo-MS/MS which are similar to DDA spectras and therefore allows for peptide and protein identification with conventional search-engine algorithms, which often use the procedures. 
 
 <!--[read up more on DIA and fill in from Navarro et al. 217, Kuharev et al. 2015 annd Gotti et al. 2020].-->
 
-The use of bayesian modeling for protein quantification has not yet been shown better than existing methods. It is therefore interesting to investigate the performance of Triqler as a protein quantification tool for DIA data.
+The use of probabilistical graphical models for protein quantification has not yet been shown better than existing methods. There are strong theorethical reason to believe that bayesian models outperform frequentist models which require filtering, tresholding and imputationi. Further, bayesian methods for treating the missing value problem as proved effective in other biological areas [Halme et al. 2018](https://www.sciencedirect.com/science/article/pii/S1098301518322472)[Shah et al. 2019](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3250-2)[Luo et al. 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3883900/). Moreover, Triqler has shown to be able to distinguise more protein for DDA data than other commonly used DDA protien quantification methods [The et al. 2018](https://www.biorxiv.org/content/10.1101/357285v2). It is therefore interesting to investigate the performance of Triqler as a protein quantification tool for DIA data.
 
 <!-- but the fact that Triqler is handling errors in multiple steps in a more theoretical sound way than the most commonly used protein quantification pipelines gives indication that it is better. A benchmark of said Triqler is therefore needed to show its performance. --> 
 
 
 ## Preliminary Research Question
 The research aims to answer the following questions:
-- Is Triqler a better alternative for protein quantifcation than existing methods?
+- How does triqler protein quantification compare to existing DIA protein quantification pipelines?
 
 This question will be answered by investigating following sub-questions:
 - How do we benchmark Triqler, a bayesian model, against existing methods, such as Spectronaut?
 - What performance metrics is relevant to benchmark against?
 - How to we show the comparison in a fair manner?
 
+REWRITE TO FORMULATE WHAT WE WANT TO ACCOMPLISH....
+
+
 ## Data
+
+A DIA benchmarking sample with hybrid proteome samples consisting of tryptic digests of human, yeast and E.coli protein is used for this study. There are two samples, A and B, the expected ratio of protein for A:B comparison are 1:1 for human, 1:2 for yeast and 4:1 for E.coli. Sample A is composed of 65% human, 30% yeast, 5% E.Coli, while sample B was composed of 65% human, 15% yeast and 20% E.coli. The absolut amount of proteins are unknown, but the dataset contain a sufficiently large number of peptides to enable the in-depth evaluation of both precision and accuracy of relative label-free quantification ([Kuharev et al. 2015](https://pubmed.ncbi.nlm.nih.gov/25545627/)). This sample is referred to as HYE124. The biological samples A and B both have three technical replicates on two different platforms (TripleTOF 5600 and TripleTOF 6600) using two different SWATH-MS acquisition modes i.e. we have four benchmark datasets. Further there are an additional four datasets reffered to as HYE110 for benchmarking the effect of different window numbers (32 vs 64 windows) and window size (fixed vs variable). HYE110 sample A has 67% human, 30% yeast and 3% E.coli, while sample B has 67% human, 3% yeast and 30% E.coli. For retention time alignment of the samples, a retention time kit(iRT kit from Biognosys, GmbH)[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3918884/](Escher et al. 2012) was used at a concentration of 1:20 in all samples. The data set has the ProteomeXchange accession number [PXD002952](ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952). 
+
+## Method
+
+As Triqler takes peptide quantity, intensity and searching score to determine relative differences between groups. It is dependent on peptide quantification from other DIA quantification softwares. This section will outline the procedures in the processing pipeline for DIA analysis and subsequently the Triqler analysis.  
+
+Library based DIA search engine require a DDA-search to construct a spectral library. This library  
+
+
+OpenSwath
+
+
 
 <!---
 [Triqler](https://pubmed.ncbi.nlm.nih.gov/30482846/) is a novel software for protein quantification and differential protein identification. It uses probabilistic graphical models to generate posterior distributions for fold changes between treatment groups, highlighting uncertainty rather than hiding it. Conventional (frequentist) methods use filters and imputations to control error rate and often ignore certain error sources. This project aims to benchmark Triqler against MaxQuant (A commonly used tool for protein quantification). 
@@ -51,6 +65,38 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 
 # Blog 
 (line 52 as reference)
+
+## 2021-02-25
+Got Tenzer set working.
+
+Whole set not working.
+
+Need to check subsampling process for pyprophet, but first write about process.
+
+Started msconvert with peakpicking (centroided - default option) for tenzer set.
+
+
+Tenzer retention time
+
+ Outliers havebeen defined as producing a standard deviation of the peak retention time greater than0.2 minutes relative to all other software tools detecting that precursor, after removingambiguous cases, in which more than one software tool produce a greater standard deviationin the peak retention time
+
+ Note from [Röst et al. 2014](https://www.biorxiv.org/content/10.1101/044552v2.full.pdf) OpenSwath analysis require iRT calibration.
+
+Updated project description.
+
+
+## 2021-02-22
+Just got the iRT file from Tenzer. I should start the computations.
+
+Check Tenzer article about how protein summarization is made.
+
+Started PXD002952 computations with hroest_iRT.TraML file.
+
+
+
+## 2021-02-19
+Worked very late... Jupyter notebook created and has log.
+
 
 ## 2021-02-18
 
