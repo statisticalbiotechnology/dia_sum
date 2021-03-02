@@ -67,6 +67,17 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-02-26
+Meeting.
+
+Reading on compositional data (links from meeting).
+
+Think about:
+- Why is Life and Death data compositional data.
+- Check mail how is the data normalized?
+
+
+
 ## 2021-02-25
 Got Tenzer set working.
 
