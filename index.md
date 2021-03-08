@@ -67,6 +67,16 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-08
+
+Performing pyprophet merging, scoring and legacy export on all data set components.
+
+ToDo.
+- Check up on library serach method used in tenzer
+- make diff exp. analysis on legacy tsv.
+- converter to triqler
+- Read up on proteoform.
+
 ## 2021-02-25
 Got Tenzer set working.
 
