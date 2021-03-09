@@ -67,7 +67,7 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
-<<<<<<< HEAD
+
 ## 2021-03-04
 
 Checked computation from last log... forgot to make tmp file. Need to rerun computation.
