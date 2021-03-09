@@ -67,6 +67,10 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-04
+
+Checked computation from last log... forgot to make tmp file. Need to rerun computation.
+
 ## 2021-02-26
 Meeting.
 
@@ -76,7 +80,11 @@ Think about:
 - Why is Life and Death data compositional data.
 - Check mail how is the data normalized?
 
+MSconvert centroided .wiff files completed...
 
+centroided files are much smaller (7.5GB - 13.7GB) vs (7.8GB - 74.4GB).
+
+Run openSwath_run_centroided.sh on centroided dataset.
 
 ## 2021-02-25
 Got Tenzer set working.
