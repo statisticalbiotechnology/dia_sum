@@ -67,6 +67,41 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-09
+
+Coded and modified the pyprophet_score.sh script to all data set with correct library. 
+
+Added a test for different windowed library (64var spectral library for a 32fix data set in /hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof5600/32fix_w_64v_library_test). Investigate the merged_score diagnostics for this one to see the decoy and target distribution.
+
+- Diagnostics plot seem to show same diagonistics plot regardless of how the spectral library was build. I should check up on how spectral library was build... (!!!!)
+
+Coded TOP3 peptide for protein quantification in dia_sum/scripts/PXD002952/working_script_experiment_analysis.py
+
+TOP3 approach: the three most intense peptide quantitative values of each individual run are averaged (a minimum of two peptides is required). Produced peptide and protein reports can be directly used in the main LFQbench module. FSWE filters results at the protein level, only proteins having quantification values in at least two technical replicates in at least one of the samples are considered for further analysis.
+
+Code for diagnostics summary and protein quantification using top3... working on it, functions defined.
+
+At this moment hye110_ttof6600/32fix seem to have:
+
+  experiment_id sample_id proteins
+0     001-Pedro       [A]     2005
+1     002-Pedro       [B]     2008
+2     004-Pedro       [B]     2025
+3     003-Pedro       [A]     1941
+4     010-Pedro       [A]     1887
+
+Todo:
+
+- Think about how to diff. exp on proteins... what about non-overlapping proteins? How should i differentially express these?
+- How do I compute and compare, impute on protein? 
+- Perhaps I should build a dataframe with protein as index and and protein quantity for each sample as...?
+- Perhaps Averageing over sample A proteins and sample B proteins would work? for sample A vs B comparison but not quantification comparison.
+- I need to make a 5x5 matrix with comparisons. What do I do with NaN proteins... they just cant compare... I guess we drop the nan comparisons...?
+
+- What about TRIC? 
+
+
+
 ## 2021-03-08
 
 Performing pyprophet merging, scoring and legacy export on all data set components.
