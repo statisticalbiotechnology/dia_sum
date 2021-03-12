@@ -6,7 +6,7 @@ Created on Wed Mar 10 23:18:34 2021
 @author: ptruong
 """
 import itertools
-
+import re
 
 import pandas as pd
 import numpy as np
@@ -81,6 +81,8 @@ df_prot = protein_quantity_df(df) # Protein quantification, duplicates_dropped.
 df_summary = get_summary(df_prot) # Check how many proteins quantified in each sample.
 df_summary["peptides"] = df_summary.proteins 
 df_summary["proteins"] = get_summary(df_prot.drop_duplicates()).proteins
+
+df_prot = df_prot.drop_duplicates()
 
 # Check overlap of protein between samples (?needed)
 # Check diff expression of overlapping proteins.
@@ -189,13 +191,58 @@ def get_tresholded_YEAST_diffExp(df_xs, exp_1, exp_2, treshold = 2):
     df_treshold_diff_spec = df_diff_spec[df_diff_spec > treshold]
     return df_treshold_diff_spec
 
-get_tresholded_HUMAN_diffExp(df_xs, comp[0], comp[1], treshold = 0.5).dropna()
-get_tresholded_ECOLI_diffExp(df_xs, comp[1], comp[0], treshold = 3.5).dropna()
-get_tresholded_YEAST_diffExp(df_xs, comp[0], comp[1], treshold = 3.5).dropna()
 
+#comp = comps[0]
+#human_treshold = 0.2
+#get_tresholded_HUMAN_diffExp(df_xs, comp[0], comp[1], treshold = 0.5).dropna()
+#get_tresholded_ECOLI_diffExp(df_xs, comp[1], comp[0], treshold = 3.5).dropna()
+#get_tresholded_YEAST_diffExp(df_xs, comp[0], comp[1], treshold = 3.5).dropna()
 
-exp_1 = comp[1]
-exp_2 = comp[0]
+def get_de(df_xs, human_treshold = 0.1, ecoli_treshold = 3.5, yeast_treshold = 1.5):
+    def get_HUMAN_de(df_xs, treshold = 0.1):
+        comps_array = []
+        human_de_array = []
+        for comp in comps:
+            human_de = len(get_tresholded_HUMAN_diffExp(df_xs, comp[0], comp[1], treshold = treshold).dropna())
+            comps_array.append(comp)
+            human_de_array.append(human_de)
+        return pd.DataFrame(human_de_array, index = comps_array, columns = ["human_de"])
+    
+    #think about arranging comp
+    
+    def get_ECOLI_de(df_xs, treshold = 3.5):
+        comps_array = []
+        ecoli_de_array = []
+        for comp in comps:
+            if comp[0].split("_")[1] == "A":
+                ecoli_de = len(get_tresholded_ECOLI_diffExp(df_xs, comp[1], comp[0], treshold = treshold).dropna())
+                comps_array.append(comp)
+                ecoli_de_array.append(ecoli_de)
+            else:
+                ecoli_de = len(get_tresholded_ECOLI_diffExp(df_xs, comp[0], comp[1], treshold = treshold).dropna())
+                comps_array.append(comp)
+                ecoli_de_array.append(ecoli_de)       
+        return pd.DataFrame(ecoli_de_array, index = comps_array, columns = ["ecoli_de"])
+    
+    def get_YEAST_de(df_xs, treshold = 1.5):
+        comps_array = []
+        yeast_de_array = []
+        for comp in comps:
+            if comp[0].split("_")[1] == "A":
+                yeast_de = len(get_tresholded_YEAST_diffExp(df_xs, comp[0], comp[1], treshold = treshold).dropna())
+                comps_array.append(comp)
+                yeast_de_array.append(yeast_de)
+            else:
+                yeast_de = len(get_tresholded_YEAST_diffExp(df_xs, comp[1], comp[0], treshold = treshold).dropna())
+                comps_array.append(comp)
+                yeast_de_array.append(yeast_de)       
+        return pd.DataFrame(yeast_de_array, index = comps_array, columns = ["yeast_de"])
+    
+    human_de = get_HUMAN_de(df_xs, treshold = human_treshold)
+    ecoli_de = get_ECOLI_de(df_xs, treshold = ecoli_treshold)
+    yeast_de = get_YEAST_de(df_xs, treshold = yeast_treshold)
+    return pd.concat([human_de, ecoli_de, yeast_de], axis = 1)
 
+de = get_de(df_xs, human_treshold = 0.1, ecoli_treshold = 3.5, yeast_treshold = 1.5)
 
 

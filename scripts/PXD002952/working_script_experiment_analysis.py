@@ -66,6 +66,7 @@ def protein_quantity_df(df):
         df_protein = df_protein.append(df_protein_subset)
     return df_protein
 # Summary
+df_protein = protein_quantity_df(df)
 
 exp_array = []
 sample_array = []
