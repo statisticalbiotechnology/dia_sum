@@ -67,6 +67,25 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-15 Check SpectraST and library build also checking Hannes Röst set.
+
+Hannes röst set PASS01508 is the same as PASS00788. Tried to unzip one file in PASS00788. It is unzipable.
+
+Checking LFQBench.
+
+Building LFQBench for r.
+
+Getting error at installing LFQBench.
+
+Submitted following [ticket](https://github.com/IFIproteomics/LFQbench/issues/12).
+
+Trying to undestand Ion Libraries Statistics in supplementary material.
+- how do they choose the ions to be excluded.
+- Are they just using Comet and Mascot... recheck this with openswath tutorial. I think we use comet/mascot first then use spectraST.
+
+
+
+
 ## 2021-03-09
 
 Coded and modified the pyprophet_score.sh script to all data set with correct library. 
