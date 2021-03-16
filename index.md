@@ -83,7 +83,11 @@ Trying to undestand Ion Libraries Statistics in supplementary material.
 - how do they choose the ions to be excluded.
 - Are they just using Comet and Mascot... recheck this with openswath tutorial. I think we use comet/mascot first then use spectraST.
 
-Checked out 
+Checked out [LGQBench paper](https://pubmed.ncbi.nlm.nih.gov/25545627/). It has some useful information about database search..
+
+I guess I downloaded the correct .fasta for human, yeast and ecoli.
+
+(I need to check this with Lukas, how do I know which human, yeast and ecoli to choose?)
  
 
 
