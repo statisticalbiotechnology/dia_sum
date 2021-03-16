@@ -83,7 +83,8 @@ Trying to undestand Ion Libraries Statistics in supplementary material.
 - how do they choose the ions to be excluded.
 - Are they just using Comet and Mascot... recheck this with openswath tutorial. I think we use comet/mascot first then use spectraST.
 
-
+Checked out 
+ 
 
 
 ## 2021-03-09
