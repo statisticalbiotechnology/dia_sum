@@ -67,6 +67,70 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-16 spectral lib build.
+
+Run crux bullseye on DDA data.
+
+cruxbullseye:
+
+bullseye.log.txt
+bullseye.no-pid.ms2
+bullseye.params.txt
+bullseye.pid.ms2
+hardklor.mono.txt
+
+crux tide-index:
+
+bullseye.log.txt
+bullseye.no-pid.ms2
+bullseye.params.txt
+bullseye.pid.ms2
+hardklor.mono.txt
+tide-index.decoy.fasta
+tide-index.log.txt
+tide-index.params.txt
+
+crux tide-search:
+
+  bullseye.log.txt
+  bullseye.no-pid.ms2
+  bullseye.params.txt
+  bullseye.pid.ms2
+  hardklor.mono.txt
+  tide-index.decoy.fasta
+  tide-index.log.txt
+  tide-index.params.txt
+  tide-search.decoy.txt
+  tide-search.log.txt
+  tide-search.params.txt
+  tide-search.target.txt
+
+crux percolator
+  bullseye.log.txt
+  bullseye.no-pid.ms2
+  bullseye.params.txt
+  bullseye.pid.ms2
+  hardklor.mono.txt
+  make-pin.pin
+  percolator.decoy.peptides.txt
+  percolator.decoy.psms.txt
+  percolator.log.txt
+  percolator.params.txt
+  percolator.target.peptides.txt
+  percolator.target.psms.txt
+  tide-index.decoy.fasta
+  tide-index.log.txt
+  tide-index.params.txt
+  tide-search.decoy.txt
+  tide-search.log.txt
+  tide-search.params.txt
+  tide-search.target.txt
+
+
+Mailed Lukas about issue with exlusion of ions.
+
+
+
 ## 2021-03-15 Check SpectraST and library build also checking Hannes Röst set.
 
 Hannes röst set PASS01508 is the same as PASS00788. Tried to unzip one file in PASS00788. It is unzipable.
