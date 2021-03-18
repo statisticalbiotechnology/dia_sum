@@ -67,6 +67,17 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-18 tryptic pepties 
+
+Read this about tryptic peptides.
+https://unipept.ugent.be/clidocs/casestudies/tpa
+
+Looking into Lukas script about tryptic peptides.
+
+created script for spectral lib build with both percolator and peptideprophet.
+
+
+
 ## 2021-03-16 spectral lib build.
 
 Run crux bullseye on DDA data.
