@@ -1,0 +1,52 @@
+-Take the row after > (the name row):
+gawk '/^>/{print a;a="";next}{a=a $0}END{print a}'
+20 611 peptides
+
+-splice all peptide between K and end at K.
+sed 's/K/K\n/g'
+672 942 peptides
+
+-splice the K-to-K peptides with R-to-R peptides.
+sed 's/R/R\n/g'
+1 315 698 peptides
+
+-Filter - take only peptides longer than 7 amino acids.
+gawk 'length($0)>7 {print}'
+510 308 peptides
+
+-sort all the peptides
+sort
+
+-count unique occurances left col count, right col peptide
+uniq -c
+485 293 rows
+
+-select left col.
+gawk '{print $1}'
+
+-Sort on number
+sort -n
+
+-count unique numbers
+unique -c
+40 rows.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
