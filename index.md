@@ -67,6 +67,94 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-16 spectral lib build.
+
+Run crux bullseye on DDA data.
+
+cruxbullseye:
+
+bullseye.log.txt
+bullseye.no-pid.ms2
+bullseye.params.txt
+bullseye.pid.ms2
+hardklor.mono.txt
+
+crux tide-index:
+
+bullseye.log.txt
+bullseye.no-pid.ms2
+bullseye.params.txt
+bullseye.pid.ms2
+hardklor.mono.txt
+tide-index.decoy.fasta
+tide-index.log.txt
+tide-index.params.txt
+
+crux tide-search:
+
+  bullseye.log.txt
+  bullseye.no-pid.ms2
+  bullseye.params.txt
+  bullseye.pid.ms2
+  hardklor.mono.txt
+  tide-index.decoy.fasta
+  tide-index.log.txt
+  tide-index.params.txt
+  tide-search.decoy.txt
+  tide-search.log.txt
+  tide-search.params.txt
+  tide-search.target.txt
+
+crux percolator
+  bullseye.log.txt
+  bullseye.no-pid.ms2
+  bullseye.params.txt
+  bullseye.pid.ms2
+  hardklor.mono.txt
+  make-pin.pin
+  percolator.decoy.peptides.txt
+  percolator.decoy.psms.txt
+  percolator.log.txt
+  percolator.params.txt
+  percolator.target.peptides.txt
+  percolator.target.psms.txt
+  tide-index.decoy.fasta
+  tide-index.log.txt
+  tide-index.params.txt
+  tide-search.decoy.txt
+  tide-search.log.txt
+  tide-search.params.txt
+  tide-search.target.txt
+
+
+Mailed Lukas about issue with exlusion of ions.
+
+
+
+## 2021-03-15 Check SpectraST and library build also checking Hannes Röst set.
+
+Hannes röst set PASS01508 is the same as PASS00788. Tried to unzip one file in PASS00788. It is unzipable.
+
+Checking LFQBench.
+
+Building LFQBench for r.
+
+Getting error at installing LFQBench.
+
+Submitted following [ticket](https://github.com/IFIproteomics/LFQbench/issues/12).
+
+Trying to undestand Ion Libraries Statistics in supplementary material.
+- how do they choose the ions to be excluded.
+- Are they just using Comet and Mascot... recheck this with openswath tutorial. I think we use comet/mascot first then use spectraST.
+
+Checked out [LGQBench paper](https://pubmed.ncbi.nlm.nih.gov/25545627/). It has some useful information about database search..
+
+I guess I downloaded the correct .fasta for human, yeast and ecoli.
+
+(I need to check this with Lukas, how do I know which human, yeast and ecoli to choose?)
+ 
+
+
 ## 2021-03-09
 
 Coded and modified the pyprophet_score.sh script to all data set with correct library. 

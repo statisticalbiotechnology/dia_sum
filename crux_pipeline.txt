@@ -1,0 +1,8 @@
+1. download all "swissprot" yeast proteins as a "fasta" file from the UniProt database: https://www.uniprot.org/
+2. download one of the .raw files from here: ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD002370/
+3. convert it to mzML format with msconvert which can be installed from the ProteoWizard package: http://proteowizard.sourceforge.net/ 
+4. install the crux toolkit (this will contain the 4 packages in the next steps): http://crux.ms/
+5. run "bullseye" on the mzML file: http://crux.ms/commands/bullseye.html
+6. run "tide-index" on the fasta file (see step 1): http://crux.ms/commands/tide-index.html
+7. run "tide-search" on the mzML and fasta file together: http://crux.ms/commands/tide-search.html
+8. run "percolator" on the search results: http://crux.ms/commands/percolator.html
