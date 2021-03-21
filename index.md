@@ -67,6 +67,17 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-21 Week todos.
+- Ask Markus about Fragpipe and easyPQP for spectral library building.
+- Ask Lukas if he managed to get the spectraST spectral library building working?
+- Parse PASS00788.
+- Rebuild R for LFQBench.
+- Triqler parser.
+- Run triqler on data set.
+- Find comparative statistics (from LFQBench paper)
+- Ask Lukas if the statistics make sens.
+
+
 ## 2021-03-18 tryptic pepties 
 
 Read this about tryptic peptides.
