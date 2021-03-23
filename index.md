@@ -67,6 +67,15 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-22 de analysis script.
+
+Redoing DE analysis script for the hye124 dataset.
+
+Learn to build hierarchical dataframes. 
+
+Check how to name levels so we can select levels and iterate trough samples.
+
+
 ## 2021-03-21 Week todos.
 - Ask Markus about Fragpipe and easyPQP for spectral library building.
 - Ask Lukas if he managed to get the spectraST spectral library building working?
