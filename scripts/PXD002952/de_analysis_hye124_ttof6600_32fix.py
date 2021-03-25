@@ -89,25 +89,26 @@ def get_all_sample_protein_intensities(aligned):
             res = {**res, **partial_res}
         
     df_res = pd.concat(res, axis = 1)
-    df["species"] = df.index.map(species_map) # Add species col
+    df_res["species"] = df_res.index.map(species_map) # Add species col
     return df_res
 
 ###
 
 df = get_all_sample_protein_intensities(aligned)
 
-df.get_level_values("1") #How to 
-
-specie = "YEAS8"
-
-df_s = aligned[aligned.specie == specie]
 
 
 
 
 
 
+###########
+# Triqler #
+###########
 
+from triqler_output_to_df import parse_triqler
 
+triqler = parse_triqler("proteins.tsv")
 
-
+triqler[triqler.q_value < 0.05]
+triqler[triqler.posterior_error_prob < 0.05]
