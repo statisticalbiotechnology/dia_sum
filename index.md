@@ -67,6 +67,9 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-25 Run triqler on all data.
+Run triqler on all data sets with default settings. There seem to be some issues with run and condition balancing... Some conditions dont have enough run.
+
 ## 2021-03-22 de analysis script.
 
 Redoing DE analysis script for the hye124 dataset.
