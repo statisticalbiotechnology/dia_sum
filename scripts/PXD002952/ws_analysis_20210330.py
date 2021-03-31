@@ -210,7 +210,7 @@ specie = "ECOLI"
 treshold = 2.0
 
     
-    def get_triqler_DE_fc(df, specie, treshold):
+def get_triqler_DE_fc(df, specie, treshold):
     df_rv = df[df.specie == specie].drop(['protein', 'peptides', 'q_value', 'posterior_error_prob',
            'num_peptides', 'protein_id_posterior_error_prob', 'log2_fold_change',
            'diff_exp_prob_2.0', "specie"], axis = 1 ).astype(float)
