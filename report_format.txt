@@ -1,0 +1,5 @@
+1. Commands run.
+2. Purpose of the command.
+3. Output summary.
+4. Discussion - Expected results vs real results.
+

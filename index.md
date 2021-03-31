@@ -67,8 +67,41 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-03-30
+m_score now working. I get the unfiltered data and can get it through triqler.
+
+Note: triqler expects larger searchScore to be more significant so we need to -np.log10(searcScore) if searchScore is m_score.
+
+Why do we have multiple peptides of the same in one run? Can it be because the same m/z is in 3 different windows?
+
+
+
+## 2021-03-26-28
+Fragpipe installed.
+
+Fragpipe running with bug in MSFragger part (Cannot find isolation window.) Ticket sent to MSFragger github.
+
+Fragpipe run tested on subset of tezner data, and Galaxy tutorial data set.
+
+Fragpipe is currently running without MSFragger... only DIA-Umpire. I need to figure out what part of DIA-Umpire is being used, perhaps the whole workflow is being used.
+
+Reconverted galaxy tutorial subset with MS-level 1-2 peakpicking (MSconvert)
+
+Also, notice the fragpipe consumes a lot of memory. I am nor only processing parts of 32fix ttof6600 hye124 set. (4 .mzML files) otherwise I get memory errors. 
+
+Dia-Umpire seem to complete successfully, when MS Fragger is not selected... but still the consolde gives exit code 1 and 30 cancelled processes.
+
+Running MSFragger without DIAUmpire to check if this works.
+
+
 ## 2021-03-25 Run triqler on all data.
 Run triqler on all data sets with default settings. There seem to be some issues with run and condition balancing... Some conditions dont have enough run.
+
+Making analysis script, Triqler has much lower proteins in it than tric aligned... I suspect that the fdr-tresholding before triqler causes the issue. I have found that pyprophet already does m_score filtering of 0.05 by default. 
+
+Rerunning pyprophet with ss_iteration_fdr (Iteration FDR cutoff for best scoring targets) set to 1.0, but --ss_initial_fdr could also be a potential culprit.
+
+
 
 ## 2021-03-22 de analysis script.
 

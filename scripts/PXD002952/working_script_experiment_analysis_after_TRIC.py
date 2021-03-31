@@ -14,7 +14,7 @@ import numpy as np
 df = pd.read_csv("aligned.csv", sep = "\t")
 
 experiment_id_mapper = lambda x: x.split("_")[5]
-sample_id_mapper = lambda x: x.split("_")[7]
+sample_id_mapper = lambda x: x.split("_")[9]
 df["experiment_id"] = df["filename"].map(experiment_id_mapper)
 df["sample_id"] = df["filename"].map(sample_id_mapper)
 

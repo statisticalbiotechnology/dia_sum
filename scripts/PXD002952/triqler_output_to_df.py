@@ -22,5 +22,8 @@ def parse_triqler(triqler_output_file):
         peptides = ";".join(line[n_cols-1:])
         data = vals + [peptides]
         data_array.append(data)
-        
-    return pd.DataFrame(data_array, columns = cols)
+    df = pd.DataFrame(data_array, columns = cols)
+
+    df = pd.concat([df[["protein", "peptides"]], df.drop(["protein", "peptides"], axis = 1).astype(float)], axis = 1)
+    
+    return df
