@@ -202,7 +202,7 @@ from triqler_output_to_df import parse_triqler
 os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix/triqler_ecoli_fc2_full_tsv")
 
 df = parse_triqler("proteins.tsv")
-df = df[df.protein_id_posterior_error_prob < 0.05]
+df = df[df.protein_id_posterior_error_prob < 0.01]
 specie_mapper = lambda x : x.split("_")[-1]
 df["specie"] = df.protein.map(specie_mapper)
 
