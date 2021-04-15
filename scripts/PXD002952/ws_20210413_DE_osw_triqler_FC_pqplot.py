@@ -14,6 +14,8 @@ Created on Mon Apr 12 14:15:19 2021
 import pandas as pd
 import numpy as np
 
+from scipy import stats
+
 import os 
 
 os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix/full_ts_v")
@@ -236,10 +238,31 @@ for i in range(0,200+5,5):
     i = i/100
     de = get_DE_df(df, specie = "ECOLI", treshold = i)
     
-##############
-# Triqler DE #
-##############
+    
+    
+    
+    
+#################
+# OSW DE ########
+#################
+    
+# read in df as above
+    
+df
 
+
+experiment =  "005-Pedro"
+df.columns    
+
+
+
+###################
+###################
+## TRIQLER DE #####
+###################
+###################
+    
+    
 import os 
 
 import pandas as pd
@@ -251,11 +274,51 @@ from triqler_output_to_df import  parse_triqler
 os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix/triqler_results")
 
 
-de_array = []
-for file in sorted(os.listdir()):
-    df = parse_triqler(file)
-    de_protein = len(df[df.q_value < 0.05])
-    de_array.append(de_protein)
+def get_triqler_DE(fc_tresh = 0.05):
+    """
+    Should be run in triqler results folder with files named fc_<fc>
+    """
+    specie_mapper = lambda x : x.split("_")[-1]
+    specie_list = ["HUMAN", "ECOLI", "YEAS8"]
+    
+    de_human = []
+    de_yeast = []
+    de_ecoli = []
+    de_file = []
+    
+    for file in sorted(os.listdir()):
+        df = parse_triqler(file)
+        df["specie"] = df.protein.map(specie_mapper)
+        for specie in specie_list:
+            df_specie = df[df.specie == specie]
+            de_protein = len(df_specie[df_specie.q_value < fc_tresh])
+            if specie == "HUMAN":
+                de_human.append(de_protein)
+            elif specie == "ECOLI":
+                de_ecoli.append(de_protein)
+            elif specie == "YEAS8":
+                de_yeast.append(de_protein)
+            else:
+                print("ERROR")
+        de_file.append(file)
+    
+    
+    fc_mapper = lambda x : float(x.split("_")[-1])
+    df_DE = pd.DataFrame(np.array([de_file, de_human, de_yeast, de_ecoli]), index = ["file", "HUMAN", "YEAST", "ECOLI"]).T
+    df_DE["fc_eval"]= df_DE.file.map(fc_mapper)
+    return df_DE
+
+df_triq_DE = get_triqler_DE(fc_tresh = 0.05)
+
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+df_triq_DE = df_triq_DE.drop("file", axis = 1)
+df_triq_DE = df_triq_DE.set_index("fc_eval")
+df_triq_DE = df_triq_DE.astype(float)
+df_triq_DE.plot(grid=True)
+plt.title("Triqler n-differential expression")
+
 
 
 
