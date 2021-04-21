@@ -67,6 +67,14 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-04-22 Cannot do the same top3 as in life and death.
+
+There is no id for the peptides that are coherent across files.
+
+We have to do column-wise top 3.
+
+lets dubbel check this tomorrow. nos this is late.
+
 ## 2021-03-30
 m_score now working. I get the unfiltered data and can get it through triqler.
 
