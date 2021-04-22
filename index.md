@@ -67,6 +67,10 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-04-23 number of DE protein
+
+Check jupter notebook from today...
+
 ## 2021-04-22 Cannot do the same top3 as in life and death.
 
 There is no id for the peptides that are coherent across files.
