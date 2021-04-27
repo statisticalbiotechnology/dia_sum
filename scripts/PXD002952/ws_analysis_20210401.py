@@ -6,6 +6,7 @@ Created on Thu Apr  1 09:36:40 2021
 @author: ptruong
 """
 
+import os
 import pandas as pd
 import numpy as np
 

@@ -67,6 +67,8 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-04-27 cont. working on report... check .jupyter from same date..
+
 ## 2021-04-23 number of DE protein
 
 Check jupter notebook from today...
