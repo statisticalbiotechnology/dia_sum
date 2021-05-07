@@ -186,9 +186,9 @@ def get_DE_for_fcs():
     end = time.time()
     #print(end-start)
     
-    fcs = [round(i*0.2,2) for i in range(10)]
+    fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
     res = []
-    for fc in [round(i*0.2,2) for i in range(10)]:
+    for fc in fcs:
         vals = []
         for df in dfs:
             val = list(df[df.index == fc].values[0])
@@ -217,19 +217,44 @@ plt.suptitle("triqler")# + specie)
 plt.show()
 """
 
+
+
+def msstats_pq_data(ms, fc):
+    # ms = pd.read_csv("msstats.csv")
+    ms_gt = ms[ms.log2FC > fc]
+    ms_lt = ms[ms.log2FC < -fc]
+    ms_fc = pd.concat([ms_gt, ms_lt])
+    n_array = []
+    for q in np.arange(0,0.101, 0.001):
+        n = (ms_fc["adj.pvalue"] <= q).sum()
+        n_array.append(n)
+    res = pd.DataFrame(n_array, index = np.arange(0,0.101, 0.001), columns = ["DE"])
+    return res
+
+# MSSTATS
+os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix")
+
+ms = pd.read_csv("msstats.csv")
+ms["specie"] = ms.Protein.map(specie_mapper)
+
+ms[ms.specie == "YEAS8"]
+
 #Rewrite this to function subplot
 def plot_pq_specie(specie):
     fig, axs = plt.subplots(2, 5)
     row = 0
     col = 0
     #specie = "ECOLI"
-    
+    fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
+    fcs.sort()
     for i in range(10):
         fc = fcs[i]
-        res[i][specie].plot(ax = axs[row,col])
+        res[i][specie].plot(ax = axs[row,col]) #triqler data plot
         df = pq_data(df_final[df_final.index.get_level_values("specie") == specie], fc_treshold = fc)
-        axs[row, col].plot(df.index, df.DE)
-        axs[row, col].legend(labels=["Triqler", "OSW Top3"])
+        df_ms = msstats_pq_data(ms[ms.specie == specie], fc = fc)
+        axs[row, col].plot(df.index, df.DE) # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms.DE) # plot MSSTATS
+        axs[row, col].legend(labels=["Triqler", "OSW Top3", "msStats"])
         axs[row, col].set_title(f"fc = {fc}")
         axs[row, col].set_xlabel("q-value")
         axs[row, col].set_ylabel("n - Differentially expressed.")
@@ -248,3 +273,110 @@ plot_pq_specie(specie = "ECOLI")
 # Run SWATH2STATS
 # MSRobSum
 # etc
+
+#mapDIA = pd.read_csv("mapDIA.csv")
+
+# MSRobSum
+
+os.chdir("/home/ptruong/git/MSqRobSum/inst/extdata")
+os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix/mSqRobSum_input")
+
+msqrob = pd.read_csv("msqrobsum_result.csv", sep = "\t")
+msqrob["specie"] = msqrob.proteins.map(specie_mapper)
+
+msqrob
+
+def msqrob_pq_data(msqrob, fc):
+    msqrob_gt = msqrob[msqrob.logFC > fc]
+    msqrob_lt = msqrob[msqrob.logFC < -fc]
+    msqrob_fc = pd.concat([msqrob_gt, msqrob_lt])
+    n_array = []
+    for q in np.arange(0,0.101, 0.001):
+        n = (msqrob_fc["qvalue"] <= q).sum()
+        n_array.append(n)
+    res = pd.DataFrame(n_array, index = np.arange(0,0.101, 0.001), columns = ["DE"])
+    return res
+
+msqrob_pq_data(msqrob, fc = 0.2)
+
+
+#Rewrite this to function subplot
+def plot_pq_specie(specie):
+    fig, axs = plt.subplots(2, 5)
+    row = 0
+    col = 0
+    #specie = "ECOLI"
+    fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
+    fcs.sort()
+    for i in range(10):
+        fc = fcs[i]
+        res[i][specie].plot(ax = axs[row,col]) #triqler data plot
+        df = pq_data(df_final[df_final.index.get_level_values("specie") == specie], fc_treshold = fc)
+        df_ms = msstats_pq_data(ms[ms.specie == specie], fc = fc)
+        df_msqrob = msqrob_pq_data(msqrob[msqrob.specie == specie], fc = fc)
+        axs[row, col].plot(df.index, df.DE) # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms.DE) # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob.DE) # plot msqrob
+        axs[row, col].legend(labels=["Triqler", "OSW Top3", "msStats", "mSqRob"])
+        axs[row, col].set_title(f"fc = {fc}")
+        axs[row, col].set_xlabel("q-value")
+        axs[row, col].set_ylabel("n - Differentially expressed.")
+        col+=1
+        if col == 5:
+            row+=1
+            col=0
+    plt.suptitle(f"Differentially expressed proteins {specie} ( True ratios 1:1 for human, 2:1 for yeast, and 1:4 for E.coli )")# + specie)
+    plt.show()
+
+plot_pq_specie(specie = "HUMAN")
+plot_pq_specie(specie = "YEAS8")
+plot_pq_specie(specie = "ECOLI")
+
+#Rewrite this to function subplot
+def plot_pq_specie_FP(specie):
+    fig, axs = plt.subplots(2, 5)
+    row = 0
+    col = 0
+    #specie = "ECOLI"
+    fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
+    fcs.sort()
+    for i in range(10):
+        fc = fcs[i]
+
+        df = pq_data(df_final[df_final.index.get_level_values("specie") == specie], fc_treshold = fc)
+        df_ms = msstats_pq_data(ms[ms.specie == specie], fc = fc)
+        df_msqrob = msqrob_pq_data(msqrob[msqrob.specie == specie], fc = fc)
+        
+        # False positives
+        df_FP = pq_data(df_final[df_final.index.get_level_values("specie") == "HUMAN"], fc_treshold = fc)
+        df_ms_FP = msstats_pq_data(ms[ms.specie == "HUMAN"], fc = fc)
+        df_msqrob_FP = msqrob_pq_data(msqrob[msqrob.specie == "HUMAN"], fc = fc)
+
+        res[i][specie].plot(ax = axs[row,col]) #triqler data plot
+        axs[row, col].plot(df.index, df.DE) # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms.DE) # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob.DE) # plot msqrob
+        
+        # Plot False positives
+        res[i]["HUMAN"].plot(ax = axs[row,col], style=":") #triqler data plot
+        axs[row, col].plot(df.index, df_FP.DE), ":" # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms_FP.DE, ":") # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob_FP.DE, ":") # plot msqrob
+        
+
+        axs[row, col].legend(labels=["Triqler", "OSW Top3", "msStats", "mSqRob",
+                                      "Triqler FP", "OSW Top3 FP", "msStats FP", "mSqRob FP" ])
+        axs[row, col].set_title(f"fc = {fc}")
+        axs[row, col].set_xlabel("q-value")
+        axs[row, col].set_ylabel("n - Differentially expressed.")
+        col+=1
+        if col == 5:
+            row+=1
+            col=0
+    plt.suptitle(f"Differentially expressed proteins {specie} ( True ratios 1:1 for human, 2:1 for yeast, and 1:4 for E.coli )")# + specie)
+    plt.show()
+
+plot_pq_specie_FP(specie = "HUMAN")
+plot_pq_specie_FP(specie = "YEAS8")
+plot_pq_specie_FP(specie = "ECOLI")
+
