@@ -187,6 +187,7 @@ def get_DE_for_fcs():
     #print(end-start)
     
     fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
+    fcs.sort()
     res = []
     for fc in fcs:
         vals = []
@@ -352,16 +353,16 @@ def plot_pq_specie_FP(specie):
         df_ms_FP = msstats_pq_data(ms[ms.specie == "HUMAN"], fc = fc)
         df_msqrob_FP = msqrob_pq_data(msqrob[msqrob.specie == "HUMAN"], fc = fc)
 
-        res[i][specie].plot(ax = axs[row,col]) #triqler data plot
-        axs[row, col].plot(df.index, df.DE) # plot osw top3
-        axs[row, col].plot(df_ms.index, df_ms.DE) # plot MSSTATS
-        axs[row, col].plot(df_msqrob.index, df_msqrob.DE) # plot msqrob
+        res[i][specie].plot(ax = axs[row,col], style = "b") #triqler data plot
+        axs[row, col].plot(df.index, df.DE, "m") # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms.DE, "g") # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob.DE, "r") # plot msqrob
         
         # Plot False positives
-        res[i]["HUMAN"].plot(ax = axs[row,col], style=":") #triqler data plot
-        axs[row, col].plot(df.index, df_FP.DE), ":" # plot osw top3
-        axs[row, col].plot(df_ms.index, df_ms_FP.DE, ":") # plot MSSTATS
-        axs[row, col].plot(df_msqrob.index, df_msqrob_FP.DE, ":") # plot msqrob
+        res[i]["HUMAN"].plot(ax = axs[row,col], style="b--") #triqler data plot
+        axs[row, col].plot(df.index, df_FP.DE), "m--" # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms_FP.DE, "g--") # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob_FP.DE, "r--") # plot msqrob
         
 
         axs[row, col].legend(labels=["Triqler", "OSW Top3", "msStats", "mSqRob",
@@ -380,3 +381,38 @@ plot_pq_specie_FP(specie = "HUMAN")
 plot_pq_specie_FP(specie = "YEAS8")
 plot_pq_specie_FP(specie = "ECOLI")
 
+
+#FP ratio
+def plot_ratio_FP_DE(specie):
+    fig, axs = plt.subplots(2, 5)
+    row = 0
+    col = 0
+    #specie = "ECOLI"
+    fcs = [round(i*0.2,2) for i in range(9)] + [0.68]
+    fcs.sort()
+    for i in range(10):
+        fc = fcs[i]
+
+        df = pq_data(df_final[df_final.index.get_level_values("specie") == "HUMAN"], fc_treshold = fc) / pq_data(df_final[df_final.index.get_level_values("specie") == specie], fc_treshold = fc)
+        df_ms = msstats_pq_data(ms[ms.specie == "HUMAN"], fc = fc) / msstats_pq_data(ms[ms.specie == specie], fc = fc)
+        df_msqrob = msqrob_pq_data(msqrob[msqrob.specie == "HUMAN"], fc = fc) / msqrob_pq_data(msqrob[msqrob.specie == specie], fc = fc)        
+
+        (res[i]["HUMAN"]/res[i][specie]).plot(ax = axs[row,col], style = "b") #triqler data plot
+        axs[row, col].plot(df.index, df.DE, "m") # plot osw top3
+        axs[row, col].plot(df_ms.index, df_ms.DE, "g") # plot MSSTATS
+        axs[row, col].plot(df_msqrob.index, df_msqrob.DE, "r") # plot msqrob
+
+        axs[row, col].legend(labels=["Triqler", "OSW Top3", "msStats", "mSqRob", ])
+        axs[row, col].set_title(f"fc = {fc}")
+        axs[row, col].set_xlabel("q-value")
+        axs[row, col].set_ylabel("ratio FP/DE - Differentially expressed.")
+        col+=1
+        if col == 5:
+            row+=1
+            col=0
+    plt.suptitle(f"Ratio FP / Differentially expressed proteins {specie} ( True ratios 1:1 for human, 2:1 for yeast, and 1:4 for E.coli )")# + specie)
+    plt.show()
+
+plot_ratio_FP_DE(specie = "HUMAN")
+plot_ratio_FP_DE(specie = "YEAS8")
+plot_ratio_FP_DE(specie = "ECOLI")
