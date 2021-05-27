@@ -53,8 +53,9 @@ data.filtered3 <- filter_on_min_peptides(data.filtered2, n_peptides = 2)
 data.transition <- disaggregate(data.filtered3)
 
 MSstats.input <- convert4MSstats(data.transition)
+MSstats.input <- convert4MSstats(disaggregate(data.annotated)) # NOTE HTIS MODIFICATION TO UNFILTERED DATA
 head(MSstats.input)
-write.csv(mapDIA.input, "msstats.csv", row.names = FALSE)
+write.csv(MSstats.input, "msstats_20210511_unfiltered.csv", row.names = FALSE)
 
 mapDIA.input <- convert4mapDIA(data.transition)
 head(mapDIA.input)
@@ -87,6 +88,7 @@ qMat <- data.frame(qMat)
 qMat[qMat$ProcessedData.FEATURE == "AADGSTVAQTALSYDDYR_2_44730_y11_1_NA", ]
 QuantData <- dataProcess(MSstats.input)
 
+write.csv(QuantData, "msstat_output_20210512.csv", row.names = FALSE)
 
 #df[df$aged <= df$laclen, ] 
 QuantData
