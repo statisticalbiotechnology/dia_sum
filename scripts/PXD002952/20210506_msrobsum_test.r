@@ -71,4 +71,16 @@ typeof(msqrobsum_result)
 class(msqrobsum_result)
 
 msqrobsum_result
-  
+
+
+
+contrasts = msqrob_result %>% select(proteins,human,ecoli,yeas8,contrasts) %>% unnest
+write.table(contrasts, "msqrobsum_result.csv", sep = "\t", row.names = FALSE)
+
+filter(contrasts,qvalue <.05) %>% group_by(contrast) %>% 
+  summarise(hits = n(), FDP = round(mean(human),3))
+
+contrasts = msqrob_result %>% select(proteins,ecoli,contrasts) %>% unnest
+contrasts = msqrob_result %>% select(proteins,human,contrasts) %>% unnest
+
+

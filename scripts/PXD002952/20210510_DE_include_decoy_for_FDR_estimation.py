@@ -45,7 +45,7 @@ def read_in_and_filter(filename, m_score_treshold = 0.01):
     sample_id = df.sample_id[0]
     experiment_id = df.experiment_id[0]     
     def top3(df):
-        df = (df.groupby('ProteinName')['Intensity'].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 1 else np.nan)
+        df = (df.groupby('ProteinName')['Intensity'].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan)
                   .reset_index())
         #print(df.isna().sum())
         return df

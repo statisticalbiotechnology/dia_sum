@@ -361,6 +361,7 @@ def plot_pq_specie_FP(specie):
         df_triq_FP = res[i]["HUMAN"]
         df_ms_FP = msstats_pq_data(ms[ms.specie == "HUMAN"], fc = fc)
         df_msqrob_FP = msqrob_pq_data(msqrob[msqrob.specie == "HUMAN"], fc = fc)
+        """
         if fc >= 1.0:
             df_FP_yeast = pq_data(df_final[df_final.index.get_level_values("specie") == "YEAS8"], fc_treshold = fc)
             df_triq_FP_yeast = res[i]["YEAS8"]
@@ -371,7 +372,7 @@ def plot_pq_specie_FP(specie):
             df_triq_FP += df_triq_FP_yeast
             df_ms_FP += df_ms_FP_yeast
             df_msqrob_FP += df_msqrob_FP_yeast
-            
+        """ 
         res[i][specie].plot(ax = axs[row,col], style = "b") #triqler data plot
         axs[row, col].plot(df.index, df.DE, "k") # plot osw top3
         axs[row, col].plot(df_ms.index, df_ms.DE, "g") # plot MSSTATS
@@ -686,6 +687,12 @@ pd.concat([pd.DataFrame(data_a, columns = ["a1","a2","a3"]), pd.DataFrame(data_b
 np.log2(pd.DataFrame(data)).hist(bins=100)
 
 # Just generate log2FC
+
+
+# Every Ecoli protein is worth x human protein
+
+
+
 
 
 

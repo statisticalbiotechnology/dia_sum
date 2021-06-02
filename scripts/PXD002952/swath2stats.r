@@ -1,6 +1,6 @@
 
 
-
+setwd("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix")
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
