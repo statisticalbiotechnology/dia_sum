@@ -11,10 +11,27 @@ import os
 # git 
 os.chdir("/home/ptruong/git/dia_sum/scripts/PXD002952")
 from triqler_to_msqrobsum_converter import get_mSqRobSum_input
+from get_protein_specie_map_from_fasta import fasta_to_protein_specie_map
+# db 
+os.chdir("/home/ptruong/git/dia_sum/database")
+protein_specie_map = fasta_to_protein_specie_map("2021-04-27-decoys-reviewed-contam-UP000005640-UP000002311-UP000000625.fas")
+
 # MSFragger 
 os.chdir("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger")
 
 triqler = pd.read_csv("triqler_input_diann.csv", sep = "\t")
+# Fix protein labelling
+
+def remove_decoy_tag(protein):
+    if protein.split("_")[0] == "DECOY":
+        return protein.split("_")[1]
+    else:
+        return protein.split("_")[0]
+    
+triqler["protein_nonTagged"] = triqler.proteins.map(remove_decoy_tag)
+triqler["specie"] = triqler["protein_nonTagged"].map(protein_specie_map)
+triqler["proteins"] = triqler["proteins"] + "_" + triqler["specie"]
+triqler.drop(["protein_nonTagged", "specie"], axis = 1, inplace=True)
 expr_, fd_, pd_ = get_mSqRobSum_input(triqler)
 os.chdir("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger/msqrob_input")
 remap_sample = lambda s : "X"+".".join(s.split("-"))

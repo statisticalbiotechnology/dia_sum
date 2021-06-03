@@ -50,7 +50,7 @@ def get_mSqRobSum_input(triqler):
                 return "FALSE"
             
         def map_yeas8(x):
-            if x == "YEAS8":
+            if x == "YEAS8" or x == "YEAST":
                 return "TRUE"
             else:
                 return "FALSE"
