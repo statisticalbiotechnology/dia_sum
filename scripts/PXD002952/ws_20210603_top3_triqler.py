@@ -240,3 +240,26 @@ msqrob_pq_data(msqrob, fc = 0.2)
 
 
 
+###########
+os.chdir("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger/triqler_results_20210603")
+
+ fc = float(file.split("_")[1])
+    df_triq = parse_triqler(file)
+    # Added specie mapping... need to check the problem with BOVIN, SCVLA proteins???
+    df_triq["specie"] = df_triq.protein.map(protein_specie_map)
+    df_triq["protein"] = df_triq["protein"] + "_" + df_triq["specie"]
+    df_triq = df_triq[df_triq["specie"].isin(["HUMAN", "ECOLI", "YEAST"])]
+    df_triq = df_triq[df_triq.q_value < q_val]
+    #df_triq["specie"] = df_triq.protein.map(specie_mapper)
+    #df_triq["specie"] = df_triq.protein.map(specie_mapper)
+    ecoli_factor = (df_triq["specie"] == "ECOLI").sum()/(df_triq["specie"] == "HUMAN").sum()
+    yeast_factor = (df_triq["specie"] == "YEAST").sum()/(df_triq["specie"] == "HUMAN").sum()
+    human_factor = (df_triq["specie"] == "HUMAN").sum()/(df_triq["specie"] == "HUMAN").sum()
+    df_triq = df_triq[df_triq.q_value < q_val]
+    n_hs.append((df_triq["specie"] == "HUMAN").sum())
+    n_ye.append((df_triq["specie"] == "YEAST").sum())
+    n_ec.append((df_triq["specie"] == "ECOLI").sum())
+    ecoli_scaling_factor.append(ecoli_factor) #Should be same for all values because we want the full length of protein list
+    yeast_scaling_factor.append(yeast_factor) #Should be same for all values because we want the full length of protein list
+    human_scaling_factor.append(human_factor)
+    fc_tresh.append(fc)

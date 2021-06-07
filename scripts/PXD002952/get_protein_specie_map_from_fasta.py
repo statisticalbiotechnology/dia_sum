@@ -17,10 +17,13 @@ def fasta_to_protein_specie_map(filename):
     species = []
     for line in f:
         if line[0] == ">":
-            protein = line.split("|")[1]
-            specie = line.split("|")[2].split(" ")[0].split("_")[1]
-            proteins.append(protein)
-            species.append(specie)
+            try:
+                protein = line.split("|")[1]
+                specie = line.split("|")[2].split(" ")[0].split("_")[1]
+                proteins.append(protein)
+                species.append(specie)
+            except:
+                print(line)
     
     #protein_specie_map = pd.DataFrame([proteins, species], index = ["protein", "specie"]).T
     return dict(zip(proteins, species))

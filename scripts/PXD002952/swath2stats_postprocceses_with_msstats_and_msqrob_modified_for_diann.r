@@ -90,11 +90,18 @@ QuantData <- dataProcess(MSstats.input)
 
 write.csv(QuantData, "msstat_output_20210512.csv", row.names = FALSE)
 
+#### TEST with OSW ######
+setwd("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix")
+
+MSstats.input <- read.csv("msstats_20210511_unfiltered.csv")
+
+
 
 #### START HERE ##### 20210603
 setwd("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger")
 
-MSstats.input <- read.csv("msstats_input_diann.tsv")
+MSstats.input.diann <- read.csv("msstats_input_diann.tsv")
+
 QuantData <- dataProcess(MSstats.input)
 
 #df[df$aged <= df$laclen, ] 
