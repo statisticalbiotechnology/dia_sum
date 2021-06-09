@@ -35,4 +35,4 @@ lib_decoy["FragmentCharge"] = lib_decoy["ProductCharge"]
 #lib_decoy = pd.concat([lib_decoy.iloc[:, lib_decoy.columns.isin(lib.columns)], lib_decoy["FragmentCharge"]], axis = 1)
 lib_decoy["FragmentLossType"] = np.nan
 lib_decoy = lib_decoy[lib.columns.unique()]
-lib_decoy.to_csv("library_specie_decoy.tsv", sep = "\t")
+lib_decoy.to_csv("library_specie_decoy_formatted.tsv", sep = "\t", index=False)
