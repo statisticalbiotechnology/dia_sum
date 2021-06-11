@@ -80,7 +80,7 @@ msqrobsum_result
 
 
 contrasts = msqrob_result %>% select(proteins,human,ecoli,yeas8,contrasts) %>% unnest
-write.table(contrasts, "msqrobsum_result_20200603.csv", sep = "\t", row.names = FALSE)
+write.table(contrasts, "msqrobsum_result_20200609.csv", sep = "\t", row.names = FALSE)
 
 filter(contrasts,qvalue <.05) %>% group_by(contrast) %>% 
   summarise(hits = n(), FDP = round(mean(human),3))
