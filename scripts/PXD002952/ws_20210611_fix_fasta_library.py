@@ -104,3 +104,21 @@ df[df.protein == prot]
 
 df[df.protein == prot].sequence
 
+
+
+######
+
+import time
+df_shared_random = []
+#sequence = shared.sequence.unique()[0]
+i = 0
+start = time.time()
+for seqeunce in shared.sequence.unique():
+    if i%100 == 0:
+        print(time.time()-start, end = " ")
+        print(str(i) + "/" + str(len(shared.sequence.unique())))  
+    protein = df[df.sequence == sequence].sample(1)
+    df_shared_random.append(protein)
+    i+=1
+
+print(time.time() - start)
