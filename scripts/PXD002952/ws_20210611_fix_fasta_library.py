@@ -93,32 +93,53 @@ print(f"{len(df_shared_peptides_protein.protein.unique())} proteins have shared 
 df_non_shared_peptides_protein[df_non_shared_peptides_protein.protein.isin(df_shared_peptides_protein.protein)]
 
 
-df_shared_peptides_protein
-
-
-df_shared_peptides_protein.protein.unique()[0]
-
-prot = shared[shared.sequence == "NIALIFEK"].iloc[0,:].protein
-
-df[df.protein == prot]
-
-df[df.protein == prot].sequence
+shared = df_shared_peptides_protein
+non_shared = df_non_shared_peptides_protein´
 
 
 
 ######
 
-import time
-df_shared_random = []
-#sequence = shared.sequence.unique()[0]
-i = 0
-start = time.time()
-for seqeunce in shared.sequence.unique():
-    if i%100 == 0:
-        print(time.time()-start, end = " ")
-        print(str(i) + "/" + str(len(shared.sequence.unique())))  
-    protein = df[df.sequence == sequence].sample(1)
-    df_shared_random.append(protein)
-    i+=1
 
-print(time.time() - start)
+shared_resampled = shared.groupby("protein").sample(1)
+counts = shared_resampled.groupby("protein").count()
+while counts.sequence.max() > 1:
+    shared_resampled = shared.groupby("pro").sample(1)
+    counts = shared_resampled.groupby("protein").count()
+
+
+count = shared.groupby("sequence")["protein"].count()
+count[count.index == "NIALIFEK"]
+
+resample = shared.groupby("sequence").sample(1)
+count = resample.groupby("sequence")["protein"].count()
+shared_resampled = shared[shared.protein.isin(resample.protein)]
+while shared_resampled.groupby("sequence").count().protein.max() > 1:
+    print(shared_resampled.groupby("sequence").count().protein.max())
+    resample = shared_resampled.groupby("sequence").sample(1)
+    count = resample.groupby("sequence")["protein"].count()
+    shared_resampled = shared_resampled[shared_resampled.protein.isin(resample.protein)]
+# There seem to be some protein which always have overlapping peptides... perhaps discard these?
+
+shared_resampled.to_csv("shared_resampled.csv", sep = "\t", index = False)
+
+
+shared_resampled_ = pd.read_csv("shared_resampled.csv", sep = "\t")
+
+
+shared_count = shared_resampled.groupby("sequence").count().protein
+
+single_protein_sequence = shared_count[shared_count < 2].index # dropp sequences whose peptides match to more than 1 protein.
+
+shared_resampled[shared_resampled.sequence.isin(single_protein_sequence)] #8867
+shared_resampled #25994
+
+test = shared.groupby("sequence").sample(1)
+test_counts = shared_resampled.groupby("sequence").count().protein
+test_counts[test_counts<2]
+len(single_protein_sequence)
+
+
+unique_protein_sequences = list(single_protein_sequence) + list(df_non_shared_peptides_protein.sequence)
+
+unique_sequence_protein =
