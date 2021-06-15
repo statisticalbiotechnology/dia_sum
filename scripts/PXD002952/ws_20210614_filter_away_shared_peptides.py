@@ -20,11 +20,13 @@ import numpy as np
 # read in .fasta file and count shared peptides
 
 os.chdir("/home/ptruong/git/dia_sum")
-filename = "database/2021-06-07/UP00000625_UP000002311_UP000005640_reformatted.fasta"
+filename = "database/2021-06-07/UP00000625_UP000002311_UP000005640.fasta"
 #filename = "database/napedro_3mixed_human_yeast_ecoli_20140403_iRT_reverse.fasta"
 
 file = open(filename, "r")
 
+
+line = file.readline()
 protein_list = []
 sequence_list = []
 for line in file: 
@@ -68,7 +70,7 @@ len(df_.protein.unique())
 
 filter_list = df[df.sequence.isin(multi_protein_seq)].protein.unique() #proteins to filter away from original .fasta
 
-file = open("database/UP00000625_UP000002311_UP000005640_reformatted.fasta", "w")
+file = open("database/UP00000625_UP000002311_UP000005640_no_shared_peptides.fasta", "w")
 for i in range(len(df_)):
     elem = df_.iloc[i]
     protein = elem.protein
@@ -79,7 +81,7 @@ for i in range(len(df_)):
 
     
     
-    
+
     
     
     

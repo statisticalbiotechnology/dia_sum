@@ -29,7 +29,7 @@ def diann_to_triqler(filename):
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
-df_triq = diann_to_triqler("diann.tsv")
+df_triq = diann_to_triqler("diaNN.tsv")
 df_triq.to_csv("triqler_input_diann_searchScore_QValue.csv", sep = "\t", index = False)
 
 

@@ -18,7 +18,7 @@ os.chdir("/home/ptruong/git/dia_sum/database")
 protein_specie_map = fasta_to_protein_specie_map("napedro_3mixed_human_yeast_ecoli_20140403_iRT_reverse.fasta")
 
 # MSFragger 
-os.chdir("/hdd_14T/data/PXD002952/res_20210604_DIAUmpire/MSFragger/diann")
+os.chdir("/hdd_14T/data/PXD002952/res_20210609_DIAUmpire/MSFragger/diann_reformatted_lib")
 
 # Convert diann_to_triqler
 

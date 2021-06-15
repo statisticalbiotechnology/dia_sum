@@ -30,6 +30,6 @@ def diann_to_triqler(filename):
 
 
 if __name__ == "__main__":
-    df_triq = diann_to_triqler("diaNN.tsv")
+    df_triq = diann_to_triqler("diann.tsv")
     df_triq.to_csv("triqler_input_diann.csv", sep = "\t", index = False)
 
