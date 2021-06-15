@@ -20,7 +20,7 @@ import numpy as np
 # read in .fasta file and count shared peptides
 
 os.chdir("/home/ptruong/git/dia_sum")
-filename = "database/UP00000625_UP000002311_UP000005640_reformatted.fasta"
+filename = "database/2021-06-07/UP00000625_UP000002311_UP000005640_reformatted.fasta"
 #filename = "database/napedro_3mixed_human_yeast_ecoli_20140403_iRT_reverse.fasta"
 
 file = open(filename, "r")
