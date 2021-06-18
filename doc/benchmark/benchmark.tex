@@ -83,6 +83,7 @@ Prosit was used to contruct spectra libraries from the modified fasta files. The
 Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability treshold between the two samples given a fold change evaluation limit. 
 
 \textbf{Top3}
+The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
 
 
 \textbf{Msstat}
