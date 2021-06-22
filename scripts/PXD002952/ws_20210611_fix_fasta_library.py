@@ -134,6 +134,11 @@ single_protein_sequence = shared_count[shared_count < 2].index # dropp sequences
 shared_resampled[shared_resampled.sequence.isin(single_protein_sequence)] #8867
 shared_resampled #25994
 
+
+
+
+
+###### TEST
 test = shared.groupby("sequence").sample(1)
 test_counts = shared_resampled.groupby("sequence").count().protein
 test_counts[test_counts<2]
