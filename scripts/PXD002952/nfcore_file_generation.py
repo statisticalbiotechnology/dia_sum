@@ -35,7 +35,7 @@ def generate_nfcore_input(filepath):
 
 def generate_nfcore_spectral_library_input():
     headers = ["Sample" , "BatchID", "Library_Filepath"]
-    data = ["1", "LFQ", "library.tsv"]
+    data = ["1", "LFQ", "library_decoy.tsv"]
     df = pd.DataFrame(data, index = headers).T
     return df
 
@@ -49,8 +49,10 @@ df = generate_nfcore_input(os.getcwd())
 df.to_csv("sample_input.csv", sep = "\t", index = False)
 
 lib_df = generate_nfcore_spectral_library_input()
-lib_df.to_csv("input_spectral_library.csv", sep = "\t", index = False)
+lib_df.to_csv("nf_input_spectral_library.csv", sep = "\t", index = False)
 
-generate_nfcore_irts_input()
+irts_df = generate_nfcore_irts_input()
+irts_df.to_csv("input_irt_sheet.csv", sep = "\t", index = False)
+
 
 
