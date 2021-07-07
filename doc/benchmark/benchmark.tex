@@ -29,26 +29,28 @@
 
 %% END MACROS SECTION
 
-\title{Triqler for Data Independent Aquisition Data}
+\title{Using Triqler for analyzing Data Independent Aquisition Data}
 \author{Patrick Truong \and Matthew The \and Lukas K\"{a}ll}
-
 
 \begin{document}
 %\linenumbers
 \maketitle
 
 \begin{abstract}
-  In this study we show that Triqler, a protein quantification and differential analysis tool based on probabilistical graphical models, has better performance than other protein quantification tools. To show this we compare different processing pipelines using different underlying concept for protein idenfication and quantification... 
+
+The estimates of accuracy for differential protein abundance estimates by label-free shotgun proteomics is effected by a wide range of error sources. In an effort to control tyhe errors of the final prediction, we have previously designed an model, Triqler, that combines errors from peptide identification and abundance estimation.
+Triqler was designed for handling data from data-dependent acquisition, however, here we demonstrate that the same model can successfully be applied to data-independent acquisition data. Based on a DIA datasets of mixtures of proteomes we observe an improved performance in terms of number of identified differentially abundant proteins compared to other state-of-the-art methods. We also demonstrate that the performance is independent of if peptides are identified with spectral library searching or matching pseudo-spectra with search engines. 
 \end{abstract}
   
 
 \section*{Introduction}
-Label-free quantification (LFQ) using Mass spectrometry (MS) based proteomics has been shown to be an effective methods for studying the relative concentration of proteins in complex mixtures. Compared to Data-dependent axquisition (DDA), Data-independent acquisition (DIA) mass spectrometry allows for a broader dynamical range and more reproducible peptide detection 
- \cite{zhang2020DIA, Lu2021DIAmeter}.  
+Label-free quantification (LFQ) using Data independent acquistion (DIA) mass spectrometry (MS) based proteomics has been shown to be an effective methods for studying the relative concentration of proteins in complex mixtures \cite{venable2004automated}. Compared to Data-dependent axquisition (DDA), DIA allows for a broader dynamical range and more reproducible peptide detection \cite{zhang2020DIA, Lu2021DIAmeter}.
+
+The processing of LFQ data involves several steps, ..., 
  
 Triqler is a novel software that uses a probabilitical graphical model for protein quantification and differential expression analysis, essentially eliminating the need for filtering, tresholding and imputational procedures required by many conventional methods. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
 
-
+ 
 \section*{Materials and methods}
 \textbf{Data description}
 
@@ -62,7 +64,6 @@ Two approaches was used for spectra library generation: DDA acquisition based sp
 DDA acquisitions of samples from each specie (human, yeast, E. coli) was provided in triplicates for spectral library generation. Uniprot fasta files with one protein seqeunce per gene was concatenated for each specie (UP000005640, UP000000625 and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered fasta files contained 20 590 human proteins, 6 046 yeast proteins and 4 373 E. coli proteins. After filtering the fasta file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins) and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The fasta file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for spectral library building. OpenSwathDecoyGenerator was used with default setting to generate decoys for the resulting spectral libraries.  
 
 For Prosit-based spectral library generation, the fasta file was converted to prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as intensity prediction model and Prosit\_2019\_irt was used as iRT predicition model.  
-
 
 \textbf{Shared peptides}
 
@@ -96,6 +97,7 @@ Prosit was used to contruct spectra libraries from the modified fasta files. The
 \textbf{Protein quantification}
 Write why different protein quantification methods and the why triqler should be better in theory.
 
+
 \textbf{Triqler}
 Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability treshold between the two samples given a fold change evaluation limit. 
 
@@ -103,11 +105,14 @@ Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It 
 The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
 
 
-\textbf{MSstat}
+\textbf{Msstat}
 SWATH2Stats was used to convert the osw output files to MSStats input format.
+
 \textbf{Msqrobsum}
 
 (Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
+
+
 
 \section*{Results}
 \textbf{OpenSwath Analysis}
