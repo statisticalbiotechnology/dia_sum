@@ -29,11 +29,13 @@ def diann_to_triqler(filename):
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
-df_triq = diann_to_triqler("diann.tsv")
+df_triq = diann_to_triqler("report.tsv")
 df_triq.to_csv("triqler_input_diann_searchScore_Qvalue.csv", sep = "\t", index = False)
 # https://usermanual.wiki/Document/DIANN20GUI20manual.1528310561/view 
 
 def diann_to_msstats(filename):
+    # NOTE THERE IS ANOTHER SCRIPT WITH FRAGMENT IONS....
+    # diann_to_msstats_converter.py
     df = pd.read_csv(filename, sep = "\t")
     run_mapper = lambda x : x.split("_")[5]
     condition_mapper = lambda x : x.split("_")[8]
@@ -48,7 +50,7 @@ def diann_to_msstats(filename):
     df = df[df["decoy"] == False]
     df['PeptideSequence'] = df["Stripped.Sequence"]
     df['PrecursorCharge'] = df["Precursor.Charge"]
-    df['FragmentIon'] = np.nan
+    df['FragmentIon'] = np.nan 
     df['ProductCharge'] = np.nan
     df['IsotopeLabelType'] = "light"
     df['Intensity'] = df["Precursor.Quantity"]

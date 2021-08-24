@@ -58,6 +58,13 @@ Triqler is a novel software that uses a probabilitical graphical model for prote
 
 The data is a DIA dataset used in a previous benchmark of DIA protein quantification benchmarking study [LFQBenchPaper2016]. It is available from the ProteomeXchange Consortium with the dataset identifier PXD002952. The instrumentation used process the data was TTOF6600 system with 32 fixed windows. In the repository the data we use is referred to as the HYE124 hybrid proteome samples. It consists of tryptic peptides with the following ratios: Sample A composed of 65\% w/w, 30\% w/w yeast, and 5\% w/w E. coli proteins. Sample B was composed of 65\% w/w, 15\% w/w yeast and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition is available in Navarro et al. [LFQBenchPape2016].     
 
+\textbf{General workflow}
+In this study we investigate two DIA protein quantification workflows 1) DDA-based spectral library protein quantification (DDA-SLPQ) and 2) Pseudo spectra-based spectral library protein quantification (PS-SLPQ). The DDA-SLPQ workflow uses MSFragger to perform a DDA-search and EasyPQP to contruct a spectra library from the DDA-search results. OpenSwath Workflow is then used with spectral library to perform an analysis on the the DIA-data. PyProphet is used for statistical validation and TRIC is used for feature alignment for before protein quantification using Top3, MSstats and msqrobsum (TRIC is not used for triqler protein quantification). The PS-SLPQ workflow is conducted using fragpipe software. It uses DIA-Umpire signal extraction to extract pseudo-spectra from the DIA-data. The pesudo-spectra is searched using conventional DDA-search using MSFragger and spectral library is build using easyPQP. The DIA-data is quantified with DIA-NN using the peudo-spectra based spectral libraries. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. 
+
+(add a third later encyclopedia) 
+
+(add workflow schematics )
+
 \textbf{Data preparation and spectral library generation}
 The .wiff files are converted to .mzML files in centroided format using msconvert (using windows OS msconver version X.X) with the following options: [check options]. 
 
@@ -100,13 +107,63 @@ Prosit was used to contruct spectra libraries from the modified fasta files. The
 
 ...
 
+\textbf{Protein quantification methods}
 
-\textbf{Protein quantification}
+\textbf{Triqler}
+
+Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian}. These posteriors incorporate information about uncertainty and thesefore should result in robust protein quantification.
+
+Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability treshold between the two samples given a fold change evaluation limit. 
+
+\textbf{Top3}
+The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
+
+\textbf{MSstat}
+ MSstats customizes a linear mixed model to the specific experiment and to each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
+
+\textbf{Msqrobsum}
+Msqrobsum 
+
+
+(Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
+
+
+\textbf{Benchmarking methods}
+
+\textbf{Variance Structure - why the DDA methods works and makes sense}
+The field of protein quantification is relatively new. Many protein quantification methods have been developed specifically for DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require homoskedastic variance. This is investigated using statistical visualisation of the data.
+
+\textbf{Protein level results - scatter plot}
+
+\textbf{Differential abundance - log2distribution and number of differentially expressed proteins}
+The differential expressed proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain treshold for q-value based protein summarization methods (Top3, MSstats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
+
+(Write formula for triqler)
+(Write formula for other methods)
+
+\textbf{FDR control (calibration plot)}
+A FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
+
+	\[FDP = \frac{ \text{false positives}}{\text{true positive} + \text{false positive}}
+
+and,
+
+	\[TPR = \frac{\text{true positives}}{\text{all positives}}
+
+
+The FDP is calculated using the fraction of human proteins discovered as DE and the TP is the fraction of E.Coli and Yeast discovered. 
+
+
+
+\section*{Results}
 
 \textbf{Variance structure}
 (Write why different protein quantification methods and the why triqler should be better in theory.) 
 
-The field of protein quantification is relatively new. Many protein quantification methods have been developed specifically for DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require homoskedastic varaince. In fig. it is show that the variance-to-mean intensity ratio does not increase for larger means (I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
+ In fig. it is show that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification. 
+
+  (Write something about implication of this)
+  (I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
 
 \begin{figure}[htp]
     \centering
@@ -115,43 +172,59 @@ The field of protein quantification is relatively new. Many protein quantificati
     \label{fig:variance_to_mean_ratio}
 \end{figure}
 
-\textbf(Protein quantification tools)
 
-\textbf{Triqler}
-Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability treshold between the two samples given a fold change evaluation limit. 
 
-\textbf{Top3}
-The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
+\textbf{Protein quantification}
 
-\textbf{MSstat}
- MSstats customizes a linear mixed model to the specific experiment and to each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used [specify default parameters]). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.
+Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green and ecoli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represent the expected log-fold change, while the fitted dashed line represent a linear regression for each species. Fig. A shows the results for OpenSwath and fig. B show the results for DIA-NN.
 
-\textbf{Msqrobsum}
-(Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/OSW_protein_level_benchmark_scatter.png}
+    \caption{OSW Protein level results from Triqler, Top3, MSstats and MSqRobSum.}
+    \label{fig:OSW_scatter}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_protein_level_benchmark_scatter.png}
+    \caption{DIANN Protein level results from Triqler, Top3, MSstats and MSqRobSum.}
+    \label{fig:OSW_scatter}
+\end{figure}
 
 Fig. X show the protein quantity distributions with the different species; human (orange), ecoli (blue) and yeast (green) highlighted in different colours. The human distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise the distribution for e.coli and yeast is centered towards the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob.    
 
-\begin{figure}[htp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
-    \caption{Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum at fc = 0.4.}
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    \caption{OSW Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum.}
     \label{fig:intensity_distribution}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_intensity_plot.png}
+    \caption{DIANN Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum.}
+    \label{fig:intensity_distribution}
+\end{figure}
 
-\section*{Results}
-
-
-\textbf{OpenSwath Analysis}
 
 Fig. Y. show that the number of differentially expressed proteins are significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has slightly higher number of differentially expressed proteins than triqler. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/n_diff_expressed.png}
-    \caption{Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/n_diff_expressed.png}
+    \caption{OSW Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
     \label{fig:osw_n_diff_exp}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_n_diff_expressed.png}
+    \caption{DIANN Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
+
 
 
 However, fig Y shows that the ratio of false positives (human proteins) to number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values. Triqler is better calibrated for low q-values and gets more convervative as the q-value treshold is increased. Top3, MsStats and MSqRob are more conservative at low q-values and gets less convervative as the q-value treshold increases.  
@@ -159,8 +232,15 @@ However, fig Y shows that the ratio of false positives (human proteins) to numbe
    
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/calibration_plot.png}
-    \caption{Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/calibration_plot_scaled.png}
+    \caption{OSW Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png}
+    \caption{DIANN Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
     \label{fig:osw_n_diff_exp}
 \end{figure}
 
@@ -168,16 +248,16 @@ However, fig Y shows that the ratio of false positives (human proteins) to numbe
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png}
-    \caption{Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
+    \caption{OSW Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
     \label{fig:osw_n_diff_exp}
 \end{figure}
 
-
-
-\textbf{DIAUmpire and DIA-NN analysis}
-
-\textbf{EncyclopeDIA and PECAN analysis}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/DIANN_de_human_vs_de_specie.png}
+    \caption{DIANN Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
 
 \section*{Discussion}
 
