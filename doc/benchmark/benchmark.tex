@@ -42,42 +42,45 @@
 \maketitle
 
 \begin{abstract}
-  In this study we show that Triqler, a protein quantification and differential analysis tool based on probabilistical graphical models, has better performance than other protein quantification tools. To show this we compare different processing pipelines using different underlying concept for protein idenfication and quantification... 
+  %In this study we show that Triqler, a protein quantification and differential analysis tool based on probabilistical graphical models, has better performance than other protein quantification tools. To show this we compare different processing pipelines using different underlying concept for protein idenfication and quantification.
+  
+  In this study, we benchmark protein summarization methods for DIA data. A previous benchmarking attempt has shown that TOP3 generally resulted in lower variance and better quantification accuracy than built-in methods for DIA data. Since more sophisticated protein summarization methods have been shown to perform better for DDA data, there are reasons to believe that such methods would also work better for DIA data. Further, currently, there are is no evidence that protein summarization that worked well for DDA data would not work well for DIA data. In this study, we evaluate the performances of several protein summarization methods on DIA data. 
 \end{abstract}
   
 
 \section*{Introduction}
-Label-free quantification (LFQ) using Mass spectrometry (MS) based proteomics has been shown to be an effective methods for studying the relative concentration of proteins in complex mixtures. Compared to Data-dependent axquisition (DDA), Data-independent acquisition (DIA) mass spectrometry allows for a broader dynamical range and more reproducible peptide detection 
- \cite{zhang2020DIA, Lu2021DIAmeter}.  
+Label-free quantification (LFQ) using Mass spectrometry (MS) based proteomics is an effective method for studying the relative concentration of proteins in complex mixtures. Compared to Data-dependent acquisition (DDA), Data-independent acquisition (DIA) mass spectrometry allows for a broader dynamical range and more reproducible peptide detection 
+ \cite{zhang2020DIA, Lu2021DIAmeter}. Stochastic and irreproducible precursor ion selection \cite{liu2004model} \cite{li2009database}, undersampling \cite{michalski2011more}, and long instrument cycle times \cite{li2009database} which has been problematic in DDA-methods are  addressed by DIA-methods such as such as SWATH-MS \{gillet2012targeted}, high-definition MS using alternating low and elevated energy acquisition in combination with ion-mobility separation (HDMS) \cite{geromanos2012using}, and all-ion fragmentation (AIF) \cite{geiger2010proteomics}. Computational methods for data processing, protein database searching, and statistical analysis of the quantitative methods all affect the final results. Evaluating such methods are therefore relevant \cite{gatto2016testing}. At the current state of DIA-proteomics objective benchmarking of the robustness and performance of the computational methods would greatly benefit quantitative proteomics \cite{navarro2016multicenter}. Previous efforts at DIA protein quantification benchmarking have indicated that the TOP3 method generally resulted in lower variance and better quantification accuracy than built-in methods \cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than TOP3-method. Simple summarization methods based on mean and median peptide intensity has been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data has been proposed in literature \cite{silva2006absolute] \cite{cox2014accurate} \cite{zhang2018proteome} \cite{choi2014msstats}. In proteomics protein summarization methods such as Triqler\cite{The2018Integrated}, msStats \cite{choi2014msstats}, and msqrobsum \cite{sticker2020robust} has all been shown to perform better than TOP3 and there currently exists no reason why said methods would not theoretically be able to perform well for DIA-data. 
  
-Triqler is a novel software that uses a probabilitical graphical model for protein quantification and differential expression analysis, essentially eliminating the need for filtering, tresholding and imputational procedures required by many conventional methods. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
+Protein quantification for DIA-proteomics could greatly benefit from having DDA protein quantification methods benchmarked for utilization for DIA data. To address this, we investigate the usage of DDA protein quantification method for performing protein quantification on DIA-data. Navarro et al. \cite{navarro2016multicenter} has previously constructed a high-quality data set for five widely used tools for analysis of SWATH-MS data (four peptide-centric query tools: OpenSWATH \cite{rost2014openswath}, SWATH 2.0, Skyline \cite{maclean2010skyline}, Spectronaut \cite{bruderer2015extending}, and one data-centric approach DIA-Umpire \cite{maclean2010skyline}). This is a good data set to perform benchmarking on protein summarization procedures because we have a reference point to compare against. Unbiased comparisons of software tools have been challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward} \cite{leprevost2014best} \cite{pak2013clustering} \cite{faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
 
 
 \section*{Materials and methods}
-\textbf{Data description}
+\subsection*{Data description}
 
-The data is a DIA dataset used in a previous benchmark of DIA protein quantification benchmarking study [LFQBenchPaper2016]. It is available from the ProteomeXchange Consortium with the dataset identifier PXD002952. The instrumentation used process the data was TTOF6600 system with 32 fixed windows. In the repository the data we use is referred to as the HYE124 hybrid proteome samples. It consists of tryptic peptides with the following ratios: Sample A composed of 65\% w/w, 30\% w/w yeast, and 5\% w/w E. coli proteins. Sample B was composed of 65\% w/w, 15\% w/w yeast and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition is available in Navarro et al. [LFQBenchPape2016].     
+The data is a DIA dataset constructed by Navarro et al. benchmarking study \cite{navarro2016multicenter}. It is available from the ProteomeXchange Consortium with the dataset identifier PXD002952. The instrumentation used to process the data was TTOF6600 system with 32 fixed windows. In the repository, the data we use is referred to as the HYE124 hybrid proteome samples. It consists of tryptic peptides with the following ratios: Sample A composed of 65\% w/w, 30\% w/w yeast, and 5\% w/w E. coli proteins. Sample B was composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al. \cite{navarro2016multicenter}.    
 
-\textbf{General workflow}
-In this study we investigate two DIA protein quantification workflows 1) DDA-based spectral library protein quantification (DDA-SLPQ) and 2) Pseudo spectra-based spectral library protein quantification (PS-SLPQ). The DDA-SLPQ workflow uses MSFragger to perform a DDA-search and EasyPQP to contruct a spectra library from the DDA-search results. OpenSwath Workflow is then used with spectral library to perform an analysis on the the DIA-data. PyProphet is used for statistical validation and TRIC is used for feature alignment for before protein quantification using Top3, MSstats and msqrobsum (TRIC is not used for triqler protein quantification). The PS-SLPQ workflow is conducted using fragpipe software. It uses DIA-Umpire signal extraction to extract pseudo-spectra from the DIA-data. The pesudo-spectra is searched using conventional DDA-search using MSFragger and spectral library is build using easyPQP. The DIA-data is quantified with DIA-NN using the peudo-spectra based spectral libraries. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. 
+\subsection*{General workflow}
+In this study we investigate two DIA protein quantification workflows 1) DDA-based spectral library protein quantification (DDA-SLPQ) and 2) Pseudo spectra-based spectral library protein quantification (PS-SLPQ). The DDA-SLPQ workflow uses MSFragger to perform a DDA-search and EasyPQP to construct a spectra library from the DDA-search results. OpenSwath Workflow is then used with a spectral library to perform an analysis on the DIA data. PyProphet is used for statistical validation and TRIC is used for feature alignment before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification). The PS-SLPQ workflow is conducted using fragpipe software. It uses DIA-Umpire signal extraction to extract pseudo-spectra from the DIA data. The pseudo-spectra is searched using conventional DDA-search using MSFragger and the spectral library is build using easyPQP. The DIA-data is quantified with DIA-NN using the pseudo-spectra-based spectral libraries. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. 
 
 (add a third later encyclopedia) 
 
 (add workflow schematics )
 
-\textbf{Data preparation and spectral library generation}
-The .wiff files are converted to .mzML files in centroided format using msconvert (using windows OS msconver version X.X) with the following options: [check options]. 
+\subsection*{Data preparation and spectral library generation}
+The .wiff files are converted to .mzML files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
 
-Two approaches was used for spectra library generation: DDA acquisition based spectral library generation and Prosit-based spectral library generation using only .fasta file [cite prosit paper]. 
+Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
 
-DDA acquisitions of samples from each specie (human, yeast, E. coli) was provided in triplicates for spectral library generation. Uniprot fasta files with one protein seqeunce per gene was concatenated for each specie (UP000005640, UP000000625 and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered fasta files contained 20 590 human proteins, 6 046 yeast proteins and 4 373 E. coli proteins. After filtering the fasta file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins) and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The fasta file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for spectral library building. OpenSwathDecoyGenerator was used with default setting to generate decoys for the resulting spectral libraries.  
+DDA acquisitions of samples from each species (human, yeast, E. coli) were provided in triplicates for spectral library generation. Uniprot FASTA files with one protein sequence per gene were concatenated for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony, etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. After filtering the FASTA file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins), and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The FASTA file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for the spectral library building. OpenSwathDecoyGenerator was used with default settings to generate decoys for the resulting spectral libraries.  
 
-For Prosit-based spectral library generation, the fasta file was converted to prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as intensity prediction model and Prosit\_2019\_irt was used as iRT predicition model.  
+For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  
 
 
-\textbf{Protein inference problem and reduced database}
+\subsection*{Protein inference problem and reduced database}
 
-In bottom-up proteomics, redundency in the matching of peptides to proteins hits is a challenge \cite{nesvizhskii2005interpretation}. The Parsimony principle reports the minimum set of proteins which include all the observed peptides (Occam's razor principle), thereby resolving shared and ambiguous evidence. This method typically reduces the size of the protein list where peptides could belong to several proteins, as the cost of losing potential protein idenfications. In addition it may also lower the repoducibility of the identified proteins\cite{serang2012recognizing}. While the protein grouping approach bunch together proteins based on different schemas. For example it is possible to group together proteins that map to identical peptides, or when proteins contain overlapping subsets of peptides. The protein groupings are often assigned post peptide identification, which contrary to good statistical practices to formulate the hypothesis before data are observed \cite{serang2012recognizing}. An example of parsimony and protein grouping is shown in \textbf{table 1}. 
+In bottom-up proteomics, redundancy in the matching of peptides to proteins hits is a challenge \cite{nesvizhskii2005interpretation}. The Parsimony principle reports the minimum set of proteins which include all the observed peptides (Occam's razor principle), thereby resolving shared and ambiguous evidence. This method typically reduces the size of the protein list where peptides could belong to several proteins, as the cost of losing potential protein identifications. In addition, it may also lower the reproducibility of the identified proteins\cite{serang2012recognizing}. While the protein grouping approaches bunch together proteins based on different schemas. For example, it is possible to group proteins that map to identical peptides, or when proteins contain overlapping subsets of peptides. The protein groupings are often assigned post peptide identification, which is contrary to good statistical practices to formulate the hypothesis before data are observed \cite{serang2012recognizing}. An example of parsimony and protein grouping is shown in \textbf{table 1}. 
+
 
 \begin{table}[!htbp]
 \begin{tabular}{llllllll}
@@ -91,58 +94,60 @@ Protein C &          &   & x & x &   & Yes                & Yes
 \textbf{Table 1:} Example of Parsimony reported and protein grouping reported proteins.
 \end{table}
 
-In this benchmarking stude we remove proteins with shared peptides. Using different methods for protein inference yields different amount of protein matches given the same amount of observed peptides. Ideally, the number of proteins compared between different protein quantitation methods should be the same when benchmarking. By removing proteins with shared peptides from the FASTA-database the protein inferences procedures will yield the same protein identifications. This should give a fair comparison regardless of protein inference method used in the different protein quantitation pipelines.
+In this benchmarking study, we remove proteins with shared peptides. Using different methods for protein inference yields a different amount of protein matches given the same amount of observed peptides. Ideally, the number of proteins compared between different protein quantitation methods should be the same when benchmarking. By removing proteins with shared peptides from the FASTA database the protein inferences procedures will yield the same protein identifications. This should give a fair comparison regardless of the protein inference method used in the different protein quantitation pipelines.
 
-\textbf{DIA methods}
+\subsection*{DIA methods}
 Write about why different methods where used.
 
-\textbf{OpenSwath Analysis}
+\subsubsection*{OpenSwath Analysis}
 Version (version) of OpenSwath was used. The spectral library generated above is converted to .pqp format using TargetedFileConverter. Data analysis was conducted using OpenSwathWorkflow with parameters (-Scoring:TransitionGroupPicker:background\_subtraction original -Scoring:stop\_report\_after\_feature -1, -min\_upper\_edge\_dist 1, -tr\_irt hroest\_DIA\_iRT.TraML, -extra\_rt\_extraction\_window 100, -min\_rsq 0.95, -min\_coverage 0.6, -Scoring:Scores:use\_dia\_scores true, -rt\_extraction\_window 600, -mz\_extraction\_window 30, -threads 10, -Scoring:DIAScoring:dia\_extraction\_unit ppm). After data extraction the data .osw output was merged using pyprophet merge option and pyprophet was used for statistical validation. Pyprophet export was used without FDR filtering (--max\_global\_protein\_qvalue 1.0, --max\_global\_peptide\_qvalue 1.0, --max\_rs\_peakgroup\_qvalue 1.0, --max\_transition\_pep 1.0) to give a complete list of peptide quantifications for further down-stream analysis.
 
-\textbf{DIAUmpire and DIA-NN analysis}
+\subsubsection*{DIAUmpire and DIA-NN analysis}
 DIAUmpire signal extraction (SE) was used through Fragpipe GUI (v15.0). Default parameters was set (MS1 PPM: 10, MS2 PPM: 20, Max Missed Scans:1, Mass Defect Filter On, RP max: 25, RF max: 500, Corr Treshold:0, Delta Apex: 0.2, RT Overlap 0.3, Mass Defect Offset 0.1, Isotope Pattern: 0.3, MS1 SN: 1.1, MS2 SN 1.1, Adjust fragment intensity On). MSFragger was used on the resulting .mzML files from DIAUmpire SE with default parameters for Peak Matching (PPM: [-20, 20], Fragment mass tolerance PPM: 20, Calibration and Optimization: Mass Calibration, Parameter optimization, Isotop error: 0/1, Data type: DDA, ), protein digestion (Load rules: stricttrypsin, Enzyme name: stricttrypsin, Cut after: KR, Cleavage: ENZYMATIC, Missed cleavages: 2, Clip N-term M: On, Peptide length 7-50, Peptide mass range: 500-5000, Split database: 1) and Modification (Variable modifications: M, \/[\^, Fixed modification: "all selected"). 
 
-\textbf{EncyclopeDIA and PECAN analysis}
-Prosit was used to contruct spectra libraries from the modified fasta files. The fragmentation model used was "Prosit - Model - Fragmentation" and the iRT model "Prosit - Model - iRT" (available from https://figshare.com/projects/Prosit/35582).
-
+\subsubsection*{EncyclopeDIA and PECAN analysis}
+Prosit was used to construct spectra libraries from the modified FASTA files. The fragmentation model used was "Prosit - Model - Fragmentation" and the iRT model "Prosit - Model - iRT" (available from https://figshare.com/projects/Prosit/35582).
 ...
 
-\textbf{Protein quantification methods}
+\subsection*{Protein quantification methods}
 
-\textbf{Triqler}
+\subsubsection*{Triqler}
 
-Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian}. These posteriors incorporate information about uncertainty and thesefore should result in robust protein quantification.
+Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian}. These posteriors incorporate information about uncertainty and therefore should result in robust protein quantification. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
 
-Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability treshold between the two samples given a fold change evaluation limit. 
+Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability threshold between the two samples given a fold change evaluation limit. 
 
-\textbf{Top3}
-The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
+\subsubsection*{Top3}
+The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
 
-\textbf{MSstat}
- MSstats customizes a linear mixed model to the specific experiment and to each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
+\subsubsection*{MSstat}
+ MSstats customizes a linear mixed model to the specific experiment and each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the .osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
 
-\textbf{Msqrobsum}
-Msqrobsum 
+\subsubsection*{Msqrobsum}
+Msqrobsum provides protein summarization that account for peptide specific effect (MSqRob inference framework \cite{goeminne2020msqrob}) and are further processed using robust ridge regression. The MSqRob inference frame work is a linea regression peptide-based mixed model. The parameters for the model are tuned using penalised estimation and multiple-testing is corrected using Benjamini-Hochberg FDR procedure. 
+
+The data is processed according to default setting. It preprocessed using MSnBase R/Bioconductor package \cite{gatto2012msnbase} and normalized using Variance Stabilizing Normalization \cite{von2002variance}. 
 
 
-(Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
+%(Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
 
 
-\textbf{Benchmarking methods}
 
-\textbf{Variance Structure - why the DDA methods works and makes sense}
-The field of protein quantification is relatively new. Many protein quantification methods have been developed specifically for DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require homoskedastic variance. This is investigated using statistical visualisation of the data.
+\subsection*{Benchmarking methods}
 
-\textbf{Protein level results - scatter plot}
+\subsubsection*{Variance Structure - why the DDA methods works and makes sense}
+The field of protein quantification is relatively new. Many protein quantification methods have been developed for LFQ data and performance has been established on DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require a homoskedastic variance. This is investigated using statistical visualization of the data.
 
-\textbf{Differential abundance - log2distribution and number of differentially expressed proteins}
-The differential expressed proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain treshold for q-value based protein summarization methods (Top3, MSstats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
+\subsubsection*{Protein level results - scatter plot}
+
+\subsubsection*{Differential abundance - log2distribution and number of differentially expressed proteins}
+The differential expressed proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain threshold for q-value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
 
 (Write formula for triqler)
 (Write formula for other methods)
 
-\textbf{FDR control (calibration plot)}
-A FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
+\subsubsection*{FDR control (calibration plot)}
+An FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
 
 	\[FDP = \frac{ \text{false positives}}{\text{true positive} + \text{false positive}}
 
@@ -157,10 +162,10 @@ The FDP is calculated using the fraction of human proteins discovered as DE and 
 
 \section*{Results}
 
-\textbf{Variance structure}
-(Write why different protein quantification methods and the why triqler should be better in theory.) 
+\subsection*{Variance structure}
+(Write why different protein quantification methods and why triqler should be better in theory.) 
 
- In fig. it is show that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification. 
+ In fig. it is shown that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification.
 
   (Write something about implication of this)
   (I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
@@ -174,9 +179,9 @@ The FDP is calculated using the fraction of human proteins discovered as DE and 
 
 
 
-\textbf{Protein quantification}
+\subsection*{Protein quantification}
 
-Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green and ecoli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represent the expected log-fold change, while the fitted dashed line represent a linear regression for each species. Fig. A shows the results for OpenSwath and fig. B show the results for DIA-NN.
+Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green, and E. Coli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represents the expected log-fold change, while the fitted dashed line represents a linear regression for each species. Fig. A shows the results for OpenSwath and fig. B shows the results for DIA-NN.
 
 \begin{figure}[H]
     \centering
@@ -192,7 +197,7 @@ Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeas
     \label{fig:OSW_scatter}
 \end{figure}
 
-Fig. X show the protein quantity distributions with the different species; human (orange), ecoli (blue) and yeast (green) highlighted in different colours. The human distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise the distribution for e.coli and yeast is centered towards the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob.    
+Fig. X show the protein quantity distributions with the different species; human (orange), E. Coli (blue), and yeast (green) highlighted in different colors. The human distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise, the distribution for e.coli and yeast is centered towards the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob.     
 
 \begin{figure}[H]
     \centering
@@ -209,7 +214,7 @@ Fig. X show the protein quantity distributions with the different species; human
 \end{figure}
 
 
-Fig. Y. show that the number of differentially expressed proteins are significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has slightly higher number of differentially expressed proteins than triqler. 
+Fig. Y. shows that the number of differentially expressed proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially expressed proteins than triqler. 
 
 \begin{figure}[H]
     \centering
@@ -227,7 +232,7 @@ Fig. Y. show that the number of differentially expressed proteins are significan
 
 
 
-However, fig Y shows that the ratio of false positives (human proteins) to number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values. Triqler is better calibrated for low q-values and gets more convervative as the q-value treshold is increased. Top3, MsStats and MSqRob are more conservative at low q-values and gets less convervative as the q-value treshold increases.  
+However, fig Y shows that the ratio of false positives (human proteins) to the number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
 
    
 \begin{figure}[H]
