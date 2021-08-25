@@ -118,7 +118,7 @@ Triqler is based on probabilistic graphical models that allow error information 
 Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability threshold between the two samples given a fold change evaluation limit. 
 
 \subsubsection*{Top3}
-The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
+The precursors are filtered by q-value \textgreater 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
 
 \subsubsection*{MSstat}
  MSstats customizes a linear mixed model to the specific experiment and each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the .osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
@@ -165,12 +165,12 @@ The FDP is calculated using the fraction of human proteins discovered as DE and 
 \subsection*{Variance structure}
 (Write why different protein quantification methods and why triqler should be better in theory.) 
 
- In fig. it is shown that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification.
+ In fig. \ref{fig:variance_to_mean_ratio} it is shown that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification.
 
-  (Write something about implication of this)
-  (I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
+  %(Write something about implication of this)
+  %(I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
 
-\begin{figure}[htp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/variance_to_mean_plot.png}
     \caption{mean vs. variance-to-mean ratios. The variance-to-mean ratios stays similar across the means.}
@@ -181,7 +181,7 @@ The FDP is calculated using the fraction of human proteins discovered as DE and 
 
 \subsection*{Protein quantification}
 
-Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green, and E. Coli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represents the expected log-fold change, while the fitted dashed line represents a linear regression for each species. Fig. A shows the results for OpenSwath and fig. B shows the results for DIA-NN.
+Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green, and E. Coli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represents the expected log-fold change, while the fitted dashed line represents a linear regression for each species. Fig. \ref{fig:OSW_scatter} shows the results for OpenSwath and fig. \ref{fig:OSW_scatter} shows the results for DIA-NN. TOP3 and MsStat gives least biased results as protein intensities gets higher. Triqler gives the most biased results. 
 
 \begin{figure}[H]
     \centering
@@ -197,7 +197,7 @@ Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeas
     \label{fig:OSW_scatter}
 \end{figure}
 
-Fig. X show the protein quantity distributions with the different species; human (orange), E. Coli (blue), and yeast (green) highlighted in different colors. The human distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise, the distribution for e.coli and yeast is centered towards the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob.     
+Fig. \ref{fig:intensity_distribution} and \ref{fig:DIANN_intensity_distribution} show the protein quantity distributions with the different species; human (orange), E. Coli (blue), and yeast (green) highlighted in different colors for OSW \ref{fig:intensity_distribution} and DIA-NN \ref{fig:DIANN_intensity_distribution}. The human and yeast distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise, the distribution for e.coli is closer to the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob for both OSW and DIA-NN.     
 
 \begin{figure}[H]
     \centering
@@ -210,11 +210,11 @@ Fig. X show the protein quantity distributions with the different species; human
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_intensity_plot.png}
     \caption{DIANN Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum.}
-    \label{fig:intensity_distribution}
+    \label{fig:DIANN_intensity_distribution}
 \end{figure}
 
 
-Fig. Y. shows that the number of differentially expressed proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially expressed proteins than triqler. 
+Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the number of differentially expressed proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially expressed proteins than triqler for OSW, and Triqler has slightly higher number of differentially expressed proteins for DIA-NN. The difference between the number of differentially expressed proteins are also smaller for MsStats and triqler and MSqRobSum for DIA-NN. 
 
 \begin{figure}[H]
     \centering
@@ -227,12 +227,12 @@ Fig. Y. shows that the number of differentially expressed proteins is significan
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_n_diff_expressed.png}
     \caption{DIANN Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
-    \label{fig:osw_n_diff_exp}
+    \label{fig:DIANN_n_diff_exp}
 \end{figure}
 
 
 
-However, fig Y shows that the ratio of false positives (human proteins) to the number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
+Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values and anti-conservative at higher q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
 
    
 \begin{figure}[H]
@@ -246,8 +246,9 @@ However, fig Y shows that the ratio of false positives (human proteins) to the n
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png}
     \caption{DIANN Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
-    \label{fig:osw_n_diff_exp}
+    \label{fig:DIANN_n_diff_exp}
 \end{figure}
+
 
 
 \begin{figure}[H]
