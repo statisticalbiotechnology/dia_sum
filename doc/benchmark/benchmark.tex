@@ -113,7 +113,7 @@ Prosit was used to construct spectra libraries from the modified FASTA files. Th
 
 \subsubsection*{Triqler}
 
-Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian}. These posteriors incorporate information about uncertainty and therefore should result in robust protein quantification. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
+Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian} and imputation methods for missing values can introduce various type of errors, which can have significant impact on differential abundances \cite{webb2015review} \cite{lazar2016accounting}. These posteriors incorporate information about uncertainty at different levels of the protein quantification process, and therefore should result in robust protein quantification. Specifically, It combines combines the identification and quantification errors from feature, PSM, peptide, protein and treatment group level to a final posterior distribution of fold change between two treatment groups. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
 
 Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability threshold between the two samples given a fold change evaluation limit. 
 
@@ -138,13 +138,13 @@ The data is processed according to default setting. It preprocessed using MSnBas
 \subsubsection*{Variance Structure - why the DDA methods works and makes sense}
 The field of protein quantification is relatively new. Many protein quantification methods have been developed for LFQ data and performance has been established on DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require a homoskedastic variance. This is investigated using statistical visualization of the data.
 
-\subsubsection*{Protein level results - scatter plot}
+\subsubsection*{Protein level results}
 
 \subsubsection*{Differential abundance - log2distribution and number of differentially expressed proteins}
 The differential expressed proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain threshold for q-value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
 
-(Write formula for triqler)
-(Write formula for other methods)
+%(Write formula for triqler)
+%(Write formula for other methods)
 
 \subsubsection*{FDR control (calibration plot)}
 An FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
@@ -249,20 +249,20 @@ Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the rati
     \label{fig:DIANN_n_diff_exp}
 \end{figure}
 
-
+Fig. \ref{fig:osw_de_human_vs_de_specie} and \ref{fig:DIANN_de_human_vs_de_specie} shows  
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png}
     \caption{OSW Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
-    \label{fig:osw_n_diff_exp}
+    \label{fig:osw_de_human_vs_de_specie}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/DIANN_de_human_vs_de_specie.png}
     \caption{DIANN Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
-    \label{fig:osw_n_diff_exp}
+    \label{fig:DIANN_de_human_vs_de_specie}
 \end{figure}
 
 \section*{Discussion}
