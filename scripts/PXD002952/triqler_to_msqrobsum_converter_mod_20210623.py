@@ -94,8 +94,9 @@ def get_mSqRobSum_input(triqler):
     expr_ = res_.reset_index().drop("proteins", axis = 1)
     return expr_, fd_, pd_
 
-df = pd.read_csv("triqler_input_diann.csv", sep = "\t")
+df = pd.read_csv("triqler_input.csv", sep = "\t")
 
+expr_, fd_, pd_ = get_mSqRobSum_input(df)
 
 expr_.to_csv("expr.csv", sep = "\t")
 fd_.to_csv("fd.csv", sep = "\t")

@@ -20,7 +20,8 @@ def diann_to_triqler(filename):
     df["run"] = df["Run"].map(run_mapper)
     df["condition"] = df["Run"].map(condition_mapper)
     df["charge"] = df["Precursor.Charge"]
-    df["searchScore"] = df["CScore"]
+    #df["searchScore"] = df["CScore"]
+    df["searchScore"] = df["QValue"]
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]

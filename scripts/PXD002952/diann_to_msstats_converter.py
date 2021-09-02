@@ -15,6 +15,9 @@ os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_202107
 
 df = pd.read_csv("report.tsv", sep = "\t")
 
+df = df[df["Q.Value"] < 0.01] # filter
+
+
 def convert_diann_to_msconvert_aggregated(df):
     df_ = pd.DataFrame()    
     df_["ProteinName"] = df["Protein.Ids"]
