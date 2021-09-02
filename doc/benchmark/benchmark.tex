@@ -120,6 +120,37 @@ Protein C &          &   & x & x &   & Yes                & Yes
 
 In this benchmarking study, we remove proteins with shared peptides. Using different methods for protein inference yields a different amount of protein matches given the same amount of observed peptides. Ideally, the number of proteins compared between different protein quantitation methods should be the same when benchmarking. By removing proteins with shared peptides from the FASTA database the protein inferences procedures will yield the same protein identifications. This should give a fair comparison regardless of the protein inference method used in the different protein quantitation pipelines.
 
+\subsection*{DDA vs DIA}
+% https://pubs.rsc.org/en/content/articlehtml/2021/mo/d0mo00072h
+
+
+\subsection*{Missing values}
+
+Missing values are a big problem in DDA-MS. The problem is significantly relieved using DIA-MS. Bruderer et al. reported that MS-analysis comprimising of 24 samples resulted in 51 \text{\%} missing values in DDA-MS and only 1.6 \text{\%} missing values in DIA-MS \cite{bernhardt2015extending}. Poor missing value imputation can result in unreliable results \cite{karpievitch2009statistical} \cite{webb2010combined}, and even a single peptide misidentification, quantification error or poorly imputed value can dramatically change the results \cite{karpievitch2009statistical} \cite{zhang2017covariation}. Triqler uses a censoring model that sets higher probabilities for low ion current missing values \cite{The2018Integrated}.
+
+\[ \text{censnorm}(x) = \left( \frac{1}{2} + \frac{1}{2}\right) \text{tanh}\left( \frac{x - \mu_m}{\sigma_m}\right) \mathcal{N}(x | \mu_f, \sigma_f)\]
+
+ The intuition is that low ion currents are harder to detect than high ion currents \cite{The2018Integrated}. Triqler integrated this distribution rather than drawing a single point estimate from this. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/missingness_fraction_intensity.png}
+    \caption{Missingness proportions by observed mean for peptides.}
+    \label{fig:missingness_fraction}
+\end{figure}
+
+\ref{fig:missingness_fraction} show the missingness proportions for OSW and DIANN processed runs. 
+
+%* missing values [ok]
+%* missing value model [in progress]
+%* previous missing value models []
+%* censored data []
+%* benefit of triqler for missing values []
+%* write that the missing value signature is similar for DIA and DDA - compare to A statistical framework for protein quantitation in bottom-up MS-based proteomics fig. 2.
+%* missing not at random (Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies  [18] .) 
+
+
 \subsection*{DIA methods}
 Write about why different methods where used.
 
