@@ -25,5 +25,5 @@ zip:
 	zip -r ${main}.zip *.tex *.bib img makefile *.sty *.bst
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.out *~ .DS_Store
-	rm -fr main/
+	rm -f *.aux *.bbl *.blg *.log *.out *~ .DS_Store *.gz
+	rm -fr ${main}/
