@@ -77,11 +77,11 @@ Just as in LFQBench, we used two separate matching strategies, first spectral li
 
 \subsubsection{Spectral library matching (SL)}
 
-For the SL workflow we searched the LFQBench provided DDA runs with MSFragger\cite{} with a precursor tolerance of FIXME ppms and constructed a spectral library with EasyPQP \cite{} to from the DDA-search results using a PSM-level FDR treshold of \todo{which level did you use?}. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow. PyProphet\cite{} was used for statistical validation and TRIC\cite{} for feature alignment. This resulted in a set of detected peptides together with their assesed peptide identification accuracues and abundance estimates.
+For the SL workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with a precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results using a PSM-level FDR treshold of \todo{which level did you use?}. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow. PyProphet\cite{teleman2015diana} was used for statistical validation and TRIC\cite{rost2016tric} for feature alignment. This resulted in a set of detected peptides together with their assesed peptide identification accuracues and abundance estimates.
 
 \subsubsection{Pseudo Spectrum generation (PS)}
 
- For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor tolerance of FIXME ppms and allowing for FIXME variable modifications. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step?} 
+ For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M, [\^, nQnC, nE] variable modifications. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step?} 
 
 \subsection{Protein summarization}
  before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification).
@@ -130,7 +130,7 @@ Missing values are a big problem in DDA-MS. The problem is significantly relieve
 
 \[ \text{censnorm}(x) = \left( \frac{1}{2} + \frac{1}{2}\right) \text{tanh}\left( \frac{x - \mu_m}{\sigma_m}\right) \mathcal{N}(x | \mu_f, \sigma_f)\]
 
- The intuition is that low ion currents are harder to detect than high ion currents \cite{The2018Integrated}. Triqler integrated this distribution rather than drawing a single point estimate from this. 
+ The intuition is that low ion currents are harder to detect than high ion currents \cite{The2018Integrated}. The low end intensities are "Missing Not At Random" data according to Lazar et al \cite{lazar2016accounting}. Therefore, making the low end intensities more likely to be censored. Triqler integrated this distribution to determine the differential abundance. 
 
 
 \begin{figure}[H]
@@ -140,16 +140,17 @@ Missing values are a big problem in DDA-MS. The problem is significantly relieve
     \label{fig:missingness_fraction}
 \end{figure}
 
-\ref{fig:missingness_fraction} show the missingness proportions for OSW and DIANN processed runs. 
+Similarily to DDA data \cite{karpievitch2009statistical} \cite{koopmans2014empirical}, \ref{fig:missingness_fraction} shows that the missing value proportion in DIA data has higher missingness at lower end intensities.  
 
 %* missing values [ok]
 %* missing value model [in progress]
 %* previous missing value models []
-%* censored data []
-%* benefit of triqler for missing values []
+%* censored data [ok]
+%* benefit of triqler for missing values [ok]
 %* write that the missing value signature is similar for DIA and DDA - compare to A statistical framework for protein quantitation in bottom-up MS-based proteomics fig. 2.
 %* missing not at random (Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies  [18] .) 
 
+% CONT HERE writing about what fig shows and comparing it to [13] figure and writing about misssing not at random model.
 
 \subsection*{DIA methods}
 Write about why different methods where used.
@@ -195,23 +196,37 @@ The field of protein quantification is relatively new. Many protein quantificati
 
 \subsubsection*{Protein level results}
 
-\subsubsection*{Differential abundance - log2distribution and number of differentially expressed proteins}
-The differential expressed proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain threshold for q-value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
+\subsubsection*{Differential abundance - log2distribution and number of differentially abundant proteins}
+The differentially abundant proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain threshold for q-value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
 
 %(Write formula for triqler)
 %(Write formula for other methods)
 
 \subsubsection*{FDR control (calibration plot)}
-An FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
+An FDR control of the quanfication method is used to check the calibration of the methods. We check the true FDR against the reported FDR. The true FDR is estimated using
 
-	\[FDP = \frac{ \text{false positives}}{\text{true positive} + \text{false positive}} \]
+\[ \text{True} \: FDR = \frac{FP_\text{estimate, specie}}{DE \:\text{Proteins}_\text{specie}}\]
 
-and,
+for each E.coli and yeast. The human protein are used to compute the $FP_\text{estimate}$ for each specie. We assume the proportion human proteins that are differentially abundant at a given FDR-level is the proportion $FP$ for E.Coli and yeast as well, this proportion is denoted as a constant scaling factor $k$. The $F_\text{estimate}$ is therefore
 
-	\[TPR = \frac{\text{true positives}}{\text{all positives}} \]
+\[ FP_\text{estimate, specie} = k \cdot \text{Protein}_\text{specie} \]
+
+where
+
+\[ k = \frac{DE \: \text{Protein}_\text{human}}{\text{Protein}_\text{human}}\]
 
 
-The FDP is calculated using the fraction of human proteins discovered as DE and the TP is the fraction of E.Coli and Yeast discovered. 
+
+%An FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
+
+%	\[FDP = \frac{ \text{false positives}}{\text{true positive} + \text{false positive}} \]
+
+%and,
+
+%	\[TPR = \frac{\text{true positives}}{\text{all positives}} \]
+
+
+%The FDP is calculated using the fraction of human proteins discovered as DE and the TP is the fraction of E.Coli and Yeast discovered. 
 
 
 
@@ -227,8 +242,8 @@ The FDP is calculated using the fraction of human proteins discovered as DE and 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/variance_to_mean_plot.png}
-    \caption{mean vs. variance-to-mean ratios. The variance-to-mean ratios stays similar across the means.}
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/OSW_mu_std_intensities.png}
+    \caption{mean vs. standard deviation-to-mean ratios. The standard deviation-to-mean ratios stays similar across the means.}
     \label{fig:variance_to_mean_ratio}
 \end{figure}
 
@@ -269,38 +284,38 @@ Fig. \ref{fig:intensity_distribution} and \ref{fig:DIANN_intensity_distribution}
 \end{figure}
 
 
-Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the number of differentially expressed proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially expressed proteins than triqler for OSW, and Triqler has slightly higher number of differentially expressed proteins for DIA-NN. The difference between the number of differentially expressed proteins are also smaller for MsStats and triqler and MSqRobSum for DIA-NN. 
+Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the number of differentially abundance proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially abundant proteins than triqler for OSW, and Triqler has slightly higher number of differentially abundant proteins for DIA-NN. The difference between the number of differentially abundant proteins are also smaller for MsStats and triqler and MSqRobSum for DIA-NN. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/n_diff_expressed.png}
-    \caption{OSW Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
+    \caption{OSW Number of differentially abundant proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
     \label{fig:osw_n_diff_exp}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_n_diff_expressed.png}
-    \caption{DIANN Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
+    \caption{DIANN Number of differentially abundant proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
     \label{fig:DIANN_n_diff_exp}
 \end{figure}
 
 
 
-Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values and anti-conservative at higher q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
+Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially abundant proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values and anti-conservative at higher q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
 
    
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/calibration_plot_scaled.png}
-    \caption{OSW Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
+    \caption{OSW Q-value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
     \label{fig:osw_n_diff_exp}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png}
-    \caption{DIANN Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
+    \caption{DIANN Q-value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
     \label{fig:DIANN_n_diff_exp}
 \end{figure}
 
@@ -309,14 +324,14 @@ Fig. \ref{fig:osw_de_human_vs_de_specie} and \ref{fig:DIANN_de_human_vs_de_speci
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png}
-    \caption{OSW Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
+    \caption{OSW Number of differentially abundant humans (x-axis) and differentially abundant e.coli and yeast (y-axis).}
     \label{fig:osw_de_human_vs_de_specie}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/DIANN_de_human_vs_de_specie.png}
-    \caption{DIANN Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
+    \caption{DIANN Number of differentially abundant humans (x-axis) and differentially abundant e.coli and yeast (y-axis).}
     \label{fig:DIANN_de_human_vs_de_specie}
 \end{figure}
 
