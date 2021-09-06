@@ -65,11 +65,25 @@ In the original study, Navarro et al. included a benchmark of different protein 
  
 
 \section*{Materials and methods}
+
+\todo{It is really hard to follow the Methods section. Lets edit that section later.}
+
 \subsection*{Data description}
 
 We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. \todo{what did we do with the TripleTOF5600 data?}
 
 In the repository, the data we use is referred to as the HYE124 hybrid proteome samples. It consists of tryptic peptides with the following ratios: Sample A composed of 65\% w/w, 30\% w/w yeast, and 5\% w/w E. coli proteins. Sample B was composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al. \cite{navarro2016multicenter}. \todo{What did we do with the HYE110 samples?}   
+
+\subsection*{Data preparation and spectral library generation}
+The .wiff files are converted to .mzML files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
+
+Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
+
+DDA acquisitions of samples from each species (human, yeast, E. coli) were provided in triplicates for spectral library generation. Uniprot FASTA files with one protein sequence per gene were concatenated for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony, etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. After filtering the FASTA file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins), and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The FASTA file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for the spectral library building. OpenSwathDecoyGenerator was used with default settings to generate decoys for the resulting spectral libraries.  
+
+For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  
+
+
 
 \subsection*{General workflow}
 
@@ -90,15 +104,6 @@ For the SL workflow we searched the LFQBench provided DDA runs with MSFragger\ci
 (add a third later encyclopedia) 
 
 (add workflow schematics )
-
-\subsection*{Data preparation and spectral library generation}
-The .wiff files are converted to .mzML files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
-
-Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
-
-DDA acquisitions of samples from each species (human, yeast, E. coli) were provided in triplicates for spectral library generation. Uniprot FASTA files with one protein sequence per gene were concatenated for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony, etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. After filtering the FASTA file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins), and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The FASTA file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for the spectral library building. OpenSwathDecoyGenerator was used with default settings to generate decoys for the resulting spectral libraries.  
-
-For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  
 
 
 \subsection*{Protein inference problem and reduced database}
@@ -231,6 +236,9 @@ where
 
 
 \section*{Results}
+
+We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure XA).     
+
 
 \subsection*{Variance structure}
 (Write why different protein quantification methods and why triqler should be better in theory.) 
