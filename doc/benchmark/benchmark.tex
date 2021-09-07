@@ -128,7 +128,6 @@ In this benchmarking study, we remove proteins with shared peptides. Using diffe
 \subsection*{DDA vs DIA}
 % https://pubs.rsc.org/en/content/articlehtml/2021/mo/d0mo00072h
 
-
 \subsection*{Missing values}
 
 Missing values are a big problem in DDA-MS. The problem is significantly relieved using DIA-MS. Bruderer et al. reported that MS-analysis comprimising of 24 samples resulted in 51 \text{\%} missing values in DDA-MS and only 1.6 \text{\%} missing values in DIA-MS \cite{bernhardt2015extending}. Poor missing value imputation can result in unreliable results \cite{karpievitch2009statistical} \cite{webb2010combined}, and even a single peptide misidentification, quantification error or poorly imputed value can dramatically change the results \cite{karpievitch2009statistical} \cite{zhang2017covariation}. Triqler uses a censoring model that sets higher probabilities for low ion current missing values \cite{The2018Integrated}.
@@ -144,6 +143,7 @@ Missing values are a big problem in DDA-MS. The problem is significantly relieve
     \caption{Missingness proportions by observed mean for peptides.}
     \label{fig:missingness_fraction}
 \end{figure}
+
 
 Similarily to DDA data \cite{karpievitch2009statistical} \cite{koopmans2014empirical}, \ref{fig:missingness_fraction} shows that the missing value proportion in DIA data has higher missingness at lower end intensities.  
 
@@ -167,7 +167,7 @@ Version (version) of OpenSwath was used. The spectral library generated above is
 DIAUmpire signal extraction (SE) was used through Fragpipe GUI (v15.0). Default parameters was set (MS1 PPM: 10, MS2 PPM: 20, Max Missed Scans:1, Mass Defect Filter On, RP max: 25, RF max: 500, Corr Treshold:0, Delta Apex: 0.2, RT Overlap 0.3, Mass Defect Offset 0.1, Isotope Pattern: 0.3, MS1 SN: 1.1, MS2 SN 1.1, Adjust fragment intensity On). MSFragger was used on the resulting .mzML files from DIAUmpire SE with default parameters for Peak Matching (PPM: [-20, 20], Fragment mass tolerance PPM: 20, Calibration and Optimization: Mass Calibration, Parameter optimization, Isotop error: 0/1, Data type: DDA, ), protein digestion (Load rules: stricttrypsin, Enzyme name: stricttrypsin, Cut after: KR, Cleavage: ENZYMATIC, Missed cleavages: 2, Clip N-term M: On, Peptide length 7-50, Peptide mass range: 500-5000, Split database: 1) and Modification (Variable modifications: M, \/[\^, Fixed modification: "all selected"). 
 
 \subsubsection*{EncyclopeDIA and PECAN analysis}
-Prosit was used to construct spectra libraries from the modified FASTA files. The fragmentation model used was "Prosit - Model - Fragmentation" and the iRT model "Prosit - Model - iRT" (available from https://figshare.com/projects/Prosit/35582).
+Prosit was used to construct spectra libraries from the modified FASTA files. The fragmentation model used was "Prosit - Model - Fragmentation" and the iRT model "Prosit - Model - iRT" (available from \url{https://figshare.com/projects/Prosit/35582)}.
 ...
 
 \subsection*{Protein quantification methods}
@@ -241,7 +241,7 @@ where
 
 We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a xxx distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
 
-\begin{figure}[!tpb]%figure1
+\begin{figure}[htb]
     \centering
     \begin{tabular}{lc} 
     A & \includegraphics[width=0.3\linewidth]{img/stdv_vs_mu.png} \\
@@ -249,32 +249,72 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
     \end{tabular}
     \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
       \label{fig:assumptions}
-    \end{figure}
-    
+\end{figure}
+
+%\end{document}
+
+
+
 \subsection*{Test of performance}
 
 We wanted to compare the performance of Triqler against other protein summarization methods. An inherent problem when comparing different protein summarization softwares is that the performance is affected by witch protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting number of differentially abundant proteins in protein mixtures, a protein inference scheme that infer any protein contain  a detected peptide will report more differentially abundant proteins than more restrictive scheme that just report a parsimonous set of proteins when benchmarking with mixtures of cell lysate mixtures data sets. \todo{find the prefered term for ``cell lysate mixture''} For such data sets there is no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To elaviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This should give a fair comparison of protein summarization regardless of the protein inference method.
 
-Also, we selected to compare the efficency of Triqler to the ones of the protein summarization strategies from msStats, msSqRobSum and Top-3 using two different processing strategies, spectral libraries using DDA data, and when generating pseudo-spectra with DIA Umpire~\cite{tsou2015dia}.
+Also, we selected to compare the efficency of Triqler to the ones of the protein summarization strategies from msStats, msSqRobSum and Top-3 using two different processing strategies, spectral libraries using DDA data, and when generating pseudo-spectra with DIA-Umpire~\cite{tsou2015dia}. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll~\cite{the2021triqler}, which ended up as FIXME for the spectral library data, and FIXME for the psudo-spectra enabled data.
 
-\subsubsection{Comparison of ability to differentiate differentially abundant proteins}
+\subsubsection*{Fold change distributions}
 
-The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we compared the methods'ability to inferr differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, see Figure \ref{fig:diff_vs_hela}.
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}.  
 
-
-\begin{figure}[H]
+\begin{figure}[hbt]
     \centering
+    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    \begin{tabular}{lclc} 
+        A & \includegraphics[width=0.3\linewidth]{} & 
+        E & \includegraphics[width=0.3\linewidth]{} \\ 
+        B & \includegraphics[width=0.3\linewidth]{} & 
+        F & \includegraphics[width=0.3\linewidth]{} \\ 
+        C & \includegraphics[width=0.3\linewidth]{} & 
+        G & \includegraphics[width=0.3\linewidth]{} \\ 
+        D & \includegraphics[width=0.3\linewidth]{} & 
+        H & \includegraphics[width=0.3\linewidth]{} 
+    \end{tabular}
+    \todo[inline]{Make the corresponding histograms, one png per histogram. Alternatively do a sns.PairGrid with shared axes with 8 subpanels and a shared legend.}
+    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) DDA spectrum libraries and (E-H) psedo spectra as generated by 
+    (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top-3. \label{fig:fc_histogram}}
+\end{figure}
+
+
+\subsubsection*{Comparison of ability to differentiate differentially abundant proteins}
+
+The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we compared the methods'ability to inferr differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, see Figure \ref{fig:diff_vs_hela}. Overall it seems like 
+
+
+\begin{figure}[hbt]
     \centering
     \begin{tabular}{cc} 
         \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png} & 
         \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png} \\ 
         A & B
     \end{tabular}
-    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. }
-    \label{fig:diff_vs_hela}
+    \todo[inline]{Use one plot per png-file. In ech pane plot the sum of the ecoli and yeast proteins as a function of human proteins. One plot for spectral libraries, one for dia umpire.}
+    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. \label{fig:diff_vs_hela}}
 \end{figure}
 
-\subsubsection{Comparison of statistical calibrationm}
+\subsubsection*{Comparison of statistical calibration}
+
+We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relation between the fraction of wrongly reported differential abundant proteins (i.e. the number of human proteins), and the estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr})
+\begin{figure}[hbt]
+    \centering
+    \centering
+    \begin{tabular}{cc} 
+        \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/calibration_plot.png} & 
+        \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png} \\ 
+        A & B
+    \end{tabular}
+    \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. \label{fig:frac_hela_vs_fdr}}
+    \todo[inline]{Just plot the fraction reported human proteins to all reported proteins.(Right now I think I am not convinced we need the compensational factor -- at least not if you can not come up with an argument of why it should be there.) Use one png per subplot, and just use 2 subplots.}
+\end{figure}
+
 
 
 
@@ -380,4 +420,6 @@ This work has been supported by a grant from the Swedish Foundation for Strategi
 %\bibliography{benchmark}
 \bibliography{benchmark.bib}
 \end{document}
+
+
 
