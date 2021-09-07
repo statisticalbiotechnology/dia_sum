@@ -237,23 +237,45 @@ where
 
 \section*{Results}
 
-We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure XA).     
+\subsection*{Test of assumptions}
 
+We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a xxx distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
 
-\subsection*{Variance structure}
-(Write why different protein quantification methods and why triqler should be better in theory.) 
+\begin{figure}[!tpb]%figure1
+    \centering
+    \begin{tabular}{lc} 
+    A & \includegraphics[width=0.3\linewidth]{img/stdv_vs_mu.png} \\
+    B & %\includegraphics[width=0.3\linewidth]{FIXME}
+    \end{tabular}
+    \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+      \label{fig:assumptions}
+    \end{figure}
+    
+\subsection*{Test of performance}
 
- In fig. \ref{fig:variance_to_mean_ratio} it is shown that the variance-to-mean intensity ratio does not increase for larger means. As the variance does not increase with mean heteroskedasticity does not exist in the DIA-data. This implied that methods based on linear regression, linear mixed models and other models requiring stable variance structure could be used for DIA protein quantification.
+We wanted to compare the performance of Triqler against other protein summarization methods. An inherent problem when comparing different protein summarization softwares is that the performance is affected by witch protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting number of differentially abundant proteins in protein mixtures, a protein inference scheme that infer any protein contain  a detected peptide will report more differentially abundant proteins than more restrictive scheme that just report a parsimonous set of proteins when benchmarking with mixtures of cell lysate mixtures data sets. \todo{find the prefered term for ``cell lysate mixture''} For such data sets there is no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To elaviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This should give a fair comparison of protein summarization regardless of the protein inference method.
 
-  %(Write something about implication of this)
-  %(I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
+Also, we selected to compare the efficency of Triqler to the ones of the protein summarization strategies from msStats, msSqRobSum and Top-3 using two different processing strategies, spectral libraries using DDA data, and when generating pseudo-spectra with DIA Umpire~\cite{tsou2015dia}.
+
+\subsubsection{Comparison of ability to differentiate differentially abundant proteins}
+
+The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we compared the methods'ability to inferr differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, see Figure \ref{fig:diff_vs_hela}.
+
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/OSW_mu_std_intensities.png}
-    \caption{mean vs. standard deviation-to-mean ratios. The standard deviation-to-mean ratios stays similar across the means.}
-    \label{fig:variance_to_mean_ratio}
+    \centering
+    \begin{tabular}{cc} 
+        \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png} & 
+        \includegraphics[width=0.3\linewidth]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png} \\ 
+        A & B
+    \end{tabular}
+    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. }
+    \label{fig:diff_vs_hela}
 \end{figure}
+
+\subsubsection{Comparison of statistical calibrationm}
+
 
 
 
