@@ -64,41 +64,45 @@ In the original study, Navarro et al. included a benchmark of different protein 
 
 \section*{Materials and methods}
 
-\todo{It is really hard to follow the Methods section. Lets edit that section later.}
 
 \subsection*{Data description}
-
-We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. \todo{what did we do with the TripleTOF5600 data?}
-
-In the repository, the data we use is referred to as the HYE124 hybrid proteome samples. It consists of tryptic peptides with the following ratios: Sample A composed of 65\% w/w, 30\% w/w yeast, and 5\% w/w E. coli proteins. Sample B was composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al. \cite{navarro2016multicenter}. \todo{What did we do with the HYE110 samples?}   
-
-\subsection*{Data preparation and spectral library generation}
-The .wiff files are converted to .mzML files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
-
-Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
-
-DDA acquisitions of samples from each species (human, yeast, E. coli) were provided in triplicates for spectral library generation. Uniprot FASTA files with one protein sequence per gene were concatenated for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16).To control for the effect of different protein inference strategies (protein group, parsimony, etc.) a modified .fasta file, without shared peptides, was used for database search. The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. After filtering the FASTA file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins), and 4 306 E. Coli proteins (-67 E. Coli proteins). Each sequence with length $>$7 amino acids mapping only to one protein. The FASTA file contained reverse sequences as decoys for target-decoy analysis. MSFragger with parameters: [check parameters] was used for DDA-search, statistical validation was performed by peptide prophet and protein prophet, and EasyPQP with parameters: [check parameters] was used for the spectral library building. OpenSwathDecoyGenerator was used with default settings to generate decoys for the resulting spectral libraries.  
-
-For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  
+\subsubsection*{Mass spectrometry data}
 
 
+We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. \todo{what did we do with the TripleTOF5600 data?} We also restricted ourselves to the low ratio difference samples, reffered to as the HYE124 hybrid proteome samples in the original study. That consists of tripplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w E. coli cells, and tripplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. \todo{What did we do with the HYE110 samples?}   
+The \verb|.wiff| files were converted to \verb|.mzML| files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
+
+
+\subsubsection*{Sequence database}
+
+Uniprot FASTA files with one protein sequence per gene were concatenated \todo{what is meant with concatinated here?} for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. To reduce for the effect of the different protein inference strategies for the tested protein summarization tools, a modified .fasta file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. \todo{Is this the correct interpretation of your sentence "Each sequence with length $>$7 amino acids mapping only to one protein"}\todo{How did you handle I/L mass-equivalence?}. After filtering the FASTA file contained 20 302 proteins (-288 human proteins), 5 848 yeast proteins (198 yeast proteins)\todo{I do not understand 198 in this context.}, and 4 306 E. Coli proteins (-67 E. Coli proteins).  We alsos added reverse sequences to the database as decoys for target-decoy analysis. 
 
 \subsection*{General workflow}
 
-Just as in LFQBench, we used two separate matching strategies, first spectral library matching to selected spectra from separate DDA data (SL) and second search engine matching to pseudo-spectra generated directly from the DIA data. We will describe each of the two methods below.
+Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs (SL) and second we searched pseudo-spectra generated directly from the DIA data. We will describe the parameter choces of both theses two methods below.
 
-\subsubsection{Spectral library matching (SL)}
+\subsubsection*{Spectral library matching (SL)}
 
-For the SL workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with a precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results using a PSM-level FDR treshold of \todo{which level did you use?}. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow. PyProphet\cite{teleman2015diana} was used for statistical validation and TRIC\cite{rost2016tric} for feature alignment. This resulted in a set of detected peptides together with their assesed peptide identification accuracues and abundance estimates.
+For the Spectral Library (SL) workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with a precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results using a PSM-level FDR treshold of \todo{which level did you use?}. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow. PyProphet\cite{teleman2015diana} was used for statistical validation and TRIC\cite{rost2016tric} for feature alignment. This resulted in a set of detected peptides together with their assesed peptide identification accuracues and abundance estimates.
+\todo{where does this fit?} OpenSwathDecoyGenerator was used with default settings to generate decoys for the resulting spectral libraries.  
 
-\subsubsection{Pseudo Spectrum generation (PS)}
-
- For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M, [\^, nQnC, nE] variable modifications. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step?} 
-
-\subsection{Protein summarization}
- before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification).
+Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
+For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  \todo{I am confused, are there three different workflows?}
 
 
+\subsubsection*{Pseudo Spectrum generation (PS)}
+
+ For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M, [\^, nQnC, nE] variable modifications \todo{What is meant with "[M, [\^, nQnC, nE]"?}. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step?} 
+
+
+\subsection*{Database searching}
+For both workflow we matched spectra and psudo-spectra with MSFragger with parameters: [check parameters], and used pepide-prophet for statistical validation was performed by peptide prophet and protein prophet.
+
+
+\subsection*{Protein summarization}
+ before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification). \todo{I am confused. Is the processing different for one of the methods?} 
+
+\begin{comment}
 (add a third later encyclopedia) 
 
 (add workflow schematics )
@@ -125,6 +129,8 @@ In this benchmarking study, we remove proteins with shared peptides. Using diffe
 
 \subsection*{DDA vs DIA}
 % https://pubs.rsc.org/en/content/articlehtml/2021/mo/d0mo00072h
+
+
 
 \subsection*{Missing values}
 
@@ -231,6 +237,7 @@ where
 
 %The FDP is calculated using the fraction of human proteins discovered as DE and the TP is the fraction of E.Coli and Yeast discovered. 
 
+\end{comment}
 
 
 \section*{Results}
