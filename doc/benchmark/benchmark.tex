@@ -100,7 +100,10 @@ For both workflow we matched spectra and psudo-spectra with MSFragger with param
 
 
 \subsection*{Protein summarization}
- before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification). \todo{I am confused. Is the processing different for one of the methods?} 
+ before protein quantification using Top3, MSstats, and msqrobsum (TRIC is not used for triqler protein quantification). \todo{I am confused. Is the processing different for one of the methods? ANSWERED below} 
+
+
+The peptides was summarized to proteins using Top3, MSstats, mnqrobsum and Triqler. For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
 
 \begin{comment}
 (add a third later encyclopedia) 
