@@ -245,6 +245,7 @@ where
 
 \section*{Results}
 
+
 \begin{table}[H]
 \begin{tabular}{lllllll}
 \hline
@@ -254,6 +255,8 @@ Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \mul
 Peptides  & 20 747                        & 21 445                        & 21 016                        & 20 494                        & 22 792                        & 22 787                        \\
 Proteins  & 2 836                         & 2 857                         & 2 869                         & 2 818                         & 2 909                         & 2 918                         \\ \hline
 \end{tabular}
+ \caption{{\bf Number of identified peptides and proteins for the samples using OSW.}
+      \label{fig:osw_peptide_and_protein_id}}
 \end{table}
 
 \begin{table}[H]
@@ -265,6 +268,8 @@ Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \mul
 Peptides  & 21 036                        & 20 783                        & 21 040                        & 21 243                        & 21 325                        & 21 248                        \\
 Proteins  & 3 377                         & 3 350                         & 3 368                         & 3 358                         & 3 381                         & 3 356                         \\ \hline
 \end{tabular}
+ \caption{{\bf Number of identified peptides and proteins for the samples using DIANN.}
+      \label{fig:diann_peptide_and_protein_id}}
 \end{table}
 
 \subsection*{Test of assumptions}
@@ -377,7 +382,8 @@ We subsequently set out to test the statistical calibration of the different sum
          \includegraphics[width=0.5\linewidth]{../../result/report_plots/peptide_mu_vs_std.png} & &%\includegraphics[width=0.3\linewidth]{} & 
 
     \end{tabular}
-    \caption{{\bf mean of log2-peptide intensities against std. of log2-peptide intensities.} We plotted the mean of log2-peptide intensities against std. of log2-peptide intensities to show that the variance does not increase with the mean. The peptides where tresholded at a m_score $>0.001$. \label{fig:mu_vs_std}}
+    %\caption{{\bf mean of log2-peptide intensities against std. of log2-peptide intensities.} We plotted the mean of log2-peptide intensities against std. of log2-peptide intensities to show that the variance does not increase with the mean. The peptides where tresholded at a m_score less than 0.001. \label{fig:mu_vs_std}}
+    \caption{{\bf Mean of log2-peptide intensities against std. of log2-peptide intensities.} We plotted the mean of log2-peptide intensities against std. of log2-peptide intensities to show that the variance does not increase with the mean. \label{fig:test}}
     \todo[inline]{Check if there is a log of missing values among peptides to see if they skew the std. in y-axis.}
 \end{figure}
 
