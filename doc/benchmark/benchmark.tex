@@ -276,17 +276,28 @@ Proteins  & 3 377                         & 3 350                         & 3 36
 
 We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a xxx distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
 
+
 \begin{figure}[htb]
     \centering
     \begin{tabular}{lc} 
     A & \includegraphics[width=0.6\linewidth]{../../result/report_plots/peptide_mu_vs_std.png} \\
     B & %\includegraphics[width=0.3\linewidth]{FIXME}
     \end{tabular}
-    \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+    \caption{{\bf (THIS IS OLD THE PLOT)The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
       \label{fig:assumptions}
 \end{figure}
 
-%\end{document}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{lclc} 
+        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_filtered.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
+        C \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_filtered.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+    \end{tabular}
+    \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+      \label{fig:assumptions}
+\end{figure}
 
 
 
