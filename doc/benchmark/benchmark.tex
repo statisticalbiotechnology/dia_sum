@@ -69,7 +69,7 @@ In the original study, Navarro et al. included a benchmark of different protein 
 \subsubsection*{Mass spectrometry data}
 
 
-We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. \todo{what did we do with the TripleTOF5600 data? [ANSWER: We did not do anything with this sample, but I could easy run everything on the TTOF5600 sample as well]} We also restricted ourselves to the low ratio difference samples, reffered to as the HYE124 hybrid proteome samples in the original study. That consists of tripplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w E. coli cells, and tripplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. \todo{What did we do with the HYE110 samples?}   
+We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. \todo{what did we do with the TripleTOF5600 data? [ANSWER: We did not do anything with this sample, but I could easy run everything on the TTOF5600 sample as well]} We also restricted ourselves to the low ratio difference samples, reffered to as the HYE124 hybrid proteome samples in the original study. That consists of triplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w E. coli cells, and triplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w E. coli proteins. Samples from HYE110 and the TripleTOF5600 section of HYE124 was omitted in this study. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. \todo{What did we do with the HYE110 samples?}   
 The \verb|.wiff| files were converted to \verb|.mzML| files in a centroided format using msconvert (using windows OS msconvert version X.X) with the following options: [check options]. 
 
 
@@ -92,8 +92,10 @@ For Prosit-based spectral library generation, the FASTA file was converted to Pr
 
 \subsubsection*{Pseudo Spectrum generation (PS)}
 
- For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M, [\^, nQnC, nE] variable modifications \todo{What is meant with "[M, [\^, nQnC, nE]"? ANSWER: The modifications in fragpipe}. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a mProphet-based algorithm for statistical validation \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step? ANSWER: I explains how DIA-NN calcullated q-values} 
+ For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications ("M" - oxidation on methionine and "\^{}" is a terminus modifier for protein N-terminal) \todo{What is meant with "[M, [\^, nQnC, nE]"? ANSWER: The modifications in fragpipe}. A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the q-values. \cite{reiter2011mprophet} \cite{demichev2020dia}. \todo{I do not get this. What is mProphet used for at this step? ANSWER: I explains how DIA-NN calcullated q-values} 
 
+% VARIABLE MODIFICATION 
+% https://github-wiki-see.page/m/Nesvilab/MSFragger/wiki/Setting-the-Parameters 
 
 \subsection*{Database searching}
 For both workflow we matched spectra and psudo-spectra with MSFragger with parameters: [check parameters], and used pepide-prophet for statistical validation was performed by peptide prophet and protein prophet.
@@ -283,7 +285,7 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
     A & \includegraphics[width=0.6\linewidth]{../../result/report_plots/peptide_mu_vs_std.png} \\
     B & %\includegraphics[width=0.3\linewidth]{FIXME}
     \end{tabular}
-    \caption{{\bf (THIS IS OLD THE PLOT)The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+    \caption{{\bf (THIS IS OLD THE PLOT)The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMeE.}
       \label{fig:assumptions}
 \end{figure}
 
@@ -292,10 +294,12 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 \begin{figure}[H]
     \centering
     \begin{tabular}{lclc} 
-        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_filtered.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
-        C \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_filtered.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        C \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_fraction_missing_values.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
+        D \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-    \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+    \caption{{\bf The assumtions that Triqler makes about peptide abundance values are valid also for DIA data in the TripleTOF6600 section of the LFQ Bench set.}  (A) We plotted the standard deviation as a function of the mean of every peptide  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
       \label{fig:assumptions}
 \end{figure}
 
