@@ -285,10 +285,19 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
     \begin{tabular}{lclc} 
 %        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
 %        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_fraction_missing_values.png}  &
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} 
+%        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_fraction_missing_values.png}  &
+%        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} 
+
+% DIANN RESULTS
+%        A \includegraphics[width=0.40\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+%        B \includegraphics[width=0.45\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+
+% OSW RESULTS
+        A \includegraphics[width=0.41\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.49\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\
+
     \end{tabular}
-    \todo[inline]{Fill in the fixme below.\\
+    \todo[inline]{Fill in the fixme below..\\
     A+B: Remove the header of each plot (Never-ever use headers of plots.)\\
     A+B: Move the diann plots to the supplement. And change the scale of the diann plot so that you see other things than white space.\\
     A: It is hard to perfectly see the reality of our claim for the A plot. Could you try a box plot instead. Also plot the meadian stdv of the set as a red dotted line across the violins or boxes.
@@ -339,14 +348,18 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{lclc} 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_ecoli.png} & 
-        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_ecoli.png} \\ 
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_yeast.png} & 
-        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_yeast.png} 
+%        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_ecoli.png} & 
+%        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_ecoli.png} \\ 
+%        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_yeast.png} & 
+%        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_yeast.png} 
+
+        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_all_new.png} & 
+        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_all_new.png} \\ 
+
     \end{tabular}
     \todo[inline]{Merge the plots so ythat you report the number of differentialy abundant yeast+ecoli proteins as a function of human proteins proteins. "E. coli" should be written in italics.
     }
-    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A-B) DDA generated spectral libraries and (C-D) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. \label{fig:diff_vs_hela}}
+    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. \label{fig:diff_vs_hela}}
 \end{figure}
 
 \subsubsection*{Comparison of statistical calibration}
