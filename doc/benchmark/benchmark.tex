@@ -305,7 +305,7 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
     B: Zoom in on the lower left of the plot so that one can see what is going on.\\
     B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
 
-    \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
+    \caption{{\bf Triqler'ss assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
       \label{fig:assumptions}
 \end{figure}
 
@@ -353,8 +353,8 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
 %        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_yeast.png} & 
 %        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_yeast.png} 
 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_all_new.png} & 
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_all_new.png} \\ 
+        A & \includegraphics[width=0.45\linewidth]{../../result/report_plots/osw_de_human_vs_ecoli_and_yeast.png} & 
+        B & \includegraphics[width=0.45\linewidth]{../../result/report_plots/diann_de_human_vs_ecoli_and_yeast.png} \\ 
 
     \end{tabular}
     \todo[inline]{Merge the plots so ythat you report the number of differentialy abundant yeast+ecoli proteins as a function of human proteins proteins. "E. coli" should be written in italics.
@@ -379,7 +379,6 @@ We subsequently set out to test the statistical calibration of the different sum
         C \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         F \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-    \todo[inline]{What does fc=0.4 mean here? Are you plotting the q-values estimated on a different list than the one you use here?}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A-C) DDA generated spectral libraries and (D-F) DIA-Umpire geneated Pseudo spectra. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
@@ -391,13 +390,13 @@ We subsequently set out to test the statistical calibration of the different sum
     %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
     \begin{tabular}{lclc} 
         A  & &%\includegraphics[width=0.3\linewidth]{} & 
-        E \includegraphics[width=0.3\linewidth]{../../result/report_plots/diann_scatter_triqler.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        E \includegraphics[width=0.35\linewidth]{../../result/report_plots/diann_scatter_triqler.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
         B  & &%\includegraphics[width=0.3\linewidth]{} & 
-        F \includegraphics[width=0.3\linewidth]{../../result/report_plots/diann_scatter_msqrobsum.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        F \includegraphics[width=0.35\linewidth]{../../result/report_plots/diann_scatter_msqrobsum.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
         C  & &%\includegraphics[width=0.3\linewidth]{} & 
-        G \includegraphics[width=0.3\linewidth]{../../result/report_plots/diann_scatter_msstats.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        G \includegraphics[width=0.35\linewidth]{../../result/report_plots/diann_scatter_msstats.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
         D  & &%\includegraphics[width=0.3\linewidth]{} & 
-        H \includegraphics[width=0.3\linewidth]{../../result/report_plots/diann_scatter_top3.png} & %\includegraphics[width=0.3\linewidth]{} 
+        H \includegraphics[width=0.35\linewidth]{../../result/report_plots/diann_scatter_top3.png} & %\includegraphics[width=0.3\linewidth]{} 
     \end{tabular}
     \todo[inline]{Make scatter for OSW as well, and how to do with fig sizing?. Change the coloring and order of series so that they are coinsistent through the panels.}
     \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) DDA spectrum libraries and (E-H) psedo spectra as generated by 
