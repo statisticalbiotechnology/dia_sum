@@ -300,20 +300,20 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 %        B \includegraphics[width=0.45\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
 
 % OSW RESULTS
-        A \includegraphics[width=0.42\linewidth]{../../result/report_plots/osw_sigma_mu_boxplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        B \includegraphics[width=0.44\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\
+        A \includegraphics[width=0.40\linewidth]{../../result/report_plots/osw_sigma_mu_boxplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.45\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\
 
     \end{tabular}
-    \todo[inline]{Fill in the fixme below..\\
-    A+B: Remove the header of each plot (Never-ever use headers of plots.)\\
-    A+B: Move the diann plots to the supplement. And change the scale of the diann plot so that you see other things than white space.\\
-    A: It is hard to perfectly see the reality of our claim for the A plot. Could you try a box plot instead. Also plot the meadian stdv of the set as a red dotted line across the violins or boxes.
-    B: Increase the font size for B\\
-    B: Zoom in on the lower left of the plot so that one can see what is going on.\\
-    B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
+%    \todo[inline]{Fill in the fixme below.\\
+%    A+B: Remove the header of each plot (Never-ever use headers of plots.)\\
+%    A+B: Move the diann plots to the supplement. And change the scale of the diann plot so that you see other things than white space.\\
+%    A: It is hard to perfectly see the reality of our claim for the A plot. Could you try a box plot instead. Also plot the meadian stdv of the set as a red dotted line across the violins or boxes.
+%    B: Increase the font size for B\\
+%    B: Zoom in on the lower left of the plot so that one can see what is going on.\\
+%    B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
 
     %\caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
-        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. As a reference for both pipelines in log-log axis and linear-linear axis is reported in supplemental figure  \ref{label1} (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. As a reference for both pipelines in log-log axis and linear-linear axis is reported in supplemental figure  \ref{label1} (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
       \label{fig:assumptions}
 \end{figure}
 
