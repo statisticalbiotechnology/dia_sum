@@ -26,6 +26,14 @@
 
 \setlength\parindent{0pt}
 
+
+% supplement referencing
+\usepackage{subcaption}
+\usepackage{cleveref}
+
+% tablet style table
+ \usepackage{booktabs}
+ 
 \input{./title.tex}
 
 \begin{document}
@@ -96,14 +104,14 @@
         %\includegraphics[width=0.3\linewidth]{../../result/report_plots/de_human_vs_de_specie.png} & 
         %\includegraphics[width=0.3\linewidth]{../../result/report_plots/de_human_vs_de_specie.png} \\ 
         %A & B
-        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_yeast.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        D \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_yeast.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_ecoli.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        E \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_ecoli.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-        C \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        F \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        % A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_yeast.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        % D \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_yeast.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        % B \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_ecoli.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        % E \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_ecoli.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A-C) DDA generated spectral libraries and (D-F) DIA-Umpire geneated Pseudo spectra. \label{fig:frac_hela_vs_fdr}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
 \subsubsection*{Constant variance}
@@ -132,20 +140,53 @@
   \caption{{\bf Gaussian kernel density estimates of quantile binned peptide intensities.} We plotted the Gaussian kernel estimates of the quantile binned peptide intensities for (A-C) spectral library and (C-D) pseudo-spectra workflows. Approximately equal densities in the bins demonstrates the uniform offset in standard deviation across the intensity scale. \label{fig:mu_sigma_KDE}}
 \end{figure}
 
-\begin{figure}[hbt]
-    \centering
-    \centering
-    \begin{tabular}{lclc} 
-        A \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw_log/osw_violinOverlap_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        B \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw/osw_violinOverlap_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-        C \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann_log/diann_violinOverlap_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        D \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann/diann_violinOverlap_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-    \end{tabular}
-  \caption{{\bf Overlapping violin plots of quantile binned peptide intensities.} We plotted overlapping violin plots of the quantile binned peptide intensities for (A-C) spectral library and (C-D) pseudo-spectra workflows. This despicts the same results as \ref{fig:mu_sigma_boxplot} and \ref{fig:mu_sigma_KDE}. \label{fig:mu_sigma_KDE}} 
-\end{figure}
+% Please add the following required packages to your document preamble:
+
+
+\begin{table}[hbt]
+\begin{tabular}{llll}
+\hline
+        & Unfiltered & no\_shared & no\_shared\_IL\_equivalence \\ \hline
+All     & 31 055     & 30 456     & 30 452                      \\
+E. Coli & 4 391      & 4 306      & 4 306                       \\
+Human   & 20 614     & 20 302     & 20 299                      \\
+Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
+\end{tabular}
+
+  \caption{{\bf Protein count in the Uniprot FASTA protein database.} The database is a FASTA file with one protein sequence per gene for each species (UP000005640, UP000000625 and UP000002311. Acquired on 2021-06-16). The "no\_shared" filter is applied by splitting the protein sequences at amino acids "K" and "R" and keeping all the sequences with length $>$ 7 for each protein. We then mapped each sequence to all possible protein matchings and counted the how many proteins each split sequence was mapped to, and filtered so that each sequence only kept one protein match. Therefore, creating a database library with only one peptide sequence per protein. For the "no\_shared\_IL\_equivalence" all I are replaced by L before performing the filtering.    \label{table:uniprot_protein_count}}
+
+\end{table}
 
 
 
+%\begin{figure}[hbt]
+%    \centering
+%    \centering
+%    \begin{tabular}{lclc} 
+%        A \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw_log/osw_violinOverlap_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+%        B \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw/osw_violinOverlap_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+%        C \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann_log/diann_violinOverlap_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+%        D \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann/diann_violinOverlap_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+%    \end{tabular}
+%  \caption{{\bf Overlapping violin plots of quantile binned peptide intensities.} We plotted overlapping violin plots of the quantile binned peptide intensities for (A-C) spectral library and (C-D) pseudo-spectra workflows. This despicts the same results as \ref{fig:mu_sigma_boxplot} and \ref{fig:mu_sigma_KDE}. \label{fig:mu_sigma_KDE}} 
+%\end{figure}
 
+
+
+% \begin{figure*}[t]
+%      \centering
+%      \begin{subfigure}{0.4\textwidth}
+%        \includegraphics[width=\linewidth]{../FitData/ModelSelectionGraphs/Histogram_smad7_reproduced_BIC}
+%        \caption{BIC}
+%        \label{fig:model_selection:BIC}
+%      \end{subfigure}
+%      \begin{subfigure}{0.4\textwidth}
+%        \includegraphics[width=\linewidth]{../FitData/ModelSelectionGraphs/Histogram_smad7_reproduced_RSS}
+%        \caption{RSS}
+%        \label{fig:model_selection:RSS}
+%      \end{subfigure}
+%      \caption{Distribution of Bayesian information criteria (BIC) and RSS values per model}
+%      \label{fig:model_selection_criteria}
+%    \end{figure*}
 
 \end{document}
