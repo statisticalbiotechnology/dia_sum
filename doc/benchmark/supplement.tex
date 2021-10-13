@@ -43,6 +43,8 @@
 \section*{Note S1: xxx}
 \label{sec:fc-eval}
 
+
+\iffalse
 \subsection*{Fold change distributions}
 \begin{figure}[hbt]
     \centering
@@ -61,7 +63,10 @@
     (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top-3. \label{fig:fc_histogram_again}}
 \end{figure}
 
+\fi
 
+
+\iffalse
 \subsubsection*{Differential abundance}
 \begin{figure}[hbt]
     \centering
@@ -78,6 +83,8 @@
     \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) DDA spectrum libraries and (E-H) pseudo spectra for each proteome 
     (A,E) All, (B,F) ECOLI, (C,G) YEAST, and (D,H) HUMAN. \label{fig:da_lineplot_find_a_better_label}}
 \end{figure}
+\fi
+
 
 \subsubsection*{Comparison of ability to differentiate differentially abundant proteins}
 \begin{figure}[hbt]
@@ -93,6 +100,8 @@
     \end{tabular}
     \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. \label{fig:diff_vs_hela_find_a_better_label}}
 \end{figure}
+
+\iffalse
 
 \subsubsection*{Comparison of statistical calibration}
 \begin{figure}[hbt]
@@ -111,6 +120,8 @@
     \end{tabular}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. \label{fig:frac_hela_vs_fdr_find_a_better_label}}
 \end{figure}
+\fi
+
 
 \subsubsection*{Constant variance}
 \begin{figure}[hbt]
@@ -122,10 +133,11 @@
         C \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann_log/diann_boxplot_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         D \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann/diann_boxplot_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-  \caption{{\bf Uniform offset in standard deviation.} We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in a linear and log-log scale for (A-B) spectral library and (C-D) pseudo-spectra workflows.  We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. Linear scale plots are reported as reference.  \label{fig:mu_sigma_boxplot_find_a_better_label}}
+  \caption{{\bf Uniform offset in standard deviation.} We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in a linear and log-log scale for (A-B) spectral library matching and (C-D) pseudo-spectra workflows.  We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. Linear scale plots are reported as reference.  \label{fig:mu_sigma_boxplot_find_a_better_label}}
 \end{figure}
 
 
+\iffalse
 \begin{figure}[hbt]
     \centering
     \centering
@@ -133,15 +145,17 @@
         A \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw_log/osw_kde_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         B \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/osw/osw_kde_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
         C \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann_log/diann_kde_qvalFiltered_pepFiltered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        D \includegraphics[width=0.5\linewidth]{../../result/mu_sigma_variance_plots/diann/diann_kde_nolog_qvalFiltered_pepFiltered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-  \caption{{\bf Gaussian kernel density estimates of quantile binned peptide intensities.} We plotted the Gaussian kernel estimates of the quantile binned peptide intensities for (A-C) spectral library and (C-D) pseudo-spectra workflows. Approximately equal densities in the bins demonstrates the uniform offset in standard deviation across the intensity scale. \label{fig:mu_sigma_KDE_find_a_better_label}}
+  \caption{{\bf Gaussian kernel density estimates of quantile binned peptide intensities.} We plotted the Gaussian kernel estimates of the quantile binned peptide intensities for (A-C) spectral library matching and (C-D) pseudo-spectra workflows. Approximately equal densities in the bins demonstrates the uniform offset in standard deviation across the intensity scale. \label{fig:mu_sigma_KDE_find_a_better_label}}
 \end{figure}
+\fi
+
 
 % Please add the following required packages to your document preamble:
 
 
 \begin{table}[hbt]
+\centering
 \begin{tabular}{llll}
 \hline
         & Unfiltered & no\_shared & no\_shared\_IL\_equivalence \\ \hline
@@ -154,6 +168,20 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
   \caption{{\bf Protein count in the Uniprot FASTA protein database.} The database is a FASTA file with one protein sequence per gene for each species (UP000005640, UP000000625 and UP000002311. Acquired on 2021-06-16). The "no\_shared" filter is applied by splitting the protein sequences at amino acids "K" and "R" and keeping all the sequences with length $>$ 7 for each protein. We then mapped each sequence to all possible protein matchings and counted the how many proteins each split sequence was mapped to, and filtered so that each sequence only kept one protein match. Therefore, creating a database library with only one peptide sequence per protein. For the "no\_shared\_IL\_equivalence" all I are replaced by L before performing the filtering.    \label{table:uniprot_protein_count_find_a_better_label}}
 
 \end{table}
+
+
+
+\subsubsection*{Comparison of statistical calibration}
+\begin{figure}[hbt]
+    \centering
+    \centering
+    \begin{tabular}{lclc} 
+        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+    \end{tabular}
+  \caption{{\bf Comparison of actual missing values against fit to the censored normal distribution used in triqler \cite{kall2020integrating}.} We imputed the missing values as the mean of sample peptide intensities and used these imputed values to approximate the missingness for a given intensity. We binned the intensities to an arbitrary small range and plotted the fraction os missing values for each intensity range. A cubic spline fit was used to fit the values against the mentioned censored normal distribution for (A) Spectral library matching  and (B) Pseudo spectra workflow. \label{fig:fraction_missing_values}}
+\end{figure}
+
 
 
 %\begin{figure}[hbt]

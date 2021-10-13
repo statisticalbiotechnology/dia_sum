@@ -59,12 +59,11 @@ Here we show that Triqler, is well compatible with data-independent acquisition 
   
 
 \section*{Introduction}
-Label-free quantification (LFQ) using Mass spectrometry (MS)-based proteomics enables efficent differential concentration determination of proteins in complex mixtures. The processing of data from such experiments requires multiple different steps, all subjects to errors. We have previously designed a hierarchical Bayesian model, triqler, able to control for errors from both the identification and quantification process in such experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins.   
+Label-free quantification (LFQ) using Mass spectrometry (MS)-based proteomics enables efficent differential concentration determination of proteins in complex mixtures. The processing of data from such experiments requires multiple different steps, all subjects to errors. We have previously designed a hierarchical Bayesian model, triqler, able to control for errors from both the identification and quantification process in such experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins \cite{kall2020integrating}.   
 
-Triqler was designed for handling data from Data-dependent acquisition (DDA). However, Data-independent acquisition (DIA) mass spectrometry \cite{venable2004data} is generally consider to allow for a broader dynamical range and more reproducible peptide detection \cite{zhang2020DIA, Lu2021DIAmeter}, than DDA. Here, we set out to investigate if Triqler is a suitable tool for protein summarization in DIA data.
+Triqler was designed for handling data from Data-dependent acquisition (DDA). However, Data-independent acquisition (DIA) mass spectrometry is generally consider to allow for a broader dynamical range and more reproducible peptide detection \cite{zhang2020DIA, Lu2021DIAmeter}, than DDA. Here, we set out to investigate if Triqler is a suitable tool for protein summarization in DIA data.
 
-For the analysis of DIA data, just as any other type of analysis of complex data, the individual computational methods for all the steps in the processing affect the final results. It is therefore quite hard to evaluate the influence of the individual tools, which should not stop the field for trying to establish what the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools is challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward} \cite{leprevost2014best} \cite{pak2013clustering} \cite{faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
-
+For the analysis of DIA data, just as any other type of analysis of complex data, the individual computational methods for all the steps in the processing affect the final results. It is therefore quite hard to evaluate the influence of the individual tools, which should not stop the field from trying to establish what the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools is challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward} \cite{leprevost2014best} \cite{pak2013clustering} \cite{faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
 
 Here, we found a previous data set most useful for the comparison of methods, the LFQBench from Navarro et al. \cite{navarro2016multicenter} constructed a high-quality data set for five widely used tools for analysis of SWATH-MS data (four peptide-centric query tools: OpenSWATH \cite{rost2014openswath}, SWATH 2.0, Skyline \cite{maclean2010skyline}, Spectronaut \cite{bruderer2015extending}, and one data-centric approach DIA-Umpire \cite{maclean2010skyline}), which is readily amendable for a benchmark of other methods.
 
@@ -83,15 +82,29 @@ We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE iden
 
 \subsubsection*{Sequence database}
 
-Uniprot FASTA files with one protein sequence per gene was downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. To reduce for the effect of the different protein inference strategies for the tested protein summarization tools, a modified .fasta file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. After filtering the FASTA file contained 20 302 proteins (288 human proteins less proteins than unfiltered database), 5 848 yeast proteins (198 yeast proteins less proteins than unfiltered database), and 4 306 E. Coli proteins (67 E. Coli proteins than unfiltered database). Replacing the I/L amino acids with to handle mass-equivalence did not result in any considerable differences (See supplementary material \ref{supp:table:uniprot_protein_count}). We also added reverse sequences to the database as decoys for target-decoy analysis. 
+Uniprot FASTA files with one protein sequence per gene was downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. To reduce for the effect of the different protein inference strategies for the tested protein summarization tools, a modified .fasta file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. After filtering the FASTA file contained 20 302 proteins (288 human proteins less proteins than unfiltered database), 5 848 yeast proteins (198 yeast proteins less proteins than unfiltered database), and 4 306 E. Coli proteins (67 E. Coli proteins than unfiltered database). Replacing the I/L amino acids with to handle mass-equivalence did not result in any considerable differences (See supplementary material \ref{supp:table:uniprot_protein_count}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
 
 \subsection*{General workflow}
 
-Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs (SL) and second we searched pseudo-spectra generated directly from the DIA data. We will describe the parameter choces of both theses two methods below.
+Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs (SL) and second we searched pseudo-spectra generated directly from the DIA data. The workflows are shown in figure \ref{fig:flowchart}. We will describe the parameter chioces of both theses two methods below.
+
+\begin{figure}[htp]
+    \centering
+    \begin{tabular}{lclc} 
+
+
+        \includegraphics[width=1.1\linewidth]{../../result/report_plots/DIA_benchmark_flowchart_color} 
+    \end{tabular}
+
+        \caption{{\bf The spectrum-library matching and pseudo spectrum workflow pipelines.}}
+      \label{fig:flowchart}
+\end{figure}
+
+
 
 \subsubsection*{Spectral library matching (SL)}
 
-For the Spectral Library (SL) workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with a precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results using a PSM-level FDR treshold of 0.01, peptide-level FDR treshold of 0.01 and protein-level FDR treshold of 0.01 (default settings). Decoys for the spectral library was generated with OpenSwathDecoyGenerator with pseudo-reverse method. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow. PyProphet\cite{teleman2015diana} was used for statistical validation and TRIC\cite{rost2016tric} for feature alignment. This resulted in a set of detected peptides together with their assesed peptide identification accuracies and abundance estimates.
+For the Spectral Library (SL) workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with a precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results using a PSM-level FDR treshold of 0.01, peptide-level FDR treshold of 0.01 and protein-level FDR treshold of 0.01 (default settings). Decoys for the spectral library was generated with OpenSwathDecoyGenerator with pseudo-reverse method. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow and  PyProphet\cite{teleman2015diana} was used for computing false discovery rate (m\_score) for the peptide quantification. This resulted in a set of detected peptides together with their assesed peptide identification accuracies and abundance estimates.
 
 %Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
 %For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  \todo{I am confused, are there three different workflows?[ANSWER: Not at this moment, buy my ambition is to at some point get the encyclopeDIA going, perhaps we can skip this?]}
@@ -99,17 +112,19 @@ For the Spectral Library (SL) workflow we searched the LFQBench provided DDA run
 
 \subsubsection*{Pseudo Spectrum generation (PS)}
 
- For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications ("M" - oxidation on methionine and "\^{}" is a terminus modifier for protein N-terminal). A spectral library was build from the resulting PSMs at a PSM-level treshold of FIXME using easyPQP that was used for peptide quantifications with DIA-NN. The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the q-values. \cite{reiter2011mprophet} \cite{demichev2020dia}. 
+ For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications (M - oxidation on methionine and \^{} is a terminus modifier for protein N-terminal). A spectral library was build from the resulting PSMs at a PSM-level treshold of 0.01 using easyPQP and peptide quantifications was performed with DIA-NN. DIA-NN uses a built-in custom implementation of the mProphet algorithm to compute the q-values \cite{reiter2011mprophet} \cite{demichev2020dia}.
+ 
+ %The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the q-values. \cite{reiter2011mprophet} \cite{demichev2020dia}. 
 
 % VARIABLE MODIFICATION 
 % https://github-wiki-see.page/m/Nesvilab/MSFragger/wiki/Setting-the-Parameters 
 
-\subsection*{Database searching}
-For both workflow we matched spectra and pseudo-spectra with MSFragger with parameters: [check parameters], and used peptide-prophet for statistical validation was performed by peptide prophet and protein prophet.
+%\subsection*{Database searching}
+%For both workflow we matched spectra and pseudo-spectra with MSFragger with parameters: [check parameters], and used peptide-prophet for statistical validation was performed by peptide prophet and protein prophet.
 
 
 \subsection*{Protein summarization}
-The peptides was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both spectral library and pseudo-spectra pipelines. 
+The peptides was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both spectral library and pseudo-spectra pipelines. The multiple test correction is performed with q-value for Triqler and Top3, while Benjamini-Hochberger \cite{benjamini1995controlling} is used for MsStats and MSqRobSum. The q-value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach guarantees that the reported FDR is less than the true FDR. The consequence of this is that even though the methods are interchangeable, the Benjamini-Hochberger approach has slightly less statistical power and be slightly more conservative \cite{korthauer2019practical}.
 
 %For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
 
@@ -282,7 +297,7 @@ Proteins  & 3 377                         & 3 350                         & 3 36
 
 \subsection*{Test of assumptions}
 
-We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{FIXME}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
+We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
 
 
 
@@ -314,7 +329,7 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 %    B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
 
     %\caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
-        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. As a reference for both pipelines in log-log axis and linear-linear axis is reported in supplemental figure  \ref{label1} (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXME.}
+        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$.(B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See supplemental figure FIX-ref-S5 and FIX-ref-S6).}
       \label{fig:assumptions}
 \end{figure}
 
@@ -324,11 +339,12 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 
 We wanted to compare the performance of Triqler against other protein summarization methods. An inherent problem when comparing different protein summarization softwares is that the performance is affected by which protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting number of differentially abundant proteins in protein mixtures, a protein inference scheme that infer any protein contain  a detected peptide will report more differentially abundant proteins than more restrictive scheme that just report a parsimonous set of proteins when benchmarking with mixtures of cell lysate mixtures data sets. \todo{find the prefered term for ``cell lysate mixture''} For such data sets there is no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To elaviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This should give a fair comparison of protein summarization regardless of the protein inference method.
 
-Also, we selected to compare the efficency of Triqler to the ones of the protein summarization strategies from msStats, msSqRobSum and Top-3 using two different processing strategies, spectral libraries using DDA data, and when generating pseudo-spectra with DIA-Umpire~\cite{tsou2015dia}. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll~\cite{the2021triqler}, which ended up as FIXME for the spectral library data, and FIXME for the psudo-spectra enabled data.
+Also, we selected to compare the efficency of Triqler to the ones of the protein summarization strategies from msStats, msSqRobSum and Top-3 using two different processing strategies, spectral libraries using DDA data, and when generating pseudo-spectra with DIA-Umpire~\cite{tsou2015dia}. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.52 for the pseudo-spectra enabled data.
 
 \subsubsection*{Fold change distributions}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}.  
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. An FDR filter is not applied on the histograms. We observe that Triqler and Top3 has less unbias than MSstats and MSqRobSum by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at zero log2 fold-change. These peaks are insignificant peaks. 
+
 FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
 
 \begin{figure}[hbt]
@@ -346,14 +362,14 @@ FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
     \end{tabular}
     %\todo[inline]{Remove headers. Increase font size. What does the fc=0.4 mean for the other methods? Did you first remove all proteins with less fc than that? See to that this is reflected in the methods section.\\
     %What is the reason for MSqRobSum's spike at zero?}
-    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) DDA spectrum libraries and (E-H) psedo spectra as generated by 
-    (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top-3. \label{fig:fc_histogram}}
+    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) Spectrum library matching and (E-H) pseudo spectra workflow as generated by 
+    (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top3. \label{fig:fc_histogram}}
 \end{figure}
 
 
 \subsubsection*{Differential abundance}
 
-We also report the amount of differentially abundant proteins in Figure \ref{fig:da_lineplot} to show the performance of of the compared methods.
+We also report the amount of differentially abundant proteins in Figure \ref{fig:da_lineplot} to show the performance of of the compared methods. We compare two-sided differential abundance since Triqler computes two-sided fold change. A fold-change treshold of 0.4 has been applied to Triqler, but not Top3, MSstats or MSqRobSum. This should give an disadvantage to Triqler. We observe that Triqler and MSqRobSum are the best performing protein quantification methods for {\em E. Coli} and Yeast in both spectral library matching and pseudo-spectrum workflows. We observe that MSqRobSum and MSstats report far more differentially abundant human proteins than Triqler and Top3. These are false hits.   
 
 \begin{figure}[hbt]
     \centering
@@ -368,14 +384,14 @@ We also report the amount of differentially abundant proteins in Figure \ref{fig
         D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human.png} &
         H & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human.png} 
     \end{tabular}
-    \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) DDA spectrum libraries and (E-H) pseudo spectra for each proteome 
-    (A,E) All, (B,F) ECOLI, (C,G) YEAST, and (D,H) HUMAN. \label{fig:da_lineplot}}
+    \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) Spectrum library matching and (E-H) pseudo spectra workflowsf for each proteome 
+    (A,E) All, (B,F) {\em E. Coli}, (C,G) Yeast, and (D,H) Human. \label{fig:da_lineplot}}
 \end{figure}
 
 
 \subsubsection*{Comparison of ability to differentiate differentially abundant proteins}
 
-The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we compared the methods'ability to inferr differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, see Figure \ref{fig:diff_vs_hela}. Overall it seems like 
+The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we compared the methods'ability to infer differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, see Figure \ref{fig:diff_vs_hela}. Overall it seems like Triqler reports more true differential abundat protein for every false differential abundant protein for both spectral library matching and pseudo-spectrum methods. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstat and MSqRobSum. 
 
 
 \begin{figure}[hbt]
@@ -392,12 +408,13 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
     \end{tabular}
     %\todo[inline]{Merge the plots so ythat you report the number of differentialy abundant yeast+ecoli proteins as a function of human proteins proteins. "E. coli" should be written in italics.
     %}   
-    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler. \label{fig:diff_vs_hela}}
+    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler, because it is the rounded lower bound for fold-change computed by Triqler (Supplement fig. REF-s1 shows differential abundance for each specie). \label{fig:diff_vs_hela}}
 \end{figure}
 
 \subsubsection*{Comparison of statistical calibration}
 
-We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relation between the fraction of wrongly reported differential abundant proteins (i.e. the number of human proteins), and the estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr})
+We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relation between the fraction of wrongly reported differential abundant proteins (i.e. the number of human proteins), and the estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). We observe that Triqler and Top3 shows a fraction of human protein that is close to the q-value, while MSstats and  MSqRobSum seem to have a larger amount of wrongly identified differentially abundant protein than the reported FDR. 
+
 \begin{figure}[hbt]
     \centering
     \centering
@@ -412,10 +429,11 @@ We subsequently set out to test the statistical calibration of the different sum
         A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with q-value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MsStats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with q-value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MSstats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
 
+\iffalse
 \subsubsection*{Constant variance}
 
 \begin{figure}[hbt]
@@ -432,10 +450,10 @@ We subsequently set out to test the statistical calibration of the different sum
         H \includegraphics[width=0.35\linewidth]{../../result/report_plots/diann_scatter_top3.png} & %\includegraphics[width=0.3\linewidth]{} 
     \end{tabular}
     %\todo[inline]{Make scatter for OSW as well, and how to do with fig sizing?. Change the coloring and order of series so that they are coinsistent through the panels.}
-    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) DDA spectrum libraries and (E-H) psedo spectra as generated by 
+    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) Spectrum library matching and (E-H) pseudo spectra workflows as generated by 
     (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top-3. \label{fig:fc_histogram}}
 \end{figure}
-
+\fi
 
 
 %\todo{Finish the truncated distribution fitting}
