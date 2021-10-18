@@ -17,7 +17,7 @@
 % line numbers
 %\usepackage[right]{lineno}
 
-\usepackage{natbib}
+%\usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{float}
 
@@ -59,9 +59,10 @@ Here we show that Triqler, is well compatible with data-independent acquisition 
   
 
 \section*{Introduction}
-Label-free quantification (LFQ) using Mass spectrometry (MS)-based proteomics enables efficent differential concentration determination of proteins in complex mixtures. The processing of data from such experiments requires multiple different steps, all subjects to errors. We have previously designed a hierarchical Bayesian model, triqler, able to control for errors from both the identification and quantification process in such experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins \cite{kall2020integrating}.   
 
-Triqler was designed for handling data from Data-dependent acquisition (DDA). However, Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated} is generally consider to give more reproducible peptide detection, and allow for a broader dynamical range in quantification \cite{bern2010deconvolution,zhang2020DIA}, compared to DDA. Here, we set out to investigate if Triqler is a suitable tool for protein summarization in DIA data.
+Label-free quantification (LFQ) using Mass spectrometry (MS)-based proteomics enables efficent differential concentration determination of proteins in complex mixtures. The processing of data from such experiments requires multiple different steps, all subjects to errors. We have previously designed a hierarchical Bayesian model, Triqler, able to control for errors from both the identification and quantification process in such experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins \cite{The2018Integrated}.   
+
+Triqler was designed for handling LFQ data from Data-dependent acquisition (DDA). However, many labs prefer Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated} as they find that it gives more reproducible peptide detection, and allow for a broader dynamical range in quantification \cite{bern2010deconvolution,zhang2020DIA}, compared to DDA. Here, we set out to investigate if Triqler is a suitable tool for protein summarization in DIA data.
 
 For the analysis of DIA data, just as any other type of analysis of complex data, the individual computational methods for all the steps in the processing affect the final results. It is therefore quite hard to evaluate the influence of the individual tools, which should not stop the field from trying to establish what the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools is challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward} \cite{leprevost2014best} \cite{pak2013clustering} \cite{faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
 
@@ -86,7 +87,7 @@ Uniprot FASTA files with one protein sequence per gene was downloaded for each s
 
 \subsection*{General workflow}
 
-Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs (SL) and second we searched pseudo-spectra generated directly from the DIA data. The workflows are shown in figure \ref{fig:flowchart}. We will describe the parameter chioces of both theses two methods below.
+Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs, we refer to this workflow as SL hereon, and second we searched pseudo-spectra generated directly from the DIA data, we will refer to this workflow as PS from hereon. The workflows are shown in figure \ref{fig:flowchart}. We will describe the parameter chioces of both theses two methods below.
 
 \begin{figure}[htp]
     \centering
@@ -112,9 +113,9 @@ For the Spectral Library (SL) workflow we searched the LFQBench provided DDA run
 
 \subsubsection*{Pseudo Spectrum generation (PS)}
 
- For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications (M - oxidation on methionine and \^{} is a terminus modifier for protein N-terminal). A spectral library was build from the resulting PSMs at a PSM-level treshold of 0.01 using easyPQP and peptide quantifications was performed with DIA-NN. DIA-NN uses a built-in custom implementation of the mProphet algorithm to compute the q-values \cite{reiter2011mprophet} \cite{demichev2020dia}.
+ For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications (M - oxidation on methionine and \^{} is a terminus modifier for protein N-terminal). \todo{This is confusing. Spell out what it means. Do you look for N-term methionines, or is it something different?} A spectral library was build from the resulting PSMs at a PSM-level treshold of 0.01 \todo{This is a very libral treshold. Is this a default level?} using easyPQP. DIA-NN was used for peptide quantifications, a method that uses a built-in custom implementation of the mProphet algorithm to compute $q$~values \cite{reiter2011mprophet, demichev2020dia}.
  
- %The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the q-values. \cite{reiter2011mprophet} \cite{demichev2020dia}. 
+ %The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the $q$~values. \cite{reiter2011mprophet} \cite{demichev2020dia}. 
 
 % VARIABLE MODIFICATION 
 % https://github-wiki-see.page/m/Nesvilab/MSFragger/wiki/Setting-the-Parameters 
@@ -124,7 +125,7 @@ For the Spectral Library (SL) workflow we searched the LFQBench provided DDA run
 
 
 \subsection*{Protein summarization}
-The peptides was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both spectral library and pseudo-spectra pipelines. The multiple test correction is performed with q-value for Triqler and Top3, while Benjamini-Hochberger \cite{benjamini1995controlling} is used for MsStats and MSqRobSum. The q-value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach guarantees that the reported FDR is less than the true FDR. The consequence of this is that even though the methods are interchangeable, the Benjamini-Hochberger approach has slightly less statistical power and be slightly more conservative \cite{korthauer2019practical}.
+The peptides was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both spectral library and pseudo-spectra pipelines. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger \cite{benjamini1995controlling} is used for MsStats and MSqRobSum. The $q$~value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach guarantees that the reported FDR is less than the true FDR. The consequence of this is that even though the methods are interchangeable, the Benjamini-Hochberger approach has slightly less statistical power and be slightly more conservative \cite{korthauer2019practical}.
 
 %For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
 
@@ -209,7 +210,7 @@ Triqler is based on probabilistic graphical models that allow error information 
 Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability threshold between the two samples given a fold change evaluation limit. 
 
 \subsubsection*{Top3}
-The precursors are filtered by q-value \textgreater 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
+The precursors are filtered by $q$~value \textgreater 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
 
 \subsubsection*{MSstat}
  MSstats customizes a linear mixed model to the specific experiment and each protein \cite{choi2014msstats}. SWATH2Stats was used to convert the .osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
@@ -232,7 +233,7 @@ The field of protein quantification is relatively new. Many protein quantificati
 \subsubsection*{Protein level results}
 
 \subsubsection*{Differential abundance - log2distribution and number of differentially abundant proteins}
-The differentially abundant proteins are proteins with a log2-fold change of proteins with a q-value lower than a certain threshold for q-value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
+The differentially abundant proteins are proteins with a log2-fold change of proteins with a $q$~value lower than a certain threshold for $q$~value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
 
 %(Write formula for triqler)
 %(Write formula for other methods)
@@ -413,7 +414,7 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
 
 \subsubsection*{Comparison of statistical calibration}
 
-We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relation between the fraction of wrongly reported differential abundant proteins (i.e. the number of human proteins), and the estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). We observe that Triqler and Top3 shows a fraction of human protein that is close to the q-value, while MSstats and  MSqRobSum seem to have a larger amount of wrongly identified differentially abundant protein than the reported FDR. 
+We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relation between the fraction of wrongly reported differential abundant proteins (i.e. the number of human proteins), and the estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). We observe that Triqler and Top3 shows a fraction of human protein that is close to the $q$~value, while MSstats and  MSqRobSum seem to have a larger amount of wrongly identified differentially abundant protein than the reported FDR. 
 
 \begin{figure}[hbt]
     \centering
@@ -429,7 +430,7 @@ We subsequently set out to test the statistical calibration of the different sum
         A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with q-value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MSstats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MSstats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
 
@@ -512,20 +513,20 @@ Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the numb
 
 
 
-Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially abundant proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values and anti-conservative at higher q-values. Triqler is better calibrated for low q-values and gets more conservative as the q-value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low q-values and get less conservative as the q-value threshold increases.  
+Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially abundant proteins for a given $q$~value level is more linear for triqler. At log2FC = 2 all methods are conservative at low $q$~values and anti-conservative at higher $q$~values. Triqler is better calibrated for low $q$~values and gets more conservative as the $q$~value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low $q$~values and get less conservative as the $q$~value threshold increases.  
 
    
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/calibration_plot_scaled.png}
-    \caption{OSW Q-value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
+    \caption{OSW $q$~value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
     \label{fig:osw_n_diff_exp}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png}
-    \caption{DIANN Q-value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
+    \caption{DIANN $q$~value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
     \label{fig:DIANN_n_diff_exp}
 \end{figure}
 
