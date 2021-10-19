@@ -48,7 +48,7 @@
 
 %Here I want to reference a figure that is in my supplementary content \cref{supp-fig:model_selection_criteria}.
 
-Here is a ref to the supplement, we have a Supplementary Figure \ref{fig:diff_vs_hela_find_a_better_label}.
+%Here is a ref to the supplement, we have a Supplementary Figure \ref{fig:diff_vs_hela_find_a_better_label}.
 
 \begin{abstract}
 
@@ -83,7 +83,7 @@ We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE iden
 
 \subsubsection*{Sequence database}
 
-Uniprot FASTA files with one protein sequence per gene was downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. To reduce for the effect of the different protein inference strategies for the tested protein summarization tools, a modified .fasta file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. After filtering the FASTA file contained 20 302 proteins (288 human proteins less proteins than unfiltered database), 5 848 yeast proteins (198 yeast proteins less proteins than unfiltered database), and 4 306 E. Coli proteins (67 E. Coli proteins than unfiltered database). Replacing the I/L amino acids with to handle mass-equivalence did not result in any considerable differences (See supplementary material \ref{supp:table:uniprot_protein_count}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
+Uniprot FASTA files with one protein sequence per gene was downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 E. coli proteins. To reduce for the effect of the different protein inference strategies for the tested protein summarization tools, a modified .fasta file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. After filtering the FASTA file contained 20 302 proteins (288 human proteins less proteins than unfiltered database), 5 848 yeast proteins (198 yeast proteins less proteins than unfiltered database), and 4 306 E. Coli proteins (67 E. Coli proteins than unfiltered database). Replacing the I/L amino acids with to handle mass-equivalence did not result in any considerable differences (See Supplementary Table \ref{table:proteins_in_database}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
 
 \subsection*{General workflow}
 
@@ -94,7 +94,7 @@ Just as in LFQBench, we used two separate strategies to generate peptide abundan
     \begin{tabular}{lclc} 
 
 
-        \includegraphics[width=1.1\linewidth]{../../result/report_plots/DIA_benchmark_flowchart_color} 
+        \includegraphics[width=1.1\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
     \end{tabular}
 
         \caption{{\bf The spectrum-library matching and pseudo spectrum workflow pipelines.}}
@@ -330,7 +330,7 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 %    B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
 
     %\caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
-        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$.(B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See supplemental figure FIX-ref-S5 and FIX-ref-S6).}
+        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$.(B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot} and Supplementary Figure \ref{fig:fraction_missing_values}).}
       \label{fig:assumptions}
 \end{figure}
 
@@ -409,7 +409,7 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
     \end{tabular}
     %\todo[inline]{Merge the plots so ythat you report the number of differentialy abundant yeast+ecoli proteins as a function of human proteins proteins. "E. coli" should be written in italics.
     %}   
-    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler, because it is the rounded lower bound for fold-change computed by Triqler (Supplement fig. REF-s1 shows differential abundance for each specie). \label{fig:diff_vs_hela}}
+    \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler, because it is the rounded lower bound for fold-change computed by Triqler (Supplement Figure \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela} shows differential abundance for each specie). \label{fig:diff_vs_hela}}
 \end{figure}
 
 \subsubsection*{Comparison of statistical calibration}
@@ -551,9 +551,11 @@ Fig. \ref{fig:osw_de_human_vs_de_specie} and \ref{fig:DIANN_de_human_vs_de_speci
 
 \section*{Discussion}
 
+In bottom-up proteomics summarizing peptides to protein has been a long-established practice. The protein summarization procedure results with lower variance among technical and biological replicates than a peptide-level analysis \cite{}.   
+
 Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates.
 
-We do see some differences in how DIA and DDA ppetide-level abundance data appear. For instance there are more missing values in DDA than DIA data. Howwever, we find that qualatively the types of data are similar, at leas tin the sense that Triqler's underlying assumption of missing values seem to be as valid for DDA and DIA data.
+We do see some differences in how DIA and DDA ppetide-level abundance data appear. For instance there are more missing values in DDA than DIA data. However, we find that qualitatively the types of data are similar, at least in the sense that Triqler's underlying assumption of missing values seem to be as valid for DDA and DIA data.
 
 Key notes for the discussion:
 \begin{itemize}
@@ -568,7 +570,6 @@ Key notes for the discussion:
   \item Future improvement: Protein inference strategies which can account for multiple proteoforms.
   \item Discuss why dataset such as LFQ-bench is good (because it makes it easy to perform benchmarking and comparison).
   \item Add some more general notes about the field in general.
-  
 \end{itemize}
 
 

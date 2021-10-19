@@ -6,6 +6,8 @@ setwd("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire/msfragger/diann")
 setwd("/hdd_14T/data/PXD002952/res_20210609_DIAUmpire/MSFragger/diann_reformatted_lib")
 setwd("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann/msqrob_input")
 
+
+setwd("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811")
 #Check msqrobsum.html in github repo for more information...
 
 expr_path <- "expr.csv"
@@ -43,8 +45,13 @@ library(msqrobsum)
 set_df = MSnSet2df(set)
 set_df
 
+#write.table(exprs(protset), "prot_set_before_MsnSet2df.csv", sep = "\t", row.names=FALSE)
+
 protset_df = MSnSet2df(protset)
 protset_df
+
+
+#write.table(protset_df, "prot_set.csv", sep = "\t", row.names =FALSE)
 
 #msprobsum on peptide intentities.
 
@@ -79,7 +86,14 @@ msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode =
                            , group_vars = c('protein','human','yeas8','ecoli'))
 
 
-saveRDS(msqrob_result, file = "msrobsum_results_msqrobsum.rds")
+formulas = expression ~ (1|condition)
+msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrobsum'
+                           ## group by folowing variables,
+                           ## they will also be retained in output
+                           , group_vars = "protein")
+
+
+saveRDS(msqrob_result, file = "msrobsum_results_msqrobsum_20210930.rds")
 
 typeof(msqrob_result)
 class(msqrob_result)
@@ -99,3 +113,12 @@ write.table(protein_sums, "msqrobsum_protein_sum_20210817.csv", sep = "\t", row.
 
 #contrasts = msqrob_result %>% select(proteins,ecoli,contrasts) %>% unnest
 #contrasts = msqrob_result %>% select(proteins,human,contrasts) %>% unnest
+
+# Printout when using formulas = expression ~ (1|condition)
+
+contrasts = msqrob_result %>% select(proteins,contrasts) %>% unnest
+protein_sums = msqrob_result %>% select(proteins, data_summarized) %>% unnest
+
+write.table(contrasts, "msqrobsum_result.csv", sep = "\t", row.names = FALSE)
+write.table(protein_sums, "msqrobsum_protein_sum_20210817.csv", sep = "\t", row.names=FALSE)
+
