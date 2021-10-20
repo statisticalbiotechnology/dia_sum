@@ -553,25 +553,29 @@ Fig. \ref{fig:osw_de_human_vs_de_specie} and \ref{fig:DIANN_de_human_vs_de_speci
 
 In bottom-up proteomics summarizing peptides to protein has been a long-established practice. There are several reasons protein summarization is beneficial. It gives lower variance among technical and biological replicates than peptide-level analysis, it reduces the amount of hypotheses tested and reduced the amount of missing values, which can have major impact on the quality of the analysis \cite{plubell2021can}.   
 
-Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates.
+Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates. Triqler is also able to detect significantly higher number of differentially abundant proteins for Yeast and E.Coli, while reporting low amount of differentially abundant HeLa proteins. 
+
+One important remark is that the .FASTA database used to define the search space was truncated by keeping only one protein per peptide to control for any difference in protein inference strategies used in the protein summarization methods. There is currently no consensus in how to handle multiple proteoforms in bottom-up proteomics (Cite something from Humpty-Dumpty). Hence, we believe that protein inference strategies that can account for multiple proteoforms would greatly benefit the field by improving the quality of the quantitative analysis. 
 
 We do see some differences in how DIA and DDA peptide-level abundance data appear. For instance there are more missing values in DDA than DIA data. However, we find that qualitatively the types of data are similar, at least in the sense that Triqler's underlying assumption of missing values seem to be as valid for DDA and DIA data.
 
-Another noteworthy 
+Lastle, we want to highlight the benefit and importance as datasets such as the one provided by Navarro et al. (cite). These benchmarking datasets make it easy for the scientific community to investigate computational tools by providing a golden standard and significantly reduces the treshold for benchmark studies. 
+
+
 
 
 
 Key notes for the discussion:
 \begin{itemize}
-  %\item Why it is good with protein summarization (Humpty-Dumpty inspired argumentation).[X] 
-  %\item Triqler is a good alternative for protein summarization.
-  %\item And this we have shown with the benchmark we conducted above.
-  \item Summarize our findings from above.
-  \item Discuss the protein inference problem.
-  \item Tell how we have performed our protein search on a truncated database for fair comparison.
-  \item Highlight fair comparison.
+  \item Why it is good with protein summarization (Humpty-Dumpty inspired argumentation).[X] 
+  \item Triqler is a good alternative for protein summarization. [X]
+  \item And this we have shown with the benchmark we conducted above. [X]
+  \item Summarize our findings from above. [X]
+  \item Discuss the protein inference problem. [X] 
+  \item Tell how we have performed our protein search on a truncated database for fair comparison.[X]
+  %\item Highlight fair comparison. [X]
   \item Discuss future improvements.
-  \item Future improvement: Protein inference strategies which can account for multiple proteoforms.
+  \item Future improvement: Protein inference strategies which can account for multiple proteoforms. [X]
   \item Discuss why dataset such as LFQ-bench is good (because it makes it easy to perform benchmarking and comparison).
   \item Add some more general notes about the field in general.
 \end{itemize}
