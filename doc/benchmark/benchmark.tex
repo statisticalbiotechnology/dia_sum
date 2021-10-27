@@ -125,180 +125,39 @@ For the Spectral Library (SL) workflow we searched the LFQBench provided DDA run
 
 
 \subsection*{Protein summarization}
-The peptides was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both spectral library and pseudo-spectra pipelines. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger \cite{benjamini1995controlling} is used for MsStats and MSqRobSum. The $q$~value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach guarantees that the reported FDR is less than the true FDR. The consequence of this is that even though the methods are interchangeable, the Benjamini-Hochberger approach has slightly less statistical power and be slightly more conservative \cite{korthauer2019practical}.
 
-%For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
+The peptide quantities was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both the spectral library and the pseudo-spectra pipelines. 
 
-\begin{comment}
-(add a third later encyclopedia) 
+\subsubsection*{Top3}
 
-(add workflow schematics )
+We implemented a short script that for each protein selected the three, on average, most abundant peptides across the conditions and summarized their protein quantities.
 
+\subsubsection*{MsStats}
 
-\subsection*{Protein inference problem and reduced database}
+We downloded MsStats version FIXME from \url{FIXME}.
 
-In bottom-up proteomics, redundancy in the matching of peptides to proteins hits is a challenge \cite{nesvizhskii2005interpretation}. The Parsimony principle reports the minimum set of proteins which include all the observed peptides (Occam's razor principle), thereby resolving shared and ambiguous evidence. This method typically reduces the size of the protein list where peptides could belong to several proteins, as the cost of losing potential protein identifications. In addition, it may also lower the reproducibility of the identified proteins\cite{serang2012recognizing}. While the protein grouping approaches bunch together proteins based on different schemas. For example, it is possible to group proteins that map to identical peptides, or when proteins contain overlapping subsets of peptides. The protein groupings are often assigned post peptide identification, which is contrary to good statistical practices to formulate the hypothesis before data are observed \cite{serang2012recognizing}. An example of parsimony and protein grouping is shown in \textbf{table 1}. 
+\subsubsection*{MSqRobSum}
 
-
-\begin{table}[!htbp]
-\begin{tabular}{llllllll}
-          & Peptides &   &   &   &   & Parsimony reported & Grouping reported \\
-          & 1        & 2 & 3 & 4 & 5 &                    &                   \\
-Protein A & x        & x &   &   &   & Yes                & Yes               \\
-Protein B &          & x & x &   &   & No                 & Yes               \\
-Protein C &          &   & x & x &   & Yes                & Yes              	
-\end{tabular}
-\newline
-\textbf{Table 1:} Example of Parsimony reported and protein grouping reported proteins.
-\end{table}
-
-In this benchmarking study, we remove proteins with shared peptides. Using different methods for protein inference yields a different amount of protein matches given the same amount of observed peptides. Ideally, the number of proteins compared between different protein quantitation methods should be the same when benchmarking. By removing proteins with shared peptides from the FASTA database the protein inferences procedures will yield the same protein identifications. This should give a fair comparison regardless of the protein inference method used in the different protein quantitation pipelines.
-
-\subsection*{DDA vs DIA}
-% https://pubs.rsc.org/en/content/articlehtml/2021/mo/d0mo00072h
-
-
-
-\subsection*{Missing values}
-
-Missing values are a big problem in DDA-MS. The problem is significantly relieved using DIA-MS. Bruderer et al. reported that MS-analysis comprimising of 24 samples resulted in 51 \text{\%} missing values in DDA-MS and only 1.6 \text{\%} missing values in DIA-MS \cite{bernhardt2015extending}. Poor missing value imputation can result in unreliable results \cite{karpievitch2009statistical} \cite{webb2010combined}, and even a single peptide misidentification, quantification error or poorly imputed value can dramatically change the results \cite{karpievitch2009statistical} \cite{zhang2017covariation}. Triqler uses a censoring model that sets higher probabilities for low ion current missing values \cite{The2018Integrated}.
-
-\[ \text{censnorm}(x) = \left( \frac{1}{2} + \frac{1}{2}\right) \text{tanh}\left( \frac{x - \mu_m}{\sigma_m}\right) \mathcal{N}(x | \mu_f, \sigma_f)\]
-
- The intuition is that low ion currents are harder to detect than high ion currents \cite{The2018Integrated}. The low end intensities are "Missing Not At Random" data according to Lazar et al \cite{lazar2016accounting}. Therefore, making the low end intensities more likely to be censored. Triqler integrated this distribution to determine the differential abundance. 
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/missingness_fraction_intensity.png}
-    \caption{Missingness proportions by observed mean for peptides.}
-    \label{fig:missingness_fraction}
-\end{figure}
-
-
-Similarily to DDA data \cite{karpievitch2009statistical} \cite{koopmans2014empirical}, \ref{fig:missingness_fraction} shows that the missing value proportion in DIA data has higher missingness at lower end intensities.  
-
-%* missing values [ok]
-%* missing value model [in progress]
-%* previous missing value models []
-%* censored data [ok]
-%* benefit of triqler for missing values [ok]
-%* write that the missing value signature is similar for DIA and DDA - compare to A statistical framework for protein quantitation in bottom-up MS-based proteomics fig. 2.
-%* missing not at random (Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies  [18] .) 
-
-% CONT HERE writing about what fig shows and comparing it to [13] figure and writing about misssing not at random model.
-
-\subsection*{DIA methods}
-Write about why different methods where used.
-
-\subsubsection*{OpenSwath Analysis}
-Version (version) of OpenSwath was used. The spectral library generated above is converted to .pqp format using TargetedFileConverter. Data analysis was conducted using OpenSwathWorkflow with parameters (-Scoring:TransitionGroupPicker:background\_subtraction original -Scoring:stop\_report\_after\_feature -1, -min\_upper\_edge\_dist 1, -tr\_irt hroest\_DIA\_iRT.TraML, -extra\_rt\_extraction\_window 100, -min\_rsq 0.95, -min\_coverage 0.6, -Scoring:Scores:use\_dia\_scores true, -rt\_extraction\_window 600, -mz\_extraction\_window 30, -threads 10, -Scoring:DIAScoring:dia\_extraction\_unit ppm). After data extraction the data .osw output was merged using pyprophet merge option and pyprophet was used for statistical validation. Pyprophet export was used without FDR filtering (--max\_global\_protein\_qvalue 1.0, --max\_global\_peptide\_qvalue 1.0, --max\_rs\_peakgroup\_qvalue 1.0, --max\_transition\_pep 1.0) to give a complete list of peptide quantifications for further down-stream analysis.
-
-\subsubsection*{DIAUmpire and DIA-NN analysis}
-DIAUmpire signal extraction (SE) was used through Fragpipe GUI (v15.0). Default parameters was set (MS1 PPM: 10, MS2 PPM: 20, Max Missed Scans:1, Mass Defect Filter On, RP max: 25, RF max: 500, Corr Treshold:0, Delta Apex: 0.2, RT Overlap 0.3, Mass Defect Offset 0.1, Isotope Pattern: 0.3, MS1 SN: 1.1, MS2 SN 1.1, Adjust fragment intensity On). MSFragger was used on the resulting .mzML files from DIAUmpire SE with default parameters for Peak Matching (PPM: [-20, 20], Fragment mass tolerance PPM: 20, Calibration and Optimization: Mass Calibration, Parameter optimization, Isotop error: 0/1, Data type: DDA, ), protein digestion (Load rules: stricttrypsin, Enzyme name: stricttrypsin, Cut after: KR, Cleavage: ENZYMATIC, Missed cleavages: 2, Clip N-term M: On, Peptide length 7-50, Peptide mass range: 500-5000, Split database: 1) and Modification (Variable modifications: M, \/[\^, Fixed modification: "all selected"). 
-
-\subsubsection*{EncyclopeDIA and PECAN analysis}
-Prosit was used to construct spectra libraries from the modified FASTA files. The fragmentation model used was "Prosit - Model - Fragmentation" and the iRT model "Prosit - Model - iRT" (available from \url{https://figshare.com/projects/Prosit/35582)}.
-...
-
-\subsection*{Protein quantification methods}
+We downloded MSqRobSum version FIXME from \url{FIXME}.
 
 \subsubsection*{Triqler}
 
-Triqler is based on probabilistic graphical models that allow error information to propagate through all steps from MS1 feature detection to protein quantification. Unconventionally, it produces posterior probabilities for fold changes rather than point estimates \cite{The2018Integrated}. The robustness of results when faulty imputation of missing data is conducted is a common problem in missing data analysis \cite{ma2018bayesian} and imputation methods for missing values can introduce various type of errors, which can have significant impact on differential abundances \cite{webb2015review} \cite{lazar2016accounting}. These posteriors incorporate information about uncertainty at different levels of the protein quantification process, and therefore should result in robust protein quantification. Specifically, It combines combines the identification and quantification errors from feature, PSM, peptide, protein and treatment group level to a final posterior distribution of fold change between two treatment groups. Triqler has been shown to distinguish more proteins for DDA data compared to other DDA protein quantification methods. \cite{The2018Integrated}. 
+The code for Triqler is kept at \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in thoiis paper.
 
-Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It computes the two-sided differential probability threshold between the two samples given a fold change evaluation limit. 
+\subsubsection*{Multiple Hypothesis Correction}
+There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRobSum uses Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR. As a consequens, the statistics from MsStats and MSqRobSum should be slightly more conservative \cite{korthauer2019practical}.
 
-\subsubsection*{Top3}
-The precursors are filtered by $q$~value \textgreater 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptide (single hit proteins) and proteins detected only in two injections are discarded.
-
-\subsubsection*{MSstat}
- MSstats customizes a linear mixed model to the specific experiment and each protein \cite{choi2014msstats}. SWATH2Stats was used to convert the .osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used (specifically the peptide-level data is filtered by an m-score < 0.01 to reduce the memory consumption before running MSstats). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.  
-
-\subsubsection*{Msqrobsum}
-Msqrobsum provides protein summarization that account for peptide specific effect (MSqRob inference framework \cite{goeminne2020msqrob}) and are further processed using robust ridge regression. The MSqRob inference frame work is a linea regression peptide-based mixed model. The parameters for the model are tuned using penalised estimation and multiple-testing is corrected using Benjamini-Hochberg FDR procedure. 
-
-The data is processed according to default setting. It preprocessed using MSnBase R/Bioconductor package \cite{gatto2012msnbase} and normalized using Variance Stabilizing Normalization \cite{von2002variance}. 
-
-
-%(Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
-
-
-
-\subsection*{Benchmarking methods}
-
-\subsubsection*{Variance Structure - why the DDA methods works and makes sense}
-The field of protein quantification is relatively new. Many protein quantification methods have been developed for LFQ data and performance has been established on DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require a homoskedastic variance. This is investigated using statistical visualization of the data.
-
-\subsubsection*{Protein level results}
-
-\subsubsection*{Differential abundance - log2distribution and number of differentially abundant proteins}
-The differentially abundant proteins are proteins with a log2-fold change of proteins with a $q$~value lower than a certain threshold for $q$~value based protein summarization methods (Top3, msStats and msqrob), while triqler computes a posterior distribution based  log2-fold change. 
-
-%(Write formula for triqler)
-%(Write formula for other methods)
-
-\subsubsection*{FDR control (calibration plot)}
-An FDR control of the quanfication method is used to check the calibration of the methods. We check the true FDR against the reported FDR. The true FDR is estimated using
-
-\[ \text{True} \: FDR = \frac{FP_\text{estimate, specie}}{DE \:\text{Proteins}_\text{specie}}\]
-
-for each E.coli and yeast. The human protein are used to compute the $FP_\text{estimate}$ for each specie. We assume the proportion human proteins that are differentially abundant at a given FDR-level is the proportion $FP$ for E.Coli and yeast as well, this proportion is denoted as a constant scaling factor $k$. The $F_\text{estimate}$ is therefore
-
-\[ FP_\text{estimate, specie} = k \cdot \text{Protein}_\text{specie} \]
-
-where
-
-\[ k = \frac{DE \: \text{Protein}_\text{human}}{\text{Protein}_\text{human}}\]
-
-
-
-%An FDR control of the quantification methods is required for benchmarking. We use the False Discovery Proportion (FDP) and True Positive Rate (TPR). FDP is calculated using and calculated using 
-
-%	\[FDP = \frac{ \text{false positives}}{\text{true positive} + \text{false positive}} \]
-
-%and,
-
-%	\[TPR = \frac{\text{true positives}}{\text{all positives}} \]
-
-
-%The FDP is calculated using the fraction of human proteins discovered as DE and the TP is the fraction of E.Coli and Yeast discovered. 
-
-\end{comment}
+%For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
 
 
 \section*{Results}
 
 
-\begin{table}[H]
-\begin{tabular}{lllllll}
-\hline
-\multicolumn{7}{c}{OSW}                                                                                                                                                                                   \\ \hline
-Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
-Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
-Peptides  & 20 747                        & 21 445                        & 21 016                        & 20 494                        & 22 792                        & 22 787                        \\
-Proteins  & 2 836                         & 2 857                         & 2 869                         & 2 818                         & 2 909                         & 2 918                         \\ \hline
-\end{tabular}
- \caption{{\bf Number of identified peptides and proteins for the samples using spectral library workflow.}
-      \label{fig:osw_peptide_and_protein_id}}
-\end{table}
-
-\begin{table}[H]
-\begin{tabular}{lllllll}
-\hline
-\multicolumn{7}{c}{DIANN}                                                                                                                                                                                 \\ \hline
-Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
-Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
-Peptides  & 21 036                        & 20 783                        & 21 040                        & 21 243                        & 21 325                        & 21 248                        \\
-Proteins  & 3 377                         & 3 350                         & 3 368                         & 3 358                         & 3 381                         & 3 356                         \\ \hline
-\end{tabular}
- \caption{{\bf Number of identified peptides and proteins for the samples using the pseudo-spectra workflow.}
-      \label{fig:diann_peptide_and_protein_id}}
-\end{table}
 
 \subsection*{Test of assumptions}
 
-We strived to validate the Triqler method for a DIA setting. We hence investigatred some properties of DIA data to see if they agree with the assumption we mnade when designing Triqler for DDA data. DIA data is known to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
+Triqler was designed for handling DDA data, and we first set out to validate some of the assumptions Triqler makes about data, holds true for the tested DIA dataset.
+DIA data is known to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fullfilled by DIA data (See Figure \ref{fig:assumptions}B).
 
 
 
@@ -307,30 +166,11 @@ We strived to validate the Triqler method for a DIA setting. We hence investigat
 \begin{figure}[H]
     \centering
     \begin{tabular}{lclc} 
-%        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png}  & &%\includegraphics[width=0.3\linewidth]{} & 
-%        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-%        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_fraction_missing_values.png}  &
-%        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} 
-
-% DIANN RESULTS
-%        A \includegraphics[width=0.40\linewidth]{../../result/report_plots/diann_sigma_mu_violinplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-%        B \includegraphics[width=0.45\linewidth]{../../result/report_plots/diann_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-
-% OSW RESULTS
         A \includegraphics[width=0.40\linewidth]{../../result/report_plots/osw_sigma_mu_boxplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         B \includegraphics[width=0.45\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\
 
     \end{tabular}
-%    \todo[inline]{Fill in the fixme below.\\
-%    A+B: Remove the header of each plot (Never-ever use headers of plots.)\\
-%    A+B: Move the diann plots to the supplement. And change the scale of the diann plot so that you see other things than white space.\\
-%    A: It is hard to perfectly see the reality of our claim for the A plot. Could you try a box plot instead. Also plot the meadian stdv of the set as a red dotted line across the violins or boxes.
-%    B: Increase the font size for B\\
-%    B: Zoom in on the lower left of the plot so that one can see what is going on.\\
-%    B: Spell out what the red line signifies, how you fitted it, and why you think the result indicates that DIA data works for Triqler. }
-
-    %\caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.}  (A) We plotted the standard deviation as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set  in log-log scale. We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function FIXMEe.}
-        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$.(B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot} and Supplementary Figure \ref{fig:fraction_missing_values}).}
+        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot} and Supplementary Figure \ref{fig:fraction_missing_values}).}
       \label{fig:assumptions}
 \end{figure}
 
