@@ -140,17 +140,17 @@ We implemented a short script that for each protein selected the average of the 
 
 \subsubsection*{MsStats}
 
-We installed MSstats version 3.18.5 using R/Bioconductor. MSstats was run using the MSstats command \texttt{dataProcess} without any peptide och m\_score filtering on the input data. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
+We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats was run using the MSstats command \texttt{dataProcess} without any peptide och m\_score filtering on the input data. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
 \subsubsection*{MSqRobSum}
 
-We installed MSqRobSum version 0.9 using R/Bioconductor. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. This setup makes sure that if the fist models fails, the second models is tried. 
+We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. This setup makes sure that if the fist models fails, the second models is tried. 
 
 %We downloded MSqRobSum version 0.9 from \url{FIXME}.
 
 \subsubsection*{Triqler}
 
-The code for Triqler is kept at \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in thoiis paper.
+The code for Triqler is kept at \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. Triqler was run with \texttt{fold\_change\_eval} parameter between 0 and 2.00 with 0.04 increments.
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRobSum uses Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give a unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR. As a consequens, the statistics from MsStats and MSqRobSum should be slightly more conservative \cite{korthauer2019practical}.
@@ -194,7 +194,7 @@ Also, we selected to compare the efficency of Triqler to the ones of the protein
 
 To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. An FDR filter is not applied on the histograms. We observe that Triqler and Top3 has less unbias than MSstats and MSqRobSum by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at zero log2 fold-change. These peaks are insignificant peaks. 
 
-FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
+%FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
 
 \begin{figure}[hbt]
     \centering
@@ -414,17 +414,17 @@ Lastle, we want to highlight the benefit and importance as datasets such as the 
 
 
 Key notes for the discussion:
-\begin{itemize}
-  \item Why it is good with protein summarization (Humpty-Dumpty inspired argumentation).[X] 
-  \item Triqler is a good alternative for protein summarization. [X]
-  \item And this we have shown with the benchmark we conducted above. [X]
-  \item Summarize our findings from above. [X]
-  \item Discuss the protein inference problem. [X] 
-  \item Tell how we have performed our protein search on a truncated database for fair comparison.[X]
+%\begin{itemize}
+%  \item Why it is good with protein summarization (Humpty-Dumpty inspired argumentation).[X] 
+%  \item Triqler is a good alternative for protein summarization. [X]
+%  \item And this we have shown with the benchmark we conducted above. [X]
+%  \item Summarize our findings from above. [X]
+%  \item Discuss the protein inference problem. [X] 
+%  \item Tell how we have performed our protein search on a truncated database for fair comparison.[X]
   %\item Highlight fair comparison. [X]
   \item Discuss future improvements.
-  \item Future improvement: Protein inference strategies which can account for multiple proteoforms. [X]
-  \item Discuss why dataset such as LFQ-bench is good (because it makes it easy to perform benchmarking and comparison).
+%  \item Future improvement: Protein inference strategies which can account for multiple proteoforms. [X]
+%  \item Discuss why dataset such as LFQ-bench is good (because it makes it easy to perform benchmarking and comparison).
   \item Add some more general notes about the field in general.
 \end{itemize}
 
