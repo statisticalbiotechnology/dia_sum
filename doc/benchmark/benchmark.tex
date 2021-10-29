@@ -126,19 +126,23 @@ For the Spectral Library (SL) workflow we searched the LFQBench provided DDA run
 
 \subsection*{Protein summarization}
 
-The peptide quantities was summarized to proteins using Top3, MSstats, MSqRobSum and Triqler for both the spectral library and the pseudo-spectra pipelines. 
+The peptide quantities was summarized to proteins using the average of the three most intense peptides (We call it Top3), MSstats, MSqRobSum and Triqler for both the spectral library and the pseudo-spectra pipelines. 
 
 \subsubsection*{Top3}
 
-We implemented a short script that for each protein selected the three, on average, most abundant peptides across the conditions and summarized their protein quantities.
+We implemented a short script that for each protein selected the average of the 3 most abundant peptides for each protein in every sample if there are 2 or more peptide intensities prevalent. 
+
+% res = triq_run.groupby("proteins")["intensity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
+
+%We implemented a short script that for each protein selected the three, on average, most abundant peptides across the conditions and summarized their protein quantities.
 
 \subsubsection*{MsStats}
 
-We downloded MsStats version FIXME from \url{FIXME}.
+We installed MSstats version 3.18.5 using R/Bioconductor.
 
 \subsubsection*{MSqRobSum}
 
-We downloded MSqRobSum version FIXME from \url{FIXME}.
+We downloded MSqRobSum version 0.9 from \url{FIXME}.
 
 \subsubsection*{Triqler}
 
