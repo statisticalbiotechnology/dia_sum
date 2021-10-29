@@ -140,11 +140,13 @@ We implemented a short script that for each protein selected the average of the 
 
 \subsubsection*{MsStats}
 
-We installed MSstats version 3.18.5 using R/Bioconductor.
+We installed MSstats version 3.18.5 using R/Bioconductor. MSstats was run using the MSstats command \texttt{dataProcess} without any peptide och m\_score filtering on the input data. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
 \subsubsection*{MSqRobSum}
 
-We downloded MSqRobSum version 0.9 from \url{FIXME}.
+We installed MSqRobSum version 0.9 using R/Bioconductor. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. This setup makes sure that if the fist models fails, the second models is tried. 
+
+%We downloded MSqRobSum version 0.9 from \url{FIXME}.
 
 \subsubsection*{Triqler}
 
