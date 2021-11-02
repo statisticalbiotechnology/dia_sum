@@ -178,7 +178,7 @@ Given the peptide abundances derived from the SL and PS workflows, we could now 
 
 \subsubsection*{Fold change distributions}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks are insignificant peaks. \todo{LK: What is meant with "These peaks are insignificant peaks"?}
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks all have a false discovery rate of 1.00, and would normally be filtered away by tresholding.
 
 %FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
 
