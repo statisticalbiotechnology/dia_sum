@@ -76,6 +76,13 @@ for file in os.listdir():
         df_all = pd.concat([df_all, df], axis = 0)
 df_all = df_all.reset_index().drop("index", axis = 1)
 
+######################################################################
+# for tresholding before converting to triqler and then to msqrobsum #
+######################################################################
+
+df_all = df_all[df_all.m_score < 0.01]
+
+
 # filename has different formatting, we need to change number or implement regex.
 experiment_id_mapper = lambda x: x.split("_")[5]
 sample_id_mapper = lambda x: x.split("_")[8] #hye124 
@@ -87,7 +94,7 @@ df_triq = df_triq.rename(columns={"experiment_id": "run", "sample_id": "conditio
                         "m_score":"searchScore", "Intensity":"intensity", "FullPeptideName":"peptide",
                         "ProteinName":"proteins"}, errors="raise")
 df_triq["searchScore"] = -np.log10(df_triq["searchScore"])
-df_triq.to_csv("triqler_input.csv", sep = "\t", index=False)
+df_triq.to_csv("triqler_input_filtered_mscore_0.01.csv", sep = "\t", index=False)
 
 
 

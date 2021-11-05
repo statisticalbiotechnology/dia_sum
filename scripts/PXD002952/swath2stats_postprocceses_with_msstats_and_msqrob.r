@@ -1,6 +1,8 @@
 
 
 setwd("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix")
+setwd("/hdd_14T/data/PXD002952/20210805_osw_run")
+
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
@@ -12,13 +14,18 @@ library(data.table)
 data('Spyogenes', package = 'SWATH2stats')
 
 data_test <- data
-data <- data.frame(fread('aligned.csv', sep='\t', header=TRUE))
+#data <- data.frame(fread('aligned.csv', sep='\t', header=TRUE))
+data <- data.frame(fread('feature_alignment.tsv', sep='\t', header=TRUE))
+data <- data.frame(fread('feature_alignment_filtered_transition.tsv', sep='\t', header=TRUE))
+
 
 Study_design <- data.frame(Filename = unique(data$align_origfilename))
 Study_design$Condition <- gsub("_.*", "" ,gsub(".*(Sample_)", "", Study_design$Filename))
 Study_design$BioReplicate <- gsub("\\..*", "", gsub(".*(Repl)", "", Study_design$Filename))
 Study_design$Run <- seq_len(nrow(Study_design))
 head(Study_design)
+write.csv(Study_design, "msstats_run.csv", row.names = FALSE)
+
 
 #data.annotated <- sample_annotation(data, Study_design)
 data.annotated <- sample_annotation(data, Study_design, column.file = "align_origfilename")
@@ -47,7 +54,7 @@ fdr_target_decoy <- assess_fdr_overall(data.annotated, n.range = 10,
 
 mscore4protfdr(data, FFT = 0.25, fdr_target = 0.05)
 
-data.filtered <- filter_mscore_condition(data.annotated, 0.001, n.replica = 2)
+data.filtered <- filter_mscore_condition(data.annotated, 1.00, n.replica = 2)
 data.filtered2 <- filter_on_max_peptides(data.filtered, n_peptides = 10)
 data.filtered3 <- filter_on_min_peptides(data.filtered2, n_peptides = 2)
 data.transition <- disaggregate(data.filtered3)
@@ -55,7 +62,7 @@ data.transition <- disaggregate(data.filtered3)
 MSstats.input <- convert4MSstats(data.transition)
 MSstats.input <- convert4MSstats(disaggregate(data.annotated)) # NOTE HTIS MODIFICATION TO UNFILTERED DATA
 head(MSstats.input)
-write.csv(MSstats.input, "msstats_20210511_unfiltered.csv", row.names = FALSE)
+write.csv(MSstats.input, "msstats_input_test.csv", row.names = FALSE)
 
 mapDIA.input <- convert4mapDIA(data.transition)
 head(mapDIA.input)
@@ -71,11 +78,12 @@ sessionInfo()
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-
 BiocManager::install("MSstats")
 library(MSstats)
 
+setwd("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811")
 
+MSstats.input <- data.frame(fread("diann_msstats_input.csv", sep = ",", header = TRUE))
 
 AADGSTVAQTALSYDDYR_2_44730_y11_1_NA
 AADGSTVAQTALSYDDYR
@@ -88,7 +96,7 @@ qMat <- data.frame(qMat)
 qMat[qMat$ProcessedData.FEATURE == "AADGSTVAQTALSYDDYR_2_44730_y11_1_NA", ]
 QuantData <- dataProcess(MSstats.input)
 
-write.csv(QuantData, "msstat_output_20210512.csv", row.names = FALSE)
+write.csv(QuantData, "msstat_output_20211022.csv", row.names = FALSE)
 
 #df[df$aged <= df$laclen, ] 
 QuantData
@@ -109,6 +117,10 @@ testResultOneComparison <- groupComparison(contrast.matrix=comparison, data=Quan
 testResultOneComparison$ComparisonResult
 typeof(testResultOneComparison$ComparisonResult)
 testResultOneComparison$ComparisonResult
+
+write.csv(QuantData$RunlevelData, "msstat_output_runleveldata.csv", row.names = FALSE)
+
+write.csv(testResultOneComparison$ComparisonResult, "msstat_output_filtered_20211104.csv", row.names=FALSE)
 
 #####################
 ##### MSqRobSum #####

@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 
-def diann_to_triqler(filename):
+def diann_to_triqler(filename, qvalue_treshold = 1.00):
     df = pd.read_csv(filename, sep = "\t")
     
     run_mapper = lambda x : x.split("_")[5]
@@ -21,7 +21,7 @@ def diann_to_triqler(filename):
     df["condition"] = df["Run"].map(condition_mapper)
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"]
-    df["searchScore"] = df["QValue"]
+    df["searchScore"] = df["Q.Value"]
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]

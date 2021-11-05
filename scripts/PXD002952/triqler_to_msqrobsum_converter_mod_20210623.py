@@ -94,25 +94,25 @@ def get_mSqRobSum_input(triqler):
     expr_ = res_.reset_index().drop("proteins", axis = 1)
     return expr_, fd_, pd_
 
-df = pd.read_csv("triqler_input.csv", sep = "\t")
 
-expr_, fd_, pd_ = get_mSqRobSum_input(df)
-
-expr_.to_csv("expr.csv", sep = "\t")
-fd_.to_csv("fd.csv", sep = "\t")
-
-mapper = lambda x : "X" + x.split("-")[0] + "." + x.split("-")[1]
-pd__ = pd_
-pd__["sample"]= pd_["sample"].map(mapper)
-pd_
-pd__.to_csv("pd.csv", sep  = "\t")
-
-os.("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger/msqrob_input")
-
-/hdd_14T/data/PXD002952/20210614_dataset/diaumpire/msfragger/diann
-
- 
-et = pd.read_csv("expr.csv", sep="\t")
-ft  = pd.read_csv("fd.csv", sep="\t")
-pt =pd.read_csv("pd.csv", sep ="\t")
-
+if __name__ == "__main __":
+    df = pd.read_csv("triqler_input.csv", sep = "\t")
+    df = pd.read_csv("triqler_input_filtered_mscore_0.01.csv", sep = "\t") #osw
+    df = pd.read_csv("triqler_input_diann_searchScore_Qvalue_treshold_0.01.csv", sep = "\t") #diann
+    expr_, fd_, pd_ = get_mSqRobSum_input(df)
+    
+    expr_.to_csv("expr_0.01.csv", sep = "\t", index = False)
+    fd_.to_csv("fd_0.01.csv", sep = "\t", index = False)
+    
+    mapper = lambda x : "X" + x.split("-")[0] + "." + x.split("-")[1]
+    pd__ = pd_
+    pd__["sample"]= pd_["sample"].map(mapper)
+    pd_
+    pd__.to_csv("pd_0.01.csv", sep  = "\t", index = False)
+    
+    os("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger/msqrob_input")    
+     
+    et = pd.read_csv("expr_0.01.csv", sep="\t")
+    ft  = pd.read_csv("fd_0.01.csv", sep="\t")
+    pt =pd.read_csv("pd_0.01.csv", sep ="\t")
+    
