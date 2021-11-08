@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 
-def diann_to_triqler(filename):
+def diann_to_triqler(filename, qvalue_treshold = 1.00):
     df = pd.read_csv(filename, sep = "\t")
     
     run_mapper = lambda x : x.split("_")[5]
@@ -21,7 +21,9 @@ def diann_to_triqler(filename):
     df["condition"] = df["Run"].map(condition_mapper)
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"]
-    df["searchScore"] = -np.log(df["Q.Value"])
+    df["searchScore"] = df["Q.Value"]
+    df = df[df["searchScore"] < qvalue_treshold]
+    df["searchScore"] = -np.log(df["searchScore"])
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]
@@ -30,7 +32,8 @@ def diann_to_triqler(filename):
     return df_triq
 
 df_triq = diann_to_triqler("report.tsv")
-df_triq.to_csv("triqler_input_diann_searchScore_Qvalue.csv", sep = "\t", index = False)
+df_triq = diann_to_triqler("report.tsv", qvalue_treshold = 0.01) # fpr msqrobsum input
+df_triq.to_csv("triqler_input_diann_searchScore_Qvalue_treshold_0.01.csv", sep = "\t", index = False)
 # https://usermanual.wiki/Document/DIANN20GUI20manual.1528310561/view 
 
 def diann_to_msstats(filename):

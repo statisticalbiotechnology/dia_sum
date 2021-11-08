@@ -98,7 +98,7 @@ Just as in LFQBench, we used two separate strategies to generate peptide abundan
         \includegraphics[width=1.1\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
     \end{tabular}
 
-        \caption{{\bf The spectrum-library matching and pseudo spectrum workflow pipelines.}}
+        \caption{{\bf The spectrum-library matching (SL) and pseudo spectrum workflow pipelines (PS).} For the various pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}).}
       \label{fig:flowchart}
 \end{figure}
 
@@ -178,29 +178,28 @@ Given the peptide abundances derived from the SL and PS workflows, we could now 
 
 \subsubsection*{Distributions of the estimated fold changes}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks are insignificant peaks. \todo{LK: What is meant with "These peaks are insignificant peaks"?} \todo{Maybe we should comment on that Triqler uses a longer list of identified peptides, i.e. it includes q>0.01, as input.}
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks all have a false discovery rate of 1.00, and would normally be filtered away by tresholding.
 
 %FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
 
 \begin{figure}[hbt]
     \centering
     %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
-    \begin{tabular}{lclc} 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_triqler_intensity.png} & 
-        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_triqler_intensity.png} \\ 
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_msqrobsum_intensity.png} & 
-        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_msqrobsum_intensity.png} \\ 
-        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_msstats_intensity.png} & 
-        G & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_msstats_intensity.png} \\ 
-        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_top3_intensity.png} &
-        H & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_top3_intensity.png} 
+    \begin{tabular}{lclc}
+	    A & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_triqler_intensity.png} & 
+	    B & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_top3_intensity.png} \\ 
+	    C & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msstats_intensity.png} & 
+	    D & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msqrobsum_intensity.png} \\ 
+        %A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_triqler_intensity.png} & 
+        %E & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_triqler_intensity.png} \\ 
+        %B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_msqrobsum_intensity.png} & 
+        %F & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_msqrobsum_intensity.png} \\ 
+        %C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_msstats_intensity.png} & 
+        %G & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_msstats_intensity.png} \\ 
+        %D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_top3_intensity.png} &
+        %H & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_top3_intensity.png} 
     \end{tabular}
-    \todo[inline]{Move A-D to supplement.}
-    \todo[inline]{Flip coli and yeast for Top3.}
-    \todo[inline]{Try to find and explanation of the large difference in number of reported proteins for e.g. the C and G subplot.}
-    \todo[inline]{What is the reason for MSqRobSum's spike at zero?}
-    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from (A-D) Spectrum library matching and (E-H) pseudo spectra workflow as generated by 
-    (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top3. \label{fig:fc_histogram}}
+    \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from SL and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRobSum. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We note that the empirical densities of the protein count are less biased for Triqler and Top3 than MSstats and MSqRobSum by observing that the apex of the distribution is closer to the dashed line. (D) MSqRobSum report a large log2 fold change bin at 0. A majority of these valued have been filtered away using a tresholding procedure because the reported false discovery rate for the difference between groups was 1.0 for most values in this bin. \label{fig:fc_histogram}}
 \end{figure}
 
 \subsubsection*{Comparison of ability to discriminate differentially from equvalently abundant proteins}
@@ -216,20 +215,37 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
 %        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_ecoli.png} \\ 
 %        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human_vs_yeast.png} & 
 %        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human_vs_yeast.png} 
-
-        A & \includegraphics[width=0.45\linewidth]{../../result/report_plots/osw_de_human_vs_ecoli_and_yeast.png} & 
-        B & \includegraphics[width=0.45\linewidth]{../../result/report_plots/diann_de_human_vs_ecoli_and_yeast.png} \\ 
+        A & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/osw_de_human_vs_ecoli_and_yeast.png} & 
+        B & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/diann_de_human_vs_ecoli_and_yeast.png} \\ 
 
     \end{tabular}
     %\todo[inline]{Merge the plots so ythat you report the number of differentialy abundant yeast+ecoli proteins as a function of human proteins proteins. "E. coli" should be written in italics.
     %}   
-    \todo[inline]{Truncate the plots at 50 HeLa proteins.}
-    \todo[inline]{Be consistent when naming HeLa or Human proteins.}
     \caption{{\bf Comparison of ability to differentiate differentially abundant proteins} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler, because it is the rounded lower bound for fold-change computed by Triqler (Supplement Figure \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela} shows differential abundance for each specie). \label{fig:diff_vs_hela}}
 \end{figure}
 
 
 
+\subsubsection*{Differential abundance}
+
+We also report the amount of differentially abundant proteins in Figure \ref{fig:da_lineplot} to show the performance of of the compared methods. We compare two-sided differential abundance since Triqler computes two-sided fold change. A fold-change treshold of 0.4 has been applied to Triqler, but not Top3, MSstats or MSqRobSum. This should give an disadvantage to Triqler. We observe that Triqler and MSqRobSum are the best performing protein quantification methods for {\em E. Coli} and Yeast in both spectral library matching and pseudo-spectrum workflows. We observe that MSqRobSum and MSstats report far more differentially abundant human proteins than Triqler and Top3. These are false hits.   
+
+\begin{figure}[hbt]
+    \centering
+    %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    \begin{tabular}{lclc} 
+        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_de_all.png} & 
+        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/diann_de_all.png} \\ 
+        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_de_ecoli.png} & 
+        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/diann_de_ecoli.png} \\ 
+        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_de_yeast.png} & 
+        G & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/diann_de_yeast.png} \\ 
+        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_de_human.png} &
+        H & \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/diann_de_human.png} 
+    \end{tabular}
+    \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) Spectrum library matching and (E-H) pseudo spectra workflowsf for each proteome 
+    (A,E) All, (B,F) {\em E. Coli}, (C,G) Yeast, and (D,H) Human. \label{fig:da_lineplot}}
+\end{figure}
 
 
 
@@ -248,8 +264,8 @@ We subsequently set out to test the statistical calibration of the different sum
 %        D \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_yeast.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
 %        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_ecoli.png} & &%\includegraphics[width=0.3\linewidth]{} & 
 %        E \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_ecoli.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
-        A \includegraphics[width=0.5\linewidth]{../../result/report_plots/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
+        A \includegraphics[width=0.5\linewidth]{../../result/report_plots_filtered/osw_FP_DE_all.png} & &%\includegraphics[width=0.3\linewidth]{} & 
+        B \includegraphics[width=0.5\linewidth]{../../result/report_plots_filtered/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MSstats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
