@@ -169,16 +169,16 @@ Triqler was designed for handling DDA data, and it was hence essential to valida
 We hence downloaded the LFQBench dataset and processed it with two differnt piplenes, and investigated the properties of the reported pepide abundances. DIA data is known to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqles assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relation between standard deviation and mean (Supplementary Figure \ref{fig:assumptions}A). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fullfilled by DIA data (See Supplementary Figure \ref{fig:assumptions}B).
 
 
-\subsection*{Summarizing to protein concentrations}
+\subsection*{Summarizing peptides to protein concentrations}
 
 We wanted to compare the performance of Triqler to that of other protein summarization methods. An inherent problem when comparing different protein summarization softwares is that the performance is affected by which protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting number of differentially abundant proteins in data sets from mixtures from whole-cell extracts, a protein inference scheme that infer any protein contain a detected peptide will report more differentially abundant proteins than more restrictive scheme that just report a parsimonous set of proteins. For such data sets there is no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To elaviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This operation stived to 
 give a fairer comparison of protein summarization regardless of the protein inference method.
 
 Given the peptide abundances derived from the SL and PS workflows, we could now compare the performance of Triqler to the one of msStats, msSqRobSum and Top-3. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.52 for the pseudo-spectra enabled data.
 
-\subsubsection*{Fold change distributions}
+\subsubsection*{Distributions of the estimated fold changes}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks are insignificant peaks. \todo{LK: What is meant with "These peaks are insignificant peaks"?}
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For the these plots we removed all error assements on protein-level. We observe that Triqler and Top3 has less bias than MSstats and MSqRobSum, by seeing that the apex of the distributions are centered more closely to the true values. MSqRobSum report a very large number of proteins at a fold-change of zero. These peaks are insignificant peaks. \todo{LK: What is meant with "These peaks are insignificant peaks"?} \todo{Maybe we should comment on that Triqler uses a longer list of identified peptides, i.e. it includes q>0.01, as input.}
 
 %FIXME: Remove this, Figure \ref{fig:fc_histogram_again}.
 
@@ -203,9 +203,9 @@ To get an overview of the results of the methods we first made histograms of the
     (A,E) Triqler, (B,F) MSqRobSum, (C,G) MSstats, and (D,H) Top3. \label{fig:fc_histogram}}
 \end{figure}
 
-\subsubsection*{Comparison of ability to discriminate differentially from equally abundant proteins}
+\subsubsection*{Comparison of ability to discriminate differentially from equvalently abundant proteins}
 
-The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we hence compared the methods' ability to infer the differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, when varying the reported significance treshold (Figure \ref{fig:diff_vs_hela}). Overall, it seems like Triqler reports more true differential abundat protein for every false differential abundant protein for both spectral library matching and pseudo-spectrum methods. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstat and MSqRobSum. 
+The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As a first test of performance we hence compared the methods' ability to infer the differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, when varying the reported significance treshold (Figure \ref{fig:diff_vs_hela}). \todo{Is this a correct description? I.e. that you are using a significance treshold.} Overall, it seems like Triqler reports more differential abundat protein for every non-differentialy abundant protein for both the peptide abundances generated by the SL and PS piplines. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstat and MSqRobSum. 
 
 
 
@@ -230,26 +230,6 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
 
 
 
-\subsubsection*{Differential abundance}
-
-We also report the amount of differentially abundant proteins in Figure \ref{fig:da_lineplot} to show the performance of of the compared methods. We compare two-sided differential abundance since Triqler computes two-sided fold change. A fold-change treshold of 0.4 has been applied to Triqler, but not Top3, MSstats or MSqRobSum. This should give an disadvantage to Triqler. We observe that Triqler and MSqRobSum are the best performing protein quantification methods for {\em E. Coli} and Yeast in both spectral library matching and pseudo-spectrum workflows. We observe that MSqRobSum and MSstats report far more differentially abundant human proteins than Triqler and Top3. These are false hits.   
-
-\begin{figure}[hbt]
-    \centering
-    %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
-    \begin{tabular}{lclc} 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_all.png} & 
-        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_all.png} \\ 
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_ecoli.png} & 
-        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_ecoli.png} \\ 
-        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_yeast.png} & 
-        G & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_yeast.png} \\ 
-        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human.png} &
-        H & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human.png} 
-    \end{tabular}
-    \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) Spectrum library matching and (E-H) pseudo spectra workflowsf for each proteome 
-    (A,E) All, (B,F) {\em E. Coli}, (C,G) Yeast, and (D,H) Human. \label{fig:da_lineplot}}
-\end{figure}
 
 
 
@@ -272,6 +252,28 @@ We subsequently set out to test the statistical calibration of the different sum
         B \includegraphics[width=0.5\linewidth]{../../result/report_plots/diann_FP_DE_all.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger [Add citation] is used for MSstats and MSqRobSum. \label{fig:frac_hela_vs_fdr}}
+\end{figure}
+
+
+\subsubsection*{Differential abundance}
+
+We also report the amount of differentially abundant proteins in Figure \ref{fig:da_lineplot} to show the performance of of the compared methods. We compare two-sided differential abundance since Triqler computes two-sided fold change. A fold-change treshold of 0.4 has been applied to Triqler, but not Top3, MSstats or MSqRobSum. This should give an disadvantage to Triqler. We observe that Triqler and MSqRobSum are the best performing protein quantification methods for {\em E. Coli} and Yeast in both spectral library matching and pseudo-spectrum workflows. We observe that MSqRobSum and MSstats report far more differentially abundant human proteins than Triqler and Top3. These are false hits.   
+
+\begin{figure}[hbt]
+    \centering
+    %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    \begin{tabular}{lclc} 
+        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_all.png} & 
+        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_all.png} \\ 
+        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_ecoli.png} & 
+        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_ecoli.png} \\ 
+        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_yeast.png} & 
+        G & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_yeast.png} \\ 
+        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots/osw_de_human.png} &
+        H & \includegraphics[width=0.4\linewidth]{../../result/report_plots/diann_de_human.png} 
+    \end{tabular}
+    \caption{{\bf Comparison of reported differential abundance.} Differential abundance is reported for (A-D) Spectrum library matching and (E-H) pseudo spectra workflowsf for each proteome 
+    (A,E) All, (B,F) {\em E. Coli}, (C,G) Yeast, and (D,H) Human. \label{fig:da_lineplot}}
 \end{figure}
 
 
@@ -300,94 +302,6 @@ We subsequently set out to test the statistical calibration of the different sum
 
 %\todo{Finish the truncated distribution fitting}
 
-\begin{comment}
-\subsection*{Protein quantification}
-
-Log-transformed ratios (log2(A//B)) of proteins (humans proteins in orange, yeast proteins in green, and E. Coli proteins in blue) were plotted for each benchmarked software over the log-transformed intensity of sample A. The dashed horizontal line represents the expected log-fold change, while the fitted dashed line represents a linear regression for each species. Fig. \ref{fig:OSW_scatter} shows the results for OpenSwath and fig. \ref{fig:OSW_scatter} shows the results for DIA-NN. TOP3 and MsStat gives least biased results as protein intensities gets higher. Triqler gives the most biased results. 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/OSW_protein_level_benchmark_scatter.png}
-    \caption{OSW Protein level results from Triqler, Top3, MSstats and MSqRobSum.}
-    \label{fig:OSW_scatter}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_protein_level_benchmark_scatter.png}
-    \caption{DIANN Protein level results from Triqler, Top3, MSstats and MSqRobSum.}
-    \label{fig:OSW_scatter}
-\end{figure}
-
-Fig. \ref{fig:intensity_distribution} and \ref{fig:DIANN_intensity_distribution} show the protein quantity distributions with the different species; human (orange), E. Coli (blue), and yeast (green) highlighted in different colors for OSW \ref{fig:intensity_distribution} and DIA-NN \ref{fig:DIANN_intensity_distribution}. The human and yeast distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise, the distribution for e.coli is closer to the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob for both OSW and DIA-NN.     
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
-    \caption{OSW Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum.}
-    \label{fig:intensity_distribution}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_intensity_plot.png}
-    \caption{DIANN Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum.}
-    \label{fig:DIANN_intensity_distribution}
-\end{figure}
-
-
-Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the number of differentially abundance proteins is significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has a slightly higher number of differentially abundant proteins than triqler for OSW, and Triqler has slightly higher number of differentially abundant proteins for DIA-NN. The difference between the number of differentially abundant proteins are also smaller for MsStats and triqler and MSqRobSum for DIA-NN. 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/n_diff_expressed.png}
-    \caption{OSW Number of differentially abundant proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
-    \label{fig:osw_n_diff_exp}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_n_diff_expressed.png}
-    \caption{DIANN Number of differentially abundant proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
-    \label{fig:DIANN_n_diff_exp}
-\end{figure}
-
-
-
-Fig. \ref{fig:osw_n_diff_exp} and \ref{fig:DIANN_n_diff_exp} shows that the ratio of false positives (human proteins) to the number of differentially abundant proteins for a given $q$~value level is more linear for triqler. At log2FC = 2 all methods are conservative at low $q$~values and anti-conservative at higher $q$~values. Triqler is better calibrated for low $q$~values and gets more conservative as the $q$~value threshold is increased. Top3, MsStats, and MSqRob are more conservative at low $q$~values and get less conservative as the $q$~value threshold increases.  
-
-   
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/calibration_plot_scaled.png}
-    \caption{OSW $q$~value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
-    \label{fig:osw_n_diff_exp}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/DIANN_calibration_plot.png}
-    \caption{DIANN $q$~value (x-axis) and false positive / number differentially abundant protein (y-axis) ratio.}
-    \label{fig:DIANN_n_diff_exp}
-\end{figure}
-
-Fig. \ref{fig:osw_de_human_vs_de_specie} and \ref{fig:DIANN_de_human_vs_de_specie} shows  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png}
-    \caption{OSW Number of differentially abundant humans (x-axis) and differentially abundant e.coli and yeast (y-axis).}
-    \label{fig:osw_de_human_vs_de_specie}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/DIANN_de_human_vs_de_specie.png}
-    \caption{DIANN Number of differentially abundant humans (x-axis) and differentially abundant e.coli and yeast (y-axis).}
-    \label{fig:DIANN_de_human_vs_de_specie}
-\end{figure}
-
-\end{comment}
 
 
 \section*{Discussion}

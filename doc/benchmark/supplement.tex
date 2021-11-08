@@ -43,16 +43,34 @@
 \section*{Note S1: xxx}
 \label{sec:fc-eval}
 
-\begin{figure}[h]
-    \centering
-    \begin{tabular}{lclc} 
-        A \includegraphics[width=0.40\linewidth]{../../result/report_plots/osw_sigma_mu_boxplot_qval_filtered_peptide_filtered_qbinned.png} & &%\includegraphics[width=0.3\linewidth]{} & 
-        B \includegraphics[width=0.45\linewidth]{../../result/report_plots/osw_fraction_missing_values.png} & \\%\includegraphics[width=0.3\linewidth]{} \\
+\section*{Supplementary Tables}
 
+\begin{table}[H]
+    \begin{tabular}{lllllll}
+    \hline
+    \multicolumn{7}{c}{OSW}                                                                                                                                                                                   \\ \hline
+    Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
+    Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
+    Peptides  & 20 747                        & 21 445                        & 21 016                        & 20 494                        & 22 792                        & 22 787                        \\
+    Proteins  & 2 836                         & 2 857                         & 2 869                         & 2 818                         & 2 909                         & 2 918                         \\ \hline
     \end{tabular}
-        \caption{{\bf Triqler's assumptions of peptide abundance values are valid also for the petide intensities in DIA data.} The red dotted line marks the median of the standard deviation.  (A) We grouped the peptide intensities to equally sized bins and plotted the gaussian kernal density estimate for each bin. The bins are approximately the same shape, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. (B) We plotted the fraction of peptides observing one missing value for each triplicate in the set. We obseve that this empirical distribution roughly follows the assumed function $1 - (\frac{1}{2} + \frac{1}{2}tanh(\frac{x - \mu_m}{\sigma_m}))$.(See Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot} and Supplementary Figure \ref{fig:fraction_missing_values}).}
-      \label{fig:assumptions}
-\end{figure}
+     \caption{{\bf Number of identified peptides and proteins for the samples using spectral library workflow.}
+          \label{fig:osw_peptide_and_protein_id}}
+    \end{table}
+    
+    \begin{table}[H]
+    \begin{tabular}{lllllll}
+    \hline
+    \multicolumn{7}{c}{DIANN}                                                                                                                                                                                 \\ \hline
+    Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
+    Run       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
+    Peptides  & 21 036                        & 20 783                        & 21 040                        & 21 243                        & 21 325                        & 21 248                        \\
+    Proteins  & 3 377                         & 3 350                         & 3 368                         & 3 358                         & 3 381                         & 3 356                         \\ \hline
+    \end{tabular}
+     \caption{{\bf Number of identified peptides and proteins for the samples using the pseudo-spectra workflow.}
+          \label{fig:diann_peptide_and_protein_id}}
+    \end{table}
+    
 
 \iffalse
 \subsection*{Fold change distributions}
