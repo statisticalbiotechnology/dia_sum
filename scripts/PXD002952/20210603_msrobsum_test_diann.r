@@ -76,7 +76,13 @@ msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode =
                            ## they will also be retained in output
                            , group_vars = c('protein','human','yeas8','ecoli'))
 
-saveRDS(msqrob_result, file = "msrobsum_results.rds")
+msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrobsum'
+                           ## group by folowing variables,
+                           ## they will also be retained in output
+                           , group_vars = c('protein','human','yeas8','ecoli'))
+
+
+saveRDS(msqrob_result, file = "msrobsum_results_msqrobsum.rds")
 
 typeof(msqrob_result)
 class(msqrob_result)
@@ -86,12 +92,10 @@ class(msqrob_result)
 
 
 contrasts = msqrob_result %>% select(proteins,human,ecoli,yeas8,contrasts) %>% unnest
+protein_sums = msqrob_result %>% select(proteins, human, ecoli, yeas8, data_summarized) %>% unnest
+
+
+write.table(contrasts, "msqrobsum_result.csv", sep = "\t", row.names = FALSE)
 write.table(contrasts, "msqrobsum_result_20210710.csv", sep = "\t", row.names = FALSE)
-
-filter(contrasts,qvalue <.05) %>% group_by(contrast) %>% 
-  summarise(hits = n(), FDP = round(mean(human),3))
-
-contrasts = msqrob_result %>% select(proteins,ecoli,contrasts) %>% unnest
-contrasts = msqrob_result %>% select(proteins,human,contrasts) %>% unnest
-
+write.table(protein_sums, "msqrobsum_protein_sum_20210817.csv", sep = "\t", row.names=FALSE)
 
