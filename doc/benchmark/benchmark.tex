@@ -100,7 +100,7 @@ Just as in LFQBench, we used two separate strategies to generate peptide abundan
 
     \todo[inline]{make a common input to both piplines.}
     \todo[inline]{Add common output to both pipelines.}
-    \todo[inline]{Add a common 1\% peptide-level identification FDR thresshold before all but triqler.}
+    %\todo[inline]{Add a common 1\% peptide-level identification FDR thresshold before all but triqler.}
 
         \caption{{\bf The spectrum-library matching (SL) and pseudo spectrum workflow pipelines (PS).} For the various pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}).}
       \label{fig:flowchart}
@@ -138,7 +138,7 @@ The peptide quantities was summarized to proteins using the average of the three
 
 \subsubsection*{Top3}
 
-We implemented a short script that for each protein selected the average of the 3 most abundant peptides for each protein and sample. In samples only having two peptides available these were also included, still represented by their avarage, however, samples having zero or one peptide for the protein were excluded. 
+We implemented a short script that for each protein selected the average of the 3 most abundant peptides for each protein and sample. In samples only having two peptides available these were also included, still represented by their average, however, samples having zero or one peptide for the protein were excluded. Peptides were filtered at an 1\% FDR before performing the Top3 protein summarization. 
 
 % res = triq_run.groupby("proteins")["intensity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
 
@@ -146,13 +146,15 @@ We implemented a short script that for each protein selected the average of the 
 
 \subsubsection*{MsStats}
 
-We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats was run using the MSstats command \texttt{dataProcess} without any peptide och m\_score filtering on the input data. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
+We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats was run using the MSstats command \texttt{dataProcess}. The settings was set to filter\_on\_max\_peptides = 10, filter\_on\_min\_peptides = 2 and filter\_mscore\_condition = 0.01. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
-\todo{This cant be the prefered way to run msstats. Change so that you select peptides with a 1\% identification FDR.}
+%\todo{This cant be the prefered way to run msstats. Change so that you select peptides with a 1\% identification FDR.}
 
 \subsubsection*{MSqRobSum}
 
-We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. This setup makes sure that if the fist models fails, the second models is tried. \todo{LK: what is meant with a modell failing, in this case?}
+We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). We filtered the peptide at 1\% FDR before conducting the MSqRobSum analysis. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. MSqRobSum suses \texttt{lme4} to contruct a linear-mixed model. When the first model parameters fails to converge with \texttt{lme4}, another attempt is made to estimate the parameters for the seconds model.
+
+%\todo{LK: what is meant with a modell failing, in this case?}
 
 %We downloded MSqRobSum version 0.9 from \url{FIXME}.
 
