@@ -195,7 +195,6 @@ To get an overview of the results of the methods we first made histograms of the
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msqrobsum_intensity.png} \\
         C & D 
     \end{tabular}
-    \todo[inline]{See to that you are using filtered data.}
     \caption{{\bf Comparison of reported fold change distributions.} We used peptide data from the SL pipline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRobSum. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRobSum, the apex of their distribution were found closer to the true fold-change difference. (D) MSqRobSum report a large fold change bin at 0. A majority of these valued have been filtered away using a tresholding procedure because the reported false discovery rate for the difference between groups was 1.0 for most values in this bin. \label{fig:fc_histogram}}
 \end{figure}
 
@@ -210,8 +209,7 @@ The LFQBench set contain varying concentrations of {\em E. Coli} and Yeast conce
         A & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/osw_de_human_vs_ecoli_and_yeast.png} & 
         B & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/diann_de_human_vs_ecoli_and_yeast.png} \\ 
 
-    \end{tabular}
-    \todo[inline]{Label x/yt axis: "Differential {\em E. Coli}+Yeast proteins", and "Differential HeLa proteins"}   
+    \end{tabular} 
     \caption{{\bf Comparison of ability to differentiate proteins with differentiall abundance between conditions} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) DDA generated spectral libraries and (B) DIA-Umpire geneated Pseudo spectra. For the test we selected a fold-change treshold of 0.4 for Triqler, because it is the rounded lower bound for fold-change computed by Triqler (Supplement Figure \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela} shows differential abundance for each specie). \label{fig:diff_vs_hela}}
 \end{figure}
 
