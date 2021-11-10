@@ -98,7 +98,7 @@ Just as in LFQBench, we used two separate strategies to generate peptide abundan
         \includegraphics[width=1.0\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
     \end{tabular}
 
-        \caption{{\bf The spectrum-library matching (SL) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}).} A 1\% FDR was used for peptide filtering before protein summarization. Triqler uses 
+        \caption{{\bf The spectrum-library matching (SL) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}).} A 1\% FDR was used for peptide filtering before protein summarization. Triqler integrates the idenfication error probability of the peptides in its model and therefore should not use filtered data when performing protein summarization. Top3, MSqRobSum and MSstats uses the standard procedure of peptide filtering before protein summarization.   
       \label{fig:flowchart}
 \end{figure}
 
