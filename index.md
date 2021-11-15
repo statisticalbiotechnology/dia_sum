@@ -73,11 +73,17 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 
 ![MSstats](https://www.bioconductor.org/packages/devel/bioc/vignettes/MSstats/inst/doc/MSstats.html) uses feature-level data. This should be peptide-features right? Also, I have run this exactly as the tutorial. So this should be fine.
 
-![MsqRobSum](https://www.mcponline.org/article/S1535-9476(20)34982-3/fulltext) this should be done using summarized peptide intensities.
+![MsqRobSum](https://www.mcponline.org/article/S1535-9476(20)34982-3/fulltext) this should be done using summarized peptide intensities. This paper also have some information about MSstats run, claiming peptide-level run.
 
 MSqRobSum should have peptide-level data. So we need to find peptide-level FDR:s.
 
 Top3 Should have q-value recalculations based on target-decoy method. (check assess_fdr_overall)
+
+ToDo:
+- check how to compute m-score to q-value? or describe the problems of mscore more thoroughly in the paper
+- describe the psm Q.Value from DIANN in paper. 
+- Feature level data (PSMs) seems to be ok for MSstats, is it ok for msqrobsum or do we need to rerun msqrobsum?
+- Can we use m_score treshold for Top3 computation. How did LFQbench Navarro et al. do ?
 
 
 
