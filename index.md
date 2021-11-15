@@ -67,6 +67,20 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-11-15 investingating input format for msstats, msqrobsum and triqler
+
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156) uses MaxQuant output format. It seems to be PSM-level FDRs. Looking the input converter from OpenSwathWorkFlow it also seems to be PSMs level.
+
+![MSstats](https://www.bioconductor.org/packages/devel/bioc/vignettes/MSstats/inst/doc/MSstats.html) uses feature-level data. This should be peptide-features right? Also, I have run this exactly as the tutorial. So this should be fine.
+
+![MsqRobSum](https://www.mcponline.org/article/S1535-9476(20)34982-3/fulltext) this should be done using summarized peptide intensities.
+
+MSqRobSum should have peptide-level data. So we need to find peptide-level FDR:s.
+
+Top3 Should have q-value recalculations based on target-decoy method. (check assess_fdr_overall)
+
+
+
 ## 2021-04-27 cont. working on report... check .jupyter from same date..
 
 ## 2021-04-23 number of DE protein
