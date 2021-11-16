@@ -151,12 +151,12 @@ We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{http
 
 \subsubsection*{MSqRobSum}
 
-We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). We filtered the peptide at 1\% FDR before conducting the MSqRobSum analysis. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. MSqRobSum suses \texttt{lme4} to contruct a linear-mixed model. When the first model parameters fails to converge with \texttt{lme4}, another attempt is made to estimate the parameters for the seconds model.
+We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). MSqRobSum takes peptide input. The output from OpenSwath and DIA-NN is at PSM-level. We first filter the the data to peptide-level by selecting the top PSM hits as our peptides. The top hits was selected by being the highest scoring PSMs, i.e. highest \texttt{m_score} for OpenSwath and high \texttt{Q.Value} for DIA-NN. We filtered the peptide at 1\% FDR before conducting the MSqRobSum analysis. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. MSqRobSum suses \texttt{lme4} to contruct a linear-mixed model. When the first model parameters fails to converge with \texttt{lme4}, another attempt is made to estimate the parameters for the seconds model.
 
 %\todo{LK: what is meant with a modell failing, in this case?}
 
 %We downloded MSqRobSum version 0.9 from \url{FIXME}.
-
+clear
 \subsubsection*{Triqler}
 
 We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. Triqler was run with \texttt{fold\_change\_eval} parameter between 0 and 2.00 with 0.04 increments.

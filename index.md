@@ -67,6 +67,11 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-11-16
+
+![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
+
+
 ## 2021-11-15 investingating input format for msstats, msqrobsum and triqler
 
 ![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156) uses MaxQuant output format. It seems to be PSM-level FDRs. Looking the input converter from OpenSwathWorkFlow it also seems to be PSMs level.
