@@ -71,6 +71,10 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 
 ![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
 
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156i) uses 
+
+Summary: MSstats is an R package for statistical relative quantification of proteins and peptides in mass spectrometry-based proteomics. Version 2.0 of MSstats supports label-free and label-based experimental workflows and data-dependent, targeted and data-independent spectral acquisition. It takes as input identified and quantified spectral peaks, and outputs a list of differentially abundant peptides or proteins, or summaries of peptide or protein relative abundance. MSstats relies on a flexible family of linear mixed models.
+
 
 ## 2021-11-15 investingating input format for msstats, msqrobsum and triqler
 

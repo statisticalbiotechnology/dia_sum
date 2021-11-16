@@ -145,7 +145,7 @@ We implemented a short script that for each protein selected the average of the 
 
 \subsubsection*{MsStats}
 
-We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats was run using the MSstats command \texttt{dataProcess}. The settings was set to filter\_on\_max\_peptides = 10, filter\_on\_min\_peptides = 2 and filter\_mscore\_condition = 0.01, i.e. an 1\% FDR filter on peptide-level. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
+We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats use feature-level data, allowing for multiple PSM hits per peptide identification. We filtered so that every peptide so that every protein had at least 2 peptides and a maximum of 10 peptides, and we tresholded with a \texttt{m_score} of lower than 0.01 with the \texttt{SWATH2stats} package in R in the SL pipeline. This was done using the settings \_on\_max\_peptides = 10, filter\_on\_min\_peptides = 2 and filter\_mscore\_condition = 0.01. For the PS pipeline we created a script for performing the same conversion and peptide filtering procedure. The PS pipeline data was filtered on the \texttt{Q.Value} columns from DIANN instead of \texttt{m_score}. MSstats was run using the MSstats command \texttt{dataProcess}. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
 %\todo{This cant be the prefered way to run msstats. Change so that you select peptides with a 1\% identification FDR.}
 
