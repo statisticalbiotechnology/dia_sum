@@ -67,6 +67,15 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-11-17
+Getting confused. Is mscore from pyprophet FDR?
+
+It is stated here 
+
+https://assets.researchsquare.com/files/rs-893982/v1/a3afe574-fa8c-44e9-9ea1-e46b1579d558.pdf?c=1636997981
+
+that it is?
+
 ## 2021-11-16
 
 ![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
