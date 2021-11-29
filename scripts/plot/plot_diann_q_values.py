@@ -68,6 +68,7 @@ ax.set_ylabel("m_score")
 
 ####### Integrate to FDR #####
 # Do we compute FDR on both decoy and target?
+# If we look at m_score it should be on the list with decoy and target. We rank all...
 
 
 df_decoy = df_run[df_run.decoy == True]
