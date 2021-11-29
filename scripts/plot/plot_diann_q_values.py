@@ -6,6 +6,7 @@ Created on Thu Nov 25 11:03:50 2021
 @author: ptruong
 """
 
+import numpy as np
 import pandas as pd
 import os 
 import matplotlib.pyplot as plt
@@ -26,7 +27,7 @@ decoy_mapper = lambda x:x.split("_")[0] == "DECOY"
 df["decoy"] = df["Protein.Ids"].map(decoy_mapper)
 
 
-df_run.columns
+#df_run.columns
 
 runs = df.Run.unique()
 run = runs[0]
@@ -50,6 +51,7 @@ dfs_qVals = []
 for run in runs:
     df_run = df[df.Run == run].sort_values(by = "CScore")
     df_run.set_index("CScore", inplace = True)
+    #df_run_correct = df_run[df_run.decoy == False]
     dfs_qVals.append(df_run[qval_col])#.reset_index().drop("index", axis = 1)[qval_col]
 
 for i in dfs_qVals:
@@ -64,13 +66,22 @@ ax.set_xlabel("ordered PSM by m_Score")
 ax.set_ylabel("m_score")
 
 
+####### Integrate to FDR #####
+# Do we compute FDR on both decoy and target?
 
 
-
-
-
-
-
+df_decoy = df_run[df_run.decoy == True]
+df_target = df_run[df_run.decoy == False]
+cscores = []
+fdrs = []
+for i in df_target.index.unique():
+    n_target = len(df_target[df_target.index > i])
+    n_decoy = len(df_decoy[df_decoy.index > i])
+    fdr_i = n_decoy/(n_target + n_decoy)
+    fdrs.append(fdr_i)
+    cscores.append(i)
+fdr_map = dict(zip(cscores, fdrs))
+df_target["fdr"] = df_target.index.map(fdr_map).fillna(0)
 
 
 
