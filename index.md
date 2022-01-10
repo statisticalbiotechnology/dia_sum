@@ -67,6 +67,44 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2021-11-17
+Getting confused. Is mscore from pyprophet FDR?
+
+It is stated here 
+
+https://assets.researchsquare.com/files/rs-893982/v1/a3afe574-fa8c-44e9-9ea1-e46b1579d558.pdf?c=1636997981
+
+that it is?
+
+## 2021-11-16
+
+![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
+
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156i) uses 
+
+Summary: MSstats is an R package for statistical relative quantification of proteins and peptides in mass spectrometry-based proteomics. Version 2.0 of MSstats supports label-free and label-based experimental workflows and data-dependent, targeted and data-independent spectral acquisition. It takes as input identified and quantified spectral peaks, and outputs a list of differentially abundant peptides or proteins, or summaries of peptide or protein relative abundance. MSstats relies on a flexible family of linear mixed models.
+
+
+## 2021-11-15 investingating input format for msstats, msqrobsum and triqler
+
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156) uses MaxQuant output format. It seems to be PSM-level FDRs. Looking the input converter from OpenSwathWorkFlow it also seems to be PSMs level.
+
+![MSstats](https://www.bioconductor.org/packages/devel/bioc/vignettes/MSstats/inst/doc/MSstats.html) uses feature-level data. This should be peptide-features right? Also, I have run this exactly as the tutorial. So this should be fine.
+
+![MsqRobSum](https://www.mcponline.org/article/S1535-9476(20)34982-3/fulltext) this should be done using summarized peptide intensities. This paper also have some information about MSstats run, claiming peptide-level run.
+
+MSqRobSum should have peptide-level data. So we need to find peptide-level FDR:s.
+
+Top3 Should have q-value recalculations based on target-decoy method. (check assess_fdr_overall)
+
+ToDo:
+- check how to compute m-score to q-value? or describe the problems of mscore more thoroughly in the paper
+- describe the psm Q.Value from DIANN in paper. 
+- Feature level data (PSMs) seems to be ok for MSstats, is it ok for msqrobsum or do we need to rerun msqrobsum?
+- Can we use m_score treshold for Top3 computation. How did LFQbench Navarro et al. do ?
+
+
+
 ## 2021-04-27 cont. working on report... check .jupyter from same date..
 
 ## 2021-04-23 number of DE protein
