@@ -137,6 +137,8 @@ The peptide quantities was summarized to proteins using the average of the three
 
 We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two peptides available these were also included, still represented by their average, however, samples having zero or one peptide for the protein were excluded. PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
 
+\todo{Here you clearly state that you use peptide-level FDR. Yet you say that you use PSM-level FDR elsewhere.}
+
 % res = triq_run.groupby("proteins")["intensity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
 
 %We implemented a short script that for each protein selected the three, on average, most abundant peptides across the conditions and summarized their protein quantities.
@@ -251,33 +253,15 @@ We also investigated the number of reported differential abundant proteins as re
 \section*{Discussion}
 
 
-Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates. Triqler was also able to detect significantly higher number of differentially abundant proteins at a more accuratly reported false discovery rate. 
+Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates. Triqler was also able to detect significantly higher number of differentially abundant proteins at a more accuratly reported false discovery rate, than the compared methods. 
 
-The analytes in bottum up proteomics are peptides and not proteins or proteoforms. Nevertheless, most users of mass spectrometry use and will continue to find resons to report findings on a protein level. It makes sense to put efforts into better understanding of which protein inference tools to use at what occasion and how to summarize peptide abundances into protein relative concentration values.  Also, protein summarization gives lower variance than peptide-level analysis, and it reduces the amount of hypotheses tested and reduced the amount of missing values, which can have major impact on the quality of the analysis \cite{plubell2021can}.   
-
+The analytes in shotgun proteomics are peptides and not proteins or proteoforms. Nevertheless, most users of mass spectrometry use and will continue to find resons to report findings on a protein level. It makes sense to put efforts into better understanding of which protein inference tools to use at what occasion and how to summarize peptide abundances into protein relative concentration values.  Also, protein summarization gives lower variance than peptide-level analysis, and it reduces the amount of hypotheses tested and reduced the amount of missing values, which can have major impact on the quality of the analysis \cite{plubell2021can}.   
 
 One important remark is that the sequence database that we used for matching the spectra was filtered so that only one protein per peptide was kept, to control for any difference in protein inference strategies used by our comparedprotein summarization methods. There is currently no consensus in how to handle multiple proteoforms in bottom-up proteomics. Hence, we believe that protein inference strategies that can account for multiple proteoforms would greatly benefit the field by improving the quality of the quantitative analysis. 
 
 We do see some differences in how DIA and DDA peptide-level abundance data appear. For instance there are more missing values in DDA than DIA data. However, we find that qualitatively the types of data are similar, at least in the sense that Triqler's underlying assumption of missing values seem to be as valid for DDA and DIA data.
 
 Lastly, we want to highlight the benefit and importance as datasets such as the one provided by Navarro et al. \cite{navarro2016multicenter}. These benchmarking datasets make it easy for the scientific community to investigate computational tools by providing a golden standard and significantly facilitates benchmark studies. 
-
-
-Key notes for the discussion:
-\begin{itemize}
-%  \item Why it is good with protein summarization (Humpty-Dumpty inspired argumentation).[X] 
-%  \item Triqler is a good alternative for protein summarization. [X]
-%  \item And this we have shown with the benchmark we conducted above. [X]
-%  \item Summarize our findings from above. [X]
-%  \item Discuss the protein inference problem. [X] 
-%  \item Tell how we have performed our protein search on a truncated database for fair comparison.[X]
-  %\item Highlight fair comparison. [X]
-  \item Discuss future improvements.
-%  \item Future improvement: Protein inference strategies which can account for multiple proteoforms. [X]
-%  \item Discuss why dataset such as LFQ-bench is good (because it makes it easy to perform benchmarking and comparison).
-  \item Add some more general notes about the field in general.
-\end{itemize}
-
 
 \section*{Acknowledgements}
 
