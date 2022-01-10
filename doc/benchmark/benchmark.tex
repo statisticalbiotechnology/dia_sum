@@ -135,7 +135,7 @@ The peptide quantities was summarized to proteins using the average of the three
 
 \subsubsection*{Top3}
 
-We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two peptides available these were also included, still represented by their average, however, samples having zero or one peptide for the protein were excluded. PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
+We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two PSMs available these were also included, still represented by their average, however, samples having zero or one PSM for the protein were excluded. PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
 
 \todo{Here you clearly state that you use peptide-level FDR. Yet you say that you use PSM-level FDR elsewhere.}
 
@@ -154,7 +154,7 @@ We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{http
 % https://rdrr.io/github/statOmics/MSqRobSum/f/vignettes/msqrobsum.Rmd
 
 We installed MSqRobSum version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/MSqRobSum}). MSqRobSum takes peptide input. The output from OpenSwath and DIA-NN is at PSM-level. We filtered the data on 1\% identification FDR and then filter the data to peptide-level by selecting the top PSM hit as our peptide. The highest scoring PSMs are selected as our peptides, i.e. highest \texttt{m\_score} for OpenSwath and highest \texttt{Q.Value} for DIA-NN. MsqRobSum was run using the MSqRobSum command \texttt{msqrobsum}, mode was set to \texttt{msqrobsum}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))}. %This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. 
-MSqRobSum uses \texttt{lme4} to contruct a linear-mixed model. Some proteins have only intensities from one peptide. This can cause the first model $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ parameters to fail to converge. For these proteins we use the reduced model $y_{st} = \beta_0 + \beta_{condition} + \epsilon$. We interpret the models specified as linear mixed models where the protein expression is a dependent variable consisting only of random effects for condition, sample and feature or only condition, if we do not have enough random variable for the longer models to converge.
+MSqRobSum uses \texttt{lme4} to contruct a linear-mixed model with random effect, but without fixed effect. The models specified in by the variable formulas the constructs the models $y = Z_1 \mu + \epsilon$ and $y = Z_2 \mu + \epsilon$, where $Z_1$ contains the random effects condition, sample and feature (peptides for protein) and $Z_2$ contains only a random effect for condition. Some proteins have only intensities from one peptide. This can cause the first model $y = Z_1 \mu + \epsilon$ parameters to fail to converge. For these proteins we use the reduced model $y = Z_2 \mu + \epsilon$.
 
 % information about symbolic formula for lmer4
 % https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/
@@ -168,6 +168,7 @@ MSqRobSum uses \texttt{lme4} to contruct a linear-mixed model. Some proteins hav
 %\todo{LK: what is meant with a modell failing, in this case?}
 
 %We downloded MSqRobSum version 0.9 from \url{FIXME}.
+
 clear
 \subsubsection*{Triqler}
 
