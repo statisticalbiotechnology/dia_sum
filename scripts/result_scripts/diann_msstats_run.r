@@ -12,6 +12,7 @@ library(data.table)
 library(MSstats)
 
 data <- data.frame(fread('diann_msstats_input.csv', sep='\t', header=TRUE))
+data <- data.frame(fread('diann_msstats_input_recomputed_fdr_20211201.csv', sep = ',', header = TRUE))
 
 Study_design <- data.frame(Filename = unique(data$filename))
 Study_design$Condition <- gsub("_.*", "" ,gsub(".*(Sample_)", "", Study_design$Filename))
@@ -32,6 +33,7 @@ data.filtered3 <- filter_on_min_peptides(data.filtered2, n_peptides = 2)
 data.transition <- disaggregate(data.filtered3)
 MSstats.input <- convert4MSstats(data.transition)
 
+MSstats.input <- data
 QuantData <- dataProcess(MSstats.input)
 comparison <- matrix(c(-1,1), nrow=1)
 row.names(comparison) <- "T2-T1"

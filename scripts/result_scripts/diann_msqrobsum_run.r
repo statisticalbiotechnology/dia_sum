@@ -33,7 +33,7 @@ set = normalize(set, 'vsn') #vsn normalized values are on log-scale
 formulas =  c(expression ~ (1|condition) + (1|sample) + (1|feature)
               , expression ~ (1|condition))
 
-msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrobsum'
+msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrob'
                            ## group by folowing variables,
                            ## they will also be retained in output
                            , group_vars = c('protein','human','yeas8','ecoli'))
@@ -42,6 +42,6 @@ msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode =
 contrasts = msqrob_result %>% select(proteins,human,ecoli,yeas8,contrasts) %>% unnest
 protein_sums = msqrob_result %>% select(proteins, human, ecoli, yeas8, data_summarized) %>% unnest
 
-write.table(contrasts, "msqrobsum_result_20211105_filtered_before.csv", sep = "\t", row.names = FALSE)
-write.table(protein_sums, "msqrobsum_protein_sum_20211105_filtered_before.csv", sep = "\t", row.names=FALSE)
+write.table(contrasts, "msqrob_result_20220110_filtered_before.csv", sep = "\t", row.names = FALSE)
+write.table(protein_sums, "msqrob_protein_sum_20220110_filtered_before.csv", sep = "\t", row.names=FALSE)
 

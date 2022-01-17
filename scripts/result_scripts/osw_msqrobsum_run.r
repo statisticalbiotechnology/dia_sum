@@ -20,6 +20,9 @@ fd <- read.csv("fd_0.01.csv", sep = "\t", row.names = 1)
 pd <- read.csv("pd_0.01.csv", sep = "\t", row.names = 1)
 fData(set) = fd
 pData(set) = pd
+
+fData(set)
+pData(set)
 exprs(set) 
 
 exprs(set)[0 == (exprs(set))] <- NA
@@ -32,8 +35,8 @@ set = normalize(set, 'vsn') #vsn normalized values are on log-scale
 formulas =  c(expression ~ (1|condition) + (1|sample) + (1|feature)
               , expression ~ (1|condition))
 
-msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrobsum'
-                           ## group by folowing variables,
+msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode = 'msqrob'
+                           ## group by folhtopowing variables,
                            ## they will also be retained in output
                            , group_vars = c('protein','human','yeas8','ecoli'))
 
@@ -41,7 +44,7 @@ msqrob_result <- msqrobsum(data = set, formulas, contrasts = 'condition', mode =
 contrasts = msqrob_result %>% select(proteins,human,ecoli,yeas8,contrasts) %>% unnest
 protein_sums = msqrob_result %>% select(proteins, human, ecoli, yeas8, data_summarized) %>% unnest
 
-write.table(contrasts, "msqrobsum_result_20211105_filtered_before.csv", sep = "\t", row.names = FALSE)
-write.table(protein_sums, "msqrobsum_protein_sum_20211105_filtered_before.csv", sep = "\t", row.names=FALSE)
+write.table(contrasts, "msqrob_result_20220110_filtered_before.csv", sep = "\t", row.names = FALSE)
+write.table(protein_sums, "msqrob_protein_sum_20220110_filtered_before.csv", sep = "\t", row.names=FALSE)
 
 

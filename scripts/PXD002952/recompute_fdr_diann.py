@@ -61,8 +61,9 @@ for i in dfs_qVals:
 split_name = lambda x: x.split("_")[5]
 df_qVals = df_qVals.rename(split_name, axis = 1)
 
-(1-df_qVals).plot()
-ax.set_xlabel("ordered PSM by m_Score")
+#(1-df_qVals).plot()
+#ax.set_xlabel("ordered PSM by m_Score")
+ax.set_xlabel("ordered PSM by CScore")
 ax.set_ylabel("m_score")
 
 
@@ -106,7 +107,7 @@ eps = 1e-9
 df_res = pd.concat(df_runs).reset_index()
 df_res.fdr = df_res.fdr + eps #to remove absolute zero and division by zero in searchScore conversion for triqler
 df_res.to_csv("report_recomputed_fdr.tsv", sep = "\t", index=False)
-    
+     
     
     
     

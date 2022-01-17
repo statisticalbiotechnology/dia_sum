@@ -21,7 +21,7 @@ Study_design$Run <- seq_len(nrow(Study_design))
 head(Study_design)
 write.csv(Study_design, "msstats_run.csv", row.names = FALSE)
 
-data.annotated <- sample_annotation(data, Study_design, column.file = "align_origfilename")
+data.annotated <- sample_annotation(data, Study_design, column.file = "filename")
 data.annotated.nodecoy <- subset(data.annotated, decoy==FALSE)
 
 fdr_target_decoy <- assess_fdr_overall(data.annotated, n.range = 10, 
