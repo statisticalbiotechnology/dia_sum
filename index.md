@@ -67,9 +67,14 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2022-01-24
+Fixing the parser msqrob2 for diann and osw.
+
+
+## 2022-01-18
+Off - until 2022-01-24
 
 ## 2022-01-17
-
 # 08:00
 Trying to get all the packages installed on my local computer.
 
@@ -88,8 +93,6 @@ Finished diann -> msqrob parser
 3. Recompute FDR with CScores for filtered list.
 4. Filter on peptide-level fdr.
 5. Construct dataframe with df.pivot()
-
-
 
 ## 2022-01-16
 # 11:00 
