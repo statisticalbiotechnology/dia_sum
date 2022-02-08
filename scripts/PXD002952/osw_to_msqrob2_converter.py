@@ -38,8 +38,8 @@ from time import time
 start = time()
 df_runs = []
 for run in runs:
-    df_run = df[df.filename == run].sort_values(by = "d_score")
-    df_run.set_index("d_score", inplace = True)
+    df_run = df[df.filename == run].sort_values(by = "m_score")
+    df_run.set_index("m_score", inplace = True)
     df_run = df_run.groupby("FullPeptideName").head(1) #select top scoring PSM
     #df_run = compute_fdr(df_run)
     df_runs.append(df_run)
@@ -48,11 +48,43 @@ end = time()-start
 print("Done " + str(end))
 
 df_res = pd.concat(df_runs).reset_index()
-df_res.set_index("d_score", inplace = True)
-df_res.sort_values("d_score", ascending = False, inplace = True)
+#df_res[df_res.m_score < 0.01]
+
+len(df_res[df_res.decoy != True]) / len(df_res) # 0.5049916995385249 
+
+
+df_res.set_index("m_score", inplace = True)
+df_res.sort_values("m_score", ascending = True, inplace = True)
 #df_peptide = df.groupby("FullPeptideName").head(1) #select top peptide as psm
 #df_peptide = df_peptide.set_index("d_score") #d-score discriminate target from decoy
 #df_peptide.sort_values("d_score", ascending = False, inplace = True) #reverse it again so that the logic of the code the same as the logic from the msqrob2-diann parser
+
+
+
+ # plot
+ 
+ 
+import seaborn as sns
+from matplotlib import pyplot as plt
+filename_cleanup = lambda x:x.split("_")[5] + "_Sample" + x.split("_")[8]
+
+
+
+df_res = df_res.sort_values("m_score").reset_index()
+fig, ax = plt.subplots(figsize=(8,6))
+
+sns.lineplot(data=df_res, x=df_res.index, y="m_score", hue="filename", ax = ax)
+plt.xlabel("ordered PSM by m_score")
+plt.ylabel("m_score")
+
+
+
+
+
+
+#df_res = df_res.sort_values("CScore").reset_index()
+#ax.get_legend().remove()
+
 
 def compute_fdr(df_run, start_i, end_i, n_proc):
     df_decoy = df_run[df_run.decoy == 1]
@@ -61,10 +93,10 @@ def compute_fdr(df_run, start_i, end_i, n_proc):
     fdrs = []
     iteration = 0
     for i in df_run.index.unique()[start_i:end_i]:
-        n_target = len(df_target[df_target.index > i])
-        n_decoy = len(df_decoy[df_decoy.index > i])
+        n_target = len(df_target[df_target.index < i])
+        n_decoy = len(df_decoy[df_decoy.index < i])
         if (n_target + n_decoy) > 0:
-            fdr_i = n_decoy/(n_target + n_decoy)
+            fdr_i = n_decoy/(n_target)
         try:
             fdrs.append(fdr_i)
             cscores.append(i)
@@ -78,7 +110,7 @@ def compute_fdr(df_run, start_i, end_i, n_proc):
     return dict(zip(cscores, fdrs))
 
 
-n_proc = 6
+n_proc = 7
 unique_index = len(df_res.index.unique())
 step = floor(unique_index/n_proc)
 residual = unique_index - n_proc*step
@@ -90,10 +122,15 @@ compute_fdr_params = [(df_res, steps[i], steps[i+1], n_proc) for i in range(len(
 with multiprocessing.Pool() as pool:
     res = pool.starmap(compute_fdr, compute_fdr_params)
 
-
 fdr_map = dict()
 for i in range(len(res)):
     fdr_map.update(res[i])
+
+# filter on m_score
+
+
+#df_tresholded = df_res[df_res["m_score"] < 0.01]
+# sns.lineplot(data=df_tresholded, x=df_tresholded.index, y="m_score", hue="filename")
 
 
 df_res["fdr"] = df_res.index.map(fdr_map).fillna(0)
@@ -109,9 +146,9 @@ df_pivot = df_res.pivot(index=["FullPeptideName", "ProteinName"], columns = "fil
 df_pivot.reset_index(inplace=True)
 df_pivot["Proteins"] = df_pivot["ProteinName"]
 df_pivot.drop("ProteinName", axis = 1)
-df_pivot.to_csv("msqrob2_input_20220131.tsv", sep = "\t", index = False)
+df_pivot.to_csv("msqrob2_input_20220204.tsv", sep = "\t", index = False)
 
-msq = pd.read_csv("msqrob2_input_20220131.tsv", sep = "\t")
+msq = pd.read_csv("msqrob2_input_20220204.tsv", sep = "\t")
 
 # map sample
 
@@ -131,9 +168,9 @@ for i in msq.columns:
         col_map.update({i:i})
 
 msq = msq.rename(columns=col_map)
-msq.to_csv("msqrob2_input_20220131.tsv", sep = "\t", index = False)
+msq.to_csv("msqrob2_input_20220204.tsv", sep = "\t", index = False)
 
-p = pd.read_csv("msqrob2_input_20220131.tsv", sep = "\t")
+p = pd.read_csv("msqrob2_input_20220204.tsv", sep = "\t")
 
 
 

@@ -83,7 +83,8 @@ def compute_fdr(df_run):
         n_target = len(df_target[df_target.index > i])
         n_decoy = len(df_decoy[df_decoy.index > i])
         if (n_target + n_decoy) > 0:
-            fdr_i = n_decoy/(n_target + n_decoy)
+            #fdr_i = n_decoy/(n_target + n_decoy)
+            fdr_i = n_decoy/(n_target)
         fdrs.append(fdr_i)
         cscores.append(i)
     fdr_map = dict(zip(cscores, fdrs))

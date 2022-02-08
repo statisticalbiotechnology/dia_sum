@@ -10,7 +10,7 @@ library(gridExtra)
 # file firectory 
 #os.chdir("/hdd_14T/data/PXD002952/20210805_osw_run")
 setwd("/hdd_14T/data/PXD002952/20210805_osw_run")
-peptidesFile = ("/hdd_14T/data/PXD002952/20210805_osw_run/msqrob2_input_20220131.tsv")
+peptidesFile = ("/hdd_14T/data/PXD002952/20210805_osw_run/msqrob2_input_20220224.tsv")
 
 ecols <- grep("HYE124\\_", names(read.delim(peptidesFile)))
 

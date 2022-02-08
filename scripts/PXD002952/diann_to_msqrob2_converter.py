@@ -37,10 +37,13 @@ def compute_fdr(df_run, start_i, end_i, n_proc):
     for i in df_run.index.unique()[start_i:end_i]:
         n_target = len(df_target[df_target.index > i])
         n_decoy = len(df_decoy[df_decoy.index > i])
-        if (n_target + n_decoy) > 0:
-            fdr_i = n_decoy/(n_target + n_decoy)
-        fdrs.append(fdr_i)
-        cscores.append(i)
+        if (n_target ) > 0:
+            fdr_i = n_decoy/(n_target)
+            fdrs.append(fdr_i)
+            cscores.append(i)
+        else:
+            fdrs.append(1)
+            cscores.append(i)
         iteration += 1
         if iteration % 500 == 0:
             print(str(iteration) + " of " + str(len(df_run.index.unique())/n_proc))
@@ -63,8 +66,22 @@ print("Done " + str(end))
 
 df_res = pd.concat(df_runs).reset_index()
 df_res.set_index("CScore", inplace = True)
+df_res.sort_values("CScore", ascending = False, inplace = True)
 
-n_proc = 6
+#plot 
+
+import seaborn as sns
+df_res = df_res.sort_values("CScore", ascending = False).reset_index()
+fig, ax = plt.subplots(figsize=(8,6))
+sns.lineplot(data=df_res, x=df_res.index, y="Global.Q.Value", hue="Run", ax = ax)
+plt.xlabel("ordered PSM by Cscore")
+plt.ylabel("Q.Value")
+ax.get_legend().remove()
+
+df_res.sort_values("CScore", ascending = False, inplace = True)
+
+
+n_proc = 7
 unique_index = len(df_res.index.unique())
 step = floor(unique_index/n_proc)
 residual = unique_index - n_proc*step
@@ -85,6 +102,11 @@ df_run["fdr"] = df_run.index.map(fdr_map).fillna(0)
 
 
 
+# Amount of target / all
+# about 0.75 target and 0.25 decoy.
+
+len(df_res[df_res.decoy != True]) / len(df_res[df_res.decoy == True]) # 0.7362863735492298 
+
 
 
 
@@ -96,10 +118,10 @@ df_pivot = df.pivot(index=["Stripped.Sequence","Protein.Ids"], columns = "Run", 
 df_pivot.reset_index(inplace=True)
 df_pivot["Proteins"] = df_pivot["Protein.Ids"]
 df_pivot.drop("Protein.Ids", axis = 1)
-df_pivot.to_csv("msqrob2_input_20220131.tsv", sep = "\t", index = False)
+df_pivot.to_csv("msqrob2_input_20220204.tsv", sep = "\t", index = False)
 
 
-msq = pd.read_csv("msqrob2_input_20220131.tsv", sep = "\t")
+msq = pd.read_csv("msqrob2_input_20220204.tsv", sep = "\t")
 
 # map sample
 
@@ -119,9 +141,9 @@ for i in msq.columns:
         col_map.update({i:i})
 
 msq = msq.rename(columns=col_map)
-msq.to_csv("msqrob2_input_20220131.tsv", sep = "\t", index = False)
+msq.to_csv("msqrob2_input_20220204.tsv", sep = "\t", index = False)
 
-p = pd.read_csv("msqrob2_input_20220131.tsv", sep = "\t")
+p = pd.read_csv("msqrob2_input_20220204.tsv", sep = "\t")
 
 
 # AFter running R code
