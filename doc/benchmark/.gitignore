@@ -1,0 +1,6 @@
+*.log
+*.bbl
+*.aux
+*.blg
+*.fls
+*.synctex.gz
