@@ -35,10 +35,12 @@ def remove_decoy_tag(protein):
         return protein.split("_")[1]
     else:
         return protein.split("_")[0]
-    
+
+# If proteins dont have specie....    
 triqler["protein_nonTagged"] = triqler.proteins.map(remove_decoy_tag)
 triqler["specie"] = triqler["protein_nonTagged"].map(protein_specie_map)
 triqler["proteins"] = triqler["proteins"] + "_" + triqler["specie"]
+
 triqler.drop(["protein_nonTagged", "specie"], axis = 1, inplace=True)
 expr_, fd_, pd_ = get_mSqRobSum_input(triqler)
 

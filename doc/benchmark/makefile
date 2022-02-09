@@ -1,6 +1,6 @@
 main=benchmark
 
-all: ${main}.pdf # supplement.pdf coverletter.pdf biorxiv.pdf # diff.pdf
+all: ${main}.pdf supplement.pdf # coverletter.pdf biorxiv.pdf # diff.pdf
 
 ${main}.pdf: ${main}.tex ${main}.bib # img/*
 
@@ -25,5 +25,5 @@ zip:
 	zip -r ${main}.zip *.tex *.bib img makefile *.sty *.bst
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.out *~ .DS_Store
-	rm -fr main/
+	rm -f *.aux *.bbl *.blg *.log *.out *~ .DS_Store *.gz
+	rm -fr ${main}/

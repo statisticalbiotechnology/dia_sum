@@ -67,6 +67,160 @@ For this purpose, a data set with 10 samples containing mixtures of Arabidopsis 
 # Blog 
 (line 52 as reference)
 
+## 2022-01-24
+Fixing the parser msqrob2 for diann and osw.
+
+
+## 2022-01-18
+Off - until 2022-01-24
+
+## 2022-01-17
+# 08:00
+Trying to get all the packages installed on my local computer.
+
+# 13:02 
+https://github.com/statOmics/msqrob2/issues/32
+
+Issues solves: The example vignette on msqrob2 github repo was outdated.
+
+Trying to figure out data format to parse my data to msqrob2.
+
+# 16:00
+Finished diann -> msqrob parser 
+
+1.load diann (result.tsv)
+2. Select top PSM as peptides
+3. Recompute FDR with CScores for filtered list.
+4. Filter on peptide-level fdr.
+5. Construct dataframe with df.pivot()
+
+## 2022-01-16
+# 11:00 
+Continue trying to fix msqrob2
+
+# 22:00
+Posted issue on msqrob2 issues.
+
+
+## 2022-01-14
+# 07:30 
+Check msqrob2 and continue trying to fix package error
+
+# 09:30
+Meeting
+
+# 10:15
+Thinking about the simulations probelm.
+
+IF we have 3 proteoforms, with 10 unique peptides.
+
+We can have 3 different distributions for the proteoforms, and we can have 1 distribution, where we rename the last peptide 10A, 10B and 10C. We assume that it is some simple PTM where we add on some simple amino acids.
+
+We use the 3 distributions the vary the ratios of the proteoforms.
+
+Using this data we can perform PCA.
+
+
+
+## 2022-01-13
+# 08:00 
+PCA on the PXD003704 data, reading paper about PXD003704. Check formatting on data. 
+
+# 14:50
+Finished parallell coordinates plot on PXD003704. Seems very hard to read? How do we proceed?
+
+start checking on msqrob2 
+
+r 3.6 is outdated. Rebuilding everything for r 4.0
+
+# 17:40
+Still trying to rebuild. I think It did not work because I had not used sudo.
+
+This error:
+
+Error: package or namespace load failed for ‘cfcdae’:
+ package ‘cfcdae’ was installed before R 4.0.0: please re-install it
+
+Trying this method.
+
+https://stackoverflow.com/questions/63390194/package-xxx-was-installed-before-r-4-0-0-please-re-install-it
+
+# 18:10
+Sudo seemed to have solved it... with above link.
+
+# 20:33
+msqrob2 vignette example.
+https://statomics.github.io/msqrob2Examples/cptac.html
+
+Cannot solve this error for normalize function from preprocessCore.
+Error in preprocessCore::normalize.quantiles(x, ...) : 
+  ERROR; return code from pthread_create() is 22
+
+
+## 2022-01-12
+# 06:15
+Look at PXD003704 maxquant processed data.
+
+# 16:00
+Formatting PXD003704 data and reading up on the data.
+
+What is Reporter Intensity Count
+What is Reporter Intensity CTRL_R1...CTRL_R4, and Pablo_R1... Pablo_R4.
+
+
+
+## 2022-12-11 
+# 05:00
+Working on fix on paper. 
+
+# 14:20
+Working on formplot and making slides.
+
+# 20:25
+Reading up on proteoforms.
+
+# 22:05
+Looked into PXD003704 MCF-7 data. Finished ppt and reading about CETSA, proteoform, thermal shift assay, Thermal Proteome Profiling.
+
+
+## 2021-11-17
+Getting confused. Is mscore from pyprophet FDR?
+
+It is stated here 
+
+https://assets.researchsquare.com/files/rs-893982/v1/a3afe574-fa8c-44e9-9ea1-e46b1579d558.pdf?c=1636997981
+
+that it is?
+
+## 2021-11-16
+
+![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
+
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156i) uses 
+
+Summary: MSstats is an R package for statistical relative quantification of proteins and peptides in mass spectrometry-based proteomics. Version 2.0 of MSstats supports label-free and label-based experimental workflows and data-dependent, targeted and data-independent spectral acquisition. It takes as input identified and quantified spectral peaks, and outputs a list of differentially abundant peptides or proteins, or summaries of peptide or protein relative abundance. MSstats relies on a flexible family of linear mixed models.
+
+
+## 2021-11-15 investingating input format for msstats, msqrobsum and triqler
+
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156) uses MaxQuant output format. It seems to be PSM-level FDRs. Looking the input converter from OpenSwathWorkFlow it also seems to be PSMs level.
+
+![MSstats](https://www.bioconductor.org/packages/devel/bioc/vignettes/MSstats/inst/doc/MSstats.html) uses feature-level data. This should be peptide-features right? Also, I have run this exactly as the tutorial. So this should be fine.
+
+![MsqRobSum](https://www.mcponline.org/article/S1535-9476(20)34982-3/fulltext) this should be done using summarized peptide intensities. This paper also have some information about MSstats run, claiming peptide-level run.
+
+MSqRobSum should have peptide-level data. So we need to find peptide-level FDR:s.
+
+Top3 Should have q-value recalculations based on target-decoy method. (check assess_fdr_overall)
+
+ToDo:
+- check how to compute m-score to q-value? or describe the problems of mscore more thoroughly in the paper
+- describe the psm Q.Value from DIANN in paper. 
+- Feature level data (PSMs) seems to be ok for MSstats, is it ok for msqrobsum or do we need to rerun msqrobsum?
+- Can we use m_score treshold for Top3 computation. How did LFQbench Navarro et al. do ?
+
+
+
 ## 2021-04-27 cont. working on report... check .jupyter from same date..
 
 ## 2021-04-23 number of DE protein
