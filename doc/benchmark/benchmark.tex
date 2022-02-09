@@ -138,7 +138,7 @@ The peptide quantities were summarized to proteins using the average of the thre
 
 We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two PSMs available these were also included, still represented by their average, however, samples having zero or one PSM for the protein were excluded. PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
 
-\todo{Here you clearly state that you use peptide-level FDR. Yet you say that you use PSM-level FDR elsewhere.}
+%\todo{Here you clearly state that you use peptide-level FDR. Yet you say that you use PSM-level FDR elsewhere.}
 
 % res = triq_run.groupby("proteins")["intensity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
 
