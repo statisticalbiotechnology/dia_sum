@@ -21,7 +21,7 @@ def diann_to_triqler(filename):
     df["condition"] = df["Run"].map(condition_mapper)
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"]
-    df["searchScore"] = df["Q.Value"]
+    df["searchScore"] = -np.log(df["Q.Value"])
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]
@@ -29,9 +29,9 @@ def diann_to_triqler(filename):
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
-df_triq = diann_to_triqler("diaNN.tsv")
-df_triq.to_csv("triqler_input_diann_searchScore_QValue.csv", sep = "\t", index = False)
-
+df_triq = diann_to_triqler("diann.tsv")
+df_triq.to_csv("triqler_input_diann_searchScore_Qvalue.csv", sep = "\t", index = False)
+# https://usermanual.wiki/Document/DIANN20GUI20manual.1528310561/view 
 
 def diann_to_msstats(filename):
     df = pd.read_csv(filename, sep = "\t")

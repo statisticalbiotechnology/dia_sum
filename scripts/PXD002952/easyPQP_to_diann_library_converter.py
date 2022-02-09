@@ -22,8 +22,9 @@ protein_specie_map = fasta_to_protein_specie_map(fasta)
 
 # MSFragger 
 os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire/msfragger")
-
+os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger")
 # Add specie to Easypqp format.
+
 def append_specie_to_easyPQP_library(filename = "library.tsv"):
     lib = pd.read_csv(filename, sep = "\t")
     lib["specie"] = lib.ProteinId.map(protein_specie_map)
@@ -32,11 +33,14 @@ def append_specie_to_easyPQP_library(filename = "library.tsv"):
     lib.to_csv(f"{filename[:-4]}_specie.tsv", sep = "\t", index = False)
 
 append_specie_to_easyPQP_library(filename = "library.tsv")
+append_specie_to_easyPQP_library(filename = "easypqp_lib_openswath.tsv")
 
-# Run OpenSwathDecoyGenerator
 
 # Convert OpenSwathDecoyGenerator output to EasyPQP format.
-def format_openSwathDecoyGenerator_to_diann(filename = "library_specie_decoy.tsv"):
+def format_openSwathDecoyGenerator_to_diann(filename = "library_specie_decoy.tsv", orig_filename = "library.tsv"):
+    # use orig_filename to keep the correct columns.
+    lib = pd.read_csv(orig_filename, sep = "\t")
+
     lib_decoy = pd.read_csv(filename, sep = "\t")
     lib_decoy["FragmentCharge"] = lib_decoy["ProductCharge"]
     #lib_decoy = pd.concat([lib_decoy.iloc[:, lib_decoy.columns.isin(lib.columns)], lib_decoy["FragmentCharge"]], axis = 1)
@@ -45,5 +49,5 @@ def format_openSwathDecoyGenerator_to_diann(filename = "library_specie_decoy.tsv
     # Add as many column as possible 
     lib_decoy.to_csv(f"{filename[:-4]}_formatted.tsv", sep = "\t", index=False)
 
-format_openSwathDecoyGenerator_to_diann(filename = "library_specie_decoy.tsv")
+format_openSwathDecoyGenerator_to_diann(filename = "library_specie_decoy.tsv", orig_filename = "library.tsv")
 

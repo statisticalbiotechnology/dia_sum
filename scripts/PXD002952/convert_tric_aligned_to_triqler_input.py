@@ -57,3 +57,13 @@ df_triq = df_triq.rename(columns={"experiment_id": "run", "sample_id": "conditio
                         "ProteinName":"proteins"}, errors="raise")
 df_triq["searchScore"] = -np.log10(df_triq["searchScore"])
 df_triq.to_csv("triqler_input.csv", sep = "\t", index=False)
+
+
+#####################################################
+# 2021-08-06 Parsing uunaligned from pyprophet py27 #
+#####################################################
+
+
+
+
+

@@ -15,3 +15,7 @@ os.chdir("/home/ptruong/git/dia_sum/database")
 os.chdir("/hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof6600/32fix")
 # MSFragger 
 os.chdir("/hdd_14T/data/PXD002952/res_20210530_DIAUmpire/MSFragger")
+
+# 20210707 - DIANN
+os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann")
+

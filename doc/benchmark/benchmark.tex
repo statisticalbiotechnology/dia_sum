@@ -18,6 +18,10 @@
 
 \usepackage{natbib}
 
+\usepackage{graphicx}
+
+\usepackage{float}
+
 % color can be used to apply background shading to table cells only
 \usepackage[table]{xcolor}
 
@@ -65,19 +69,24 @@ DDA acquisitions of samples from each specie (human, yeast, E. coli) was provide
 
 For Prosit-based spectral library generation, the fasta file was converted to prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as intensity prediction model and Prosit\_2019\_irt was used as iRT predicition model.  
 
-\textbf{Shared peptides}
 
-In bottom-up proteomics, redundency in the matching of peptides to proteins hits \cite{nesvizhskii2005interpretation}
+\textbf{Protein inference problem and reduced database}
 
-\begin{table}[]
+In bottom-up proteomics, redundency in the matching of peptides to proteins hits is a challenge \cite{nesvizhskii2005interpretation}. The Parsimony principle reports the minimum set of proteins which include all the observed peptides (Occam's razor principle), thereby resolving shared and ambiguous evidence. This method typically reduces the size of the protein list where peptides could belong to several proteins, as the cost of losing potential protein idenfications. In addition it may also lower the repoducibility of the identified proteins\cite{serang2012recognizing}. While the protein grouping approach bunch together proteins based on different schemas. For example it is possible to group together proteins that map to identical peptides, or when proteins contain overlapping subsets of peptides. The protein groupings are often assigned post peptide identification, which contrary to good statistical practices to formulate the hypothesis before data are observed \cite{serang2012recognizing}. An example of parsimony and protein grouping is shown in \textbf{table 1}. 
+
+\begin{table}[!htbp]
 \begin{tabular}{llllllll}
           & Peptides &   &   &   &   & Parsimony reported & Grouping reported \\
           & 1        & 2 & 3 & 4 & 5 &                    &                   \\
 Protein A & x        & x &   &   &   & Yes                & Yes               \\
 Protein B &          & x & x &   &   & No                 & Yes               \\
-Protein C &          &   & x & x &   & Yes                & Yes              
+Protein C &          &   & x & x &   & Yes                & Yes              	
 \end{tabular}
+\newline
+\textbf{Table 1:} Example of Parsimony reported and protein grouping reported proteins.
 \end{table}
+
+In this benchmarking stude we remove proteins with shared peptides. Using different methods for protein inference yields different amount of protein matches given the same amount of observed peptides. Ideally, the number of proteins compared between different protein quantitation methods should be the same when benchmarking. By removing proteins with shared peptides from the FASTA-database the protein inferences procedures will yield the same protein identifications. This should give a fair comparison regardless of protein inference method used in the different protein quantitation pipelines.
 
 \textbf{DIA methods}
 Write about why different methods where used.
@@ -95,7 +104,20 @@ Prosit was used to contruct spectra libraries from the modified fasta files. The
 
 
 \textbf{Protein quantification}
-Write why different protein quantification methods and the why triqler should be better in theory.
+
+\textbf{Variance structure}
+(Write why different protein quantification methods and the why triqler should be better in theory.) 
+
+The field of protein quantification is relatively new. Many protein quantification methods have been developed specifically for DDA data. Many of these methods should be generalizable for DIA data. Triqler (probabilistic graphical model), MsStats (linear mixed model) and MSqRob (Ridge Regression) all require homoskedastic varaince. In fig. it is show that the variance-to-mean intensity ratio does not increase for larger means (I COULD TRY TO SHOW THIS WITH QQ PLOT INSTEAD). 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/variance_to_mean_plot.png}
+    \caption{mean vs. variance-to-mean ratios. The variance-to-mean ratios stays similar across the means.}
+    \label{fig:variance_to_mean_ratio}
+\end{figure}
+
+\textbf(Protein quantification tools)
 
 
 \textbf{Triqler}
@@ -104,18 +126,56 @@ Triqler was used with --fold\_change\_eval between 0-2 with 0.04 increments. It 
 \textbf{Top3}
 The precursors are filtered by q-value > 1\% and the average of the three largest peptide intensities are taken for each protein. Protein with only one detected peptides (single hit proteins) and proteins detected only in two injections are discarded.
 
-
-\textbf{Msstat}
-SWATH2Stats was used to convert the osw output files to MSStats input format.
+\textbf{MSstat}
+ MSstats customizes a linear mixed model to the specific experiment and to each protein \cxite{choi2014msstats}. SWATH2Stats was used to convert the osw output files to MSStats input format. dataProcess function in the MSstats package is used for data pre-processing and quality control of the MS runs of the data into quantitative data for model fitting and group comparison (Default parameters was used [specify default parameters]). quantification function in the MSstats package is applied on the pre-processed data to generate the quantification results for each protein.
 
 \textbf{Msqrobsum}
-
 (Note: write something about difference FDR computation method and conservativeness, and why it does not make sense to compare between processing method, but it is ok to compare between post-processing methods)
 
+Fig. X show the protein quantity distributions with the different species; human (orange), ecoli (blue) and yeast (green) highlighted in different colours. The human distribution apex is not centered at 0 in MsStats and MSqRob, while it is centered for triqler and top3. Likewise the distribution for e.coli and yeast is centered towards the true log2 fold change ratios for triqler and top3, while the apexes are skewed towards 0 for MsStats and MSqRob.    
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    \caption{Protein quantity distributions from Triqler, Top3, MSstats and MSqRobSum at fc = 0.4.}
+    \label{fig:intensity_distribution}
+\end{figure}
 
 
 \section*{Results}
+
+
 \textbf{OpenSwath Analysis}
+
+Fig. Y. show that the number of differentially expressed proteins are significantly higher for Triqler and MSqRobSum at different false discovery rates. MSqRobSum has slightly higher number of differentially expressed proteins than triqler. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/n_diff_expressed.png}
+    \caption{Number of differentially expressed proteins for an OpenSwath analysis with triqler, top3, MsStats and MSqRobSum protein summarization.}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
+
+
+However, fig Y shows that the ratio of false positives (human proteins) to number of differentially expressed proteins for a given q-value level is more linear for triqler. At log2FC = 2 all methods are conservative at low q-values. Triqler is better calibrated for low q-values and gets more convervative as the q-value treshold is increased. Top3, MsStats and MSqRob are more conservative at low q-values and gets less convervative as the q-value treshold increases.  
+
+   
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/calibration_plot.png}
+    \caption{Q-value (x-axis) and false positive / number differentially expressed protein (y-axis) ratio.}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{../../result/2021-08-13_docs_plots/de_human_vs_de_specie.png}
+    \caption{Number of differentially expressed humans (x-axis) and differentially expressed e.coli and yeast (y-axis).}
+    \label{fig:osw_n_diff_exp}
+\end{figure}
+
+
 
 \textbf{DIAUmpire and DIA-NN analysis}
 
@@ -134,7 +194,7 @@ This work has been supported by a grant from the Swedish Foundation for Strategi
 \section*{Supporting information}
 
 \bibliographystyle{plain}
-\bibliography{benchmark}
-
+%\bibliography{benchmark}
+\bibliography{benchmark.bib}
 \end{document}
 
