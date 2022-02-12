@@ -52,8 +52,9 @@
 
 \begin{abstract}
 
-The estimates of accuracy for differential protein abundance estimates by label-free shotgun proteomics is effected by a wide range of error sources. In an effort to control tyhe errors of the final prediction, we have previously designed an model, Triqler, that combines errors from peptide identification and abundance estimation.
-Triqler was designed for handling data from data-dependent acquisition, however, here we demonstrate that the same model can successfully be applied to data-independent acquisition data. Based on a DIA datasets of mixtures of proteomes we observe an improved performance in terms of number of identified differentially abundant proteins compared to other state-of-the-art methods. We also demonstrate that the performance is independent of if peptides are identified with spectral library searching or matching pseudo-spectra with search engines. 
+A frequent desired goal when processing data from quantative shotgun proteomics experimentsis a list of proteins that are differentially abundant under the examined experimentak conditions. Unfortunatly, this is a challenging process, as the mass spectrometer analyses the proteolytic peptides of a protein and not the proteins themselves. We have previously designed a Bayesian hirarchical probabilistic model, Triqler, for combining peptide identification and quantification errors into probabilities of proteins being differentially abundant. 
+
+Here we show that Triqler, is well compatible with data-independent acquisition data, despite being designed for data-dependent acquisition data. Furthermore, we find that it has better performance than other protein summarization tools, when comparing against a set of state of the art DIA processing methods. 
 \end{abstract}
   
 
@@ -65,9 +66,7 @@ For the analysis of mass spectrometry-based proteomics data, just as any other t
 
 We have previously designed a hierarchical Bayesian model, Triqler, able to control for errors from both the identification and quantification process in such experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins \cite{The2018Integrated}.   Triqler was designed for handling LFQ data from Data-dependent acquisition (DDA). However, many labs prefer Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated} as they find that it gives more reproducible peptide detection, and allow for a broader dynamical range in quantification \cite{bern2010deconvolution,zhang2020DIA}, compared to DDA. 
 
-Here, we set out to investigate Triqler ability to summarize protein concentrations from peptide abundances deduced from DIA data. We primarily used the LFQBench from Navarro et al. \cite{navarro2016multicenter} for the evaluation. In the original benchmark, Navarro et al. included a comparison of different protein summarization strategies and found that the so-called Top3 method generally resulted in lower variance and better quantification accuracy than the built-in methods from the tested methods\cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than the Top3-method. Simple summarization methods based on mean and median peptide intensity has been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data has been proposed in literature \cite{silva2006absolute,cox2014accurate}, and summarization techniques such as PQPQ~\cite{forshed2011enhanced}, msStats~\cite{choi2014msstats}, Diffacto~\cite{zhang2017covariation}, MSqRob2~\cite{sticker2020robust} and Triqler~\cite{The2018Integrated} has all been shown to outperform Top3 and there currently exists no reason why said methods would not theoretically be able to perform well for DIA data. Hence, we found it apt to benchmark Triqler against a set of state-of-the-art protein summarization methods using peptide quantities from the LFQBench DIA data set.
-
-% Here, we found a previous data set most useful for the comparison of methods, the LFQBench from Navarro et al. \cite{navarro2016multicenter} constructed a high-quality data set for five widely used tools for analysis of SWATH-MS data (four peptide-centric query tools: OpenSWATH \cite{rost2014openswath}, SWATH 2.0, Skyline \cite{maclean2010skyline}, Spectronaut \cite{bruderer2015extending}, and one data-centric approach DIA-Umpire \cite{maclean2010skyline}), which is readily amendable for a benchmark of other methods.
+Here, we set out to investigate Triqler ability to summarize protein concentrations from peptide abundances derived from DIA data. We primarily used the LFQBench from Navarro et al. \cite{navarro2016multicenter} for the evaluation. In the original benchmark, Navarro et al. included a comparison of different protein summarization strategies and found that the so-called Top3 method generally resulted in lower variance and better quantification accuracy than the built-in methods from the tested methods\cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than the Top3-method. Simple summarization methods based on mean and median peptide intensity has been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data has been proposed in literature \cite{silva2006absolute,cox2014accurate}, and summarization techniques such as PQPQ~\cite{forshed2011enhanced}, msStats~\cite{choi2014msstats}, Diffacto~\cite{zhang2017covariation}, MSqRob2~\cite{sticker2020robust} and Triqler~\cite{The2018Integrated} has all been shown to outperform Top3 and there currently exists no reason why said methods would not theoretically be able to perform well for DIA data. Hence, we found it apt to benchmark Triqler against a set of state-of-the-art protein summarization methods using peptide quantities from the LFQBench DIA data set.
  
  
 \section*{Materials and methods}
@@ -77,7 +76,7 @@ Here, we set out to investigate Triqler ability to summarize protein concentrati
 \subsubsection*{Mass spectrometry data}
 
 
-We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 (ABSciex) section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. We also restricted ourselves to the low ratio difference samples, referred to as the HYE124 hybrid proteome samples in the original study. That consists of triplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w \textit{E. coli} cells, and triplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w \textit{E. coli} proteins. Samples from HYE110 and the TripleTOF5600 section of HYE124 were omitted in this study. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. The \verb|.wiff| files were converted to \verb|.mzML| files in a centroided format using msconvert (using windows OS msconvert version 3.0) with peakPicking filter msLevel=1-). 
+We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 section of the study, which was harvested with a setup of 32 fixed windows ms2-windows. We also restricted ourselves to the low ratio difference samples, referred to as the HYE124 hybrid proteome samples in the original study. That consists of triplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w \textit{E. coli} cells, and triplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w \textit{E. coli} proteins. Samples from HYE110 and the TripleTOF5600 section of HYE124 were omitted in this study. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. The \verb|.wiff| files were converted to \verb|.mzML| files in a centroided format using msconvert (using windows OS msconvert version 3.0) with peakPicking filter msLevel=1-). 
 
 
 \subsubsection*{Sequence database}
@@ -87,96 +86,51 @@ Uniprot FASTA files with one protein sequence per gene were downloaded for each 
 
 \subsection*{General workflow}
 
-Just as in LFQBench, we used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs, we refer to this workflow as DID hereon, and secondly, we searched pseudo-spectra generated directly from the DIA data, we will refer to this workflow as PS from hereon. The workflows are shown in figure \ref{fig:flowchart}. We will describe the parameter choices of both these two methods below.
+We used two separate strategies to generate peptide abundances from the DIA-runs, first we used a spectral library consisting of selected spectra from separate DDA runs, we refer to this workflow as ID hereon, and secondly, we searched pseudo-spectra generated directly from the DIA data, we will refer to this workflow as PS from hereon. The workflows are shown in figure \ref{fig:flowchart}. We will describe the parameter choices of both these two methods below.
+\todo{I dont like abreviations of abreviations, could we change the name to ID instead?}
 
 \begin{figure}[htp]
     \centering
-    \begin{tabular}{lclc} 
-
-
-        \includegraphics[width=1.0\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
-    \end{tabular}
-        \caption{{\bf The DDA identification-driven matching (DID) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). A threshhold at 1\% PSM-level identification FDR was used for filtering before protein summarization. Triqler integrates the idenfication error probability of the peptides in its model and therefore should not use filtered data when performing protein summarization. Top3, MSqRob2 and MSstats uses the standard procedure of peptide filtering before protein summarization.}   
-      \label{fig:flowchart}
+    \includegraphics[width=1.0\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
+    \caption{{\bf The DDA identification-driven matching (ID) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). Threshhold at 1\% PSM-level or peptide-level identification FDR or no filtration was used for filtering before protein summarization depending on the requirements of the summarization tools. \label{fig:flowchart}}      
 \end{figure}
 
 
 
-\subsubsection*{DDA identification-driven (DID) spectral library}
+\subsubsection*{DDA identification-driven (ID) spectral library}
 
-%\todo{We need a better name for this. Both your piplines use Spectral Libraries. Could you call this one ``Identification-driven''}
-
-
-For the DID workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with default settings (Precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, Calibration and Optimization: "Max calibration, parameter optimization", isotope error: 0/1, Data type: DDA, Load rules: stricttrypsin, Cut after: KR, Cleavages: ENZYMATIC, Missed cleavages: 2, Clip N-term M: True, Peptide length of [7, 50], Peptide mass range of [500, 5000], Split database: 1, and allowing for oxidation on methionine and protein N-terminus modifier as variable modifications), and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results with default setting (RT Calibration: "Automatic selection of a run as reference RT", RT Lowess Fraction: 0.1, UniMod annotation tol(Da), Fragment annotation tol(ppm): 15, and the default PSM-level threshold of 0.01, peptide-level FDR of 0.01, and protein-level FDR of 0.01). Decoys for the spectral library were generated with OpenSwathDecoyGenerator with a pseudo-reverse method. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow and  PyProphet\cite{teleman2015diana} was used for computing false discovery rate (m\_score) for the peptide quantification. This resulted in a set of detected peptides together with their assessed peptide identification accuracies and abundance estimates (Supplementary Table \ref{fig:osw_peptide_and_protein_id} shows the number of identified peptides and proteins).
-
-%Two approaches were used for spectra library generation: DDA acquisition-based spectral library generation and Prosit-based spectral library generation using only .fasta file \cite{searle2020generating}. 
-%For Prosit-based spectral library generation, the FASTA file was converted to Prosit input format using encyclopeDIA converter. Prosit\_2020\_intensity\_cid model was used as an intensity prediction model and Prosit\_2019\_irt was used as iRT prediction model.  \todo{I am confused, are there three different workflows?[ANSWER: Not at this moment, buy my ambition is to at some point get the encyclopeDIA going, perhaps we can skip this?]}
+For the ID workflow we searched the LFQBench provided DDA runs with MSFragger\cite{kong2017msfragger} with default settings (Precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, Calibration and Optimization: "Max calibration, parameter optimization", isotope error: 0/1, Data type: DDA, Load rules: stricttrypsin, Cut after: KR, Cleavages: ENZYMATIC, Missed cleavages: 2, Clip N-term M: True, Peptide length of [7, 50], Peptide mass range of [500, 5000], Split database: 1, and allowing for oxidation on methionine and protein N-terminus modifier as variable modifications), and constructed a spectral library with EasyPQP \cite{easypqp} to from the DDA-search results with default setting (RT Calibration: "Automatic selection of a run as reference RT", RT Lowess Fraction: 0.1, UniMod annotation tol(Da), Fragment annotation tol(ppm): 15, and the default PSM-level threshold of 0.01, peptide-level FDR of 0.01, and protein-level FDR of 0.01). Decoys for the spectral library were generated with OpenSwathDecoyGenerator with a pseudo-reverse method. The spectral library was subsequently matched to the DIA data with the OpenSwath Workflow and PyProphet\cite{teleman2015diana} was used for computing false discovery rate (m\_score) for the peptide quantification \todo{m\_score is for peptide identification is I do not miss remember.}. This resulted in a set of detected peptides together with their assessed peptide identification accuracies and abundance estimates (Supplementary Table \ref{fig:osw_peptide_and_protein_id} shows the number of identified peptides and proteins).
 
 
 \subsubsection*{Pseudo Spectra generation (PS) spectral library}
 
 For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The DIA-Umpire parameters was set to default values (MS1 PPM: 10, MS2 PPM: 20, Max Missed Scans: 1, Mass Defect Filter: True, RP max: 25, RF max: 500, Corr Treshold: 0, Delta Apex: 0.2, RT Overlap 0.3, Mass Defect Offset 0.1, Isotope Pattern: 0.3, MS1 SN: 1.1, MS2 SN: 1.1, Adjust Fragment Intensity: True). The pseudo-spectra were subsequently searched using using MSFragger with default settings (Precursor mass tolerance of [-20, 20] ppms, fragment tolerance of 20 ppms, Calibration and Optimization: "Max calibration, parameter optimization", isotope error: 0/1, Data type: DDA, Load rules: stricttrypsin, Cut after: KR, Cleavages: ENZYMATIC, Missed cleavages: 2, Clip N-term M: True, Peptide length of [7, 50], Peptide mass range of [500, 5000], Split database: 1, and allowing for oxidation on methionine and protein N-terminus modifier as variable modifications). A spectral library was build from the resulting PSMs using easyPQP with default setting (RT Calibration: ``Automatic selection of a run as reference RT'', RT Lowess Fraction: 0.1, UniMod annotation tol(Da), Fragment annotation tol(ppm): 15, and the default PSM-level treshold of 0.01, peptide-level FDR of 0.01, and protein-level FDR of 0.01). DIA-NN was used for peptide quantifications with settings specified in \url{https://fragpipe.nesvilab.org/docs/tutorial_DIA.html#quantify-with-dia-nn} (Protein inference: ``Off'', Quantification strategy: ``Robust LC (High accuracy)'', Precursor FDR (\%): 1.0, Protease: ``Trypsin/P'', Missed cleavages: 1, Maximum number of cariable modifications: 0, N-term M excision: True, C carbamidomethylation: True, Peptide length: [7, 30], Precursor m/z range: [300, 1800], Fragment ion m/z range: [200, 1800], Mass accuracy: 0.0, MS1 accuracy: 0.0, Scan window: 0, Use isotopologues: True, Remove likely interferences: True, Neural network classifier: ``Single-pass mode'', Protein inference: Genes, Cross-run normalization: ``RT-dependent'', Library generation: ``Smart profiling''). Too compute false discover rates DIA-NN uses a built-in custom implementation of the mProphet algorithm to compute $q$~values \cite{reiter2011mprophet, demichev2020dia} (Supplementary Table \ref{fig:diann_peptide_and_protein_id} shows the number of identified peptides and proteins). 
  
-%For the PS workflow we also used the fragpipe software, employing DIA-Umpire to extract pseudo-spectra from the DIA data. The pseudo-spectra were subsequently searched using using MSFragger with a precursor mass tolerance of -20, 20] ppms, fragment tolerance of 20 ppms, and allowing for [M,[\^{}] variable modifications (M - oxidation on methionine and \^{} is a terminus modifier for protein N-terminal). \todo{This is confusing. Spell out what it means. Do you look for N-term methionines, or is it something different?} A spectral library was build from the resulting PSMs at the default PSM-level treshold of 0.01 using easyPQP. DIA-NN was used for peptide quantifications, a method that uses a built-in custom implementation of the mProphet algorithm to compute $q$~values \cite{reiter2011mprophet, demichev2020dia}.
- 
- %The DIA-NN uses a built-in mProphet algorithm with decoy precursors to compute the $q$~values. \cite{reiter2011mprophet} \cite{demichev2020dia}. 
-
-% VARIABLE MODIFICATION 
-% https://github-wiki-see.page/m/Nesvilab/MSFragger/wiki/Setting-the-Parameters 
-
-%\subsection*{Database searching}
-%For both workflow we matched spectra and pseudo-spectra with MSFragger with parameters: [check parameters], and used peptide-prophet for statistical validation was performed by peptide prophet and protein prophet.
-
-
 \subsection*{Protein summarization}
 
-The peptide quantities were summarized to proteins using the average of the three most intense peptides (We call it Top3), MSstats, MSqRob2, and Triqler for both the DID spectral library and the PS spectra library pipelines. 
+The peptide quantities were summarized to proteins using the average of the three most intense peptides (We call it Top3), MSstats, MSqRob2, and Triqler for both the ID spectral library and the PS spectra library pipelines. 
 
 \subsubsection*{Top3}
 
-We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two PSMs available these were also included, still represented by their average, however, samples having zero or one PSM for the protein were excluded. PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
-
-%\todo{Here you clearly state that you use peptide-level FDR. Yet you say that you use PSM-level FDR elsewhere.}
-
-% res = triq_run.groupby("proteins")["intensity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
-
-%We implemented a short script that for each protein selected the three, on average, most abundant peptides across the conditions and summarized their protein quantities.
+We implemented a short script that for each protein selected the average of the 3 most abundant PSMs for each protein and sample. In samples only having two PSMs available these were also included, still represented by their average, however, proteins with one or zero PSMs per sample were excluded. \todo{You previously wrote "samples having zero or one PSM for the protein were excluded." I guess my edit is right? Please confirm.} PSMs were filtered at an 1\% FDR before performing the Top3 protein summarization. 
 
 \subsubsection*{MsStats}
 
 We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats use feature-level data, allowing for multiple PSM hits per peptide identification. We filtered so that every protein had at least 2 peptides and a maximum of 10 peptides, and we thresholded with a \texttt{m\_score} of lower than 0.01 with the \texttt{SWATH2stats} package in R in the SL pipeline. This was done using the settings \_on\_max\_peptides = 10, filter\_on\_min\_peptides = 2 and filter\_mscore\_condition = 0.01. For the PS pipeline, we created a script for performing the same conversion and PSM filtering procedure. The PS pipeline data was filtered on the \texttt{Q.Value} columns from the DIA-NN output file instead of \texttt{m\_score}. MSstats was run using the MSstats command \texttt{dataProcess}. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
-%\todo{This cant be the prefered way to run msstats. Change so that you select peptides with a 1\% identification FDR.}
 
 \subsubsection*{MSqRob2}
-% Details on how to run MsqRobSum
-% https://rdrr.io/github/statOmics/MSqRobSum/f/vignettes/msqrobsum.Rmd
-
-We installed MSqRob2 version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/msqrob2}). MSqRob2 takes peptide input. The output from OpenSwath and DIA-NN is at PSM-level. We filtered the data on 1\% identification FDR and then filter the data to peptide-level by selecting the top PSM hit as our peptide. The highest scoring PSMs are selected as our peptides, i.e. highest \texttt{m\_score} for OpenSwath and highest \texttt{Q.Value} for DIA-NN. MsqRob2 was run using the MSqRob2 command \texttt{msqrob2}, mode was set to \texttt{msqrob}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))} and mode was set to \texttt{msqrob}. %This means that the two models $y_{st} = \beta_0 + \beta_{condition} + \beta_{sample} + \beta_{feature} + \epsilon$ and $y_{st} = \beta_0 + \beta_{condition} + \epsilon$ was specified for MSqRobSum analysis. 
+%
+We installed MSqRob2 version 0.9 using R/Bioconductor (available at \url{https://github.com/statOmics/msqrob2}). MSqRob2 takes peptide input. The output from OpenSwath and DIA-NN is at PSM-level. We filtered the data on 1\% identification FDR and then filter the data to peptide-level by selecting the top PSM hit as our peptide. The highest scoring PSMs are selected as our peptides, i.e. highest \texttt{m\_score} for OpenSwath and highest \texttt{Q.Value} for DIA-NN. MsqRob2 was run using the MSqRob2 command \texttt{msqrob2}, mode was set to \texttt{msqrob}, contrast was set to \texttt{condition} and \texttt{group\_vars} was set to the species human, yeast and \textit{E.Coli}. The \texttt{formulas} variables was set to \texttt{c(expression ~ (1|condition) + (1|sample) + (1|feature), expression ~ (1|condition))} and mode was set to \texttt{msqrob}.
 MSqRob2 uses \texttt{lme4} to construct a linear-mixed model with random effect, but without fixed effect. The models specified in by the variable formulas the constructs the models $y = Z_1 \mu + \epsilon$ and $y = Z_2 \mu + \epsilon$, where $Z_1$ contains the random effects condition, sample and feature (peptides for protein) and $Z_2$ contains only a random effect for condition. Some proteins have only intensities from one peptide. This can cause the first model $y = Z_1 \mu + \epsilon$ parameters to fail to converge. For these proteins we use the reduced model $y = Z_2 \mu + \epsilon$.
-
-% information about symbolic formula for lmer4
-% https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/
-% http://www.stat.rutgers.edu/home/yhung/Stat586/Mixed%20model/appendix-mixed-models.pdf
-% https://arxiv.org/pdf/1911.08628.pdf
-
-
-% for information about lmer4 syntax
-% https://stats.stackexchange.com/questions/13166/rs-lmer-cheat-sheet
-
-%\todo{LK: what is meant with a modell failing, in this case?}
-
-%We downloded MSqRobSum version 0.9 from \url{FIXME}.
 
 %clear
 \subsubsection*{Triqler}
 
-We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. Triqler was run with \texttt{fold\_change\_eval} parameter between 0 and 2.00 with 0.04 increments. As Triqlers model accounts for the uncertainty in the data, it takes unfiltered PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply negative log-transform to the \texttt{m\_score} and \texttt{Q.Value} to indicate \texttt{searchScore} 
+We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. Triqler was run with \texttt{fold\_change\_eval} parameter between 0 and 2.00 with 0.04 increments. As Triqlers model accounts for the uncertainty in the data, it takes unfiltered PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply negative log-transform to the \texttt{m\_score} and \texttt{Q.Value} to indicate \texttt{searchScore}. 
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR. As a consequence, the statistics from MsStats and MSqRob2 should be slightly more conservative \cite{korthauer2019practical}.
-
-%For the OSW-pipeline the recommended pipeline consisting of running TRIC feature alignment was used before MSstats and msqrob conversion \todo{If I recall correctly non of the features was actually aligned, but I will rerun the computations to double check}. For all other data we did not use TRIC aligned peptide data. 
 
 
 \section*{Results}
@@ -187,15 +141,15 @@ There was a slight difference in some of the benchmarking metrics, as the multip
 Triqler was designed for handling DDA data, and it was hence essential to validate that some of the assumptions Triqler makes about peptide abundance data, also are true for DIA datasets.
 We hence downloaded the LFQBench dataset and processed it with two different pipelines, and investigated the properties of the reported peptide abundances. DIA data is known to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqler's assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% PSM identification FDR from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relationship between standard deviation and mean (Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot}A-D). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fulfilled by DIA data (See Supplementary Figure \ref{fig:fraction_missing_values}).
 
-\subsection*{Summarizing peptides to protein concentrations}
+\subsection*{Summarizing peptides to protein relative abundances}
 
 We wanted to compare the performance of Triqler to that of other protein summarization methods. An inherent problem when comparing different protein summarization software is that the performance is affected by which protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting the number of differentially abundant proteins in data sets from mixtures from whole-cell extracts, a protein inference scheme that infers any protein containing a detected peptide will report more differentially abundant proteins than a more restrictive scheme that just report a parsimonious set of proteins. For such data sets, there are no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To alleviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This operation strived to give a fairer comparison of protein summarization regardless of the protein inference method.
 
-Given the peptide abundances derived from the DID and PS workflows, we could now compare the performance of Triqler to one of MSstats, MSqRob2, and Top3. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.48 for the pseudo-spectra enabled data.
+Given the peptide abundances derived from the ID and PS workflows, we could now compare the performance of Triqler to one of MSstats, MSqRob2, and Top3. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.48 for the pseudo-spectra enabled data.
 
 \subsubsection*{Distributions of the estimated fold changes}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For these plots, we removed all error assessments on protein level. We observe that Triqler and Top3 have less bias than MSstats and MSqRob2, by seeing that the apex of the distributions is centered more closely to the true values.  %MSqRobSum report a very large number of proteins at a fold-change of zero. %These peaks all have a false discovery rate of 1.00, and would normally be filtered away by thresholding. 
+To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For these plots, we removed all error assessments on protein level. We observe that Triqler and Top3 have less bias than MSstats and MSqRob2, by seeing that the apex of the distributions is centered more closely to the true values.  
 
 \begin{figure}[hbt]
     \centering
@@ -207,14 +161,12 @@ To get an overview of the results of the methods we first made histograms of the
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msqrobsum_intensity.png} \\
         C & D 
     \end{tabular}
-    \caption{{\bf Comparison of reported fold change distributions.} We used protein data from the DID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, the apex of their distribution were found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_again} for reported fold change distributions for both DID and PS workflows). \label{fig:fc_histogram}} %(D) MSqRobSum report a large fold change bin at 0. A majority of these valued have been filtered away using a tresholding procedure because the reported false discovery rate for the difference between groups was 1.0 for most values in this bin. \label{fig:fc_histogram}}
+    \caption{{\bf Comparison of reported fold change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, the apex of their distribution were found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_again} for reported fold change distributions for both ID and PS workflows). \label{fig:fc_histogram}}
 \end{figure}
 
 \subsubsection*{Comparison of ability to discriminate differentially from equivalently abundant proteins}
 
-The LFQBench set contains varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As the first test of performance, we hence compared the methods' ability to infer the differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, when varying the reported significance threshold from 0.0 to 0.1 with 0.001 increments (Figure \ref{fig:diff_vs_hela}). Overall, it seems like Triqler reports more differentially abundant protein for every non-differentially abundant protein for both the peptide abundances generated by the DID spectral library and PS spectral library pipelines. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstats. 
-
-
+The LFQBench set contains varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As the first test of performance, we hence compared the methods' ability to infer the differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, when varying the reported significance threshold from 0.0 to 0.1 with 0.001 increments (Figure \ref{fig:diff_vs_hela}). Overall, it seems like Triqler reports more differentially abundant protein for every non-differentially abundant protein for both the peptide abundances generated by the ID spectral library and PS spectral library pipelines. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstats. 
 
 \begin{figure}[hbt]
     \centering
@@ -239,7 +191,7 @@ We subsequently set out to test the statistical calibration of the different sum
         \includegraphics[width=0.5\linewidth]{../../result/report_plots_filtered/diann_FP_DE_all.png} \\
         A & B
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) DID spectral library pipeline and (B) PS spectral library pipeline. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger corrections was used for MSstats and MSqRob2. \label{fig:frac_hela_vs_fdr}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value treshhold for (A) ID spectral library pipeline and (B) PS spectral library pipeline. The multiple test correction is performed with $q$~value for Triqler and Top3, while Benjamini-Hochberger corrections was used for MSstats and MSqRob2. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
 \subsubsection*{Differential abundance reported by the protein quantification tools.}
