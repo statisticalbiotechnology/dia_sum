@@ -12,7 +12,7 @@ library(data.table)
 library(MSstats)
 
 data <- data.frame(fread('diann_msstats_input.csv', sep='\t', header=TRUE))
-data <- data.frame(fread('diann_msstats_input_recomputed_fdr_20211201.csv', sep = ',', header = TRUE))
+#data <- data.frame(fread('diann_msstats_input_recomputed_fdr_20211201.csv', sep = ',', header = TRUE))
 
 Study_design <- data.frame(Filename = unique(data$filename))
 Study_design$Condition <- gsub("_.*", "" ,gsub(".*(Sample_)", "", Study_design$Filename))
