@@ -67,13 +67,11 @@ df_res.sort_values("m_score", ascending = True, inplace = True)
 import seaborn as sns
 from matplotlib import pyplot as plt
 filename_cleanup = lambda x:x.split("_")[5] + "_Sample" + x.split("_")[8]
-
-
+df_res["run"] = df_res.filename.map(filename_cleanup)
 
 df_res = df_res.sort_values("m_score").reset_index()
 fig, ax = plt.subplots(figsize=(8,6))
-
-sns.lineplot(data=df_res, x=df_res.index, y="m_score", hue="filename", ax = ax)
+sns.lineplot(data=df_res, x=df_res.index, y="m_score", hue="run", ax = ax)
 plt.xlabel("ordered PSM by m_score")
 plt.ylabel("m_score")
 
