@@ -1,7 +1,9 @@
 ## ToDo
-Add min peptide filter on diann msstat parser
-Add max peptide filter on diann msstat parser
-Make python filter and parsing, similar to diann parser
+Add min peptide filter on diann msstat parser (X)
+Add max peptide filter on diann msstat parser (X)
+Add drop decoy (X)
+y
+Make python filter and parsing, similar to diann parser 
 We need to figure out how to filter using m_score... perhaps one script to compute m_score
 
 1) R_script to compute m_score filtering level
@@ -55,6 +57,35 @@ data.annotated - contains DECOY
 data.filtered3 - no DECOY
 
 the function filter_mscore_condition drops the decoys (see param rm.decoy = TRUE by default)
+
+### 20:00 started working on parser again.
+
+### 22:39
+
+ToDo
+Add min peptide filter on diann msstat parser (X)
+Add max peptide filter on diann msstat parser (X)
+Add drop decoy (X)
+
+Make python filter and parsing, similar to diann parser 
+We need to figure out how to filter using m_score... perhaps one script to compute m_score
+
+1) R_script to compute m_score filtering level (X)
+2) Python script to use that as input 
+3) Parse osw in a similar way as diann. 
+
+Filter diann msstat input to contain min 2 peptides.
+Filter diann msstat input to contain max 10 peptides.
+Remove decoy from diann msstat input.
+
+Do the same for MSsstat converter
+Add Filter osw msstat input on min 2 peptides (X)
+Add Filter osw msstat input on max 10 peptides (X)
+Add osw msstats drop decoy (X)
+
+Done!
+
+### 22:42 Starting msstat on osw and diann
 
 
 ## 2022-02-20
