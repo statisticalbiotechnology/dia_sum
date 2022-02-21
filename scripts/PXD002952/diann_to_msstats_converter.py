@@ -19,8 +19,6 @@ df = df[df["Q.Value"] < 0.01] # filter PSMs Q.Value 166747
 df = pd.read_csv("report_recomputed_fdr.tsv", sep = "\t")
 df = df[df["fdr"] < 0.01] # filter PSMs Q.Value - 167463
 
-
-
 def convert_diann_to_msconvert_aggregated(df):
     df_ = pd.DataFrame()    
     df_["ProteinName"] = df["Protein.Ids"]
@@ -43,7 +41,6 @@ def convert_diann_to_msconvert_aggregated(df):
 df = convert_diann_to_msconvert_aggregated(df)
 
 # Count and filter based on fragment ion 5-15
-
 
 def disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "Intensity", seperator = ";"):
     col_fragment_info = fragment_info_col
@@ -86,10 +83,10 @@ def filter_n_fragments(df, min_fragments = 4, max_fragments = 6, aggr_fragment_c
     df = df.drop("n_fragments", axis = 1)
     return df
 
-df = filter_n_fragments(df, min_fragments = 6, max_fragments = 6, aggr_fragment_col = "FragmentIon")
+df = filter_n_fragments(df, min_fragments = 1, max_fragments = 6, aggr_fragment_col = "FragmentIon")
 df = disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "Intensity", seperator = ";")
 
-df.to_csv("diann_msstats_input_recomputed_fdr_20211201.csv", sep = ",", index = False)
+df.to_csv("diann_msstats_input_recomputed_fdr_20222121.csv", sep = ",", index = False)
 
 df[df["FragmentIon"] == "b5-unknown^1/398.2033997"]
 
