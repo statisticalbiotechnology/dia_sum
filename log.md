@@ -1,4 +1,13 @@
 ## ToDo
+Add min peptide filter on diann msstat parser
+Add max peptide filter on diann msstat parser
+Make python filter and parsing, similar to diann parser
+We need to figure out how to filter using m_score... perhaps one script to compute m_score
+
+1) R_script to compute m_score filtering level
+2) Python script to use that as input
+3) Parse osw in a similar way as diann.
+
 
 # Log
 
@@ -31,7 +40,7 @@ We need to add decoy, min and max peptide filtering on diann_to_msstats_converte
 
 ### 18:00 Done fixing eISP.
 
-
+### 18:30 Thinking about how do to the whole filtering and disaggregate on python instead. Because R causes memory error with many transitions and m_score filtering.
 
 ## 2022-02-20
 ### 07:30 Fixing eISP
