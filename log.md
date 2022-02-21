@@ -87,6 +87,8 @@ Done!
 
 ### 22:42 Starting msstat on osw and diann
 
+### 23:20 finished running code and plotting.
+Sent mail to lukas.
 
 ## 2022-02-20
 ### 07:30 Fixing eISP
