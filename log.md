@@ -8,6 +8,12 @@ We need to figure out how to filter using m_score... perhaps one script to compu
 2) Python script to use that as input
 3) Parse osw in a similar way as diann.
 
+Filter diann msstat input to contain min 2 peptides.
+Filter diann msstat input to contain max 10 peptides.
+Remove decoy from diann msstat input.
+
+Do the same for MSsstat converter
+
 
 # Log
 
@@ -41,6 +47,15 @@ We need to add decoy, min and max peptide filtering on diann_to_msstats_converte
 ### 18:00 Done fixing eISP.
 
 ### 18:30 Thinking about how do to the whole filtering and disaggregate on python instead. Because R causes memory error with many transitions and m_score filtering.
+
+in the original osw_msstats_run.r we have
+
+data - contains DECOY
+data.annotated - contains DECOY
+data.filtered3 - no DECOY
+
+the function filter_mscore_condition drops the decoys (see param rm.decoy = TRUE by default)
+
 
 ## 2022-02-20
 ### 07:30 Fixing eISP
