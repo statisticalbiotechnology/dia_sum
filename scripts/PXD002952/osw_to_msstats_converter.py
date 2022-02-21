@@ -7,7 +7,7 @@ Created on Sun Feb 20 08:16:17 2022
 """
 import os
 
-os.chdir("/hdd_14T/data/PXD002952/20210805_osw_run")
+#os.chdir("/hdd_14T/data/PXD002952/20210805_osw_run")
 
 import pandas as pd 
 import numpy as np

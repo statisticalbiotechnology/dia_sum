@@ -11,10 +11,10 @@ import os
 import pandas as pd
 import numpy as np
 
-os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811")
+#os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811")
 
-df = pd.read_csv("report.tsv", sep = "\t")
-df = df[df["Q.Value"] < 0.01] # filter PSMs Q.Value 166747
+#df = pd.read_csv("report.tsv", sep = "\t")
+#df = df[df["Q.Value"] < 0.01] # filter PSMs Q.Value 166747
 
 df = pd.read_csv("report_recomputed_fdr.tsv", sep = "\t")
 df = df[df["fdr"] < 0.01] # filter PSMs Q.Value - 167463
@@ -37,8 +37,6 @@ def convert_diann_to_msconvert_aggregated(df):
     df_["Condition"] = df.Run.map(condition_mapper)
     df_["Run"] = df.Run.map(run_mapper)
     return df_
-
-df = convert_diann_to_msconvert_aggregated(df)
 
 # Count and filter based on fragment ion 5-15
 
@@ -83,12 +81,47 @@ def filter_n_fragments(df, min_fragments = 4, max_fragments = 6, aggr_fragment_c
     df = df.drop("n_fragments", axis = 1)
     return df
 
+
+def filter_on_min_peptide(df, n_peptides):
+    peptide_count = df.groupby("PeptideSequence").count().ProteinName
+    min_peptide = peptide_count[peptide_count >= n_peptides] # greater than
+    df = df[df.PeptideSequence.isin(min_peptide.index)]
+    return  df
+
+def filter_on_max_peptide(df, n_peptides):
+    peptide_count = df.groupby("PeptideSequence").count().ProteinName
+    max_peptide = peptide_count[peptide_count <= 10] # less than
+    df = df[df.PeptideSequence.isin(max_peptide.index)]
+    return df
+
+def drop_decoy_proteins(df):
+    df["Decoy"] = (df.ProteinName.map(lambda x:x.split("_")[0]) == "DECOY")
+    df = df[df.Decoy != True]
+    df.drop("Decoy", inplace = True, axis = 1)
+    return df
+
+df = convert_diann_to_msconvert_aggregated(df)
+#df # 167463
+df = filter_on_min_peptide(df, n_peptides = 2) # 166236
+df = filter_on_max_peptide(df, n_peptides = 10) # 93395
 df = filter_n_fragments(df, min_fragments = 1, max_fragments = 6, aggr_fragment_col = "FragmentIon")
+df = drop_decoy_proteins(df)
+
 df = disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "Intensity", seperator = ";")
 
 df.to_csv("diann_msstats_input_recomputed_fdr_20222121.csv", sep = ",", index = False)
 
-df[df["FragmentIon"] == "b5-unknown^1/398.2033997"]
+#df[df["FragmentIon"] == "b5-unknown^1/398.2033997"]
+
+
+
+
+
+
+
+
+
+
 
 
 
