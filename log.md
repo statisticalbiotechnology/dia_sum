@@ -14,6 +14,9 @@ Check all course dates
 
 # Log
 
+## 2022-02-24 
+### 00.50 Finished quantifying using DIA-NN for proteoform project.
+
 ## 2022-02-23
 ### 09:00 Start computation again - crashed
 ### 09:30 Meeting
@@ -24,6 +27,7 @@ Check all course dates
 easypqp on terminal needs a file with all the input .psmpkl and .peakpkl files (these should be corresponding to the dda.mzml files). I have created a file called filelist_easypqp_library_manual.txt
 
 I don't know why speclibgen (easypqp) from fragpipe takes so much memory. The terminal version of easypqp seems to go very fast.
+
 
 
 
