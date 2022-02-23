@@ -1,23 +1,67 @@
 ## ToDo
-Add min peptide filter on diann msstat parser (X)
-Add max peptide filter on diann msstat parser (X)
-Add drop decoy (X)
-y
-Make python filter and parsing, similar to diann parser 
-We need to figure out how to filter using m_score... perhaps one script to compute m_score
+Decide if send in Sahlgrenska course application ()
 
-1) R_script to compute m_score filtering level
-2) Python script to use that as input
-3) Parse osw in a similar way as diann.
+Check Lukas Script
+Replot using similar code as Lukas Script with ranking (for smoother curves).
 
-Filter diann msstat input to contain min 2 peptides.
-Filter diann msstat input to contain max 10 peptides.
-Remove decoy from diann msstat input.
+Rewrite my jupyter to scripts similar to Lukas.
 
-Do the same for MSsstat converter
+PCA projects.
+Simulate peptides with seperate normal distributions.
+Write code similar to Lukas Code.
 
+Check all course dates
 
 # Log
+
+## 2022-02-23
+### 09:00 Start computation again - crashed
+### 09:30 Meeting
+### 11:00 Upgrade pandas and start SpecLibGen of fragpipe.
+### 13:16 read mProphet Paper.
+### 23:28 Starting easyPQP on terminal
+
+easypqp on terminal needs a file with all the input .psmpkl and .peakpkl files (these should be corresponding to the dda.mzml files). I have created a file called filelist_easypqp_library_manual.txt
+
+I don't know why speclibgen (easypqp) from fragpipe takes so much memory. The terminal version of easypqp seems to go very fast.
+
+
+
+## 2022-02-22
+### 10:00 Run osw quantification with isoform library.
+
+### 10:50 Apply for mass spec course in sahlgrenska.
+
+### 14:00 Finished writing my application
+Application is basically copied and modified text from my half-time report. I spent time on reworking the text. 
+
+Not decided whether to send in this application or not.
+
+### 14:10 Checking Lukas Code for plotting
+
+### 15:30 Fragpipe crashed due to using it with python 3.6
+
+we got the error "subprocess: unexpected keyword argument capture_output". This is new for python 3.7
+
+### 15:40 Re-running fragpipe for isoform project.
+
+### 16:00 Re-writing script for plotting
+
+Lukas script making wierd plots... we have to remake.
+
+Why does Lukas plot contain DECOY in top3?
+
+Why is there no PSM filtering for Top3?
+
+Something is very wrong with the "Actual Error Rate" in Script.
+
+### 20:00
+
+Can't figure out what is wrong with the Actual error vs FDR. It looks way off...
+
+Just redo the script.
+
+DIA-NN still running
 
 ## 2022-02-21
 ### 09:00 msstat parser
