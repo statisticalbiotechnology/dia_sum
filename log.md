@@ -12,10 +12,103 @@ Write code similar to Lukas Code.
 
 Check all course dates
 
+Add introduction to half-time report
+Check half-time report, make it readable
+Make all plotting to scripts and use jupyter as glue
+Check if human protein is highest ranked in top3 
+Write about the differences of top3, msstats, msqrob and triqler
+In half-time change .raw (to vendor format) and .mzml (to open format).
+Write Kappa
+Check proteoform project
+	1. 3-4 prot mixtures --> trypsin --> peptides 1...n
+	2. Different ionization efficiency, add constant multiplier to some peptides.
+	3. Add measurement error. (ran
+
+Check what is endogenous component
+Check what is endogenous peptide.
+
 # Log
 
 ## 2022-02-24 
 ### 00.50 Finished quantifying using DIA-NN for proteoform project.
+
+### 09:00 check computations
+
+### 09:30 Meeting
+
+### 12:00 Read notes from meeting and summarize.
+
+### 13:13 Read Pino et al.
+
+Notes:
+
+Presents a series of experiment to assess wether a peptide measurement is quantitative by mass spectrometry.
+
+Increasing number of detected peptide is not the same as increase in number of peptides that can be measured quantitatively.
+
+LLOQ - lower limit of quantitation.
+
+Magnitude of signal below LLOQ does not reflect true difference.
+
+Propose framework for discriminating between peptides that are only detectable and those which are detectable and quantitative in MS.
+
+The Model:
+1. Noise segment where the measures signal Yn (reported as intensity, peak area, estimated concentration etc.)
+2. Measured signal Ys is within the linear range for the analyte. 
+
+Model is fit in a linear space, ratios between mixtures are logarithmic.
+
+P_X - intersection of noise and the linear space.
+
+LOD - Limit of detection.
+LOQ - Limit of quantification.
+
+LOQ is the lowest measurand concentration at which all defined performance characteristics of measurement procedure are met. 
+
+Performance characteristics 1) above LOD 2) achieves a coefficient of variation (CV) less than a user specified treshold, t. 
+
+Results:
+- Detect 28 peptides of YEAST (1% FDR treshold).
+- 15 peptides are above LOQ. (60.7% above LOQ, or roughly 50%)
+- Peptides at LLOQ span more than 20x in quantitative range.
+
+- Ghaemmaghami et al. get similar results
+- Detected 24 400 peptides from 2870 proteins. 
+- 8630 peptides and 1427 proteins had at least one quantitative peptide. (49.7 % proteins had at least one quantitative peptide and 35.4% of all peptides where above LOQ)
+
+- In CSF data
+- Detected 8698 peptides and 2994 proteins groups
+- 3183 peptides and 1303 proteins groups are quantitative (36.6% peptides and 43.5% of proteins)
+
+- In FFPE sample
+- 18 proteins, 84 peptides
+- found 33 peptides and 13 proteins (39.3% of peptides and 72.2% of proteins)
+
+Discussion:
+If we only want to detect differences in sample, it might not be important with LOQ.
+If we want to detect magnitude of differences in sample, considering LOQ is important.
+Matrix-matched calibration curve should be performed for all proteomics experiments that require an assessment of which peptides reflect the change in quantity rather than those that are just differential.
+
+Check.
+- What is endogenous component
+- endogenous abundance of the peptide
+
+### 15:00 redo sampling script for proteoform experiment.
+
+Make script that can be reused and glued with jupyter.
+We should use the ratios given in result section of Pino et al.
+
+### 15:45 check eISP.
+
+Waiting for it to open.
+
+### 15:50 check half-time stuff.
+
+### 16:00 Fix eISP.
+
+Added private details to 5.7 and uploaded HR file on sick-leave under 10
+
+
 
 ## 2022-02-23
 ### 09:00 Start computation again - crashed
