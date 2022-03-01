@@ -1,5 +1,8 @@
 ## ToDo
-Decide if send in Sahlgrenska course application ()
+Check MedBioInfo Annual meeting hotel/train
+
+Write background to half-time.
+Read-through the flow of the text.
 
 Check Lukas Script
 Replot using similar code as Lukas Script with ranking (for smoother curves).
@@ -28,6 +31,23 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+
+## 2022-03-01 
+### 08:00 Writing the half-time
+
+### 12:00 Lunch
+### 12:30 Writing
+### 15:35 Done writing.
+
+
+
+## 2022-02-28
+### 13:00 Investigate how to do the simulation for proteoform project.
+### 20:00 Write half-time report
+
+## 2022-02-25
+### 15:00 continue scripting on proteoform project.
+
 
 ## 2022-02-24 
 ### 00.50 Finished quantifying using DIA-NN for proteoform project.
@@ -107,6 +127,12 @@ Waiting for it to open.
 ### 16:00 Fix eISP.
 
 Added private details to 5.7 and uploaded HR file on sick-leave under 10
+
+### 16:30 Proteoform project sampling
+
+- create sample
+- Check how many peptides a protein have from DIA-NN file
+- Sample with ratios from pino et al.
 
 
 
