@@ -1,17 +1,21 @@
+## Current Task
+Neat up the dia_ratios script.
+Simulate peptides with seperate normal distribution.
+
 ## ToDo
 Check MedBioInfo Annual meeting hotel/train
 
-Write background to half-time.
+Write background to half-time. (X)
 Read-through the flow of the text.
 
-Check Lukas Script
+Check Lukas Script (X)
 Replot using similar code as Lukas Script with ranking (for smoother curves).
 
 Rewrite my jupyter to scripts similar to Lukas.
 
 PCA projects.
-Simulate peptides with seperate normal distributions.
-Write code similar to Lukas Code.
+Simulate peptides with seperate normal distributions. ()
+Write code similar to Lukas Code.()
 
 Check all course dates
 
@@ -39,6 +43,15 @@ Check what is endogenous peptide.
 ### 12:30 Writing
 ### 15:35 Done writing.
 
+Writing of background for half-time finished.
+
+### 16:00 Eat - workout.
+### 18:30 Working on simulation script.
+
+Need to write code for mapping protein species
+
+### 19:20 finished protein species mapping.
+### 00:00 finished pval and qvalue calculation of peptides for DIA samples
 
 
 ## 2022-02-28
