@@ -36,6 +36,40 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-03
+### 09:00 Omics club
+### 10:30 Continue on script from yesterday
+### 11:00 Anaconda giving error and cannot start up kernel
+
+ImportError: cannot import name 'constants' from partially initialized module 'zmq.backend.cython' (most likely due to a circular import) (/home/ptruong/anaconda3/lib/python3.6/site‑packages/zmq/backend/cython/__init__.py)i
+
+Need to fix this. Reinstall Anaconda, enviroments and r_environment.
+
+### 12:30 Check how many peptides do not change between samples
+
+Write a script to check t-test difference between samples in LFQ data..
+
+### 14:00 previous DIA-NN have no decoys.
+
+Have to check why the DIA-NN output has no decoys.
+
+Seems that fragpipe 17.1 have different options for outputting decoy... I think.
+
+
+### 14:30 Generate decoy for easypqp file.
+
+Generated deocy with OpenSwathDecoyGenerator to the easyPQP file.
+
+Run DIA-NN on the DIA-NN and new easypqp_library with decoy.
+
+### 15:00 Coding the peptide simulator
+
+### 18:00 Cont. coding the peptide simulator.
+
+
+
+
+
 ## 2022-03-02
 ### 08:30 Neating up code from yesterday.
 ### 09:30 Looking at matrix-matched code to understand input for LOD.
