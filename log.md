@@ -22,7 +22,7 @@ Check all course dates
 Add introduction to half-time report
 Check half-time report, make it readable
 Make all plotting to scripts and use jupyter as glue
-Check if human protein is highest ranked in top3 
+Check if human protein is highest ranked in top3
 Write about the differences of top3, msstats, msqrob and triqler
 In half-time change .raw (to vendor format) and .mzml (to open format).
 Write Kappa
@@ -66,8 +66,28 @@ Run DIA-NN on the DIA-NN and new easypqp_library with decoy.
 
 ### 18:00 Cont. coding the peptide simulator.
 
+### 23:00 Peptide simulator descriptions - almost done.
 
+simulate_peptides_function.py
 
+script that contains functions for simulating peptides.
+
+There are two main functions.
+
+		generate_noise_peptides() - This function generates noise peptides. We can either generate noise based on a "mu" level or based on concentration.
+    We can use "mu" level to hade noise peptides that do not fluctuate with concentration level (purely stochastic noise).
+    We can use concentration level noise to simulate noise peptides that fluctuates along the concentration level, but
+    have a to high CV to be useful.
+
+		generate_signal_peptides() - This function generates peptides with CV below cv_treshold and has a mu along the concentration line.
+
+NOTE: we need to add some kind of scaling factor at peptide-level (some peptides are more abundant than other...)!!!
+
+simulate_peptides.py
+
+generates protein with a pure noise component, noise based on concentration level component and signal component.
+
+currently working on generating peptides for different concentration levels.
 
 
 ## 2022-03-02
@@ -86,7 +106,7 @@ No peptides overlap. I suspect that this is because MSFragger allocated all ambi
 How should I consider this in simulations?
 
 
-## 2022-03-01 
+## 2022-03-01
 ### 08:00 Writing the half-time
 
 ### 12:00 Lunch
@@ -105,7 +125,7 @@ Need to write code for mapping protein species
 ### 00:15 Thoughts
 If we have difference in protein, in this protein how many peptides are under the LOQ, and in how many peptides are we above the LOQ.
 
-For all peptides for YEAST and ECOLI we have about 28.4% where there is a difference between sample 1 and sample 2 using. 
+For all peptides for YEAST and ECOLI we have about 28.4% where there is a difference between sample 1 and sample 2 using.
 
 
 ## 2022-02-28
@@ -116,7 +136,7 @@ For all peptides for YEAST and ECOLI we have about 28.4% where there is a differ
 ### 15:00 continue scripting on proteoform project.
 
 
-## 2022-02-24 
+## 2022-02-24
 ### 00.50 Finished quantifying using DIA-NN for proteoform project.
 
 ### 09:00 check computations
@@ -141,7 +161,7 @@ Propose framework for discriminating between peptides that are only detectable a
 
 The Model:
 1. Noise segment where the measures signal Yn (reported as intensity, peak area, estimated concentration etc.)
-2. Measured signal Ys is within the linear range for the analyte. 
+2. Measured signal Ys is within the linear range for the analyte.
 
 Model is fit in a linear space, ratios between mixtures are logarithmic.
 
@@ -150,9 +170,9 @@ P_X - intersection of noise and the linear space.
 LOD - Limit of detection.
 LOQ - Limit of quantification.
 
-LOQ is the lowest measurand concentration at which all defined performance characteristics of measurement procedure are met. 
+LOQ is the lowest measurand concentration at which all defined performance characteristics of measurement procedure are met.
 
-Performance characteristics 1) above LOD 2) achieves a coefficient of variation (CV) less than a user specified treshold, t. 
+Performance characteristics 1) above LOD 2) achieves a coefficient of variation (CV) less than a user specified treshold, t.
 
 Results:
 - Detect 28 peptides of YEAST (1% FDR treshold).
@@ -160,7 +180,7 @@ Results:
 - Peptides at LLOQ span more than 20x in quantitative range.
 
 - Ghaemmaghami et al. get similar results
-- Detected 24 400 peptides from 2870 proteins. 
+- Detected 24 400 peptides from 2870 proteins.
 - 8630 peptides and 1427 proteins had at least one quantitative peptide. (49.7 % proteins had at least one quantitative peptide and 35.4% of all peptides where above LOQ)
 
 - In CSF data
@@ -223,7 +243,7 @@ I don't know why speclibgen (easypqp) from fragpipe takes so much memory. The te
 ### 10:50 Apply for mass spec course in sahlgrenska.
 
 ### 14:00 Finished writing my application
-Application is basically copied and modified text from my half-time report. I spent time on reworking the text. 
+Application is basically copied and modified text from my half-time report. I spent time on reworking the text.
 
 Not decided whether to send in this application or not.
 
@@ -265,7 +285,7 @@ transitions are still in list format. Fixed
 Recreate the filtering function to take top 6 transitions, similar to DIA-NN results.
 
 ### 13:00 msstats code not working.
-DIA-NN code was not working either... 
+DIA-NN code was not working either...
 
 Rebuilding all scripts..
 
@@ -301,12 +321,12 @@ Add min peptide filter on diann msstat parser (X)
 Add max peptide filter on diann msstat parser (X)
 Add drop decoy (X)
 
-Make python filter and parsing, similar to diann parser 
+Make python filter and parsing, similar to diann parser
 We need to figure out how to filter using m_score... perhaps one script to compute m_score
 
 1) R_script to compute m_score filtering level (X)
-2) Python script to use that as input 
-3) Parse osw in a similar way as diann. 
+2) Python script to use that as input
+3) Parse osw in a similar way as diann.
 
 Filter diann msstat input to contain min 2 peptides.
 Filter diann msstat input to contain max 10 peptides.
@@ -361,9 +381,9 @@ Meeting with Lukas
 Take-away
 - write code in scripts that are reusable
 - write code using relative paths
-- at some point look into using docker, singularity and/%or nextflow. 
+- at some point look into using docker, singularity and/%or nextflow.
 
-Discussed eISP 
+Discussed eISP
 Discussed m_score
 
 when plotting, rank the proteins for counting instead of using fixed tresholds... this yields "smoother  curves"
@@ -376,7 +396,7 @@ when plotting, rank the proteins for counting instead of using fixed tresholds..
 
 https://stackoverflow.com/questions/14580233/why-does-gc-not-free-memory/16132548i
 
-r gc() (garbage collector) is imperfect. We need to save the object and reload it to free up memory. 
+r gc() (garbage collector) is imperfect. We need to save the object and reload it to free up memory.
 
 osw data consist of between 5 and 83 transitions.
 diann data consist of 6 transitions.
@@ -385,7 +405,7 @@ Can we solve this somehow?
 
 ### 16:00 Check if we can run openswath with maximum number of transition per precursor/ transitions per peptide.
 
-OpenSwathWorkflow does not seem to have any parameter for limiting the transitions. 
+OpenSwathWorkflow does not seem to have any parameter for limiting the transitions.
 
 ### 17:00 Figure out how to do with the transitions....
 
@@ -411,7 +431,7 @@ Off - until 2022-01-24
 # 08:00
 Trying to get all the packages installed on my local computer.
 
-# 13:02 
+# 13:02
 https://github.com/statOmics/msqrob2/issues/32
 
 Issues solves: The example vignette on msqrob2 github repo was outdated.
@@ -419,7 +439,7 @@ Issues solves: The example vignette on msqrob2 github repo was outdated.
 Trying to figure out data format to parse my data to msqrob2.
 
 # 16:00
-Finished diann -> msqrob parser 
+Finished diann -> msqrob parser
 
 1.load diann (result.tsv)
 2. Select top PSM as peptides
@@ -428,7 +448,7 @@ Finished diann -> msqrob parser
 5. Construct dataframe with df.pivot()
 
 ## 2022-01-16
-# 11:00 
+# 11:00
 Continue trying to fix msqrob2
 
 # 22:00
@@ -436,7 +456,7 @@ Posted issue on msqrob2 issues.
 
 
 ## 2022-01-14
-# 07:30 
+# 07:30
 Check msqrob2 and continue trying to fix package error
 
 # 09:30
@@ -456,13 +476,13 @@ Using this data we can perform PCA.
 
 
 ## 2022-01-13
-# 08:00 
-PCA on the PXD003704 data, reading paper about PXD003704. Check formatting on data. 
+# 08:00
+PCA on the PXD003704 data, reading paper about PXD003704. Check formatting on data.
 
 # 14:50
 Finished parallell coordinates plot on PXD003704. Seems very hard to read? How do we proceed?
 
-start checking on msqrob2 
+start checking on msqrob2
 
 r 3.6 is outdated. Rebuilding everything for r 4.0
 
@@ -486,7 +506,7 @@ msqrob2 vignette example.
 https://statomics.github.io/msqrob2Examples/cptac.html
 
 Cannot solve this error for normalize function from preprocessCore.
-Error in preprocessCore::normalize.quantiles(x, ...) : 
+Error in preprocessCore::normalize.quantiles(x, ...) :
   ERROR; return code from pthread_create() is 22
 
 
@@ -502,9 +522,9 @@ What is Reporter Intensity CTRL_R1...CTRL_R4, and Pablo_R1... Pablo_R4.
 
 
 
-## 2022-12-11 
+## 2022-12-11
 # 05:00
-Working on fix on paper. 
+Working on fix on paper.
 
 # 14:20
 Working on formplot and making slides.
@@ -519,7 +539,7 @@ Looked into PXD003704 MCF-7 data. Finished ppt and reading about CETSA, proteofo
 ## 2021-11-17
 Getting confused. Is mscore from pyprophet FDR?
 
-It is stated here 
+It is stated here
 
 https://assets.researchsquare.com/files/rs-893982/v1/a3afe574-fa8c-44e9-9ea1-e46b1579d558.pdf?c=1636997981
 
@@ -529,7 +549,7 @@ that it is?
 
 ![MSqRobSum](https://rdrr.io/github/statOmics/MSqRobSum/man/msqrobsum.html) should be which feature preptide id belongs to.
 
-![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156i) uses 
+![MSstats](https://academic.oup.com/bioinformatics/article/30/17/2524/2748156i) uses
 
 Summary: MSstats is an R package for statistical relative quantification of proteins and peptides in mass spectrometry-based proteomics. Version 2.0 of MSstats supports label-free and label-based experimental workflows and data-dependent, targeted and data-independent spectral acquisition. It takes as input identified and quantified spectral peaks, and outputs a list of differentially abundant peptides or proteins, or summaries of peptide or protein relative abundance. MSstats relies on a flexible family of linear mixed models.
 
@@ -548,7 +568,7 @@ Top3 Should have q-value recalculations based on target-decoy method. (check ass
 
 ToDo:
 - check how to compute m-score to q-value? or describe the problems of mscore more thoroughly in the paper
-- describe the psm Q.Value from DIANN in paper. 
+- describe the psm Q.Value from DIANN in paper.
 - Feature level data (PSMs) seems to be ok for MSstats, is it ok for msqrobsum or do we need to rerun msqrobsum?
 - Can we use m_score treshold for Top3 computation. How did LFQbench Navarro et al. do ?
 
@@ -588,7 +608,7 @@ Fragpipe is currently running without MSFragger... only DIA-Umpire. I need to fi
 
 Reconverted galaxy tutorial subset with MS-level 1-2 peakpicking (MSconvert)
 
-Also, notice the fragpipe consumes a lot of memory. I am nor only processing parts of 32fix ttof6600 hye124 set. (4 .mzML files) otherwise I get memory errors. 
+Also, notice the fragpipe consumes a lot of memory. I am nor only processing parts of 32fix ttof6600 hye124 set. (4 .mzML files) otherwise I get memory errors.
 
 Dia-Umpire seem to complete successfully, when MS Fragger is not selected... but still the consolde gives exit code 1 and 30 cancelled processes.
 
@@ -598,7 +618,7 @@ Running MSFragger without DIAUmpire to check if this works.
 ## 2021-03-25 Run triqler on all data.
 Run triqler on all data sets with default settings. There seem to be some issues with run and condition balancing... Some conditions dont have enough run.
 
-Making analysis script, Triqler has much lower proteins in it than tric aligned... I suspect that the fdr-tresholding before triqler causes the issue. I have found that pyprophet already does m_score filtering of 0.05 by default. 
+Making analysis script, Triqler has much lower proteins in it than tric aligned... I suspect that the fdr-tresholding before triqler causes the issue. I have found that pyprophet already does m_score filtering of 0.05 by default.
 
 Rerunning pyprophet with ss_iteration_fdr (Iteration FDR cutoff for best scoring targets) set to 1.0, but --ss_initial_fdr could also be a potential culprit.
 
@@ -608,7 +628,7 @@ Rerunning pyprophet with ss_iteration_fdr (Iteration FDR cutoff for best scoring
 
 Redoing DE analysis script for the hye124 dataset.
 
-Learn to build hierarchical dataframes. 
+Learn to build hierarchical dataframes.
 
 Check how to name levels so we can select levels and iterate trough samples.
 
@@ -624,7 +644,7 @@ Check how to name levels so we can select levels and iterate trough samples.
 - Ask Lukas if the statistics make sens.
 
 
-## 2021-03-18 tryptic pepties 
+## 2021-03-18 tryptic pepties
 
 Read this about tryptic peptides.
 https://unipept.ugent.be/clidocs/casestudies/tpa
@@ -720,12 +740,12 @@ Checked out [LGQBench paper](https://pubmed.ncbi.nlm.nih.gov/25545627/). It has 
 I guess I downloaded the correct .fasta for human, yeast and ecoli.
 
 (I need to check this with Lukas, how do I know which human, yeast and ecoli to choose?)
- 
+
 
 
 ## 2021-03-09
 
-Coded and modified the pyprophet_score.sh script to all data set with correct library. 
+Coded and modified the pyprophet_score.sh script to all data set with correct library.
 
 Added a test for different windowed library (64var spectral library for a 32fix data set in /hdd_14T/data/PXD002952/osw_res_20210303/hye124/ttof5600/32fix_w_64v_library_test). Investigate the merged_score diagnostics for this one to see the decoy and target distribution.
 
@@ -749,12 +769,12 @@ At this moment hye110_ttof6600/32fix seem to have:
 Todo:
 
 - Think about how to diff. exp on proteins... what about non-overlapping proteins? How should i differentially express these?
-- How do I compute and compare, impute on protein? 
+- How do I compute and compare, impute on protein?
 - Perhaps I should build a dataframe with protein as index and and protein quantity for each sample as...?
 - Perhaps Averageing over sample A proteins and sample B proteins would work? for sample A vs B comparison but not quantification comparison.
 - I need to make a 5x5 matrix with comparisons. What do I do with NaN proteins... they just cant compare... I guess we drop the nan comparisons...?
 
-- What about TRIC? 
+- What about TRIC?
 
 
 
@@ -833,7 +853,7 @@ Started OpenSwathWorkflow with the parameters specified in webpage.
 
 Parsed PASS01508 data to triqler format and ran triqler.
 
-Output was a matrix of 1.0 
+Output was a matrix of 1.0
 
 Matthew suggested log-transforming m_score or using percolator to concatenate multiple m_scores to one consensus score before running triqler for better results.
 
@@ -841,7 +861,7 @@ OSW output results [log here](https://raw.githubusercontent.com/statisticalbiote
 
 
 
-## 2021-02-17 
+## 2021-02-17
 
 Can we use docker for end-results?
 
@@ -857,7 +877,7 @@ I will try to convert the results files in the folder while I'm waiting for file
 
 
 
-## 2021-02-15 Creating sh script. 
+## 2021-02-15 Creating sh script.
 
 Triqler did not work because PASS00779 had only one condition. It requires at least two samples per condition and at least two conditions.
 
@@ -899,7 +919,7 @@ Compare:
 - Mtb_TubercuList-R27_iRT_UPS_dec... (PASS00779)
 - osw_output.tsv (PXD002952)
 
-To get a feeling for what iRT normaliztion does. 
+To get a feeling for what iRT normaliztion does.
 
 ## 2021-02-11 Experiment cont.
 
@@ -923,7 +943,7 @@ Generating new results for a random sample overview statistics:
 qvalue	svalue	TP	FP	TN	FN	FDR	sens	cutoff
 0	0.722734178065634	4917	7379	29586.5112258576	1886.48877414245	0.600107229722898	0.722717441482039	0.848865877072642
 
-note 
+note
 -TP:4917
 -FP:7379
 
@@ -965,13 +985,13 @@ summary stats:
 
 We notice the difference that PXD002952 histograms perfectly overlap, PASS00779 histograms have a slight shift between target and decoy.
 
-Looking at the pyprophet results, we see that the results from PASS00779 have a much larger shift in Top Peak Groups d_score density for all results than the results shown in "test report" for PXD002952. The "test report" however does have a slight shift in d_score. 
+Looking at the pyprophet results, we see that the results from PASS00779 have a much larger shift in Top Peak Groups d_score density for all results than the results shown in "test report" for PXD002952. The "test report" however does have a slight shift in d_score.
 
 Also looking at the summary statistics we see that there is more FP and TP for PXD002952. Indicating something is wrong.
 
 According to [Röst et al. 2016](https://www.biorxiv.org/content/10.1101/044552v2.full.pdf). The report step provides an opportunity to identify common errors, such as using an assay library without decoys or using an assay library unsuited for the measured sample (e.g., from another organism).
 
-The library for PXD002952 used is the one provided in the PXD002952 repo. Therefore, it should be correct. The only file I have not used is the hroest_DIA_iRT.TraML for rt normalization in the openswath run, which could be the culprit for the error in pyprophet statistical validation for PXD002952. In successful runs, the target and decoy d_score should be clearly seperated as in the PASS00779 results. 
+The library for PXD002952 used is the one provided in the PXD002952 repo. Therefore, it should be correct. The only file I have not used is the hroest_DIA_iRT.TraML for rt normalization in the openswath run, which could be the culprit for the error in pyprophet statistical validation for PXD002952. In successful runs, the target and decoy d_score should be clearly seperated as in the PASS00779 results.
 
 The tric cross-run alignment worked for PASS00779 [log](https://raw.githubusercontent.com/statisticalbiotechnology/dia_sum/main/experiments/experiment_20210211_PASS00779/tric_log_20210211.md).
 
@@ -997,7 +1017,7 @@ Experiments and experiment log in folder...
 
 openSwath_run.sh script works now. Errors from before:
 - Had not matched correct spectral library to correct data sets. Used one for alla data sets.
-- had not created a tmp folder for tempCache 
+- had not created a tmp folder for tempCache
 
 Some files in the run is crashing... I will link to log when the run is finished.
 
@@ -1031,7 +1051,7 @@ Produced script pyprophet_on_osw_results.sh to perform PyProphet statistical val
 
 According to docs pyprophet_on_osw_results.sh methods was wrong. The .sh file is removed.
 
-We should merge all the .osw file for scoring. 
+We should merge all the .osw file for scoring.
 
 New scripts produced:
 - pyprophet_merge.sh - for merging all the .osw files (should be without merged.osw output in folder)
@@ -1132,22 +1152,22 @@ Bugg report... rerunning the whole pipeline to get all the commands and outputs 
 
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ TargetedFileConverter -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.tsv -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
 Progress of 'conversion to internal data representation':
--- done [took 0.93 s (CPU), 0.94 s (Wall)] -- 
+-- done [took 0.93 s (CPU), 0.94 s (Wall)] --
 TargetedFileConverter took 8.23 s (wall), 8.17 s (CPU), 0.67 s (system), 7.50 s (user); Peak Memory Usage: 503 MB.
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ TargetedFileConverter -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.tsv -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.pqp
 Progress of 'conversion to internal data representation':
--- done [took 0.98 s (CPU), 0.98 s (Wall)] -- 
+-- done [took 0.98 s (CPU), 0.98 s (Wall)] --
 TargetedFileConverter took 24.13 s (wall), 22.41 s (CPU), 0.53 s (system), 21.88 s (user); Peak Memory Usage: 662 MB.
 
 2. Append decoy assays to the TraML file for OpenSWATH
 
-(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse -separate 
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse -separate
 Loading targets from file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
 Generate decoys
 Progress of 'Generating decoy peptides':
--- done [took 0.13 s (CPU), 0.13 s (Wall)] -- 
+-- done [took 0.13 s (CPU), 0.13 s (Wall)] --
 Progress of 'Generating decoy transitions':
--- done [took 9.08 s (CPU), 9.28 s (Wall)] -- 
+-- done [took 9.08 s (CPU), 9.28 s (Wall)] --
 Number of target peptides: 46000
 Number of decoy peptides: 45992
 Number of target proteins: 6921
@@ -1155,13 +1175,13 @@ Number of decoy proteins: 6921
 Writing only decoys to file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML
 OpenSwathDecoyGenerator took 37.49 s (wall), 36.95 s (CPU), 0.90 s (system), 36.05 s (user); Peak Memory Usage: 698 MB.
 
-(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse 
+(base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathDecoyGenerator -in ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML -out ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_decoy.TraML -method pseudo-reverse
 Loading targets from file: ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated.TraML
 Generate decoys
 Progress of 'Generating decoy peptides':
--- done [took 0.12 s (CPU), 0.12 s (Wall)] -- 
+-- done [took 0.12 s (CPU), 0.12 s (Wall)] --
 Progress of 'Generating decoy transitions':
--- done [took 8.61 s (CPU), 8.65 s (Wall)] -- 
+-- done [took 8.61 s (CPU), 8.65 s (Wall)] --
 Number of target peptides: 46000
 Number of decoy peptides: 45992
 Number of target proteins: 6921
@@ -1191,18 +1211,18 @@ target_decoy.TraML seem to be about double the size of decoy and target files. S
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_tsv osw_output.tsv  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
 Progress of 'Load TraML file':
--- done [took 26.06 s (CPU), 26.14 s (Wall)] -- 
+-- done [took 26.06 s (CPU), 26.14 s (Wall)] --
 Loaded 13842 proteins, 91992 compounds with 551952 transitions.
 Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
 Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
--- done [took 01:25 m (CPU), 02:23 m (Wall)] -- 
+-- done [took 01:25 m (CPU), 02:23 m (Wall)] --
 Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Read chromatogram while reading SWATH files, did not expect that!
 
-  -- done [took 21:58 m (CPU), 17:00 m (Wall)] -- 
+  -- done [took 21:58 m (CPU), 17:00 m (Wall)] --
 Will analyze 551952 transitions in total.
 
   Progress of 'Extracting and scoring transitions':
@@ -1318,25 +1338,25 @@ Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 
                 93.94 %               Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
                 96.97 %               Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
                 100.00 %               
-              -- done [took 11:17 m (CPU), 06:14 m (Wall)] -- 
+              -- done [took 11:17 m (CPU), 06:14 m (Wall)] --
 OpenSwathWorkflow took 26:04 m (wall), 35:08 m (CPU), 01:40 m (system), 33:28 m (user); Peak Memory Usage: 22756 MB.
 
 3.2 .osw output
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_tsv osw_output.tsv  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
 Progress of 'Load TraML file':
--- done [took 26.06 s (CPU), 26.14 s (Wall)] -- 
+-- done [took 26.06 s (CPU), 26.14 s (Wall)] --
 Loaded 13842 proteins, 91992 compounds with 551952 transitions.
 Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
 Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
--- done [took 01:25 m (CPU), 02:23 m (Wall)] -- 
+-- done [took 01:25 m (CPU), 02:23 m (Wall)] --
 Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Read chromatogram while reading SWATH files, did not expect that!
 
-  -- done [took 21:58 m (CPU), 17:00 m (Wall)] -- 
+  -- done [took 21:58 m (CPU), 17:00 m (Wall)] --
 Will analyze 551952 transitions in total.
 
   Progress of 'Extracting and scoring transitions':
@@ -1452,7 +1472,7 @@ Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 
                 93.94 %               Thread 5_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
                 96.97 %               Thread 1_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
                 100.00 %               
-              -- done [took 11:17 m (CPU), 06:14 m (Wall)] -- 
+              -- done [took 11:17 m (CPU), 06:14 m (Wall)] --
 OpenSwathWorkflow took 26:04 m (wall), 35:08 m (CPU), 01:40 m (system), 33:28 m (user); Peak Memory Usage: 22756 MB.
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.TraML -out_osw osw_output.osw  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
@@ -1467,18 +1487,18 @@ TargetedFileConverter took 47.63 s (wall), 45.86 s (CPU), 0.86 s (system), 45.00
 (base) ptruong@planck:/hdd_14T/data/PXD002952/bugg_report_20210205$ OpenSwathWorkflow -in HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_var_curated_target_decoy.pqp -out_osw osw_output.osw  -tempDirectory tmp -readOptions cacheWorkingInMemory -batchSize 1000 -Scoring:stop_report_after_feature -1 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -Scoring:Scores:use_dia_scores true -rt_extraction_window 600 -mz_extraction_window 30 -threads 6
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
 Progress of 'Load PQP file':
--- done [took 11.81 s (CPU), 11.82 s (Wall)] -- 
+-- done [took 11.81 s (CPU), 11.82 s (Wall)] --
 Loaded 13842 proteins, 91992 compounds with 551952 transitions.
 Loading mzML file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML using readoptions cache
 Progress of 'Loading metadata file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
 Determined there to be 32 SWATH windows and in total 2197 MS1 spectra
--- done [took 01:26 m (CPU), 02:23 m (Wall)] -- 
+-- done [took 01:26 m (CPU), 02:23 m (Wall)] --
 Progress of 'Loading data file HYE110_TTOF6600_32var_lgillet_I160309_001_Pedro_Sample_A.mzML':
 Read chromatogram while reading SWATH files, did not expect that!
 
-  -- done [took 21:58 m (CPU), 17:01 m (Wall)] -- 
+  -- done [took 21:58 m (CPU), 17:01 m (Wall)] --
 Will analyze 551952 transitions in total.
 
   Progress of 'Extracting and scoring transitions':
@@ -1593,7 +1613,7 @@ Thread 0_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch
   90.91 %               Thread 1_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 0 out of 1)
   93.94 %               Thread 0_0 will analyze 1201 compounds and 7206 transitions from SWATH 31 (batch 1 out of 1)
 Thread 1_0 will analyze 546 compounds and 3276 transitions from SWATH 32 (batch 1 out of 1)
--- done [took 12:33 m (CPU), 08:57 m (Wall)] -- 
+-- done [took 12:33 m (CPU), 08:57 m (Wall)] --
 OpenSwathWorkflow took 28:35 m (wall), 36:11 m (CPU), 01:39 m (system), 34:31 m (user); Peak Memory Usage: 22485 MB.
 
 3.5 PercolatorAdapter
@@ -1635,7 +1655,7 @@ Where "test.TraML" is the supplied spectral library in PXD002952.
 
 Started OpenSwathWorkflow with .out_osw output.
 
-I need the .osw output to run Percolator on the data. 
+I need the .osw output to run Percolator on the data.
 
 TRIC should be used on percolator output for .osw file.
 
@@ -1658,7 +1678,7 @@ Started Thu Feb  4 15:42:08 2021
 Hyperparameters: selectionFdr=0.01, Cpos=0, Cneg=0, maxNiter=10
 Reading tab-delimited input from datafile /tmp/20210204_153946_planck_265848_1/20210204_153946_planck_265848_2_pin.tab
 Features:
-VAR_BSERIES_SCORE VAR_DOTPROD_SCORE VAR_ELUTION_MODEL_FIT_SCORE VAR_INTENSITY_SCORE VAR_ISOTOPE_CORRELATION_SCORE VAR_ISOTOPE_OVERLAP_SCORE VAR_LIBRARY_CORR VAR_LIBRARY_DOTPROD VAR_LIBRARY_MANHATTAN VAR_LIBRARY_RMSD VAR_LIBRARY_ROOTMEANSQUARE VAR_LIBRARY_SANGLE VAR_LOG_SN_SCORE VAR_MANHATTAN_SCORE VAR_MASSDEV_SCORE VAR_MASSDEV_SCORE_WEIGHTED VAR_MI_RATIO_SCORE VAR_MI_SCORE VAR_MI_WEIGHTED_SCORE VAR_NORM_RT_SCORE VAR_SONAR_LAG VAR_SONAR_LOG_DIFF VAR_SONAR_LOG_SN VAR_SONAR_LOG_TREND VAR_SONAR_RSQ VAR_SONAR_SHAPE VAR_XCORR_COELUTION VAR_XCORR_COELUTION_WEIGHTED VAR_XCORR_SHAPE VAR_XCORR_SHAPE_WEIGHTED VAR_YSERIES_SCORE 
+VAR_BSERIES_SCORE VAR_DOTPROD_SCORE VAR_ELUTION_MODEL_FIT_SCORE VAR_INTENSITY_SCORE VAR_ISOTOPE_CORRELATION_SCORE VAR_ISOTOPE_OVERLAP_SCORE VAR_LIBRARY_CORR VAR_LIBRARY_DOTPROD VAR_LIBRARY_MANHATTAN VAR_LIBRARY_RMSD VAR_LIBRARY_ROOTMEANSQUARE VAR_LIBRARY_SANGLE VAR_LOG_SN_SCORE VAR_MANHATTAN_SCORE VAR_MASSDEV_SCORE VAR_MASSDEV_SCORE_WEIGHTED VAR_MI_RATIO_SCORE VAR_MI_SCORE VAR_MI_WEIGHTED_SCORE VAR_NORM_RT_SCORE VAR_SONAR_LAG VAR_SONAR_LOG_DIFF VAR_SONAR_LOG_SN VAR_SONAR_LOG_TREND VAR_SONAR_RSQ VAR_SONAR_SHAPE VAR_XCORR_COELUTION VAR_XCORR_COELUTION_WEIGHTED VAR_XCORR_SHAPE VAR_XCORR_SHAPE_WEIGHTED VAR_YSERIES_SCORE
 Found 307724 PSMs
 Concatenated search input detected, skipping both target-decoy competition and mix-max.
 Train/test set contains 307724 positives and 0 negatives, size ratio=inf and pi0=1
@@ -1730,12 +1750,12 @@ Added shared folder for virtualBox and started process for converting all .wiff 
 
 Ran openSWATHWorkFlow yesterday... I choose the wrong input (DDA input). I should use the DIA. I will try again and remake.
 
-Also, there should be a file for irt_normalization hroest_DIA_iRT.TraML. I can't find the file in the ProteomeExchange. 
+Also, there should be a file for irt_normalization hroest_DIA_iRT.TraML. I can't find the file in the ProteomeExchange.
 
 
 OpenSwathWorkflow -in ../test_HYE124_TTOF6600_32fix_lgillet_I150211_004_test_sample.mzML -tr ecolihumanyeast_concat_mayu_IRR_cons_openswath_32w_fixed_curated_decoy.TraML -out_tsv osw_output.tsv -readOptions cacheWorkingInMemory -batchSize 1000 -min_upper_edge_dist 1 -extra_rt_extraction_window 100 -min_rsq 0.95 -min_coverage 0.6 -rt_extraction_window 600 -mz_extraction_window 30 -threads 6 -ppm
 
-Running this command gives the following error. 
+Running this command gives the following error.
 
 Error: Unable to read file (- due to that error of type Parse Error in: /code/OpenMS/src/openms/source/FORMAT/HANDLERS/XMLHandler.cpp@105-void OpenMS::Internal::XMLHandler::fatalError(OpenMS::Internal::XMLHandler::ActionMode, const OpenMS::String&, OpenMS::UInt, OpenMS::UInt) const)
 
@@ -1757,9 +1777,9 @@ iRT normalization is not needed because same buffer (lösningmedel) is used for 
 
 
 
-(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output$ spectrast -cNpercolator.db -cM percolator.target.splib 
+(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output$ spectrast -cNpercolator.db -cM percolator.target.splib
 SpectraST started at Mon Jan 25 15:15:40 2021.
-Creating library from "/home/ptruong/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output/percolator.target.splib" 
+Creating library from "/home/ptruong/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output/percolator.target.splib"
 Importing ions...500...1000...1500...2000...2500...3000...3500...4000...4500...5000...5500...6000...DONE!
 
 Library file (BINARY) "percolator.db.splib" created.
@@ -1784,7 +1804,7 @@ SpectraST finished at Mon Jan 25 15:23:17 2021 without error.
 (base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output$ TargetedFileConverter -in percolator.db.mrm -out percolator.db.TraML
 ´Warning: SpectraST was not run in RT normalization mode but the converted list was interpreted to have iRT units. Check whether you need to adapt the parameter -algorithm:retentionTimeInterpretation. You can ignore this warning if you used a legacy SpectraST 4.0 file.
 Progress of 'conversion to internal data representation':
--- done [took 2.00 s (CPU), 2.01 s (Wall)] -- 
+-- done [took 2.00 s (CPU), 2.01 s (Wall)] --
 TargetedFileConverter took 06:28 m (wall), 06:28 m (CPU), 3.04 s (system), 06:25 m (user); Peak Memory Usage: 1485 MB.
 
 Converted file to .TraML and .tsv to check the formating.
@@ -1812,9 +1832,9 @@ peptideprophet_prob = 0.99988678
 
 We run the commands again with treshold 0.9995 and look for "AAAAAAALQAK". If it is there then PSM-level probabilities are used, otherwise peptide-level probabilities are used.
 
-We check the .tsv and find "AAAAAAALQAK", which means PSM-level probabilities are used. Now to double check we find a peptide "AAAEVNQDYGLDPK" which has percolator_PEP = 0.00032544, and therefore 1-percolator_PEP = 0.99967456. 
+We check the .tsv and find "AAAAAAALQAK", which means PSM-level probabilities are used. Now to double check we find a peptide "AAAEVNQDYGLDPK" which has percolator_PEP = 0.00032544, and therefore 1-percolator_PEP = 0.99967456.
 
-If we treshold at -cP0.9998, "AAAEVNQDYGLDPK" should be gone from the library .tsv. 
+If we treshold at -cP0.9998, "AAAEVNQDYGLDPK" should be gone from the library .tsv.
 
 We run the same commands with -cP0.9998 and the .tsv file does not contain the "AAAEVNQDYGLDPK" peptide.
 
@@ -1831,7 +1851,7 @@ TargetedFileConverter -in percolator.db.mrm -out percolator.db.TraML
 
 ### 2021-01-22
 
-Another link about running spectrast 
+Another link about running spectrast
 https://www.biorxiv.org/content/10.1101/2020.01.21.914788v2.full.pdf
 
 How does spectral searching work?
@@ -1844,47 +1864,47 @@ Today was spent writing about the pipeline in thesis section.
 Reading [Griss J. 2015 - Spectral library searching in Proteomics](https://onlinelibrary.wiley.com/doi/full/10.1002/pmic.201500296)
 
 
-### 2021-01-21 
+### 2021-01-21
 
 Trying to get the whole pipeline working. The followning is the output.
 
 root@f2d0dc8baf00:/data/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output# OpenSwathWorkflow -in comet.target.mzML -tr db_assays.TraML -sort_swath_maps -batchSize 1000 -out_tsv osw_output.tsv
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
 Progress of 'Load TraML file':
--- done [took 1.99 s (CPU), 2.05 s (Wall)] -- 
+-- done [took 1.99 s (CPU), 2.05 s (Wall)] --
 Loaded 259 proteins, 318 compounds with 36807 transitions.
 Loading mzML file comet.target.mzML using readoptions normal
 Progress of 'Loading metadata file comet.target.mzML':
 Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
 Determined there to be 34525 SWATH windows and in total 2212 MS1 spectra
 Determined there to be 34525 SWATH windows and in total 2212 MS1 spectra
--- done [took 22.85 s (CPU), 41.60 s (Wall)] -- 
+-- done [took 22.85 s (CPU), 41.60 s (Wall)] --
 Progress of 'Loading data file comet.target.mzML':
 Killed
 
 root@f2d0dc8baf00:/data/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.ukroot@f2d0dc8baf00:/data/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output# OpenSwathWorkflow -in comet.target.mzML -tr db_assays.TraML -sort_swath_maps -batchSize 1000 -out_tsv osw_output.tsv
 Since neither rt_norm nor tr_irt is set, OpenSWATH will not use RT-transformation (rather a null transformation will be applied)
 Progress of 'Load TraML file':
--- done [took 1.90 s (CPU), 1.94 s (Wall)] -- 
+-- done [took 1.90 s (CPU), 1.94 s (Wall)] --
 Loaded 259 proteins, 318 compounds with 36807 transitions.
 Loading mzML file comet.target.mzML using readoptions normal
 Progress of 'Loading metadata file comet.target.mzML':
 Will analyze the metadata first to determine the number of SWATH windows and the window sizes.
 Determined there to be 34525 SWATH windows and in total 2212 MS1 spectra
 Determined there to be 34525 SWATH windows and in total 2212 MS1 spectra
--- done [took 24.89 s (CPU), 41.30 s (Wall)] -- 
+-- done [took 24.89 s (CPU), 41.30 s (Wall)] --
 Progress of 'Loading data file comet.target.mzML':
 Read chromatogram while reading SWATH files, did not expect that!
 
-  -- done [took 03:48 m (CPU), 03:48 m (Wall)] -- 
+  -- done [took 03:48 m (CPU), 03:48 m (Wall)] --
 Extraction will overlap between 360.521 and 359.522
 This will lead to multiple extraction of the transitions in the overlapping regionwhich will lead to duplicated output. It is very unlikely that you want this.
 Please fix this by providing an appropriate extraction file with -swath_windows_file
 Extraction windows overlap. Will abort (override with -force)
 OpenSwathWorkflow took 04:33 m (wall), 04:16 m (CPU), 10.95 s (system), 04:05 m (user).
-root@f2d0dc8baf00:/data/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output# 
+root@f2d0dc8baf00:/data/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output#
 
-It seems that I should be using swath_windows_file. 
+It seems that I should be using swath_windows_file.
 
 I will try the -force arg as well.
 
@@ -1901,12 +1921,12 @@ The process for generating spectral library...
 
 Comet works but on HeLa_007.mzML pep.xml output I get the following error:
 
-(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007$ PeptideProphetParser Hela_007_Rep1.pep.xml 
+(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007$ PeptideProphetParser Hela_007_Rep1.pep.xml
  (Comet)
-init with Comet Trypsin 
+init with Comet Trypsin
 MS Instrument info: Manufacturer: UNKNOWN, Model: UNKNOWN, Ionization: UNKNOWN, Analyzer: UNKNOWN, Detector: UNKNOWN
 
-INFO: Processing standard MixtureModel ... 
+INFO: Processing standard MixtureModel ...
  PeptideProphet  (TPP v5.2.0 Flammagenitus, Build 201902051127-7887 (Linux-x86_64)) AKeller@ISB
  read in 8 1+, 26899 2+, 24801 3+, 0 4+, 0 5+, 0 6+, and 0 7+ spectra.
 Initialising statistical models ...
@@ -1917,28 +1937,28 @@ model complete after 30 iterations
 
 (base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007$ InterProphetParser Hela_007_Rep1.pep.xml iProphet.pep.xml
 Running NSS NRS NSE NSI NSM NSP FPKM Model EM:
-Computing NSS values ... 
+Computing NSS values ...
 . done
-Computing NRS values ... 
+Computing NRS values ...
 .........10%.........20%.........30%.........40%.........50%.........60%.........70%.........80%.........90%.........100% done
-Computing NSE values ... 
+Computing NSE values ...
 .........10%.........20%.........30%.........40%.........50%.........60%.........70%.........80%.........90%.........100% done
-Computing NSI values ... 
+Computing NSI values ...
 .........10%.........20%.........30%.........40%.........50%.........60%.........70%.........80%.........90%.........100% done
-Computing NSM values ... 
+Computing NSM values ...
 .........10%.........20%.........30%.........40%.........50%.........60%.........70%.........80%.........90%.........100% done
-Computing NSP values ... 
-Creating 1 threads 
+Computing NSP values ...
+Creating 1 threads
 Wait for threads to finish ...
 0--------------------------------------------------50------------------------------------------------100%
 .................................................................................................... done
-FPKM values are unavailable ... 
+FPKM values are unavailable ...
 Iterations: .........10.......done
 
 iProphet processed .mzML for probability assignment performed as recommended.
 
 
-(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007$ spectrast -cP iProphet.pep.xml 
+(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007$ spectrast -cP iProphet.pep.xml
 SpectraST started at Wed Jan 20 01:40:54 2021.
 Processing "iProphet.pep.xml"...500...1000...1500...2000...2500...3000...3500...4000...4500...5000...5500...6000...6500...7000...7500...8000...8500...9000...9500...10000...10500...11000...11500...12000...12500...13000...13500...14000...14500...15000...15500...16000...16500...17000...17500...18000...18500...19000...19500...20000...20500...21000...21500...22000...22500...23000...DONE!
 Importing all spectra with P>=0 ...10%...20%...30%...40%...50%...60%...70%...80%...90%...DONE!
@@ -1966,9 +1986,9 @@ spectrast performed on the iProphet output... however 0 spectra ssem to have bee
 
 What to do??
 
-I have tried rerunning everything many times.. without results. 
+I have tried rerunning everything many times.. without results.
 
-I don't know how would be the smartest way to generate spectral lib from my current data set... I'm stuck this is not good. 
+I don't know how would be the smartest way to generate spectral lib from my current data set... I'm stuck this is not good.
 
 Just noticed this snippet...
 
@@ -1982,7 +2002,7 @@ Perhaps the error occurs because I have not converted my .mzML to mzXML, so the 
 Converting .mzML to .mzXML worked.
 
 
-(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output$ spectrast -cP0.9 comet.target.pep.xml 
+(base) ptruong@planck:~/git/bayesMS/data/datasets/PXD002952/ftp.pride.ebi.ac.uk/pride/data/archive/2016/09/PXD002952/convert/dda/mzml/HeLa_007/crux-output$ spectrast -cP0.9 comet.target.pep.xml
 SpectraST started at Wed Jan 20 02:48:55 2021.
 Processing "comet.target.pep.xml"...500...1000...1500...2000...2500...3000...3500...4000...4500...5000...5500...6000...6500...7000...7500...8000...8500...9000...9500...10000...10500...11000...11500...12000...12500...13000...13500...14000...14500...15000...15500...16000...16500...DONE!
 Importing all spectra with P>=0.9 ...10%...20%...30%...40%...50%...60%...70%...80%...90%...DONE!
@@ -2017,7 +2037,7 @@ Fixed all steps for the other two mzML steps.
 
 How do we convert .splib to TraML, tsv, pqp format?
 
-Spent a couple of hours (~3hrs) on trying to looking into ConvertTSVToTraML to convert .splib to .TraML as specified in http://openswath.org/en/latest/docs/ipf_legacy.html. It turns out that ConvertTSVToTraML has deprecated and is removed since openms2.2 (https://www.openms.de/openms220/). The current version is openms2.6. 
+Spent a couple of hours (~3hrs) on trying to looking into ConvertTSVToTraML to convert .splib to .TraML as specified in http://openswath.org/en/latest/docs/ipf_legacy.html. It turns out that ConvertTSVToTraML has deprecated and is removed since openms2.2 (https://www.openms.de/openms220/). The current version is openms2.6.
 
 TargetFileConverter should be used instead to convert.
 
@@ -2056,7 +2076,7 @@ According to [Yang et al. 2020](https://www.nature.com/articles/s41467-019-13866
 
 Meeting with Lukas.
 
-Looking into how to build spectra libraries again. 
+Looking into how to build spectra libraries again.
 
 How to build spectral library from SPECTRAL LIBRARY GENERATION segment in this tutorial (http://openswath.org/en/latest/docs/tpp.html#id4).
 
@@ -2064,7 +2084,7 @@ Looking into Trans-Proteomic Pipeline.
 
 Building the Trans-Proteomic Pipeline by following this tutorial (http://tools.proteomecenter.org/wiki/index.php?title=TPP_5.2.0:_Installing_on_Ubuntu_18.04_LTS).
 
-Everything worked until 
+Everything worked until
 ```
 export PERL_MM_USE_DEFAULT=1
 yes | sudo cpan install CGI
@@ -2127,7 +2147,7 @@ Looking into BiblioSpec for spectral library build (How does this work?)
 Looking into TPP Spectrast for spectra library build (Could not get TPP working correctly)
 Looking into Mascot, SEQUEST for PSM (They seems to be proprietary)
 
-Looking into the data set: I have choosen HYE124_TTOF6600_32fix data set because they seem to be the smallest data set with least dissimilar proportion between mixtures (65 % HUMAN, 20 % E.Coli, 15 % Yeast). 
+Looking into the data set: I have choosen HYE124_TTOF6600_32fix data set because they seem to be the smallest data set with least dissimilar proportion between mixtures (65 % HUMAN, 20 % E.Coli, 15 % Yeast).
 
 
 Steps for building spectral library
@@ -2135,7 +2155,7 @@ Steps for building spectral library
 
 NOTE: files need to be renamed so that they do not have spaces before Crux can be run properly (I got stuck in this for a while).
 
-I am currently running the Crux Bullseye on .mzML data. It seems to take about 2.5-3h for each .mzML file. 
+I am currently running the Crux Bullseye on .mzML data. It seems to take about 2.5-3h for each .mzML file.
 
 Some Thoughts for meeting tomorrow:
 
@@ -2143,11 +2163,11 @@ Some Thoughts for meeting tomorrow:
 
 Does it matter if TTOF6600, TTOF5600+ machine? 64 variable window size for SWATH vs 32 fixed window sized?
 
-Does it matter which database search engine is used for peptide spectrum matches and protein identification (PSM)? 
+Does it matter which database search engine is used for peptide spectrum matches and protein identification (PSM)?
 
 Skyline can build spectral library (https://skyline.ms/_webdav/home/software/Skyline/%40files/tutorials/MethodEdit-20_1.pdf). But does not support tide-search format. So will use the comet formatting.
 
-When this is done, everything else should work. 
+When this is done, everything else should work.
 
 How do i get BlibBuild working.
 
@@ -2165,7 +2185,7 @@ docker run --name osw_tutorial --rm -v ~/:/data -i -t openswath/openswath:latest
 
 How to run pyprophet.
 
-Install pyprophet on python 2 environment. 
+Install pyprophet on python 2 environment.
 
 anaconda3/envs/py27/bin/pyprophet --help
 
@@ -2173,7 +2193,7 @@ anaconda3/envs/py27/bin/pyprophet --help
 
 https://www.biorxiv.org/content/10.1101/044552v2.full.pdf
 
-This website contains good tutorial on how to perform openSWATH procedure. 
+This website contains good tutorial on how to perform openSWATH procedure.
 
 
 
@@ -2184,7 +2204,7 @@ Questions:
 - What is .wiff.scan files
 - What is htrms files
 
-.wiff.scan file seems to be to raw-files that should be converted to .mzml files according to (this)[https://www.researchgate.net/post/What_are_free_tools_to_convert_a_wiff_file_into_an_mzXML_file_in_an_MS_experiment] it should be able to be converted to .mzml with msconvert. 
+.wiff.scan file seems to be to raw-files that should be converted to .mzml files according to (this)[https://www.researchgate.net/post/What_are_free_tools_to_convert_a_wiff_file_into_an_mzXML_file_in_an_MS_experiment] it should be able to be converted to .mzml with msconvert.
 
 Some more questions:
 - What is important to focus on?
@@ -2197,7 +2217,7 @@ Some more questions:
 - When should I use PECAN? (One benchmarking paper used normal peakpicking from msconvert, is PECAN not for peak detection?)
 
 
-Looking into 
+Looking into
 Spectronaut_onlyHumanPeptidesDetectedByDIAUmpire_Report_ProtHUMAN.tsv
 
 
@@ -2216,8 +2236,8 @@ Q. How do I run EncyclopeDIA or Walnut at the command line?
 
 EncyclopeDIA can also be used at the command line. For example, to run EncyclopeDIA across all mzMLs in a directory, you can execute the shell command:
 
-for i in directory/to/my/files/*.mzML; do 
-    java -Xmx12g -jar encyclopedia-0.9.0-executable.jar -i $i -l library.dlib -f sequences.fasta; 
+for i in directory/to/my/files/*.mzML; do
+    java -Xmx12g -jar encyclopedia-0.9.0-executable.jar -i $i -l library.dlib -f sequences.fasta;
 done
 
 Here, Java is run with 12 GB of RAM with the flag "-Xmx12g". Additional flags are "-i" to specify the input mzML, "-l" to specify the library, and "-f" to specify the FASTA database. You can run the help function to get additional command line options:
@@ -2240,23 +2260,23 @@ With the "-a true" flag, this command performs retention time alignment (match-b
 - Get EncyclopeDIA running on data sets.
 - Get Triqler running on data sets.
 - Think about what database Roland should use perform experiments for a fair comparison with triqler.
-- Make project description more neutral. 
+- Make project description more neutral.
 - Change project description from protein quantification to protein summarization (?)
 
 Meeting notes
 
-Project description is too loaded. It needs to be more neutral. 
+Project description is too loaded. It needs to be more neutral.
 
 Problems in benchmarking is not protein inference. We need to remove this part from any Triqler benchmarking. There are two approaches to how to treat proteoforms.
 
 - If any proteoform is prevalent; the protein is assumed to exist (will id. too many proteins).
 - If require more evidence for protein for it to be counted as identified (will be more conservative).
 
-Triqler works on the conservative principle. Therefore, we need to have a database with less proteoforms for any comparison to be fair. 
+Triqler works on the conservative principle. Therefore, we need to have a database with less proteoforms for any comparison to be fair.
 
 Get encyclopeDIA working, get results and remove protein inference step from encyclopedia and run Triqler from this step.
 
-I need to run the whole thing for my own to know the process. 
+I need to run the whole thing for my own to know the process.
 
 TIP on log-formatting: It will be much easier for everybody else to read if I chunk it up to experient scripts, run scripts and write about results and discuss the results in the log. Have the experiment scripts in experiment-folder.
 
@@ -2284,13 +2304,13 @@ https://pubmed.ncbi.nlm.nih.gov/22956731/
 
 
 ```python
-# refresh imports 
+# refresh imports
 
-import os 
+import os
 import time
 
 import pandas as pd
-import numpy as np 
+import numpy as np
 
 
 ```
@@ -2388,110 +2408,110 @@ spec_s05_s08_ARATH_diff_exp_tot = np.sum(get_differentially_expressed_proteins_f
 print("S02 vs S06")
 # S02 vs S06
 print("Triqler S02 vs S06, HUMAN")
-print(triq_s02_s06_HUMAN_diff_exp) 
-print("Total different expression: " + str(triq_s02_s06_HUMAN_diff_exp_tot)) 
+print(triq_s02_s06_HUMAN_diff_exp)
+print("Total different expression: " + str(triq_s02_s06_HUMAN_diff_exp_tot))
 print("")
 print("Spectronaut S02 vs S06, HUMAN")    
 print(spec_s02_s06_HUMAN_diff_exp)
-print("Total different expression: " + str(spec_s02_s06_HUMAN_diff_exp_tot)) 
+print("Total different expression: " + str(spec_s02_s06_HUMAN_diff_exp_tot))
 print("")
 print("Triqler S02 vs S06, CAEEL")
-print(triq_s02_s06_CAEEL_diff_exp) 
-print("Total different expression: " + str(triq_s02_s06_CAEEL_diff_exp_tot)) 
+print(triq_s02_s06_CAEEL_diff_exp)
+print("Total different expression: " + str(triq_s02_s06_CAEEL_diff_exp_tot))
 print("")
 print("Spectronaut S02 vs S06, CAEEL")    
-print(spec_s02_s06_CAEEL_diff_exp) 
-print("Total different expression: " + str(spec_s02_s06_CAEEL_diff_exp_tot)) 
+print(spec_s02_s06_CAEEL_diff_exp)
+print("Total different expression: " + str(spec_s02_s06_CAEEL_diff_exp_tot))
 print("")
 print("Triqler S02 vs S06, ARATH")
-print(triq_s02_s06_ARATH_diff_exp) 
-print("Total different expression: " + str(triq_s02_s06_ARATH_diff_exp_tot)) 
+print(triq_s02_s06_ARATH_diff_exp)
+print("Total different expression: " + str(triq_s02_s06_ARATH_diff_exp_tot))
 print("")
 print("Spectronaut S02 vs S06, ARATH")    
-print(spec_s02_s06_ARATH_diff_exp) 
-print("Total different expression: " + str(spec_s02_s06_ARATH_diff_exp_tot)) 
+print(spec_s02_s06_ARATH_diff_exp)
+print("Total different expression: " + str(spec_s02_s06_ARATH_diff_exp_tot))
 print("")
 
 print("S03 vs S04")
 #S03 vs S04
 print("Triqler S03 vs S04, HUMAN")
-print(triq_s03_s04_HUMAN_diff_exp) 
-print("Total different expression: " + str(triq_s03_s04_HUMAN_diff_exp_tot)) 
+print(triq_s03_s04_HUMAN_diff_exp)
+print("Total different expression: " + str(triq_s03_s04_HUMAN_diff_exp_tot))
 print("")
 print("Spectronaut S03 vs S04, HUMAN")    
 print(spec_s03_s04_HUMAN_diff_exp)
-print("Total different expression: " + str(spec_s03_s04_HUMAN_diff_exp_tot)) 
+print("Total different expression: " + str(spec_s03_s04_HUMAN_diff_exp_tot))
 print("")
 print("Triqler S03 vs S04, CAEEL")
-print(triq_s03_s04_CAEEL_diff_exp) 
-print("Total different expression: " + str(triq_s03_s04_CAEEL_diff_exp_tot)) 
+print(triq_s03_s04_CAEEL_diff_exp)
+print("Total different expression: " + str(triq_s03_s04_CAEEL_diff_exp_tot))
 print("")
 print("Spectronaut S03 vs S04, CAEEL")    
-print(spec_s03_s04_CAEEL_diff_exp) 
-print("Total different expression: " + str(spec_s03_s04_CAEEL_diff_exp_tot)) 
+print(spec_s03_s04_CAEEL_diff_exp)
+print("Total different expression: " + str(spec_s03_s04_CAEEL_diff_exp_tot))
 print("")
 print("Triqler S03 vs S04, ARATH")
-print(triq_s03_s04_ARATH_diff_exp) 
-print("Total different expression: " + str(triq_s03_s04_ARATH_diff_exp_tot)) 
+print(triq_s03_s04_ARATH_diff_exp)
+print("Total different expression: " + str(triq_s03_s04_ARATH_diff_exp_tot))
 print("")
 print("Spectronaut S03 vs S04, ARATH")    
-print(spec_s03_s04_ARATH_diff_exp) 
-print("Total different expression: " + str(spec_s03_s04_ARATH_diff_exp_tot)) 
+print(spec_s03_s04_ARATH_diff_exp)
+print("Total different expression: " + str(spec_s03_s04_ARATH_diff_exp_tot))
 print("")
 
 
 #S04 vs S09
 print("S04 vs S09")
 print("Triqler S04 vs S09, HUMAN")
-print(triq_s04_s09_HUMAN_diff_exp) 
-print("Total different expression: " + str(triq_s04_s09_HUMAN_diff_exp_tot)) 
+print(triq_s04_s09_HUMAN_diff_exp)
+print("Total different expression: " + str(triq_s04_s09_HUMAN_diff_exp_tot))
 print("")
 print("Spectronaut S04 vs S09, HUMAN")    
 print(spec_s04_s09_HUMAN_diff_exp)
-print("Total different expression: " + str(spec_s04_s09_HUMAN_diff_exp_tot)) 
+print("Total different expression: " + str(spec_s04_s09_HUMAN_diff_exp_tot))
 print("")
 print("Triqler S04 vs S09, CAEEL")
-print(triq_s04_s09_CAEEL_diff_exp) 
-print("Total different expression: " + str(triq_s04_s09_CAEEL_diff_exp_tot)) 
+print(triq_s04_s09_CAEEL_diff_exp)
+print("Total different expression: " + str(triq_s04_s09_CAEEL_diff_exp_tot))
 print("")
 print("Spectronaut S04 vs S09, CAEEL")    
-print(spec_s04_s09_CAEEL_diff_exp) 
-print("Total different expression: " + str(spec_s04_s09_CAEEL_diff_exp_tot)) 
+print(spec_s04_s09_CAEEL_diff_exp)
+print("Total different expression: " + str(spec_s04_s09_CAEEL_diff_exp_tot))
 print("")
 print("Triqler S04 vs S09, ARATH")
-print(triq_s04_s09_ARATH_diff_exp) 
-print("Total different expression: " + str(triq_s04_s09_ARATH_diff_exp_tot)) 
+print(triq_s04_s09_ARATH_diff_exp)
+print("Total different expression: " + str(triq_s04_s09_ARATH_diff_exp_tot))
 print("")
 print("Spectronaut S04 vs S09, ARATH")    
-print(spec_s04_s09_ARATH_diff_exp) 
-print("Total different expression: " + str(spec_s04_s09_ARATH_diff_exp_tot)) 
+print(spec_s04_s09_ARATH_diff_exp)
+print("Total different expression: " + str(spec_s04_s09_ARATH_diff_exp_tot))
 print("")
 
 #S05 vs S08
 print("S05 vs S08")
 print("Triqler S05 vs S08, HUMAN")
-print(triq_s05_s08_HUMAN_diff_exp) 
-print("Total different expression: " + str(triq_s05_s08_HUMAN_diff_exp_tot)) 
+print(triq_s05_s08_HUMAN_diff_exp)
+print("Total different expression: " + str(triq_s05_s08_HUMAN_diff_exp_tot))
 print("")
 print("Spectronaut S05 vs S08, HUMAN")    
 print(spec_s05_s08_HUMAN_diff_exp)
-print("Total different expression: " + str(spec_s05_s08_HUMAN_diff_exp_tot)) 
+print("Total different expression: " + str(spec_s05_s08_HUMAN_diff_exp_tot))
 print("")
 print("Triqler S05 vs S08, CAEEL")
-print(triq_s05_s08_CAEEL_diff_exp) 
-print("Total different expression: " + str(triq_s05_s08_CAEEL_diff_exp_tot)) 
+print(triq_s05_s08_CAEEL_diff_exp)
+print("Total different expression: " + str(triq_s05_s08_CAEEL_diff_exp_tot))
 print("")
 print("Spectronaut S05 vs S08, CAEEL")    
-print(spec_s05_s08_CAEEL_diff_exp) 
-print("Total different expression: " + str(spec_s05_s08_CAEEL_diff_exp_tot)) 
+print(spec_s05_s08_CAEEL_diff_exp)
+print("Total different expression: " + str(spec_s05_s08_CAEEL_diff_exp_tot))
 print("")
 print("Triqler S05 vs S08, ARATH")
-print(triq_s05_s08_ARATH_diff_exp) 
-print("Total different expression: " + str(triq_s05_s08_ARATH_diff_exp_tot)) 
+print(triq_s05_s08_ARATH_diff_exp)
+print("Total different expression: " + str(triq_s05_s08_ARATH_diff_exp_tot))
 print("")
 print("Spectronaut S05 vs S08, ARATH")    
-print(spec_s05_s08_ARATH_diff_exp) 
-print("Total different expression: " + str(spec_s05_s08_ARATH_diff_exp_tot)) 
+print(spec_s05_s08_ARATH_diff_exp)
+print("Total different expression: " + str(spec_s05_s08_ARATH_diff_exp_tot))
 print("")
 
 
@@ -2509,7 +2529,7 @@ print("")
     R05    4356
     dtype: int64
     Total different expression: 22460
-    
+
     Spectronaut S02 vs S06, HUMAN
     R01    4195
     R02    4372
@@ -2518,7 +2538,7 @@ print("")
     R05    3996
     dtype: int64
     Total different expression: 20965
-    
+
     Triqler S02 vs S06, CAEEL
     R01    0
     R02    0
@@ -2527,7 +2547,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Spectronaut S02 vs S06, CAEEL
     R01    0
     R02    0
@@ -2536,7 +2556,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Triqler S02 vs S06, ARATH
     R01    45
     R02    38
@@ -2545,7 +2565,7 @@ print("")
     R05    31
     dtype: int64
     Total different expression: 178
-    
+
     Spectronaut S02 vs S06, ARATH
     R01    323
     R02    286
@@ -2554,7 +2574,7 @@ print("")
     R05    260
     dtype: int64
     Total different expression: 1408
-    
+
     S03 vs S04
     Triqler S03 vs S04, HUMAN
     R01    1802
@@ -2564,7 +2584,7 @@ print("")
     R05    2797
     dtype: int64
     Total different expression: 13250
-    
+
     Spectronaut S03 vs S04, HUMAN
     R01    2656
     R02    3037
@@ -2573,7 +2593,7 @@ print("")
     R05    2450
     dtype: int64
     Total different expression: 13784
-    
+
     Triqler S03 vs S04, CAEEL
     R01    0
     R02    0
@@ -2582,7 +2602,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Spectronaut S03 vs S04, CAEEL
     R01    0
     R02    0
@@ -2591,7 +2611,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Triqler S03 vs S04, ARATH
     R01     8
     R02    21
@@ -2600,7 +2620,7 @@ print("")
     R05    19
     dtype: int64
     Total different expression: 105
-    
+
     Spectronaut S03 vs S04, ARATH
     R01    119
     R02    197
@@ -2609,7 +2629,7 @@ print("")
     R05    196
     dtype: int64
     Total different expression: 993
-    
+
     S04 vs S09
     Triqler S04 vs S09, HUMAN
     R01    4086
@@ -2619,7 +2639,7 @@ print("")
     R05    3109
     dtype: int64
     Total different expression: 16148
-    
+
     Spectronaut S04 vs S09, HUMAN
     R01    3909
     R02    3175
@@ -2628,7 +2648,7 @@ print("")
     R05    3427
     dtype: int64
     Total different expression: 17864
-    
+
     Triqler S04 vs S09, CAEEL
     R01    0
     R02    0
@@ -2637,7 +2657,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Spectronaut S04 vs S09, CAEEL
     R01    0
     R02    0
@@ -2646,7 +2666,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Triqler S04 vs S09, ARATH
     R01    14
     R02    13
@@ -2655,7 +2675,7 @@ print("")
     R05     5
     dtype: int64
     Total different expression: 67
-    
+
     Spectronaut S04 vs S09, ARATH
     R01    197
     R02    208
@@ -2664,7 +2684,7 @@ print("")
     R05    138
     dtype: int64
     Total different expression: 957
-    
+
     S05 vs S08
     Triqler S05 vs S08, HUMAN
     R01    3745
@@ -2674,7 +2694,7 @@ print("")
     R05    4744
     dtype: int64
     Total different expression: 21615
-    
+
     Spectronaut S05 vs S08, HUMAN
     R01    3809
     R02    4503
@@ -2683,7 +2703,7 @@ print("")
     R05    4666
     dtype: int64
     Total different expression: 21234
-    
+
     Triqler S05 vs S08, CAEEL
     R01    0
     R02    0
@@ -2692,7 +2712,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Spectronaut S05 vs S08, CAEEL
     R01    0
     R02    0
@@ -2701,7 +2721,7 @@ print("")
     R05    0
     dtype: int64
     Total different expression: 0
-    
+
     Triqler S05 vs S08, ARATH
     R01    19
     R02    59
@@ -2710,7 +2730,7 @@ print("")
     R05     9
     dtype: int64
     Total different expression: 124
-    
+
     Spectronaut S05 vs S08, ARATH
     R01    157
     R02    333
@@ -2719,14 +2739,14 @@ print("")
     R05    130
     dtype: int64
     Total different expression: 1041
-    
+
 
 
 We need to make treshold depending on specie.
 
 For HUMAN we want sample to be larger.
 For CAEEL we want sample to be smaller.
-For ARATH we want sample to be close to 0. 
+For ARATH we want sample to be close to 0.
 
 Triqler seems to get more or similar differentially expressed for HUMAN.
 Triqler seems to get less or similar differenatially expressed for ARATH.
@@ -2959,7 +2979,7 @@ proteins = get_proteins(triq, "HUMAN") #FUNC TEST
 
 
 ```python
-samples = ["S0"+str(i) for i in range(1,10)] + ["S10"] 
+samples = ["S0"+str(i) for i in range(1,10)] + ["S10"]
 species = ["ARATH", "CAEEL", "HUMAN"]
 
 df = df_triq #variable
@@ -2970,8 +2990,8 @@ specie = "HUMAN" #variable
 protein = "Q8TBA6_HUMAN" #VAR
 
 protein = proteins[0] #iteration variable (if the protein is diff exp)
-    
-    
+
+
 ```
 
 
@@ -2992,7 +3012,7 @@ get_protein_abundance(triq, "S01", "HUMAN", protein) #FUNC TEST
 
 
 
-I want to compute a pairwise log2FC between samples for each protein and run. i.e. a dataframe similar to 
+I want to compute a pairwise log2FC between samples for each protein and run. i.e. a dataframe similar to
 
 | Protein | Run1 | Run2 | Run3 | Run4 | Run5 |
 |---------|------|------|------|------|------|
@@ -3001,7 +3021,7 @@ I want to compute a pairwise log2FC between samples for each protein and run. i.
 | ...     |      |      | .    |      |      |
 | Pn      |      |      |      | .    | ...  |
 
-will be generated for each pair SX vs XY. Then we can treshold this table and count the logFC differential expression. Either by 
+will be generated for each pair SX vs XY. Then we can treshold this table and count the logFC differential expression. Either by
 
 1) Treshold by FC and setting if >3 proteins are differntially expressed than it is a differentially expressed protein or
 2) Count the total number of differentially expressed proteins (which should be better for triqler, since we cannot compare with NaN).
@@ -3101,7 +3121,7 @@ print(time.time())
 ```
 
     exception calling callback for <Future at 0x7f420ded0f60 state=finished raised BrokenProcessPool>
-    joblib.externals.loky.process_executor._RemoteTraceback: 
+    joblib.externals.loky.process_executor._RemoteTraceback:
     """
     Traceback (most recent call last):
       File "/home/ptruong/anaconda3/lib/python3.6/site-packages/joblib/externals/loky/process_executor.py", line 404, in _process_worker
@@ -3110,9 +3130,9 @@ print(time.time())
         return _ForkingPickler.loads(res)
     ModuleNotFoundError: No module named 'extract_from_melt'
     """
-    
+
     The above exception was the direct cause of the following exception:
-    
+
     Traceback (most recent call last):
       File "/home/ptruong/anaconda3/lib/python3.6/site-packages/joblib/externals/loky/_base.py", line 625, in _invoke_callbacks
         callback(self)
@@ -3138,7 +3158,7 @@ print(time.time())
 
     _RemoteTraceback                          Traceback (most recent call last)
 
-    _RemoteTraceback: 
+    _RemoteTraceback:
     """
     Traceback (most recent call last):
       File "/home/ptruong/anaconda3/lib/python3.6/site-packages/joblib/externals/loky/process_executor.py", line 404, in _process_worker
@@ -3148,7 +3168,7 @@ print(time.time())
     ModuleNotFoundError: No module named 'extract_from_melt'
     """
 
-    
+
     The above exception was the direct cause of the following exception:
 
 
@@ -3162,7 +3182,7 @@ print(time.time())
 
 
     ~/anaconda3/lib/python3.6/site-packages/joblib/parallel.py in __call__(self, iterable)
-       1059 
+       1059
        1060             with self._backend.retrieval_context():
     -> 1061                 self.retrieve()
        1062             # Make sure that we get a last message telling us we are done
@@ -3213,12 +3233,12 @@ print(time.time())
         364         with self.parallel._lock:
         365             if self.parallel._original_iterator is not None:
     --> 366                 self.parallel.dispatch_next()
-        367 
-        368 
+        367
+        368
 
 
     ~/anaconda3/lib/python3.6/site-packages/joblib/parallel.py in dispatch_next(self)
-        797 
+        797
         798         """
     --> 799         if not self.dispatch_one_batch(self._original_iterator):
         800             self._iterating = False
@@ -3230,7 +3250,7 @@ print(time.time())
         865             else:
     --> 866                 self._dispatch(tasks)
         867                 return True
-        868 
+        868
 
 
     ~/anaconda3/lib/python3.6/site-packages/joblib/parallel.py in _dispatch(self, batch)
@@ -3253,7 +3273,7 @@ print(time.time())
         176         with self._submit_resize_lock:
         177             return super(_ReusablePoolExecutor, self).submit(
     --> 178                 fn, *args, **kwargs)
-        179 
+        179
         180     def _resize(self, max_workers):
 
 
@@ -3270,7 +3290,7 @@ print(time.time())
 
 BrokenProcessPool: A task has failed to un-serialize. Please ensure that the arguments of the function are all picklable.
 
-This always happens when using multiprocessing in an iPython console in Spyder. A workaround is to run the script from the command line instead. 
+This always happens when using multiprocessing in an iPython console in Spyder. A workaround is to run the script from the command line instead.
 
 (https://stackoverflow.com/questions/56154654/a-task-failed-to-un-serialize)
 
@@ -3324,13 +3344,13 @@ print(end-start)
     0.2426769733428955
 
 
-I wonder why it is so much slower (joblid)... the computations for log2FC is also much slower, it never finished before 15min... so I just ran some samples while in gym. 
+I wonder why it is so much slower (joblid)... the computations for log2FC is also much slower, it never finished before 15min... so I just ran some samples while in gym.
 
 
 ```python
 
 def get_log2FC_matrix(df, sample1, sample2, specie):
-    proteins = get_proteins(df, specie) 
+    proteins = get_proteins(df, specie)
     runs = ["R0"+str(i) for i in range(1,6)]
     log2FC_array = []
     start=time.time()
@@ -4108,13 +4128,13 @@ df_log2FC
 
 
 
-## 2020-12-08 
+## 2020-12-08
 
 In the [triqler manual](https://www.biorxiv.org/content/10.1101/2020.09.24.311605v1.full.pdf). It is specified we should work with original input file (example case: iPRG2016 and we need the peptide quantification file iPRG2016.tsv.pqr.tsv).
 
 In the example case. The following works:
 
-python -m triqler iPRG2016.tsv 
+python -m triqler iPRG2016.tsv
 
 To generate the .tsv.pqr.tsv file. Then we do the protein_id plot.
 
@@ -4126,19 +4146,19 @@ OUTPUT log:
 
 
 ```python
-(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv 
+(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv
 Triqler.distribution.plot_posteriors version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: plot_posteriors.py --protein_id HPRR3730445_poolB iPRG2016.tsv
 Could not locate peptide quantification file iPRG2016.tsv.pqr.tsv. Run triqler to generate this file.
-(py36) ptruong@planck:~/git/triqler/example$ python -m triqler iPRG2016.tsv 
+(py36) ptruong@planck:~/git/triqler/example$ python -m triqler iPRG2016.tsv
 Triqler version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: triqler.py iPRG2016.tsv
 Parsing triqler input file
@@ -4188,19 +4208,19 @@ Triqler execution took 28.871479630994145 seconds wall clock time
 
 
 ```python
-(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv 
+(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv
 Triqler.distribution.plot_posteriors version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: plot_posteriors.py --protein_id HPRR3730445_poolB iPRG2016.tsv
 Could not locate peptide quantification file iPRG2016.tsv.pqr.tsv. Run triqler to generate this file.
-(py36) ptruong@planck:~/git/triqler/example$ python -m triqler iPRG2016.tsv 
+(py36) ptruong@planck:~/git/triqler/example$ python -m triqler iPRG2016.tsv
 Triqler version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: triqler.py iPRG2016.tsv
 Parsing triqler input file
@@ -4244,11 +4264,11 @@ Triqler execution took 28.871479630994145 seconds wall clock time
 iPRG2016_ref.proteins.1vs2.tsv	iPRG2016_ref.tsv.pqr.tsv  proteins.1vs2.tsv
 iPRG2016_ref.proteins.1vs3.tsv	iPRG2016.tsv		  proteins.1vs3.tsv
 iPRG2016_ref.proteins.2vs3.tsv	iPRG2016.tsv.pqr.tsv	  proteins.2vs3.tsv
-(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv 
+(py36) ptruong@planck:~/git/triqler/example$ python -m triqler.distribution.plot_posteriors --protein_id HPRR3730445_poolB iPRG2016.tsv
 Triqler.distribution.plot_posteriors version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: plot_posteriors.py --protein_id HPRR3730445_poolB iPRG2016.tsv
 Fitting hyperparameters
@@ -4283,7 +4303,7 @@ Normal distribution fits for posterior distributions of treatment group relative
   Group A+B: mu, sigma = 0.472918, 0.114328
   Group B: mu, sigma = 0.918317, 0.071100
   Group A: mu, sigma = -1.782820, 0.269253
-(py36) ptruong@planck:~/git/triqler/example$ 
+(py36) ptruong@planck:~/git/triqler/example$
 
 ```
 
@@ -4334,9 +4354,9 @@ A0A078BPJ4_CAEEL
 There proteins are saved in protein_list.csv
 
  Command run:
- 
+
  python -m triqler.distribution.plot_posteriors --protein_id_list protein_list.csv PSSS3_triqlerFormatted_nonShared.csv
- 
+
  output plots are in results/2020-12-08
 
 ### Working with melted data
@@ -4354,10 +4374,10 @@ os.chdir("/home/ptruong/git/bayesMS/bin")
 
 
 ```python
-import os 
+import os
 
 import pandas as pd
-import numpy as np 
+import numpy as np
 
 from read_triqler_output import read_triqler_protein_output_to_df
 from triqler_output_df_melter import melt_spectronaut_triqler_formatted, melt_triqler_output
@@ -5459,7 +5479,7 @@ We can compute a couple of fold change matrices for exploration.
 2. triqler fold change differential expression.
 3. spectronaut fold change differential expression.
 
-How about the imputations? 
+How about the imputations?
 - I want to skip imputation for as long as possible.
 
 
@@ -5469,7 +5489,7 @@ Coded up this part in bin/script_convert_PSSS3_1toNaN.py
 
 ### Normalization
 
-Normalization withing sample and run is performed. The logic is that all proteins from each sample and run should sum to 100%, but I do not know if this is correct after FDR tresholding. 
+Normalization withing sample and run is performed. The logic is that all proteins from each sample and run should sum to 100%, but I do not know if this is correct after FDR tresholding.
 
 
 ```python
@@ -5494,7 +5514,7 @@ from normalize_melted import get_ratios_from_normalized_melted_df #Why no work??
 
     <ipython-input-103-c583aa259998> in <module>
     ----> 1 from normalize_melted import get_ratios_from_normalized_melted_df #Why no work??
-    
+
 
     ImportError: cannot import name 'get_ratios_from_normalized_melted_df'
 
@@ -5506,9 +5526,9 @@ def get_ratios_from_normalized_melted_df(df, specie):
     input - normalized df (triq, spec)
     output - ratios dataframe
     """
-    samples = ["S0"+str(i) for i in range(1,10)] + ["S10"] 
+    samples = ["S0"+str(i) for i in range(1,10)] + ["S10"]
     runs = ["R0" + str(i) for i in range(1,6)]
-    
+
     ratios = []
     for sample in samples:
         ratios_for_sample = []
@@ -5530,17 +5550,17 @@ df_triq  = normalize_within_sample(triq)
 
 ```
 
-    /home/ptruong/.local/lib/python3.6/site-packages/pandas/core/generic.py:5096: SettingWithCopyWarning: 
+    /home/ptruong/.local/lib/python3.6/site-packages/pandas/core/generic.py:5096: SettingWithCopyWarning:
     A value is trying to be set on a copy of a slice from a DataFrame.
     Try using .loc[row_indexer,col_indexer] = value instead
-    
+
     See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
       self[name] = value
 
 
 ### Mixture ratios
 
-Below is a presentation of the mixture ratios of the different species. 
+Below is a presentation of the mixture ratios of the different species.
 
 ### True ratios as a reminder
 
@@ -6830,7 +6850,7 @@ This fold change could for example be 0.8 of the true FC. Where we choose the ra
 ## 2020-12-03
 
 
-Job run on kebnekaise failed because due to exceeding storage. I did wrong in using the storage project. I've contacted the SNIC service to ask for guidance in this. 
+Job run on kebnekaise failed because due to exceeding storage. I did wrong in using the storage project. I've contacted the SNIC service to ask for guidance in this.
 
 Day has been spent writing on Project description.
 
@@ -8744,18 +8764,18 @@ Gives this error
 Traceback (most recent call last):
 
   File "plot_posteriors.py", line 18, in <module>
-    
+
     from ..triqler import __version__, __copyright__
-    
+
 ValueError: attempted relative import beyond top-level package
-    
+
 
 How does this relative import work?
 
-    
-    
-    
- 
+
+
+
+
 
 Plotting worked with:
 
@@ -8770,7 +8790,7 @@ OUTPUT:
 Triqler.distribution.plot_posteriors version 0.6.0
 Copyright (c) 2018-2020 Matthew The. All rights reserved.
 Written by Matthew The (matthew.the@scilifelab.se) in the
-School of Engineering Sciences in Chemistry, Biotechnology and Health at the 
+School of Engineering Sciences in Chemistry, Biotechnology and Health at the
 Royal Institute of Technology in Stockholm.
 Issued command: plot_posteriors.py --protein_id_list protein_list.csv P_OUT
 Protein list posterior plotting not yet supported for protein posteriors
@@ -8790,10 +8810,10 @@ os.chdir("/home/ptruong/git/bayesMS/bin")
 
 
 ```python
-import os 
+import os
 
 import pandas as pd
-import numpy as np 
+import numpy as np
 
 ```
 
@@ -8835,7 +8855,7 @@ triq = pd.read_pickle(r'triqler.pkl')
 
 ```
 
-Note: To read triqler output data we need to use 
+Note: To read triqler output data we need to use
 
 from read_triqler_output import read_triqler_protein_output_to_df
 
@@ -8939,7 +8959,7 @@ We notice naming error and rename the column S03:S04_R05 to S03:S03_R05
 spec = spec.rename(columns={'S03:S04_R05': 'S03:S03_R04'})
 ```
 
-triqler and spectroanut raw data is presented below. Both data set with 0.01 FDR treshold. 
+triqler and spectroanut raw data is presented below. Both data set with 0.01 FDR treshold.
 
 
 
@@ -9610,9 +9630,9 @@ print("%s : %i" % ("spectronaut number of protein ids", int(len(spec))))
 
 Spectronaut has higher than protein count, but looking at the data above we can see that there are plenty of NaN among samples in the spectronaut. We need to fix this.
 
-We could do this by saying that proteins with more than 2 or 3 NaN in a samples if left out. 
+We could do this by saying that proteins with more than 2 or 3 NaN in a samples if left out.
 
-We wrangle triq and spec data to melted df for easier data manipulation. Scripts for this can be found in 
+We wrangle triq and spec data to melted df for easier data manipulation. Scripts for this can be found in
 
 "from triqler_output_df_melter import melt_spectronaut_triqler_formatted, melt_triqler_output"
 
@@ -9929,7 +9949,7 @@ spectronautFile: ../data/500-PSSS3-raw-reformatted_dropna_dropdup_decoy_nonShare
 FDR_treshold: 0.01
 Impute: None
 Global_impute: False
-    
+
 triqlerFile: ../data/triqlerResults_largeScale_minSamp20_FC0_8_adjInt/proteins.XvsY.tsv
 FDR_treshold: 0.01
 
@@ -9938,9 +9958,9 @@ FDR_treshold: 0.01
 
 
 ```python
-import pandas as pd 
+import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 ```
 
 
@@ -9952,7 +9972,7 @@ import matplotlib.pyplot as plt
           1 import pandas as pd
           2 import numpy as np
     ----> 3 import matplotlib.pyplot as plt
-    
+
 
     ModuleNotFoundError: No module named 'matplotlib'
 
@@ -9970,7 +9990,7 @@ def read_in_triqler_x_vs_y_data(filename):
         peptides = i.split("\n")[0].split("\t")[n_cols-1:]
         val.append(";".join(peptides))
         vals.append(val)
-    
+
     return pd.DataFrame(vals, columns = cols)  
 ```
 
@@ -9986,11 +10006,11 @@ spectronaut = spectronaut[spectronaut["decoy"] != "decoy"]
 
 
 ```python
-# Readin triqler 
+# Readin triqler
 
 #triqler = pd.read_pickle("triqler.pkl")
 file_dir = "/home/ptruong/git/bayesMS/data/triqlerResults_largeScale_minSamp20_FC0_8_adjInt/"
-filename = "proteins.2vs6.tsv" 
+filename = "proteins.2vs6.tsv"
 triqler = read_in_triqler_x_vs_y_data(file_dir + filename)#Choose the sample
 triqler["specie"] = triqler.protein.str.strip().str[-5:]
 # Remove decoy
@@ -10005,7 +10025,7 @@ species = ["ARATH", "HUMAN", "CAEEL"]
 cols = spectronaut.columns[3:]
 cols = pd.DataFrame(cols)
 
-#Sample S02 
+#Sample S02
 specie = 2
 sample = 1 # +1 on the sample
 
@@ -10048,19 +10068,19 @@ overlap_set = sample_s.index.intersection(sample_t.index)
 
 ```
 
-    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:13: DeprecationWarning: 
+    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:13: DeprecationWarning:
     .ix is deprecated. Please use
     .loc for label based indexing or
     .iloc for positional indexing
-    
+
     See the documentation here:
     http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
       del sys.path[0]
-    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:27: DeprecationWarning: 
+    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:27: DeprecationWarning:
     .ix is deprecated. Please use
     .loc for label based indexing or
     .iloc for positional indexing
-    
+
     See the documentation here:
     http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
 
@@ -10077,7 +10097,7 @@ sub_sample_s = sample_s.ix[protein_sample.protein]
 
 
 #sample_s["protein"] = sample_s.index
-#sample_s 
+#sample_s
 #sample_t["protein"] = sample_t.index
 #sample_t
 
@@ -10085,19 +10105,19 @@ sub_sample_t["protein"] = sub_sample_t.index
 sub_sample_s["protein"] = sub_sample_s.index
 ```
 
-    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:6: DeprecationWarning: 
+    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:6: DeprecationWarning:
     .ix is deprecated. Please use
     .loc for label based indexing or
     .iloc for positional indexing
-    
+
     See the documentation here:
     http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
-      
-    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:7: DeprecationWarning: 
+
+    /home/ptruong/anaconda3/envs/py36/lib/python3.6/site-packages/ipykernel_launcher.py:7: DeprecationWarning:
     .ix is deprecated. Please use
     .loc for label based indexing or
     .iloc for positional indexing
-    
+
     See the documentation here:
     http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
       import sys
@@ -10444,20 +10464,20 @@ plt.title("Triqler - random samples")
 
 
 
-    
+
 ![png](output_15_1.png)
-    
 
 
 
-    
+
+
 ![png](output_15_2.png)
-    
 
 
-Code reads in triqler and spectronaut data. Removed decoy proteins. Compute mean, median, min, max and code plot function for mean and median (as lines) and fill-in with min-max borders. 
 
-The code samples n random overlapping proteins from triqler and spectroanut and plots mean and median with min-max borders. 
+Code reads in triqler and spectronaut data. Removed decoy proteins. Compute mean, median, min, max and code plot function for mean and median (as lines) and fill-in with min-max borders.
+
+The code samples n random overlapping proteins from triqler and spectroanut and plots mean and median with min-max borders.
 
 Things to check in the code:
 - Did i forget to treshold triqler data on q-values?
@@ -10465,7 +10485,7 @@ Things to check in the code:
 - What was the normalization used in previous attempt? (within sample normalization, and why did that make sense?)
 - Is there a better way to compare than the previous normalization?
 - I guess it is between sample relationship that matter?
-- Read up on spike-in proteomics? 
+- Read up on spike-in proteomics?
 
 
 
@@ -10476,14 +10496,14 @@ In data-dependent acquisition (DDA), a protein sample is digested into peptides,
 
 Data-independent acquisition is an approach to acquisition in Mass Spectrometry which fragments all peptides within a defined mass-to-charge (m/z) windows (as opposed to a select narrow window around "the strongest signal"). The analysis is repeated as the mass spectrometer marches up the full m/z range, which results in accurate peptide quantificaiton without being limited to profiling predefined peptied of interest.    
 
-A potential drawback of the DIA is the existence of multiple peptides in an m/z window. The fragmentation of multiple peptides results in chimeric (multiplexed) spectra which are more complex than single peptide spectra. Procedures for deconvoluting these spectra are required. Two methods for DIA are (OpenSWATH)[https://pubmed.ncbi.nlm.nih.gov/24727770/] and (ISOQUANT)[https://www.nature.com/articles/nmeth.2767]. 
+A potential drawback of the DIA is the existence of multiple peptides in an m/z window. The fragmentation of multiple peptides results in chimeric (multiplexed) spectra which are more complex than single peptide spectra. Procedures for deconvoluting these spectra are required. Two methods for DIA are (OpenSWATH)[https://pubmed.ncbi.nlm.nih.gov/24727770/] and (ISOQUANT)[https://www.nature.com/articles/nmeth.2767].
 
 
 ## 2020-10-20 Tuesday
 ### Thoughts about how to approach the problem.
 The problem was that different imputation methods could severly skew the results. How I could go about this problem is to compare different imputation methods with the result of triqler and argue why the results are bad for spectronaut and good/ok for triqler in each case. E.g. with protein counts, with boxplots etc.
 
-One problem was that triqler had "bad" results for samples where there where low or no samples, because then the protein intensity got close to the prior, which is based on empirical means (meaning that the intensities are much higher than they should be). We could truncate the results, but in a real world case we would not know the samples so we would not be able to remove the results. 
+One problem was that triqler had "bad" results for samples where there where low or no samples, because then the protein intensity got close to the prior, which is based on empirical means (meaning that the intensities are much higher than they should be). We could truncate the results, but in a real world case we would not know the samples so we would not be able to remove the results.
 
 Things to do:
 - Think about how the data would be generated in real case, and perform analysis based on this.
@@ -10491,7 +10511,7 @@ Things to do:
 
 ## 2020-10-19 Monday
 
-### Starting up again. 
+### Starting up again.
 
 I just started checking into this project again. Let's start from scratch to get this correct from start. I will check through all the mails related to this.
 
@@ -10512,7 +10532,7 @@ The files from the latest try are named PSSS3_triqler_input_renormalized.tsv (tr
 The script I used for converting the spectronaut files (they have an xls extension, but they're actually just tab separated files): https://github.com/statisticalbiotechnology/mergespec/blob/master/bin/bayesquant/convert_spectronaut_to_triqler_input.py
 
 The version of triqler I used to generate the data is on a branch called large_scale_optimizations: https://github.com/statisticalbiotechnology/triqler/tree/large_scale_optimizations
-However, I'm not entirely sure if this is the same version that I used to generate the files, since I made some changes while working on this. So, if you run triqler yourself with this branch the results might be different. 
+However, I'm not entirely sure if this is the same version that I used to generate the files, since I made some changes while working on this. So, if you run triqler yourself with this branch the results might be different.
 
 Some issues I had to generate a report comparing Triqler to Spectronaut were:
 1. we either have their original results (500-PSSS3-precursor_Report.xls), which has a column "PG.Quantity" that contain the protein concentrations, but has missing values as it has been filtered on some FDR. Alternatively, we have their results with decoys ('S500-PSSS3-equ decoy_Report.xls'), which is not filtered on FDR and does not contain missing values, but does not contain a column with the protein quantity and I don't really know how they summarized peptide quantities to protein quantities. The first option seems more reasonable, as this is what they would normally report.
@@ -10561,17 +10581,17 @@ In Spectronaut MS1 and MS2 information is used for identification and it can be 
 
 I have lot of triqler output, but it is probabily better that i redo and generate new results since I am have forgotten how these was generated, which could cause further problems down the line.
 
-Also, I just noted that the triqler has been updated has new output options for posterior distribution. 
+Also, I just noted that the triqler has been updated has new output options for posterior distribution.
 
 One remaining question is still, how to we report NaNs for the Spectronaut results.
 
-I should also ask my PI if the PSSS3 results from last year are still relevant. 
+I should also ask my PI if the PSSS3 results from last year are still relevant.
 
 
 
 ## 2020-10-18 Sunday
 
-Setting up a Rmarkdown log for this project. 
+Setting up a Rmarkdown log for this project.
 
 ## Historical log
 https://patruong.github.io/bayesProtQuant/
