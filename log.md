@@ -36,6 +36,22 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-02
+### 08:30 Neating up code from yesterday.
+### 09:30 Looking at matrix-matched code to understand input for LOD.
+### 13:50 new peptide generator done.
+
+But how many peptides differ between isoforms?
+
+### 17:00 Finished script for checking amount of peptide overlap
+
+dia_check_peptide_sequence_intersections.pyi
+
+No peptides overlap. I suspect that this is because MSFragger allocated all ambivalent peptides to one protein, and then allocated the rest to specific isoforms. This because we have no logic hon how to allocate the peptides.
+
+How should I consider this in simulations?
+
+
 ## 2022-03-01 
 ### 08:00 Writing the half-time
 
@@ -52,6 +68,10 @@ Need to write code for mapping protein species
 
 ### 19:20 finished protein species mapping.
 ### 00:00 finished pval and qvalue calculation of peptides for DIA samples
+### 00:15 Thoughts
+If we have difference in protein, in this protein how many peptides are under the LOQ, and in how many peptides are we above the LOQ.
+
+For all peptides for YEAST and ECOLI we have about 28.4% where there is a difference between sample 1 and sample 2 using. 
 
 
 ## 2022-02-28
