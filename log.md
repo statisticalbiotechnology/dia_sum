@@ -36,6 +36,14 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-04
+### 08:00 diann-output to triqler
+
+fails... intensity col is string?
+
+Do we evene need this? Triqler can't summarize proteoforms anyway...
+
+
 ## 2022-03-03
 ### 09:00 Omics club
 ### 10:30 Continue on script from yesterday
