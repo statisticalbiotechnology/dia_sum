@@ -43,6 +43,23 @@ fails... intensity col is string?
 
 Do we evene need this? Triqler can't summarize proteoforms anyway...
 
+### 12:00 workout
+
+### 15:00 working on peptide simulation script again.
+
+I suspect I'm making it way more intricate than it needs to be. Someone smart could probabily generate the peptides with a couple of lines.
+
+### 19:22 finished making update for the peptide simulation script.
+
+It now has scaling function, to scale the various peptides.
+
+Now the peptides don't all have the same abundance, within the group.
+
+Nextup: I need to make the generated peptides in a format for PCA.
+
+
+
+
 
 ## 2022-03-03
 ### 09:00 Omics club
