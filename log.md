@@ -43,6 +43,23 @@ Check what is endogenous peptide.
 
 ### 15:00 done with half-time checking, mail sent to L, check lower q-value on my top3 is human and coding ipywidget.
 
+### 15:40 checked top3 and started coding ipywidget.
+
+Next to do:
+
+Recode plotting like my code, but with L:s smoothing thing based on ranks... it will look smoothers.
+
+Fix ipywidget.
+
+### 18:00 still fixing ipywidget
+
+### 20:50 ipywidget fixed...
+
+There still seems to be something wrong with the eigen samples... I think maybe all the samples are the same, i.e. i'm simulating wrong.
+
+Will fix presentation before bed.
+
+
 
 ## 2022-03-07 
 ### 09:30 Write-up on peptide simulate script
