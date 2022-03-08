@@ -36,6 +36,65 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-08
+### 10:00 making a presentation
+
+### 13:30 Checking half-time report.
+
+### 15:00 done with half-time checking, mail sent to L, check lower q-value on my top3 is human and coding ipywidget.
+
+
+## 2022-03-07 
+### 09:30 Write-up on peptide simulate script
+
+Took some more time... had to re check my code how stuff actually worked...
+
+### 11:00 Format the generated peptides for PCA.
+
+### 15:00 Something is wrong with the peptide generation... PCA cannot seperate the peptides.
+
+I suspect it is the scaling factor and possible.
+
+### 15:30 workout
+
+### 17:00 work on the peptide scaling thing.
+
+### 18:00 fixed bug with matchning n_peptides and length of scaling factors.
+
+Still not working... maybe the generation of noise scaling factor induced too much noise.
+
+Lets try making this constant.
+
+### 20:18 PCA works but it does not give clear seperation...
+
+SVD based PCA works, but it does not give a good seperation.
+
+Generating scaling factors does not work.
+
+Manually setting scaling factors still looks off.
+
+Lets try to use ICA.
+
+### 20:46 ICA does not give so good values either...
+
+I should just do a presentation write-up about this and present and get feedback... maybe they know what I did wrong.
+
+### 21:00 What next?
+
+Do presentation about formprotein.
+- talk about pino et al.
+- talk about how I simulated.
+- talk about LOQ, LLOD.
+
+Check if my best proteins in top3 is human in dia_sum.
+
+Half-time more fix?
+- read-through, how is the flow? what do we want to discuss?
+- 
+
+
+
+
 ## 2022-03-04
 ### 08:00 diann-output to triqler
 
