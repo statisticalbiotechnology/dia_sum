@@ -36,6 +36,52 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-10
+Todo:
+- should read thorugh my article
+- fix half-time issues
+- clean up dia_sum scripts
+### 10:00 cleaning up dia_sum scripts
+
+
+## 2022-03-09 
+### 08:30 Fixing presentation for meeting and adding scaling factor to simulate peptide ipywidget
+
+### 09:30 meeting
+
+For PCA we look the the differences between samples of two proteoforms. How the resp. proteins decay over sample.
+
+That the different proteoforms decay att different rate...
+
+We need to build this in the proteoform simulation.
+
+### 12:00 Reading PXD011200 paper to check for details about .raw files.
+
+### 13:30 Started working on Human Breast cancer cells (PXD003704)
+
+It should be 3 replicates and 10 samples according to the paper, but I have 3 replicates and 14 samples...
+
+Download human isoform database
+Do search with FragPipe
+
+### 14:00 running Fragpipe on PXD003704, and start fixing the decay ratios for proteoforms. 
+
+Following this tutorial:
+https://fragpipe.nesvilab.org/docs/tutorial_tmt.html#start-fragpipe
+
+### 15:05 Fragpipe failed.
+
+### 15:45 Found PXD017418 with TPP on zebrafish.
+
+The files are well annotated and there seem to be 2 replicates with TMT-10 labelling.
+
+article:
+https://www.mcponline.org/article/S1535-9476(20)35147-1/fulltext#relatedArticles
+
+The TPP method used for above article as cited on the paper:
+https://www.science.org/doi/10.1126/science.1255784?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
+
+
 ## 2022-03-08
 ### 10:00 making a presentation
 
