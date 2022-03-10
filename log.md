@@ -41,8 +41,23 @@ Todo:
 - should read thorugh my article
 - fix half-time issues
 - clean up dia_sum scripts
+
 ### 10:00 cleaning up dia_sum scripts
 
+### 16:00 finished meeting, meeting log
+
+Article problem: Basically finished, problem is L does not understand what is being done. Clean-up scripts, if I can try to implement everything with the data processing using bash script. 
+
+Optimally, use nextflow.
+
+TMT10 data. Relative data, we need aitchison transformation before PCA.
+
+Finish simulation and determine when does it work and when does it not work.
+
+What ratios of peptides are needed?
+How many peptides are needed?
+
+### 18:20 Finished cleaning up top3 computation part of dia_sum
 
 ## 2022-03-09 
 ### 08:30 Fixing presentation for meeting and adding scaling factor to simulate peptide ipywidget
