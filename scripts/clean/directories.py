@@ -35,5 +35,8 @@ os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/result_files_20220214/DID")
 # PS
 os.chdir("/hdd_14T/data/PXD002952/20210614_dataset/result_files_20220214/PS")
 
-
+# labtop data
+os.chdir("/home/ptruong/git/dia_sum/scripts/clean")
+os.chdir("/home/ptruong/data/results/PS")
+os.chdir("/home/ptruong/data/results/DID")
 

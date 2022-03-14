@@ -41,6 +41,9 @@ Check what is endogenous peptide.
 
 ### 13:00 Slow and tired today... don't know why... heading out for a walk
 
+### 14:00 started coding again.
+
+### 16:00 Actual FDR.. should be number of protein below FC level?
 ## 2022-03-11
 ### 09:30 keep cleaning up scripts
 
