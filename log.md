@@ -36,6 +36,15 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-14 
+### 08:00 script cleanup
+
+### 13:00 Slow and tired today... don't know why... heading out for a walk
+
+## 2022-03-11
+### 09:30 keep cleaning up scripts
+
+
 ## 2022-03-10
 Todo:
 - should read thorugh my article
