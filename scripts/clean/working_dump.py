@@ -71,14 +71,11 @@ zipped_files = read_in_files(triqler_file = "triqler_results/fc_0.96",
 
 df_count = get_differential_abundance_count(zipped_files)
 
-# FDR VS ACTUAL FDR ... we need to sort by FC Treshold
-
-for method, df in zipped_files:
-    pass
 
 df.sort_values(by = "logFC") # count number of proteins under FC treshold
+df
+
 #df = df_count
-#df[eCol] = (df[negCol]/(df[posCol]+df[negCol])).copy(deep=True)
 
 # differential abundance HeLa vs. non-Hela.
 sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count)
@@ -89,3 +86,96 @@ sns.lineplot(x = eCol, y = "FDR", hue = "method", data = df_count)
     g = sns.lineplot(data=er_fdr, x=eCol, y="FDR", hue="method", ci=None)
 
 df_count
+
+
+
+
+
+
+
+
+# FDR VS ACTUAL FDR ... we need to sort by FC Treshold
+
+for method, df in zipped_files:
+    pass
+
+fc_treshold = 0.6
+
+df["abs(logFC)"] = abs(df["logFC"]).copy(deep=True)
+df = df[df["abs(logFC)"] < fc_treshold]
+df["specie"] = df.Protein.map(lambda x:x.split("_")[-1])
+#df[df["specie"] == "HUMAN"] / df
+
+
+sns.lineplot(x = eCol, y = "FDR", data = df)
+sns.lineplot(x = eCol, y = "FDR", hue = "method", data = df)
+
+
+### PQ-data, FDR 
+
+
+def pq_data(df_final, fc_treshold):
+    # two-side treshold because triqler uses two side treshold.
+    df_final_fc_gt = (df_final[df_final["log2(A,B)"] > fc_treshold])
+    df_final_fc_lt = (df_final[df_final["log2(A,B)"] < -fc_treshold])
+    df_final_fc = pd.concat([df_final_fc_gt, df_final_fc_lt])
+    n_array = []
+    for q in np.arange(0,0.101, 0.001):
+        n = (df_final_fc["q"] <= q).sum()
+        n_array.append(n)
+    res = pd.DataFrame(n_array, index = np.arange(0,0.101, 0.001), columns = ["DE"])
+    return res
+
+### BACKTRACK EVERYTHING
+import numpy as np     
+
+msqrob = pd.read_csv("msqrob2_results.tsv", sep = ",", index_col = 0)
+msqrob["proteins"] = msqrob.index
+msqrob["specie"] = msqrob.proteins.map(lambda x:x.split("_")[-1])
+fc = 0.6
+msqrob 
+
+
+def msqrob_pq_data(msqrob, fc):
+    msqrob_gt = msqrob[msqrob.logFC > fc]
+    msqrob_lt = msqrob[msqrob.logFC < -fc]
+    msqrob_fc = pd.concat([msqrob_gt, msqrob_lt])
+    n_array = []
+    for q in np.arange(0,0.101, 0.0001):
+        n = (msqrob_fc["adjPval"] <= q).sum()
+        n_array.append(n)
+    res = pd.DataFrame(n_array, index = np.arange(0,0.101, 0.0001), columns = ["DE"])
+    return res
+
+
+
+
+df_msqrob = (msqrob_pq_data(msqrob[msqrob.specie == "HUMAN"], fc = fc) / 
+             msqrob_pq_data(msqrob, fc = fc))    
+
+msqrob.sort_values(by = "adjPval", inplace = True)
+
+df = msqrob 
+negative = df["proteins"].str.contains("_HUMAN").astype(int).copy(deep=True)
+df[negCol] = negative.cumsum().copy(deep=True)
+df[posCol] = (1-negative).cumsum().copy(deep=True)
+df["method"] = method
+df[eCol] = df[negCol]/(df[posCol]+df[negCol])
+
+sns.lineplot(x = eCol, y = "adjPval", data = df)
+
+
+ob.columns
+msqrob.
+
+plt.plot(df_msqrob)
+
+
+
+
+
+
+
+
+
+
