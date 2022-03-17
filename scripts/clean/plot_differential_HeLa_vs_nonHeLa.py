@@ -24,13 +24,22 @@ def remove_decoy(df, protein_column):
     res = df[~df[protein_column].str.contains("DECOY_")].copy(deep=True)
     return res
 
-def countProteins(df, method):
+def countProteins(df, method, specie = "all"):
     df = remove_decoy(df, protein_column = "Protein")
     df.dropna(subset=["FDR"], inplace = True)
     df.sort_values(by = "FDR", inplace = True)
     negative = df["Protein"].str.contains("_HUMAN").astype(int).copy(deep=True)
     df[negCol] = negative.cumsum().copy(deep=True)
-    df[posCol] = (1-negative).cumsum().copy(deep=True)
+    if specie == "all":
+        df[posCol] = (1-negative).cumsum().copy(deep=True)
+    elif specie == "ecoli":
+        df = df[~df["Protein"].str.contains("_YEAST")]
+        positive = df["Protein"].str.contains("_ECOLI").astype(int).copy(deep=True)
+        df[posCol] = positive.cumsum().copy(deep=True)
+    elif specie == "yeast":
+        df = df[~df["Protein"].str.contains("_ECOLI")]
+        positive = df["Protein"].str.contains("_YEAST").astype(int).copy(deep=True)
+        df[posCol] = positive.cumsum().copy(deep=True)
     df["method"] = method
     return df
 
@@ -56,12 +65,11 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     return zipped_files
 
 
-def get_differential_abundance_count(zipped_files):
+def get_differential_abundance_count(zipped_files, specie = "all"):
     dfs = []
     for method, df in zipped_files:
-        df_count = countProteins(df, method)
+        df_count = countProteins(df, method, specie = specie)
         dfs.append(df_count.loc[:,["Protein", "FDR", posCol, negCol, "method"]])
-    
     res = pd.concat(dfs)
     res = res.reset_index().drop("index", axis = 1)
     return res
@@ -82,6 +90,10 @@ parser.add_argument('--msstats_input', type=str,
 parser.add_argument('--msqrob2_input', type=str,
                     help='MSqRob2 results file.')
 
+parser.add_argument('--specie', type=str,
+                    help='specie "all", "ecoli" or "yeast" as y-axis for the differential plot.',
+                    default = "all")
+
 parser.add_argument('--output', type=str,
                     help='Output name.')
 
@@ -91,6 +103,7 @@ triqler_file = args.triqler_input
 top3_file = args.top3_input
 msstats_file = args.msstats_input
 msqrob2_file = args.msqrob2_input
+specie = args.specie
 output = args.output
 
 if __name__ == "__main__":
@@ -106,18 +119,27 @@ if __name__ == "__main__":
                       msstats_file = msstats_file,
                       msqrob2_file = msqrob2_file)
     print("Counting differentially abundant proteins")
-    df_count = get_differential_abundance_count(zipped_files)
+    df_count = get_differential_abundance_count(zipped_files, specie = specie)
     
     print("Plotting lineplot")
    
-    ax = sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count)
+    if specie == "all":
+        ax = sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count)
+    elif specie == "yeast":
+        ax = sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count)
+        ax.set_ylabel("Differential yeast")
+    elif specie == "ecoli":
+        ax = sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count)
+        ax.set_ylabel("Differential ecoli")
     ax.set_xlim(-1,200)
     fig = ax.get_figure()
     print(f"Saving output {output}")
     fig.savefig("output")
     
     
-    
+
+for method, df in zipped_files:
+    print(method)
     
     
     
