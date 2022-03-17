@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 rcParams['text.usetex'] = True
 
+import numpy as np
 import seaborn as sns
 import pandas as pd
 from parsers.parse_triqler import  parse_triqler
@@ -35,12 +36,13 @@ def plot_histogram(output, bins = 50):
     axs.axvline(x = 0, color = "orange", linestyle = "--", alpha = 0.4)
     axs.axvline(x = -1, color = "green", linestyle = "--", alpha = 0.4)
     axs.axvline(x = 2, color = "blue", linestyle = "--", alpha = 0.4)
+    print("Outputting : " + output)
     plt.savefig(output, bbox_inches="tight")
 
 specie_mapper = lambda x: x.split("_")[-1]
 
 def read_triqler(triqler_file):
-    df = parse_triqler(file_name)
+    df = parse_triqler(triqler_file)
     df["log2_fold_change"] = -df.log2_fold_change
     df["specie"] = df.protein.map(specie_mapper)
     df.rename({"log2_fold_change":"log2FC", "q_value":"FDR"}, axis = 1, inplace = True)
@@ -49,7 +51,7 @@ def read_triqler(triqler_file):
     return df
 
 def read_top3(top3_file):
-    df = pd.read_csv("top3_output_diann.csv", sep = "\t")
+    df = pd.read_csv(top3_file, sep = "\t")
     df.rename({"q":"FDR", "log2(A,B)":"log2FC"}, axis = 1, inplace = True)
     df.log2FC = -df.log2FC
     df.sort_values(by = ["specie"], inplace = True)
@@ -77,14 +79,14 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--input_file', type=str,
                     help='input file name.')
 
-parser.add_argument('--input_type', type=float,
+parser.add_argument('--input_type', type=str,
                     help='the input_type is one of triqler/top3/msstats/msqrob2.')
 
-parser.add_argument('--bins', type=float,
+parser.add_argument('--bins', type=int,
                     help='Number of bins in the histogram.',
                     default=50)
 
-parser.add_argument('--output', type=bool,
+parser.add_argument('--output', type=str,
                     help='output name.')
 
 
@@ -92,22 +94,25 @@ parser.add_argument('--output', type=bool,
 args = parser.parse_args()
 input_file = args.input_file
 input_type = args.input_type
+bins = args.bins
 output = args.output
 
-if input_type == "triqler":
-    df = read_triqler(input_file)
-    plot_histogram(output, bins = bins)
-elif input_type == "top3":
-    df = read_top3(input_file)
-    plot_histogram(output, bins = bins)
-elif input_type == "msstats":
-    df = read_msstats(input_file)
-    plot_histogram(output, bins = bins)
-elif input_type == "msqrob2":
-    df = read_msqrob2(input_file)
-    plot_histogram(output, bins = bins)
-else:
-    print("No input_type specified. Exiting!")
-
+if __name__ == "__main__":
+    print("Reading in : " + input_file)
+    if input_type == "triqler":
+        df = read_triqler(input_file)
+        plot_histogram(output, bins = bins)
+    elif input_type == "top3":
+        df = read_top3(input_file)
+        plot_histogram(output, bins = bins)
+    elif input_type == "msstats":
+        df = read_msstats(input_file)
+        plot_histogram(output, bins = bins)
+    elif input_type == "msqrob2":
+        df = read_msqrob2(input_file)
+        plot_histogram(output, bins = bins)
+    else:
+        print("No input_type specified. Exiting!")
+    print("Done!")
 
 
