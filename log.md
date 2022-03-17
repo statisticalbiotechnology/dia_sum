@@ -36,6 +36,25 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-17
+### 07:30 Cont. work
+
+### 11:30 finished histogram parser script and added specie to differential expression and added diff. abundance vs FDR
+
+## 2022-03-16
+
+### 08:00 cont. script cleanup
+
+### 09:30 quantile bin .ipynb is very bad
+
+### 17:00 finished scripts.
+
+## 2022-03-15
+### 09:00 Getting FDR tresholding plot to work.
+
+### 16:00 Cont. cleaning up. 
+Don't understand why my code with tresholded q-values plot results differ from .cumsum() results by L.
+
 ## 2022-03-14 
 ### 08:00 script cleanup
 
@@ -44,6 +63,8 @@ Check what is endogenous peptide.
 ### 14:00 started coding again.
 
 ### 16:00 Actual FDR.. should be number of protein below FC level?
+
+
 ## 2022-03-11
 ### 09:30 keep cleaning up scripts
 
