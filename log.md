@@ -36,10 +36,21 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-17 
+
+### 07:30 Cont. to work on theoretical vs actual FDR.
+
+### 11:30 Finished computed FDR vs actual FDr.
+
+The issue was that we did not use the correct FC file for triqler, and we did not fc-threshold the top3, msstats and msqrob2 files.
+
 ## 2022-03-17
 ### 07:30 Cont. work
 
 ### 11:30 finished histogram parser script and added specie to differential expression and added diff. abundance vs FDR
+
+
+### 16:30 Finished testing scripts and started working on theoretical vs actual FDR.
 
 ## 2022-03-16
 
