@@ -48,6 +48,15 @@ The issue was that we did not use the correct FC file for triqler, and we did no
 
 ### 14:00 How do we output .png from nextflow?
 
+### 19:00 Trying to figure out nextflow scripting
+
+### 22:30 figures out
+
+- First use nextflow to do the plotting.
+- Need to figure out pipeline parts on command line.
+
+
+
 ## 2022-03-17
 ### 07:30 Cont. work
 
