@@ -44,6 +44,10 @@ Check what is endogenous peptide.
 
 The issue was that we did not use the correct FC file for triqler, and we did not fc-threshold the top3, msstats and msqrob2 files.
 
+### 13:00 Learning nextflow
+
+### 14:00 How do we output .png from nextflow?
+
 ## 2022-03-17
 ### 07:30 Cont. work
 
