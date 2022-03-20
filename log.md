@@ -40,6 +40,10 @@ Check what is endogenous peptide.
 
 ### 19:00 cont. nextflow 
 
+### 19:30 fragpipe cannot be used from cmd
+
+https://github.com/Nesvilab/FragPipe/issues/330
+
 
 ## 2022-03-18 
 
