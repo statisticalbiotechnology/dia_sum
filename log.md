@@ -36,7 +36,24 @@ Check what is endogenous peptide.
 
 # Log
 
-## 2022-03-17 
+## 2022-03-20
+
+### 19:00 cont. nextflow 
+
+
+## 2022-03-18 
+
+### 08:00 Trying out nextflow scripting.
+
+### 09:00 Actual vs computed FDR
+
+### 12:00 finished actual vs computed FDR
+
+### 13:00 Dont understand nextflow outputs...
+
+### 16:00 Nextflow output is in "work" directories.
+
+## 2022-03-17
 
 ### 07:30 Cont. to work on theoretical vs actual FDR.
 
