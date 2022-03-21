@@ -1,0 +1,11 @@
+rule plot_histogram:
+    shell:
+        """
+        for method in triqler top3 msstats msqrob2
+        do
+            for pipeline in ID PS
+            do
+                echo "data/$pipeline/${method}"
+            done
+        done
+        """

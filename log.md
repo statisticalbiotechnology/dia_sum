@@ -36,6 +36,39 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-21
+### 07:30 How to argparse in R.
+
+### 08:00 make argparse R.
+
+Make argparse R for
+
+MsStats computation osw, diann
+MSqRob2 computation osw, diann
+
+### 09:00 building conda environment for R.
+
+### 10:00 Dependency issues for R and Python modules in the same environment.
+
+Is it possible to use two different conda environments in nextflow?
+
+### 11:00 Maybe change to snakemake... I can't figure out how to execute multiple scripts in nextflow.
+
+https://uppsala.instructure.com/courses/51980/pages/nextflow-1-introduction?module_item_id=328997
+
+Snakemake executes everything from working directory which is convenient.
+
+### 12:00 Can't seem to install r-packages and snakemake in the same environment
+
+### 13:00 Installing r_envs first and then install python packages might work.
+
+Snakemake, r and python packages are now install in r_env environment. Lets use snakemake.
+
+Snakemake basics
+
+https://snakemake.readthedocs.io/en/stable/tutorial/basics.html
+
+
 ## 2022-03-20
 
 ### 19:00 cont. nextflow 
