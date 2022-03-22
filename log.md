@@ -36,6 +36,22 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-03-22
+### 11:00 Cont. snakemake
+
+### 12:00 Can't get multiple rules working. Looking at snakemake tutorial.
+
+https://lachlandeer.github.io/snakemake-econ-r-tutorial/project-organization.html
+
+installing tutorial packages.
+
+### 20:26 Checking AD data.
+
+### 00:40 PCA and eigen sample for AD data is done.
+
+But how to we interpret this?
+
+
 ## 2022-03-21
 ### 07:30 How to argparse in R.
 
@@ -68,6 +84,7 @@ Snakemake basics
 
 https://snakemake.readthedocs.io/en/stable/tutorial/basics.html
 
+### 13:30 Figuring out how snakemake works.€ý,€ý,
 
 ## 2022-03-20
 
