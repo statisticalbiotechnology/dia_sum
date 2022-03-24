@@ -1,11 +1,62 @@
+import os
+
+#PIPELINES = glob_wildcards("data/{pipeline}/{method}_results.csv").pipeline
+#METHODS = glob_wildcards("data/{pipeline}/{method}_results.csv").method
+
+PIPELINES = ["ID", "PS"]
+METHODS = ["triqler", "top3", "msstats", "msqrob2"]
+DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
+
+rule generate_plots:
+	input:
+		expand("results/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
+		expand("results/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS)
+
 rule plot_histogram:
+	input:
+		script = "plot_histogram.py",
+		result_file = "data/{iPipeline}/{iMethod}_results.csv",
+	params:	
+		method_type = "{iMethod}"
+	output:
+		output_file = "results/histogram_{iPipeline}_{iMethod}.png"
+	shell:
+		"python {input.script} \
+			--input_file {input.result_file} \
+			--input_type {params.method_type} \
+			--output {output.output_file}"
+
+rule plot_differential_HeLa_vs_nonHela:
+	input:
+		script = "plot_differential_HeLa_vs_nonHeLa.py",
+		triqler_input = "data/{iPipeline}/triqler_results.csv",
+		top3_input = "data/{iPipeline}/top3_results.csv",
+		msstats_input = "data/{iPipeline}/msstats_results.csv",
+		msqrob2_input = "data/{iPipeline}/msqrob2_results.csv"
+	params:
+		specie = "{iSpecie}"
+	output:
+		output = "results/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png"
+	shell:
+		"python {input.script} \
+			--triqler_input {input.triqler_input} \
+			--top3_input {input.top3_input} \
+			--msstats_input {input.msstats_input} \
+			--msqrob2_input {input.msqrob2_input} \
+			--specie {params.specie} \
+			--output {output.output}"
+
+##############################################
+# CLEANING RULES
+##############################################
+
+rule clean:
     shell:
-        """
-        for method in triqler top3 msstats msqrob2
-        do
-            for pipeline in ID PS
-            do
-                echo "data/$pipeline/${method}"
-            done
-        done
-        """
+        "rm -rf results/*"
+
+
+
+
+
+
+

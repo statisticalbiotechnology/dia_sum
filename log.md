@@ -35,6 +35,27 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-03-24
+### 18:40 Forgetting to update this log..
+- Have been going through the whole lachlandeer tutorial...
+- Wednesday meeting
+- Building snakemake file for plotting
+- Checking out AD data and making a .ipynb
+
+For the AD data
+
+My thoughts are that the parameters [low, int, high, unknown] can be seen as the concentrations and [frontal, parietal] can be seen as the two conditions.
+
+I have formatted the data and written a script for PCA on the AD data, but I should probabily check for batch-effect and normalize before doing this. 
+
+Have been reading up a bit on GANS and autoencoders.
+
+For the proteoform project if the PCA does not work... perhaps autoencoders will work.
+
+If the proteoform project works... the next step might be to add the proteoform inference to triqler and recode the whole pgm model.
+
+
+
 
 ## 2022-03-22
 ### 11:00 Cont. snakemake

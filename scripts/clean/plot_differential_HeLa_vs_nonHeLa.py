@@ -134,7 +134,7 @@ if __name__ == "__main__":
     ax.set_xlim(-1,200)
     fig = ax.get_figure()
     print(f"Saving output {output}")
-    fig.savefig("output")
+    fig.savefig(output)
     
     
 
