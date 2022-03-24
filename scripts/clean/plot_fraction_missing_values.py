@@ -160,7 +160,7 @@ def main():
     #ax.set_title("DIANN - Fraction Missing Values for mean intensity", fontsize = 22, fontweight = "bold")
     fig = ax.get_figure()
     print(f"Saving output {output}")
-    fig.savefig("output")
+    fig.savefig(output)
     print("Done!")    
     
 if __name__ == "__main__":

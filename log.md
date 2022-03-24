@@ -54,6 +54,7 @@ For the proteoform project if the PCA does not work... perhaps autoencoders will
 
 If the proteoform project works... the next step might be to add the proteoform inference to triqler and recode the whole pgm model.
 
+### 23:00 Finished Snakemake for plotting
 
 
 

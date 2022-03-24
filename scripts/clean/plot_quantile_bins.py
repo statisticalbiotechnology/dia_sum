@@ -113,8 +113,7 @@ def main(file_directory, threshold, log, quantiles, ylim, hline_type, input_type
                 quantiles = quantiles,
                 ylim = ylim,
                 hline_type = hline_type,
-                output
-                )
+                output)
     elif input_type == "DIANN":
         main_diann(
                 file_name = file_directory,
@@ -123,8 +122,7 @@ def main(file_directory, threshold, log, quantiles, ylim, hline_type, input_type
                 quantiles = quantiles,
                 ylim = ylim,
                 hline_type = hline_type,
-                output
-                )
+                output)
     else:
         print("No input_type specified. Exiting!")
     

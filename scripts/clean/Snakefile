@@ -6,12 +6,15 @@ import os
 PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
+FC_THRESHOLDS = [0.48]
+
 
 rule generate_plots:
 	input:
 		expand("results/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
-		expand("results/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS)
-
+		expand("results/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        expand( "results/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
+        expand("results/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES)
 rule plot_histogram:
 	input:
 		script = "plot_histogram.py",
@@ -45,6 +48,38 @@ rule plot_differential_HeLa_vs_nonHela:
 			--msqrob2_input {input.msqrob2_input} \
 			--specie {params.specie} \
 			--output {output.output}"
+
+rule plot_calibration_plot:
+    input:
+        script = "plot_calibration_curve.py",
+        triqler_input = "data/{iPipeline}/triqler_results.csv",
+        top3_input = "data/{iPipeline}/top3_results.csv",
+        msstats_input = "data/{iPipeline}/msstats_results.csv",
+        msqrob2_input = "data/{iPipeline}/msqrob2_results.csv"
+    params:
+        fc_threshold = "{iFc_threshold}"
+    output:
+        output = "results/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png"
+    shell:
+        "python {input.script} \
+        	--triqler_input {input.triqler_input} \
+			--top3_input {input.top3_input} \
+			--msstats_input {input.msstats_input} \
+			--msqrob2_input {input.msqrob2_input} \
+			--fc_threshold {params.fc_threshold} \
+			--output {output.output}"
+
+rule plot_fraction_missing_values:
+    input:
+        script = "plot_fraction_missing_values.py",
+        triqler_input = "data/{iPipeline}/triqler_input.csv" 
+    output:
+        output = "results/fraction_missing_values_{iPipeline}.png"
+    shell:
+        "python {input.script} \
+            --triqler_input {input.triqler_input} \
+            --output {output.output}"
+
 
 ##############################################
 # CLEANING RULES
