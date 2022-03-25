@@ -10,14 +10,60 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
+import numpy.random as npr
+
 from parsers.parse_triqler import  parse_triqler
 import argparse
 sns.set_context("talk")
 
-def read_in_files(triqler_file = "triqler_results/fc_0.96",
-                  top3_file = "top3_output_diann.csv",
-                  msstats_file = "msstat_output.csv",
-                  msqrob2_file = "msqrob2_results.tsv"):
+
+def bootstrap(invec):
+    idx = npr.randint(0, len(invec), len(invec))
+    return [invec[i] for i in idx]
+
+def estimatePi0(p, numBoot=100, numLambda=100, maxLambda=0.95):
+    p.sort()
+    n=len(p)
+    lambdas=np.linspace(maxLambda/numLambda,maxLambda,numLambda)
+    Wls=np.array([n-np.argmax(p>=l) for l in lambdas])
+    pi0s=np.array([Wls[i] / (n * (1 - lambdas[i])) for i in range(numLambda)])
+    minPi0=np.min(pi0s)
+    mse = np.zeros(numLambda)
+    for boot in range(numBoot):
+        pBoot = bootstrap(p)
+        pBoot.sort()
+        WlsBoot =np.array([n-np.argmax(pBoot>=l) for l in lambdas])
+        pi0sBoot =np.array([WlsBoot[i] / (n *(1 - lambdas[i])) for i in range(numLambda)])
+        mse = mse + np.square(pi0sBoot-minPi0)
+    minIx = np.argmin(mse)
+    return pi0s[minIx]
+
+def qvalues(pvalues, pcol = "p"):
+    m = pvalues.shape[0] # The number of p-values
+    pvalues.sort_values(pcol,inplace=True) # sort the pvalues in acending order
+    pi0 = estimatePi0(list(pvalues[pcol].values))
+    print("pi_0 estimated to " + str(pi0))
+    
+    # calculate a FDR(t) as in Storey & Tibshirani
+    num_p = 0.0
+    for ix in pvalues.index:
+        num_p += 1.0
+        fdr = pi0*pvalues.loc[ix,pcol]*m/num_p
+        pvalues.loc[ix,"q"] = fdr
+    
+    # calculate a q(p) as the minimal FDR(t)
+    old_q=1.0
+    for ix in reversed(list(pvalues.index)):
+        q = min(old_q,pvalues.loc[ix,"q"])
+        old_q = q
+        pvalues.loc[ix,"q"] = q
+    return pvalues
+
+
+def read_in_files(triqler_file = "triqler_results/fc_0.48",
+                  top3_file = "top3_results.csv",
+                  msstats_file = "msstats_results.csv",
+                  msqrob2_file = "msqrob2_results.csv"):
     triqler_results = parse_triqler(triqler_file)
     top3_results = pd.read_csv(top3_file, sep = "\t")
     msstats_results = pd.read_csv(msstats_file, sep = ",")
@@ -26,8 +72,8 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     #Rename protein, fdr to same name
     triqler_results = triqler_results.rename({"q_value":"FDR", "protein":"Protein", "log2_fold_change":"log2FC"}, axis = 1)
     top3_results = top3_results.rename({"q":"FDR", "ProteinName":"Protein", "log2(A,B)":"log2FC"}, axis = 1)
-    msstats_results = msstats_results.rename({"adj.pvalue":"FDR"}, axis = 1)
-    msqrob2_results = msqrob2_results.rename({"adjPval":"FDR", "logFC":"log2FC"}, axis = 1)
+    msstats_results = msstats_results.rename({"adj.pvalue":"FDR", "pvalue":"p"}, axis = 1)
+    msqrob2_results = msqrob2_results.rename({"adjPval":"FDR", "logFC":"log2FC", "pval":"p"}, axis = 1)
     
     methods = ["Triqler", "Top3", "MsStats", "MsqRob2"]
     data = [triqler_results, top3_results, msstats_results, msqrob2_results]
@@ -40,7 +86,9 @@ def calculate_actual_error(df, fc_threshold = 0.6):
     df = df[~df["FDR"].isna()]
     df.sort_values("FDR", inplace = True) #fillna 0 or drop na
     df = df[df["abs(log2FC)"] > fc_threshold].copy(deep=True)
-        
+    if "p" in df.columns:
+        df["FDR"] = qvalues(df,pcol="p")["q"]
+    
     df["count_HUMAN"] = df.Protein.str.contains("_HUMAN").astype(int)
     df["count_ECOLI"] = df.Protein.str.contains("_ECOLI").astype(int)
     df["count_YEAST"] = df.Protein.str.contains("_YEAST").astype(int)

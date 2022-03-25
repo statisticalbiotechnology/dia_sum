@@ -35,6 +35,13 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-03-25
+### 07:00 Trying to fix quantile bin plot for snakemake.. code does not work with argparse
+
+### 08:50 Now it works, start checking q-value recaluclation.
+
+### 09:20 Finished recomputation of q-value for calibration plot.
+
 ## 2022-03-24
 ### 18:40 Forgetting to update this log..
 - Have been going through the whole lachlandeer tutorial...

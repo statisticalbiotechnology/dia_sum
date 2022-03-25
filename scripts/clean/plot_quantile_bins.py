@@ -53,19 +53,19 @@ def plot_boxplot(df, log_labels = True, ylim = False, hline = "median", output =
         ax.set_xlabel("Peptide")
     ax.tick_params(axis='x', which='major',labelrotation=90)
     if ylim != False:
-        ax.set_ylim(ylim)
+        ax.set_ylim(ylim[0], ylim[1])
     if hline == "mean":
         ax.axhline(df["std"].mean(), ls='--', color = "red")
     elif hline == "median":
         ax.axhline(df["std"].median(), ls='--', color = "red")
     fig = ax.get_figure()
     print(f"Saving output {output}")
-    fig.savefig("output")
+    fig.savefig(output)
 
 def read_in_osw(file_directory, m_score_threshold, log = True):
     dfs = []
     for i in os.listdir(file_directory):
-        df = pd.read_csv(file_directory + i, sep = "\t")
+        df = pd.read_csv(file_directory + "/" + i, sep = "\t")
         df = df[df.m_score < m_score_threshold]
         df = df[df["ProteinName"].notna()] # drop proteins not identified
         df = df[df["ProteinName"].str.contains("DECOY")]
@@ -77,7 +77,7 @@ def read_in_osw(file_directory, m_score_threshold, log = True):
     return df
 
 def main_osw(
-    file_directory = '/hdd_14T/data/PXD002952/20210614_dataset/result_files_20220214/DID/osw_results/',
+    file_directory = '/hdd_14T/data/PXD002952/20210614_dataset/result_files_20220214/DID/osw_results',
     m_score_threshold = 0.01,
     log = True,
     quantiles = 8,
@@ -105,7 +105,7 @@ def main_diann(
     
 def main(file_directory, threshold, log, quantiles, ylim, hline_type, input_type, output):
     input_type = input_type.upper()
-    if input_type == "OSW":
+    if input_type == "ID":
         main_osw(
                 file_directory = file_directory,
                 m_score_threshold = threshold,
@@ -113,8 +113,8 @@ def main(file_directory, threshold, log, quantiles, ylim, hline_type, input_type
                 quantiles = quantiles,
                 ylim = ylim,
                 hline_type = hline_type,
-                output)
-    elif input_type == "DIANN":
+                output = output)
+    elif input_type == "PS":
         main_diann(
                 file_name = file_directory,
                 q_value_threshold = threshold,
@@ -122,9 +122,12 @@ def main(file_directory, threshold, log, quantiles, ylim, hline_type, input_type
                 quantiles = quantiles,
                 ylim = ylim,
                 hline_type = hline_type,
-                output)
+                output = output)
     else:
-        print("No input_type specified. Exiting!")
+        if input_type:
+            print(f"Input type specifed {input_type}, please select ID or PS.")
+        else:
+            print(f"No input_type specified. Exiting!")
     
     
 parser = argparse.ArgumentParser(
@@ -156,7 +159,7 @@ parser.add_argument('--hline_type', type=str,
                     default="median")
 
 parser.add_argument('--input_type', type=str,
-                    help='"OSW" or "DIANN" input type.')
+                    help='"ID" or "PS" input type.')
 
 parser.add_argument('--output', type=str,
                     help='Output name.')
@@ -168,8 +171,9 @@ threshold = args.threshold
 log = args.log
 quantiles = args.quantiles
 ylim = args.ylim
-hline_type = args.input_type
-input_type = args.output
+hline_type = args.hline_type
+input_type = args.input_type
+output = args.output
 
 output = args.output
 
