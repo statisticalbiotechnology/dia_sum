@@ -35,12 +35,73 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+
+## 2022-04-01
+### 08:00 Collecting all files in one folder /hdd_14T/data/dia_sum_article
+### 08:30 Database to no_shared script needs to be cleaned.
+### 09:30 Meeting
+### 12:10 Finished database no script cleaning.
+### 14:00 R4-base for anacondar
+
+https://datascience.stackexchange.com/questions/77335/anconda-r-version-how-to-upgrade-to-4-0-and-later
+
+### 16:00 All working for r4-base environment with msstats
+
+### 20:20 Accidentally git reset all scripts 
+
+HAve finished almost al accidental git reset removed scripts.
+
+Package managing with R and Python is still very weird in same condas environment.
+
+## 2022-03-31 
+### 06:00 Starting making pipeline with snakemake
+### 09:00 Journal club
+### 10:00 Group meeting
+### 12:00 Going home, too tired from medbioinfo
+
+## 2022-03-28 - 2022-03-30 MedBioInfo
+
+Career planning was good.
+Clmate seminar was good.
+Commnity paper was very short.
+
 ## 2022-03-25
 ### 07:00 Trying to fix quantile bin plot for snakemake.. code does not work with argparse
 
 ### 08:50 Now it works, start checking q-value recaluclation.
 
 ### 09:20 Finished recomputation of q-value for calibration plot.
+
+### 10:40 Makeing a clean data directory at hdd_14T to make the whole snakemake
+
+and making argparse for R.
+
+### 13:00 r_env bugging again.
+
+### 14:00 package seems to go in circles when installing using conda.
+
+Fixed by installing inside the rstudio
+
+### 14:50 I think r_env rstudio works again.
+
+### 15:15 now msqrob2 run for ID works.:w
+
+### 16:15 ToDo
+
+msstats mscore to fdr filter script for snakemake
+snakemake for data processing
+write in article for fc treshold for calibration plot
+Add segment without fc threshold and with threshold, and add text to explain it.
+
+## 16:30 we need to use our own converter rather than SWATH2STATS 
+
+for osw msstats run look at osw_to_msstats_converter.py
+
+## 17:41 osw_to_msstats_converter.py does not give input that works with msstats
+
+I think some version has changed since last time i ran this.
+
+msstats does not work anymore.
 
 ## 2022-03-24
 ### 18:40 Forgetting to update this log..
