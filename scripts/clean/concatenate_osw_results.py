@@ -42,6 +42,6 @@ def concatenate_osw_results(file_directory, output):
     df.to_csv(output, sep = "\t")
     
 if __name__ == "__main__":
-    concatenate_osw_results
+    concatenate_osw_results(file_directory, output)
     
     
