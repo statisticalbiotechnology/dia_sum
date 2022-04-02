@@ -154,16 +154,16 @@ parser.add_argument('--input_file', type=str,
 parser.add_argument('--output', type=str,
                     help='Output name.')
 
-parser.add_argument('--m_score_threshold', type=str,
+parser.add_argument('--m_score_threshold', type=float, default = 0.01,
                     help='mscore threshold. It should be computed with mscore4pepfdr.')
 
-parser.add_argument('--n_transitions', type=str,
+parser.add_argument('--n_transitions', type=float, default = 6,
                     help='Maximum transitions.')
 
-parser.add_argument('--min_peptides', type=str,
+parser.add_argument('--min_peptides', type=float, default = 2,
                     help='Min number of peptides to allow for a protein.')
 
-parser.add_argument('--max_peptides', type=float,
+parser.add_argument('--max_peptides', type=float, default = 10,
                     help='Max number of peptides to allow for a protein.')
 
 

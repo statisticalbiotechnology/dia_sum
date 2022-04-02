@@ -32,7 +32,7 @@ def concatenate_osw_results(file_directory, output):
     dfs = []
     for i in os.listdir(file_directory):
         if i[-10:] == "dscore.csv":
-            df = pd.read_csv(i, sep = "\t")
+            df = pd.read_csv(file_directory + "/" +  i, sep = "\t")
             dfs.append(df)
             print(time()-start)
     end = time()
