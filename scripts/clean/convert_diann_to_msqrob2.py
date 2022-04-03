@@ -15,8 +15,9 @@ import argparse
 def convert_diann_to_msqrob2(input_file, output, fdr_threshold = 0.01, qCol = "q"):
     print("Converting diann to msqrob2 format")
     print(f"fdr_threshold: {fdr_threshold}")
+    df = pd.read_csv(input_file, sep = "\t")
     fdr_threshold = fdr_threshold
-    df = df[df["qCol"] < fdr_threshold]
+    df = df[df[qCol] < fdr_threshold]
     df["decoy"] = df["Protein.Ids"].str.contains("DECOY").copy(deep=True)
     df = df[df.decoy != True] # Filter away decoy as per msqrob2 manual
     df = df[~df.decoy.isna()] # Filter away decoy as per msqrob2 manual
@@ -56,5 +57,6 @@ qCol = args.qCol
 output = args.output
 
 if __name__ == "__main__":
-    convert_diann_to_msqrob2(input_file, output, fdr_threshold, qCol, output)
+    convert_diann_to_msqrob2(input_file, output, fdr_threshold, qCol)
+
 

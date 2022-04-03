@@ -140,7 +140,7 @@ output = args.output
 
 
 if __name__ == "__main__":
-    convert_diann_to_msstats(input_file, output, fdr_threshold, qCol, output)
+    convert_diann_to_msstats(input_file, output, fdr_threshold, qCol)
 
 
 

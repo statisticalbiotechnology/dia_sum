@@ -129,6 +129,7 @@ def disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "In
 def filter_and_convert_osw_to_msstats(input_file, output, m_score_threshold, n_transitions = 6, min_peptides = 2, max_peptides = 10):
     df = pd.read_csv(input_file, sep = "\t")
     df = df[df.m_score < m_score_threshold] # 82190
+    print(df)
     df = filter_transition(df, map_top_n_transitions, n_transitions) # selects top 6 transitions. (Similar to DIA-NN)
     df.drop("Unnamed: 0", axis = 1, inplace = True)
     df = convert_osw_to_msstats_aggregated(df)

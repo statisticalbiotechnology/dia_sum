@@ -68,17 +68,17 @@ parser.add_argument('--input', type=str,
 parser.add_argument('--output', type=str,
                     help='Output name.')
 
-parser.add_argument('--pcol', type=str,
-                    help='p-value or similar metric columns to be used to recompute the FDR.')
+#parser.add_argument('--pcol', type=str,
+#                    help='p-value or similar metric columns to be used to recompute the FDR.')
 
 # parse arguments from command line
 args = parser.parse_args()
 input_file = args.input
 output = args.output
-pcol = args.pcol
+#pcol = args.pcol
 
 if __name__ == "__main__":
-    recompute_q_value(filename = input_file, output = output, pcol = pcol)
+    recompute_q_value(filename = input_file, output = output, pcol = "Global.Q.Value")
     
 
 

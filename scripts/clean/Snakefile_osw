@@ -1,18 +1,19 @@
 
 OSW_FILEDIR = "/hdd_14T/data/PXD002952/20210805_osw_run"
 
-rule compute:
-    input:
+#rule compute:
+#    input:
         #expand("results/concatenated_osw_results.csv"),
         #expand("results/mscore_threshold.csv"),
-        expand("results/osw_msstats_input.csv")
+        #expand("results/osw_msstats_input.csv")
 
 rule convert_osw_to_msstats:
     input:
         script = "convert_osw_to_msstats.py",
         input_file = "results/concatenated_osw_results.csv"
     params:
-        mscore_threshold = open("results/mscore_threshold.csv").read(),
+        #mscore_threshold = open("results/mscore_threshold.csv").read(),
+        mscore_threshold = 0.00079,
         n_transitions = 6,
         min_peptides = 2,
         max_peptides = 10

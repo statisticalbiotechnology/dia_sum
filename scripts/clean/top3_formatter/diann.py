@@ -48,8 +48,8 @@ parser.add_argument('--input_file', type=str,
 parser.add_argument('--fdr_threshold', type=float,
                     help='fdr_threshold level to cut-off at.')
 
-parser.add_argument('--q_value_column', type=str, default = "Q.Value",
-                    help="DIA-NN output has options 'Q.Value', 'Global.Q.Value', 'Protein.Q.Value', 'PG.Q.Value', 'Global.PG.Q.Value', 'GG.Q.Value', 'Translated.Q.Value'.")
+parser.add_argument('--q_value_column', type=str, default = "q",
+        help="DIA-NN output has options 'q', Q.Value', 'Global.Q.Value', 'Protein.Q.Value', 'PG.Q.Value', 'Global.PG.Q.Value', 'GG.Q.Value', 'Translated.Q.Value'.")
 
 parser.add_argument('--output', type=str, default = "diann_top3_input_formatted.csv",
                     help='Name of the output file.')

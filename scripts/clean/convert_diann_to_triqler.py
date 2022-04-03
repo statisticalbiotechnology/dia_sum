@@ -22,6 +22,7 @@ def diann_to_triqler(filename, qvalue_treshold = 1.00, qCol = "q"):
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"]
     df["searchScore"] = df[qCol]
+    df["searchScore"] = -np.log(df["searchScore"])
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]

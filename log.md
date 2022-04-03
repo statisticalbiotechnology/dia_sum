@@ -36,6 +36,20 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-04-03
+### 06:30 Working on snakemake pipeline, building converters for diann.
+### 08:30 finished argparse scripts.
+### 21:00 Started to working on snakemake for diann
+Snakemake for osw seem to bug at the conversion for msstats... dont know why. Lets try to make it work with diann first.
+### 01:20 Msqrob2 for diann not working, MSstats for OSW not working.
+Start writing report to L
+
+
+## 2022-04-02
+### 16:00 cont. building snakemake for protein quantification
+### 18:00 Some wierd error with snakemake deleting corrupted files...
+### 19:00 Installing snakemake environment on laptop
+
 ## 2022-04-01
 ### 08:00 Collecting all files in one folder /hdd_14T/data/dia_sum_article
 ### 08:30 Database to no_shared script needs to be cleaned.
@@ -47,11 +61,7 @@ https://datascience.stackexchange.com/questions/77335/anconda-r-version-how-to-u
 
 ### 16:00 All working for r4-base environment with msstats
 
-### 20:20 Accidentally git reset all scripts 
 
-HAve finished almost al accidental git reset removed scripts.
-
-Package managing with R and Python is still very weird in same condas environment.
 
 ## 2022-03-31 
 ### 06:00 Starting making pipeline with snakemake
