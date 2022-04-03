@@ -44,6 +44,7 @@ Snakemake for osw seem to bug at the conversion for msstats... dont know why. Le
 ### 01:20 Msqrob2 for diann not working, MSstats for OSW not working.
 Start writing report to L
 
+### 01:50 Sent report to L
 
 ## 2022-04-02
 ### 16:00 cont. building snakemake for protein quantification
