@@ -35,6 +35,14 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-05
+### 06:30 Checking out msqrob2 "contrasts can be applied only to factors with 2 or more levels"
+
+### 14:00 
+
+### 18:00 -> 01:18 working on proteoform simulator 
+
+Still does not work with the decay
 
 ## 2022-04-03
 ### 06:30 Working on snakemake pipeline, building converters for diann.
