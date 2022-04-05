@@ -42,6 +42,8 @@ Check what is endogenous peptide.
 
 ### 18:00 -> 01:18 working on proteoform simulator 
 
+### 01:41 finished ICA plot for proteoform simulator
+
 Still does not work with the decay
 
 ## 2022-04-03
