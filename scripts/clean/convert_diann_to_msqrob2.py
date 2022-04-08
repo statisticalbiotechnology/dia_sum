@@ -29,6 +29,22 @@ def convert_diann_to_msqrob2(input_file, output, fdr_threshold = 0.01, qCol = "q
     df_pivot.reset_index(inplace=True)
     df_pivot["Proteins"] = df_pivot["Protein.Ids"]
     df_pivot.drop("Protein.Ids", axis = 1)
+    
+    col = df_pivot.iloc[:,df_pivot.columns.str.contains("Sample")].columns
+    
+    col_map = {}
+    for i in col:
+        try:
+            x = i.split("_")[8]
+            if x == "1":
+                new_col = "A_" + i
+            if x == "2":
+                new_col = "B_" + i
+            col_map.update({i:new_col})
+        except:
+            col_map.update({i:i})
+    
+    df_pivot = df_pivot.rename(columns=col_map)
     df_pivot.to_csv(output, sep = "\t", index = False)
     print("convert_diann_to_msqrob2 Done!")
     
