@@ -11,6 +11,8 @@ library(gridExtra)
 setwd("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811")
 peptidesFile = ("/hdd_14T/data/PXD002952/20210614_dataset/diaumpire_spectral_lib_20210706/MSFragger_20210707/diann_20210811/msqrob2_input_20220131.tsv")
 
+peptidesFile = "diann_msqrob2_input.csv"
+
 ecols <- grep("HYE124\\_", names(read.delim(peptidesFile)))
 
 pe <- readQFeatures(

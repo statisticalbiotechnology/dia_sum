@@ -92,8 +92,8 @@ rule convert_diann_to_triqler:
 
 rule convert_diann_to_msqrob2:
     input:
-        script = "convert_diann_to_msqrob2.py",
-        input_file = "results/report_recomputed_fdr.tsv"
+        script = "convert_diann_to_msqrob2_target_decoy_fdr_recompute.py",
+        input_file = DIANN_FILEDIR + "report.tsv"
     output:
         output = "results/diann_msqrob2_input.csv"
     params:

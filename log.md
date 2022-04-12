@@ -35,6 +35,16 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-12
+### 09:00 Started looking at proteoform
+### 09:30 Meeting
+### 12:00 fixing pipeline
+### 17:00 fixed DIANN part of pipeline
+msstats convert.. Don't know issue, rewriting the same code worked.
+### 18:00 Fixing OSW part of pipeline 
+### 23:30 Almost done with OSW part
+
+
 ## 2022-04-11
 ### 09:00 Started working on proteoform
 ### 10:00 fixed msqrob2 recompute

@@ -1,32 +1,77 @@
 
-OSW_FILEDIR = "/hdd_14T/data/PXD002952/20210805_osw_run"
+OSW_FILEDIR = "data/ID/osw_results/"
 
-#rule compute:
-#    input:
-        #expand("results/concatenated_osw_results.csv"),
-        #expand("results/mscore_threshold.csv"),
-        #expand("results/osw_msstats_input.csv")
+rule compute:
+    input:
+        expand("results/concatenated_osw_results.csv"),
+        expand("results/mscore_threshold.csv"),
+        expand("results/osw_msstats_input.csv"),
+        expand("results/osw_msqrob2_input.csv"),
+        expand("results/osw_triqler_input.csv"),
+        expand("results/osw_top3_input.csv"),
+        expand("results/osw_top3_results.csv")
+
+
+rule compute_top3:
+    input:
+        script = "top3.py",
+        input_file = "results/osw_top3_input.csv"
+    output:
+        output = "results/osw_top3_results.csv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
+rule convert_osw_to_top3:
+    input:
+        script = "top3_formatter/osw.py",
+        input_dir = OSW_FILEDIR
+    params:
+        m_score_threshold = open("results/mscore_threshold.csv").read()
+    output:
+        output = "results/osw_top3_input.csv"
+    shell:
+        "python {input.script} --file_dir {input.input_dir} --output {output.output} --m_score_threshold {params.m_score_threshold}"
+
+rule convert_osw_to_triqler:
+    input:
+        script = "convert_osw_to_triqler.py",
+        input_file = "results/concatenated_osw_results.csv"
+    output:
+        output = "results/osw_triqler_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
+
+rule convert_osw_to_msqrob2:
+    input:
+        script = "convert_osw_to_msqrob2.py",
+        input_file = "results/concatenated_osw_results.csv"
+    params:
+        fdr_threshold = 0.01
+    output:
+        output = "results/osw_msqrob2_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"   
 
 rule convert_osw_to_msstats:
     input:
         script = "convert_osw_to_msstats.py",
         input_file = "results/concatenated_osw_results.csv"
     params:
-        #mscore_threshold = open("results/mscore_threshold.csv").read(),
-        mscore_threshold = 0.00079,
-        n_transitions = 6,
-        min_peptides = 2,
-        max_peptides = 10
+        m_score_threshold = open("results/mscore_threshold.csv").read()
     output:
         output = "results/osw_msstats_input.csv"
     shell:
         "python {input.script} \
             --input_file {input.input_file} \
             --output {output.output} \
-            --m_score_threshold {params.mscore_threshold} \
-            --n_transitions {params.n_transitions} \
-            --min_peptides {params.min_peptides} \
-            --max_peptides {params.max_peptides}"
+            --m_score_threshold {params.m_score_threshold}"
 
 rule compute_mscore4pepfdr:
     input:

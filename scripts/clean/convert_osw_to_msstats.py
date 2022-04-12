@@ -129,7 +129,7 @@ def disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "In
 def filter_and_convert_osw_to_msstats(input_file, output, m_score_threshold, n_transitions = 6, min_peptides = 2, max_peptides = 10):
     df = pd.read_csv(input_file, sep = "\t")
     df = df[df.m_score < m_score_threshold] # 82190
-    print(df)
+    #print(df)
     df = filter_transition(df, map_top_n_transitions, n_transitions) # selects top 6 transitions. (Similar to DIA-NN)
     df.drop("Unnamed: 0", axis = 1, inplace = True)
     df = convert_osw_to_msstats_aggregated(df)
@@ -158,13 +158,13 @@ parser.add_argument('--output', type=str,
 parser.add_argument('--m_score_threshold', type=float, default = 0.01,
                     help='mscore threshold. It should be computed with mscore4pepfdr.')
 
-parser.add_argument('--n_transitions', type=float, default = 6,
+parser.add_argument('--n_transitions', type=int, default = 6,
                     help='Maximum transitions.')
 
-parser.add_argument('--min_peptides', type=float, default = 2,
+parser.add_argument('--min_peptides', type=int, default = 2,
                     help='Min number of peptides to allow for a protein.')
 
-parser.add_argument('--max_peptides', type=float, default = 10,
+parser.add_argument('--max_peptides', type=int, default = 10,
                     help='Max number of peptides to allow for a protein.')
 
 
