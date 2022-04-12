@@ -35,6 +35,37 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-11
+### 09:00 Started working on proteoform
+### 10:00 fixed msqrob2 recompute
+
+Need to use target-decoy fdr rrecompute... I dont know why
+
+### 11:00 keep trying to figure out proteoform pca analysis
+
+### 16:30 heading home
+
+## 2022-04-08
+### 08:30 Working on half-time
+### 09:30 Meeting
+### 10:30 Recheck the half-time
+### 14:30 pipeline 
+## 2022-04-07
+### 09:00 Journal club
+### 10:00 fixing proteoform code
+### 13:00 checking out probit function for proteoform
+### 15:00 finished writing description for proteoform
+### 16:00 logistic function as sigmoid function for proteoform simulator
+### 17:00 Can we check residuals of logistic fit of data to see many modules for proteoform
+### 18:00 Implement logistic regression for generated data
+Did not manage to do it quickly... giving up for now.
+### 19:30 trying to fix msqrob2 parser for diann again.. snakemake
+### 20:00 should fix with half-time before bed as well.
+## 2022-04-06
+### 09:30 Meeting
+### 15:00 Writing report on proteoform thing
+### 16:00 Should merge my proteoform scripts
+
 ## 2022-04-05
 ### 06:30 Checking out msqrob2 "contrasts can be applied only to factors with 2 or more levels"
 
