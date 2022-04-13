@@ -39,13 +39,13 @@ rule compute:
         expand("results/PS/top3_results.csv"),
         expand("results/PS/triqler_results.csv"),
         expand("results/PS/msstats_results.csv"),
-        expand("results/PS/msqrob2_results.csv")
+        expand("results/PS/msqrob2_results.csv"),
         # PLOT
-        #expand("results/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
-		#expand("results/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
-        #expand("results/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
-        #expand("results/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
-		#expand("results/quantile_bins_{iPipeline}_log_{iLog}_{iHline_type}.png", iPipeline = PIPELINES, iLog = QUANTILE_BIN_LOG, iHline_type = HLINE_TYPE)
+        expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
+        expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
+		#expand("results/plot/quantile_bins_{iPipeline}_log_{iLog}_{iHline_type}.png", iPipeline = PIPELINES, iLog = QUANTILE_BIN_LOG, iHline_type = HLINE_TYPE)
+        #expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        #expand("results/plot/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
 
 
 ##################
@@ -210,7 +210,7 @@ rule compute_diann_triqler:
         "python -m triqler {input.input_file} \
             --out_file {output.output} \
             --fold_change_eval {params.fc_eval} \
-            --decoy_pattern DECOY"
+            --decoy_pattern DECOY_"
     
 
 rule compute_diann_top3:
@@ -280,7 +280,7 @@ rule convert_diann_to_msstats:
 
 rule recompute_fdr:
     input:
-        script = "compute_fdr.py",
+        script = "compute_fdr_target_decoy.py",
         input_file = DIANN_FILEDIR + "report.tsv"
     output:
         output = "results/report_recomputed_fdr.tsv"

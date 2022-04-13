@@ -38,6 +38,14 @@ Check what is endogenous peptide.
 ## 2022-04-13
 ### 09:00 Fixing rest of OSW Pipeline
 ### 11:00 Gluing together the three pipelines
+### 12:40 Test running the whole snakemake pipeline
+### 13:00 Check proteoform SVD
+Something is wrong with my SVD I think.
+
+### 15:00 Checking AD code again
+### 16:00 making proteoform eigensample and eigenprotein analysis ipynb.
+### 17:00 finishing up
+
 
 ## 2022-04-12
 ### 09:00 Started looking at proteoform

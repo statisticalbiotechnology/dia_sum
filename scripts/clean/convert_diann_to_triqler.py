@@ -26,7 +26,7 @@ def diann_to_triqler(filename, qvalue_treshold = 1.00, qCol = "q"):
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]
-    
+    df.replace(-np.inf, 0, inplace = True)
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
