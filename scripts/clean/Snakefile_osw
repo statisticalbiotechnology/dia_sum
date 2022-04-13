@@ -1,5 +1,6 @@
-
-OSW_FILEDIR = "data/ID/osw_results/"
+configfile: "config.yaml"
+OSW_FILEDIR = config["OSW_FILEDIR"]
+TRIQLER_FC_EVAL = config["TRIQLER_FC_EVAL"]
 
 rule compute:
     input:
@@ -9,10 +10,48 @@ rule compute:
         expand("results/osw_msqrob2_input.csv"),
         expand("results/osw_triqler_input.csv"),
         expand("results/osw_top3_input.csv"),
-        expand("results/osw_top3_results.csv")
+        expand("results/osw_top3_results.csv"),
+        expand("results/osw_triqler_fc_"+str(TRIQLER_FC_EVAL)),
+        expand("results/osw_msstats_results.csv"),
+        expand("results/osw_msqrob2_results.csv")
 
+rule osw_compute_msqrob2:
+    input:
+        script = "run_msqrob2.r",
+        input = "results/osw_msqrob2_input.csv"
+    output:
+        output = "results/osw_msqrob2_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
 
-rule compute_top3:
+    
+rule osw_compute_msstats:
+    input:
+        script = "run_msstats.r",
+        input = "results/osw_msstats_input.csv"
+    output:
+        output = "results/osw_msstats_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+rule osw_compute_triqler:
+    input:
+        input_file = "results/osw_triqler_input.csv"
+    output:
+        output = "results/osw_triqler_fc_"+str(TRIQLER_FC_EVAL)
+    params:
+        fc_eval = TRIQLER_FC_EVAL
+    shell:
+        "python -m triqler {input.input_file} \
+            --out_file {output.output} \
+            --fold_change_eval {params.fc_eval} \
+            --decoy_pattern DECOY"
+            
+rule osw_compute_top3:
     input:
         script = "top3.py",
         input_file = "results/osw_top3_input.csv"

@@ -35,6 +35,10 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-13
+### 09:00 Fixing rest of OSW Pipeline
+### 11:00 Gluing together the three pipelines
+
 ## 2022-04-12
 ### 09:00 Started looking at proteoform
 ### 09:30 Meeting

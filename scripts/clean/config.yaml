@@ -1,0 +1,5 @@
+OSW_FILEDIR: "data/ID/osw_results/"
+DIANN_FILEDIR: "/hdd_14T/data/dia_sum_article/diann/"
+FDR_THRESHOLD: 0.01
+TRIQLER_FC_EVAL: 0.48
+
