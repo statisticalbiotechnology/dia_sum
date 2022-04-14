@@ -13,7 +13,7 @@ FC_THRESHOLDS = [0.48]
 #NOTE THIS IS ABSOLUTE PATH dUE TO SIZE OF FILE
 #QUANTIULE BINS PARAMS
 QUANTILE_BINS_PLOT_DIRS = [OSW_FILEDIR, 
-							DIANN_FILEDIR+"/report.tsv"]
+							DIANN_FILEDIR+"report.tsv"]
 QUANTILE_BIN_LOG = ["True", "False"]
 HLINE_TYPE = ["median", "mean"]
 
@@ -43,9 +43,10 @@ rule compute:
         # PLOT
         expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
         expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
-		#expand("results/plot/quantile_bins_{iPipeline}_log_{iLog}_{iHline_type}.png", iPipeline = PIPELINES, iLog = QUANTILE_BIN_LOG, iHline_type = HLINE_TYPE)
-        #expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
-        #expand("results/plot/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
+        expand("results/plot/quantile_bins_ID_log_{iLog}_{iHline}.png", iLog = QUANTILE_BIN_LOG, iHline = HLINE_TYPE),
+        expand("results/plot/quantile_bins_PS_log_{iLog}_{iHline}.png", iLog = QUANTILE_BIN_LOG, iHline = HLINE_TYPE),
+        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        expand("results/plot/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
 
 
 ##################
@@ -126,7 +127,7 @@ rule plot_quantile_bins_PS:
 		file_name_extension = "PS",
 		threshold = 0.01,
 		log = "{iLog}",
-		ylim = "[0,5]",
+		ylim = "[0,10]",
 		quantiles = 8,
 		hline_type = "{iHline_type}",
 		input_type = "PS"
@@ -151,7 +152,7 @@ rule plot_quantile_bins_ID:
 		file_name_extension = "ID",
         threshold = open("results/mscore_threshold.csv").read(),
 		log = "{iLog}",
-		ylim = "[0,5]",
+		ylim = "[0,10]",
 		quantiles = 8,
 		hline_type = "{iHline_type}",
 		input_type = "ID",
@@ -171,10 +172,6 @@ rule plot_quantile_bins_ID:
 ######################
 # COMPUTE DIANN PART #
 ######################
-
-
-
-
 
 rule diann_compute_msqrob2:
     input:
@@ -210,7 +207,7 @@ rule compute_diann_triqler:
         "python -m triqler {input.input_file} \
             --out_file {output.output} \
             --fold_change_eval {params.fc_eval} \
-            --decoy_pattern DECOY_"
+            --decoy_pattern DECOY"
     
 
 rule compute_diann_top3:

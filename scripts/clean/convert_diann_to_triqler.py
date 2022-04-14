@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import argparse
 
-def diann_to_triqler(filename, qvalue_treshold = 1.00, qCol = "q"):
+def diann_to_triqler(filename, qvalue_treshold = 1.00):
     df = pd.read_csv(filename, sep = "\t")
     
     run_mapper = lambda x : x.split("_")[5]
@@ -21,18 +21,18 @@ def diann_to_triqler(filename, qvalue_treshold = 1.00, qCol = "q"):
     df["condition"] = df["Run"].map(condition_mapper)
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"]
-    df["searchScore"] = df[qCol]
+    df["searchScore"] = df["Q.Value"]
     df["searchScore"] = -np.log(df["searchScore"])
     df["intensity"] = df['Precursor.Quantity']
     df["peptide"] = df["Stripped.Sequence"]
     df["proteins"] = df["Protein.Ids"]
-    df.replace(-np.inf, 0, inplace = True)
+    #df.replace(-np.inf, 0, inplace = True)
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
 def main(input_file, output, qCol = "q"):
     df_triq = diann_to_triqler(input_file)
-    df_triq.intensity = np.log(df_triq.intensity) #if required to log intensity.
+    #df_triq.intensity = np.log(df_triq.intensity) #if required to log intensity.
     df_triq.to_csv(output, sep = "\t", index = False)
 
 parser = argparse.ArgumentParser(
@@ -55,5 +55,5 @@ qCol = args.qCol
 output = args.output
 
 if __name__ == "__main__":
-    main(input_file, output, qCol = "q")
+    main(input_file, output)
 

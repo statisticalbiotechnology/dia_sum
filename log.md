@@ -35,6 +35,9 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-14
+### 10:00 pipeline fixing triqler
+### 15:00 Snakemake pipeline from peptide quantification to plots is done
 ## 2022-04-13
 ### 09:00 Fixing rest of OSW Pipeline
 ### 11:00 Gluing together the three pipelines
