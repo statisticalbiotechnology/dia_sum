@@ -43,11 +43,11 @@ rule compute:
         # PLOT
         expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
         expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
-        expand("results/plot/quantile_bins_ID_log_{iLog}_{iHline}.png", iLog = QUANTILE_BIN_LOG, iHline = HLINE_TYPE),
-        expand("results/plot/quantile_bins_PS_log_{iLog}_{iHline}.png", iLog = QUANTILE_BIN_LOG, iHline = HLINE_TYPE),
-        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png", iPipeline = PIPELINES, iMethod = METHODS, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
-        expand("results/plot/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png", iPipeline = PIPELINES, iMethod = METHODS, iFc_threshold = FC_THRESHOLDS),
-
+        expand("results/plot/quantile_bins_ID_{iHline}.png", iHline = HLINE_TYPE),
+        expand("results/plot/quantile_bins_PS_{iHline}.png", iHline = HLINE_TYPE),
+        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        expand("results/plot/calibration_{iPipeline}_{iFc_threshold}.png", iPipeline = PIPELINES, iFc_threshold = FC_THRESHOLDS),
+        
 
 ##################
 # GENERATE PLOTS #
@@ -78,7 +78,7 @@ rule plot_differential_HeLa_vs_nonHela:
 	params:
 		specie = "{iSpecie}"
 	output:
-		output = "results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iMethod}_{iSpecie}.png"
+		output = "results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png"
 	shell:
 		"python {input.script} \
 			--triqler_input {input.triqler_input} \
@@ -98,7 +98,7 @@ rule plot_calibration_plot:
     params:
         fc_threshold = "{iFc_threshold}"
     output:
-        output = "results/plot/calibration_{iPipeline}_{iMethod}_{iFc_threshold}.png"
+        output = "results/plot/calibration_{iPipeline}_{iFc_threshold}.png"
     shell:
         "python {input.script} \
         	--triqler_input {input.triqler_input} \
@@ -126,19 +126,15 @@ rule plot_quantile_bins_PS:
 	params:
 		file_name_extension = "PS",
 		threshold = 0.01,
-		log = "{iLog}",
-		ylim = "[0,10]",
-		quantiles = 8,
+        quantiles = 8,
 		hline_type = "{iHline_type}",
 		input_type = "PS"
 	output:
-		output = "results/plot/quantile_bins_PS_log_{iLog}_{iHline_type}.png"
+		output = "results/plot/quantile_bins_PS_{iHline_type}.png"
 	shell:
 		"python {input.script} \
 			--file_directory {input.file_directory} \
 			--threshold {params.threshold} \
-			--log {params.log} \
-			--ylim {params.ylim} \
 			--quantiles {params.quantiles} \
 			--hline_type {params.hline_type} \
 			--input_type {params.input_type} \
@@ -151,18 +147,15 @@ rule plot_quantile_bins_ID:
 	params:
 		file_name_extension = "ID",
         threshold = open("results/mscore_threshold.csv").read(),
-		log = "{iLog}",
 		ylim = "[0,10]",
 		quantiles = 8,
 		hline_type = "{iHline_type}",
 		input_type = "ID",
 	output:
-		output = "results/plot/quantile_bins_ID_log_{iLog}_{iHline_type}.png"
+		output = "results/plot/quantile_bins_ID_{iHline_type}.png"
 	shell:
 		"python {input.script} \
 			--file_directory {input.file_directory} \
-			--log {params.log} \
-			--ylim {params.ylim} \
 			--quantiles {params.quantiles} \
 			--hline_type {params.hline_type} \
 			--input_type {params.input_type} \

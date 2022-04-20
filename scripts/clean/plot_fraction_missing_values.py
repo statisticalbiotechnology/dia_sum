@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 import argparse
 
 
-sns.set_context("poster")
+sns.set_context("talk")
 
 #import warnings
 #warnings.filterwarnings("ignore")
@@ -140,13 +140,14 @@ def main():
     df_binned_missing_value_fraction = compute_missing_value_factions(df, bins = np.arange(0,1000,10))
     
     print("Generating plot...")
-    fig, ax = plt.subplots(1, 1, figsize=(12,12))
+    fig, ax = plt.subplots(1, 1, figsize=(16,12))
     xdata = df_binned_missing_value_fraction.index
     ydata = df_binned_missing_value_fraction.fraction
-    ax.plot(xdata, ydata, 'b-', label='Fraction missing values')
+    ax.plot(xdata, ydata, 'b-', label='Fraction missing values', linewidth = 5)
+
     # We fit the fraction data we have to pmissings
     popt, pcov = curve_fit(pmissing, xdata, ydata)
-    ax.plot(xdata, pmissing(xdata, popt[0], popt[1]), "r--", label='fit: muLogit=%5.3f, sigmaLogit=%5.3f' % tuple(popt))
+    ax.plot(xdata, pmissing(xdata, popt[0], popt[1]), "r--", label='fit: muLogit=%5.3f, sigmaLogit=%5.3f' % tuple(popt), linewidth=5)
     
     # NOTE THIS IS NOT LOG-INTENSITY
     ax.set_xlabel("Intensity", fontsize = 34)
@@ -157,6 +158,9 @@ def main():
     ax.set_xlim(0, 100)
     #ax.set_ylim(0, 0.0)
     ax.legend(fontsize=24)
+    ax.tick_params(axis='x', which='major', labelsize=21)#labelrotation=90)
+    ax.tick_params(axis='y', which='major', labelsize=21)
+
     #ax.set_title("DIANN - Fraction Missing Values for mean intensity", fontsize = 22, fontweight = "bold")
     fig = ax.get_figure()
     print(f"Saving output {output}")

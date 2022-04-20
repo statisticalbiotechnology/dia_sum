@@ -22,7 +22,7 @@ def diann_to_triqler(filename, qvalue_treshold = 1.00):
     df["charge"] = df["Precursor.Charge"]
     #df["searchScore"] = df["CScore"] # PSM Score
     #df["searchScore"] = df["Q.Value"] # PSM Q.Value - local FDR - PEP
-    df["searchScore"] = df["fdr"] #fdr from recomputed fdr 
+    df["searchScore"] = df["q"] #fdr from recomputed fdr 
     df = df[df["searchScore"] < qvalue_treshold]
     df["searchScore"] = -np.log(df["searchScore"])
     df["intensity"] = df['Precursor.Quantity']
@@ -32,9 +32,11 @@ def diann_to_triqler(filename, qvalue_treshold = 1.00):
     df_triq = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     return df_triq
 
+
 df_triq = diann_to_triqler("report.tsv")
 df_triq = diann_to_triqler("report_recomputed_fdr.tsv", qvalue_treshold = 0.01) # fpr msqrobsum input
 df_triq.to_csv("triqler_input_diann_searchScore_fdr_treshold_0.01_20211201.csv", sep = "\t", index = False)
+df_triq.to_csv("triqler_input_test_q.csv", sep = "\t", index = False)
 # https://usermanual.wiki/Document/DIANN20GUI20manual.1528310561/view 
 
 def diann_to_msstats(filename):

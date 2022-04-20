@@ -119,7 +119,7 @@ def calibration_plot(df, output, xlim = [0,0.025]):
     #axs.set_xlabel(r"\textit{q}-value / FDR ", fontsize=34)
     #axs.set_ylabel("Fraction HeLa", fontsize=38)
 
-    axs.set_xlabel(r"Computed FDR", fontsize=34)
+    axs.set_xlabel(r"Fraction HeLa", fontsize=34)
     axs.set_ylabel("Actual FDR", fontsize=38)
 
     axs.tick_params(axis='x', which='major', labelsize=42)#labelrotation=90)

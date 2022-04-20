@@ -35,6 +35,19 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-20
+### 08:00 cleaning plots 
+### 14:00 snakemaking bugging even though it worked before
+### 15:00 everything seems to be running again
+### 15:30 Proteoform simulator.. Eigen proteins was wrong transposed. Fixed.
+### 21:20 finishing up
+## 2022-04-19
+### 12:00 checking out mean vs sigma peptide intensity plotting
+### 14:00-15:00 Marcus Prosit-transformer for RT prediction
+
+
+
+
 ## 2022-04-14
 ### 10:00 pipeline fixing triqler
 ### 15:00 Snakemake pipeline from peptide quantification to plots is done
