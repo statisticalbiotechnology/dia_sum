@@ -35,6 +35,18 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-04-21
+### 10:00 started looking at and comparing mine and lukas simprot
+My simulate peptide
+
+Has more parameters 
+Is more flexible
+
+Lukas is much more clean
+
+### 14:00 Recoding to try to make the same flexibility for pf peptides in Lukas script
+### 16:40 not done but need to go
+
 ## 2022-04-20
 ### 08:00 cleaning plots 
 ### 14:00 snakemaking bugging even though it worked before
