@@ -8,7 +8,7 @@ TRIQLER_FC_EVAL = config["TRIQLER_FC_EVAL"]
 PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
-FC_THRESHOLDS = [0.48]
+FC_THRESHOLDS = [0, 0.51]
 
 #NOTE THIS IS ABSOLUTE PATH dUE TO SIZE OF FILE
 #QUANTIULE BINS PARAMS
@@ -68,7 +68,8 @@ rule plot_histogram:
 			--input_type {params.method_type} \
 			--output {output.output_file}"
 
-rule plot_differential_HeLa_vs_nonHela:
+# plot_differential_HeLa_vs_nonHela is actually count plot not differential abundance
+rule plot_differential_HeLa_vs_nonHela: 
 	input:
 		script = "plot_differential_HeLa_vs_nonHeLa.py",
 		triqler_input = "results/{iPipeline}/triqler_results.csv",

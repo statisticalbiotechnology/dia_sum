@@ -114,13 +114,13 @@ def get_actual_error_df(zipped_files, fc_threshold = 0.48):
 
 def calibration_plot(df, output, xlim = [0,0.025]):
     fig, axs = plt.subplots(1, 1, figsize=(10,6))
-    sns.lineplot(x = "FDR", y = "actual_error", data = df, ax = axs, hue = "method")
-    
+    #sns.lineplot(x = "FDR", y = "actual_error", data = df, ax = axs, hue = "method")
+    sns.lineplot(x = "actual_error", y = "FDR", data = df, ax = axs, hue = "method")
     #axs.set_xlabel(r"\textit{q}-value / FDR ", fontsize=34)
     #axs.set_ylabel("Fraction HeLa", fontsize=38)
 
-    axs.set_xlabel(r"Fraction HeLa", fontsize=34)
-    axs.set_ylabel("Actual FDR", fontsize=38)
+    axs.set_xlabel("FDR / Q-value", fontsize=34)
+    axs.set_ylabel(r"Fraction HeLa", fontsize=38)
 
     axs.tick_params(axis='x', which='major', labelsize=42)#labelrotation=90)
     axs.tick_params(axis='y', which='major', labelsize=42)

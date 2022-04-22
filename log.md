@@ -35,6 +35,39 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+
+## 2022-04-22
+### 09:00 SimProt
+### 10:50 ToDo
+
+1) Article
+2) Half-time Presentation
+3) Simulate protein script
+4) Kolla Linköping kurs
+    Prepp work
+    Practicals
+5) Check statsitics from DIA LFQBENCH DATA
+6) Test Stockholm Gamma7 + eduroam for my laptop
+
+Article
+FC-thresholded vs non fc-thresholded plot
+Check where we compute FC-thresholding
+Reverse Fraction HeLa vs FDR/Q-value plot axis
+Check Triqler fc for both PS and ID.
+
+Triqler optimum FC
+- ID - 0.76
+- PS - 0.51
+
+## 13:00 Check FDR 
+FDR recaluclated before calibration plot ok!
+
+## 14:00 Running pipeline again with FC-treshold 0 and 0.51
+
+## 15:00 Check G7 and Eduroam.
+
+## 16:00 Gym
+
 ## 2022-04-21
 ### 10:00 started looking at and comparing mine and lukas simprot
 My simulate peptide
