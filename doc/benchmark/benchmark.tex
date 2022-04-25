@@ -60,7 +60,7 @@ Here we show that Triqler, is well compatible with data-independent acquisition 
 
 \section*{Introduction}
 
-Mass spectrometry (MS)-based proteomics enables efficient detection of proteins in complex mixtures. Ther are multiple different techniques to make the technology quantative \cite{kallvitek20XX}, however, label-free quantification (LFQ) has an advantage in that it can handle larger sample sizes in a straight forward manner. For data from LFQ experiments, just as other quantification schemes, there are several processing options, all containing several processing steps, each subject to their own different error sources, all affecting the end result of the processing.
+Mass spectrometry (MS)-based proteomics enables efficient detection of proteins in complex mixtures. Ther are multiple different techniques to make the technology quantative \cite{bantscheff2007quantitative,kall2011computational}, however, label-free quantification (LFQ) \cite{bondarenko2002identification} has an advantage in that it can handle larger sample sizes in a straight forward manner. For data from LFQ experiments, just as other quantification schemes, there are several processing options, all containing several processing steps, each subject to their own different error sources, all affecting the end result of the processing.
 
 
 We have previously designed a hierarchical Bayesian model, Triqler, able to control for errors from both the identification and quantification process in LFQ experiments\cite{The2018Integrated}. By integrating the errors probabilities from identification and quantification one can obtain better accuracy in calling differentially abundant proteins \cite{The2018Integrated}. Triqler was designed for handling LFQ data from Data-dependent acquisition (DDA). However, many labs prefer Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated} as they find that it gives more reproducible peptide detection, and allow for a broader dynamical range in quantification \cite{bern2010deconvolution,zhang2020DIA}, compared to DDA. 
@@ -125,7 +125,9 @@ MSqRob2 uses \texttt{lme4} to construct a linear-mixed model with random effect,
 %clear
 \subsubsection*{Triqler}
 
-We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. Triqler was run with \texttt{fold\_change\_eval} parameter 0.48. \todo{How was this parameter selected?} As Triqlers model accounts for the uncertainty in the data, it takes unfiltered PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
+We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triqler}. We used Triqler v0.6.1 for the tests described in this paper. We selected a lower bound estimate for the \texttt{fold\_change\_eval} parameter as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.48 for the pseudo-spectra enabled data.
+
+As Triqlers model accounts for the assessed uncertainty in the prior identification steps of the data, it does not thresshold the PSMs, but instead yakes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR. As a consequence, the statistics from MsStats and MSqRob2 should be slightly more conservative \cite{korthauer2019practical}.
@@ -140,42 +142,37 @@ To establish that Triqler is useful when evaluating DIA data, we first examined 
 
 DIA data is assumed to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqler's assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% PSM identification false discovery rate (FDR) from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relationship between standard deviation and mean (Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot}A-D). Further, Triqler assumes that the missing peptide abundance values follow a censored normal distribution, which is also roughly fulfilled by DIA data (See Supplementary Figure \ref{fig:fraction_missing_values}).
 
-\subsection*{Summarizing peptides to protein relative abundances}
+\subsection*{Harmonization of protein inference procedures.}
 
-We wanted to compare the performance of Triqler to that of other protein summarization methods. An inherent problem when comparing different protein summarization software is that the performance is affected by which protein inference structure is used, in a data set dependent manner \cite{serang2012recognizing}. For example, when reporting the number of differentially abundant proteins in data sets from mixtures from whole-cell extracts, a protein inference scheme that infers any protein containing a detected peptide will report more differentially abundant proteins than a more restrictive scheme that just report a parsimonious set of proteins. For such data sets, there are no mechanisms restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are part of and reported with protein abundance rates compatible to the right proteome. To alleviate, or at least minimize, this problem from our comparison, we restricted the searched FASTA files by removing proteins with shared peptides. This operation strived to give a fairer comparison of protein summarization regardless of the protein inference method.
-
-Given the peptide abundances derived from the ID and PS workflows, we could now compare the performance of Triqler to one of MSstats, MSqRob2, and Top3. Here we selected to run Triqler with a lower bound estimate as described in The\&K\"{a}ll \cite{the2021triqler}, which ended up as 0.76 for the spectral library data, and 0.48 for the pseudo-spectra enabled data.
+Encouraged by the finding that peptide abundances from DIA data have similar properties to those of DDA data, we wanted to see how well Triqler works in practice. Particularly, we wanted to compare the performance of Triqler to that of other protein summarization methods. However, to do so we first needed to establish some principles for how a benchmark summarization methods on data from whole cell mixtures, when comparing methods that use different protein inference procedures \cite{serang2012recognizing}. When reporting the number of differentially abundant proteins in data sets from mixtures from whole-cell extracts, a protein inference scheme that infers any protein containing a detected peptide will report more differentially abundant proteins than a more restrictive scheme that just report a parsimonious set of proteins. There are no restrictive mechanism detecting situations where non-present proteoforms are reported as long as they are reported with protein abundance rates compatible to the right proteome. To alleviate, or at least minimize, this problem from our comparison, we restricted the searched sequence database by removing proteins with shared peptides. This operation strived to give a fairer comparison of protein summarization regardless of the protein inference method.
 
 \subsubsection*{Distributions of the estimated fold changes}
 
-To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. For these plots, we removed all error assessments on protein level. We observe that Triqler and Top3 have less bias than MSstats and MSqRob2, by the qualitative observation that the apex of the distributions is centered more closely to the true values.  
+We applied Triqler and the protein summarization frameworks in MSstats and MSqRob2, as well as the frequently used Top3-method (see the Methods section) to the peptide abundances derived from the ID and PS workflows.  
+
+The LFQBench set contains varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. To get an overview of the results of the methods we first made histograms of the reported protein level fold-changes as reported by the compared methods in Figure \ref{fig:fc_histogram}. In the histograms we included lines indicating the actual fold change of the pipetted whole-cell lysate concentrations as a reference.
+We observe that Triqler and Top3 have less bias than MSstats and MSqRob2, by the qualitative observation that the apex of the distributions is centered more closely to the lysate mixture rates.  
 
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc}
-	    %\includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_triqler_intensity.png} & 
-	    %\includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_top3_intensity.png} \\
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_triqler.png} & 
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_top3.png} \\ 
         A & B \\ 
-	    %\includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msstats_intensity.png} & 
-	    %\includegraphics[width=0.4\linewidth]{../../result/report_plots_filtered/osw_msqrobsum_intensity.png} \\
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_msstats.png} & 
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} \\
         C & D 
     \end{tabular}
-    \caption{{\bf Comparison of reported fold change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, the apex of their distribution were found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_again} for reported fold change distributions for both ID and PS workflows). \label{fig:fc_histogram}}
+    \caption{{\bf Comparison of reported fold change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicates the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, as the apex of their distribution were found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_again} for reported fold change distributions for both ID and PS workflows). For these histograms we included all the summarized proteins, and did not remove any proteins based on significance or fold-change treshholds. \label{fig:fc_histogram}}
 \end{figure}
 
 \subsubsection*{Comparison of ability to discriminate differentially from equivalently abundant proteins}
 
-The LFQBench set contains varying concentrations of {\em E. Coli} and Yeast concentrations in a background of HeLa-cells. As the first test of performance, we hence compared the methods' ability to infer the differentially abundant {\em E. Coli} and Yeast protein as a function of the number of false positives from the HeLa-background, when varying the reported significance threshold from 0.0 to 0.1 with 0.001 increments (Figure \ref{fig:diff_vs_hela}). Overall, it seems like Triqler reports more differentially abundant protein for every non-differentially abundant protein for both the peptide abundances generated by the ID spectral library and PS spectral library pipelines. Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstats. 
+As the first quantative test of performance, we compared the methods' reported number of  differentially abundant {\em E. Coli} and Yeast proteins as a function of the number of HeLa proteins (Figure \ref{fig:diff_vs_hela}). As the former two lysates where injected in differnt concentrations  and the HeLa was at constant concentration over the sample groups a higher number of non-HeLa proteins for a similar number of HeLa-proteins is seen as better performance.  Overall, it seems like Triqler reports more differentially abundant protein for every non-differentially abundant protein for both the peptide abundances generated by the ID spectral library and PS spectral library pipelines. % Surprisingly, Top3 performs has more true differentially abundant proteins for every false protein than MSstats. 
 
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{lclc} 
-        %A & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/osw_de_human_vs_ecoli_and_yeast.png} & 
-        %B & \includegraphics[width=0.45\linewidth]{../../result/report_plots_filtered/diann_de_human_vs_ecoli_and_yeast.png} \\ 
         A & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all.png} & 
         B & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_all.png} \\
     \end{tabular} 
@@ -184,15 +181,13 @@ The LFQBench set contains varying concentrations of {\em E. Coli} and Yeast conc
 
 \subsubsection*{Comparison of statistical calibration}
 
-We subsequently set out to test the statistical calibration of the different summarization methods. We hence investigated the relationship between the fraction of wrongly reported differential abundant proteins (i.e. the fraction of HeLa proteins among all reported differential abundant proteins), and each inference method's estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). We observe that Triqler, Top3, and MSqRob2 give estimates that are close to the true fold-change level than MSstats. This is somewhat surprising given that both MSstats and MSqRob2 are using the Benjamini-Hochberger corrections which are generally found more conservative than $q$~value estimates.
+Further we tested the statistical calibration of the summarization methods. We hence investigated the relationship between the fraction of wrongly reported differential abundant proteins (i.e. the fraction of HeLa proteins among all reported differential abundant proteins), and each inference method's estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). We observed that Triqler, Top3, and MSqRob2 give estimates that are close to the true fold-change level than MSstats. This is somewhat surprising given that both MSstats and MSqRob2 are using the Benjamini-Hochberger corrections which are generally found more conservative than $q$~value estimates.
 
 %We observed that Triqler and Top3 were reporting slightly more accurate estimates than MSstats and MSqRobSum. This is somewhat surprising given that both MSstats and MSqRobSum are using the Benjamini-Hochberger corrections which are generally found more conservative than $q$~value estimates.
 
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc} 
-        %\includegraphics[width=0.5\linewidth]{../../result/report_plots_filtered/osw_FP_DE_all.png} & 
-        %\includegraphics[width=0.5\linewidth]{../../result/report_plots_filtered/diann_FP_DE_all.png} \\
         \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.48.png} & 
         \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.48.png} \\
         A & B
@@ -210,15 +205,15 @@ We also investigated the number of reported differential abundant proteins as re
 \section*{Discussion}
 
 
-Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates. Triqler was also able to detect a significantly higher number of differentially abundant proteins at a more accurately reported false discovery rate, than the compared methods. The absence of filtering steps before inputting data into Triqler benefits the analysis by making it both more user-friendly and inducing less bias into the end-result. 
-
-It is therefore quite hard to evaluate how the performance of a data processing pipline is  influenced by its individual components. This should not stop the field from trying to establish the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools are challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward,leprevost2014best,pak2013clustering,faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
+Here we have shown that Triqler operates well for DIA data, despite originally intended for DDA data. We also find that Triqler outperforms other protein summarization methods on our engineered benchmark set, both in terms of sensitivity and accuracy in its error estimates. Triqler was also able to detect a higher number of differentially abundant proteins at a more accurately reported false discovery rate, than the compared methods. The absence of filtering steps before Triqler benefits the analysis by making it both more user-friendly and inducing less bias into the end-result. 
 
 The analytes in shotgun proteomics are peptides and not proteins or proteoforms. Nevertheless, most users of mass spectrometry use and will continue to find reasons to report findings on a protein level. It makes sense to put efforts into a better understanding of which protein inference tools to use at what occasion and how to summarize peptide abundances into protein relative concentration values.  Also, protein summarization gives lower variance than peptide-level analysis, and it reduces the number of hypotheses tested and reduced the number of missing values, which can have a major impact on the quality of the analysis \cite{plubell2021can}.   
 
 One important remark is that the sequence database that we used for matching the spectra was filtered so that only one protein per peptide was kept, to control for any difference in protein inference strategies used by our compared protein summarization methods. There is currently no consensus on how to handle multiple proteoforms in bottom-up proteomics. Hence, we believe that protein inference strategies that can account for multiple proteoforms would greatly benefit the field by improving the quality of the quantitative analysis. 
 
 We do see some differences in how DIA and DDA peptide-level abundance data appear. For instance, there are more missing values in DDA than DIA data. However, we find that qualitatively the types of data are similar, at least in the sense that Triqler's underlying assumption of missing values seems to be as valid for DDA and DIA data.
+
+It is therefore quite hard to evaluate how the performance of a data processing pipline is  influenced by its individual components. This should not stop the field from trying to establish the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools are challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientist lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward,leprevost2014best,pak2013clustering,faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
 
 Lastly, we want to highlight the benefit and importance of datasets such as the one provided by Navarro et al. \cite{navarro2016multicenter}. These benchmarking datasets make it easy for the scientific community to investigate computational tools by providing a golden standard and significantly facilitating benchmark studies. 
 
@@ -231,7 +226,7 @@ This work was supported by grants from the Swedish Research Council (grant 2017-
 
 \section*{Supporting information}
 
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 %\bibliography{benchmark}
 \bibliography{benchmark.bib}
 \end{document}
