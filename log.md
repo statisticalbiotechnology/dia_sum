@@ -35,6 +35,56 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+# 2022-05-02 Workshop day 1
+Project i finished was the final project... 
+Project need to have some supervised part. I should include autoencoders in the project.
+
+
+## 2022-05-01
+### 09:30 Starting to work on project assignment for Linköping
+### 24:00 Finished the Project work on unsupervised learning
+Finished project with unsupervised learning PCA, t-SNE and DBSCAN. Written report 16 pages.
+
+## 2022-04-29
+### 08:30 prepare presentation
+### 09:30 prepare equipment
+### 10:00 presentation
+### 13:00 book and fix egencia for linköping
+### 16:00 work on pre-course assignment
+### 17:00 out 
+
+## 2022-04-28 
+### Fixing presentation 09:00 - 01:00 next day
+## 2022-04-27
+### 08:00 check old calibration plot
+### 09:00 everything seems to work fine with old data. Script works
+HAve to redo everything manually from scratch to find error
+### 14:00 check difference between Lukas Q-value script and my target_decoy script .. why does msqrob2 work with target_decoy but not q-values?
+### 16:out
+
+## 2022-04-26
+### 09:30 meeting
+### 13:00 fixing presentation
+### 16:30 out
+
+## 2022-04-25
+### 10:00 article.
+### 10:00 - 24:00
+
+Fixing calibration plot
+Still fauly.. cannot understand
+Fix plot for simprot
+Fix plot for formprot
+Read up on msstats
+Read up on msqrob2
+Presentation fix
+
+
+## 2022-04-24
+### 10:00 fixing rest of article
+### 11:00 Running pipeline again
+### 11:00 half-time presentation
+
 
 ## 2022-04-22
 ### 09:00 SimProt
