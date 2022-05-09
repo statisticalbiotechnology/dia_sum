@@ -1,0 +1,372 @@
+configfile: "config.yaml"
+PIPELINES = ["ID", "PS"]
+METHODS = ["triqler", "top3", "msstats", "msqrob2"]
+HLINE_TYPE = ["median", "mean"]
+DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
+FC_THRESHOLDS = [0.51]
+
+
+rule compute:
+    input:
+        expand("results/report_recomputed_fdr.tsv"),
+        expand("results/PS/msstats_input.csv"),
+        expand("results/PS/msqrob2_input.csv"),
+        expand("results/PS/triqler_input.csv"),
+        expand("results/PS/top3_input.csv"),
+        expand("results/PS/top3_results.csv"),
+        expand("results/PS/triqler_results.csv"),
+        expand("results/PS/msstats_results.csv"),
+        expand("results/PS/msqrob2_results.csv"),
+        expand("results/concatenated_osw_results.csv"),
+        expand("results/mscore_threshold.csv"),
+        expand("results/ID/msstats_input.csv"),
+        expand("results/ID/msqrob2_input.csv"),
+        expand("results/ID/triqler_input.csv"),
+        expand("results/ID/top3_input.csv"),
+        expand("results/ID/top3_results.csv"),
+        expand("results/ID/triqler_results.csv"),
+        expand("results/ID/msstats_results.csv"),
+        expand("results/ID/msqrob2_results.csv"),
+        expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
+        expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
+        expand("results/plot/quantile_bins_PS_{iHline}.png", iHline = HLINE_TYPE),
+        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        expand("results/plot/calibration_{iPipeline}_{iFc_threshold}.png", iPipeline = PIPELINES, iFc_threshold = FC_THRESHOLDS),
+
+
+##############
+# PS Compute #
+##############
+
+rule recompute_fdr:
+    input:
+        script = "compute_fdr_target_decoy.py",
+        input_file = config["DIANN_FILEDIR"] + "report.tsv"
+    output:
+        output = "results/report_recomputed_fdr.tsv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
+rule convert_diann_to_msstats:
+    input:
+        script = "convert_diann_to_msstats.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/PS/msstats_input.csv"
+    params:
+        fdr_threshold = config["FDR_THRESHOLD"]
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule convert_diann_to_msqrob2:
+    input:
+        script = "convert_diann_to_msqrob2_target_decoy_fdr_recompute.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/PS/msqrob2_input.csv"
+    params:
+        fdr_threshold = config["FDR_THRESHOLD"]
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule convert_diann_to_triqler:
+    input:
+        script = "convert_diann_to_triqler.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/PS/triqler_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
+
+rule convert_diann_to_top3:
+    input:
+        script = "top3_formatter/diann.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/PS/top3_input.csv"
+    params:
+        fdr_threshold = config["FDR_THRESHOLD"]
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule compute_diann_top3:
+    input:
+        script = "top3.py",
+        input_file = "results/PS/top3_input.csv"
+    output:
+        output = "results/PS/top3_results.csv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
+rule compute_diann_triqler:
+    input:
+        input_file = "results/PS/triqler_input.csv"
+    output:
+        output = "results/PS/triqler_results.csv"
+    params:
+        fc_eval = config["TRIQLER_FC_EVAL"]
+    shell:
+        "python -m triqler {input.input_file} \
+            --out_file {output.output} \
+            --fold_change_eval {params.fc_eval} \
+            --decoy_pattern DECOY"
+
+rule diann_compute_msstats:
+    input:
+        script = "run_msstats.r",
+        input = "results/PS/msstats_input.csv"
+    output:
+        output = "results/PS/msstats_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+rule diann_compute_msqrob2:
+    input:
+        script = "run_msqrob2.r",
+        input = "results/PS/msqrob2_input.csv"
+    output:
+        output = "results/PS/msqrob2_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+##############
+# ID Compute #
+##############
+
+rule concatenate_osw:
+    input:
+        script = "concatenate_osw_results.py",
+        file_directory = config["OSW_FILEDIR"] 
+    output:
+        output_file = "results/concatenated_osw_results.csv"
+    shell:
+        "python {input.script} \
+            --file_directory {input.file_directory} \
+            --output {output.output_file}"
+
+rule compute_mscore4pepfdr:
+    input:
+        script = "mscore4pepfdr.r",
+        input = "results/concatenated_osw_results.csv",
+    params:    
+        fft = "1",
+        fdr_target = "0.01"
+    output:
+        output_file = "results/mscore_threshold.csv"
+    shell:
+        "Rscript {input.script} \
+            -i {input.input} \
+            -o {output.output_file} \
+            --fft {params.fft} \
+            --fdr_target {params.fdr_target}"
+
+rule convert_osw_to_msstats:
+    input:
+        script = "convert_osw_to_msstats.py",
+        input_file = "results/concatenated_osw_results.csv",
+        m_score_threshold_file = "results/mscore_threshold.csv"
+    output:
+        output = "results/ID/msstats_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output} \
+            --m_score_threshold_file {input.m_score_threshold_file}"
+
+rule convert_osw_to_msqrob2:
+    input:
+        script = "convert_osw_to_msqrob2_target_decoy_fdr_recompute.py",
+        input_file = "results/concatenated_osw_results.csv"
+    params:
+        fdr_threshold = 0.01
+    output:
+        output = "results/ID/msqrob2_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"   
+
+rule convert_osw_to_triqler:
+    input:
+        script = "convert_osw_to_triqler.py",
+        input_file = "results/concatenated_osw_results.csv"
+    output:
+        output = "results/ID/triqler_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
+
+rule convert_osw_to_top3:
+    input:
+        script = "top3_formatter/osw.py",
+        input_dir = config["OSW_FILEDIR"],
+        m_score_threshold_file = "results/mscore_threshold.csv"
+    output:
+        output = "results/ID/top3_input.csv"
+    shell:
+        "python {input.script} --file_dir {input.input_dir} --output {output.output} --m_score_threshold_file {input.m_score_threshold_file}"
+
+rule compute_osw_msqrob2:
+    input:
+        script = "run_msqrob2.r",
+        input = "results/ID/msqrob2_input.csv"
+    output:
+        output = "results/ID/msqrob2_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+    
+rule compute_osw_msstats:
+    input:
+        script = "run_msstats.r",
+        input = "results/ID/msstats_input.csv"
+    output:
+        output = "results/ID/msstats_results.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+rule compute_osw_triqler:
+    input:
+        input_file = "results/ID/triqler_input.csv"
+    output:
+        output = "results/ID/triqler_results.csv"
+    params:
+        fc_eval = config["TRIQLER_FC_EVAL"]
+    shell:
+        "python -m triqler {input.input_file} \
+            --out_file {output.output} \
+            --fold_change_eval {params.fc_eval} \
+            --decoy_pattern DECOY"
+            
+rule compute_osw_top3:
+    input:
+        script = "top3.py",
+        input_file = "results/ID/top3_input.csv"
+    output:
+        output = "results/ID/top3_results.csv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
+#############
+# Plot ######
+#############
+
+rule plot_histogram:
+	input:
+		script = "plot_histogram.py",
+		result_file = "results/{iPipeline}/{iMethod}_results.csv",
+	params:	
+		method_type = "{iMethod}"
+	output:
+		output_file = "results/plot/histogram_{iPipeline}_{iMethod}.png"
+	shell:
+		"python {input.script} \
+			--input_file {input.result_file} \
+			--input_type {params.method_type} \
+			--output {output.output_file}"
+
+# plot_differential_HeLa_vs_nonHela is actually count plot not differential abundance
+rule plot_differential_HeLa_vs_nonHela: 
+	input:
+		script = "plot_differential_HeLa_vs_nonHeLa.py",
+		triqler_input = "results/{iPipeline}/triqler_results.csv",
+		top3_input = "results/{iPipeline}/top3_results.csv",
+		msstats_input = "results/{iPipeline}/msstats_results.csv",
+		msqrob2_input = "results/{iPipeline}/msqrob2_results.csv"
+	params:
+		specie = "{iSpecie}"
+	output:
+		output = "results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png"
+	shell:
+		"python {input.script} \
+			--triqler_input {input.triqler_input} \
+			--top3_input {input.top3_input} \
+			--msstats_input {input.msstats_input} \
+			--msqrob2_input {input.msqrob2_input} \
+			--specie {params.specie} \
+			--output {output.output}"
+
+rule plot_calibration_plot:
+    input:
+        script = "plot_calibration_curve.py",
+        triqler_input = "results/{iPipeline}/triqler_results.csv",
+        top3_input = "results/{iPipeline}/top3_results.csv",
+        msstats_input = "results/{iPipeline}/msstats_results.csv",
+        msqrob2_input = "results/{iPipeline}/msqrob2_results.csv"
+    params:
+        fc_threshold = "{iFc_threshold}"
+    output:
+        output = "results/plot/calibration_{iPipeline}_{iFc_threshold}.png"
+    shell:
+        "python {input.script} \
+        	--triqler_input {input.triqler_input} \
+			--top3_input {input.top3_input} \
+			--msstats_input {input.msstats_input} \
+			--msqrob2_input {input.msqrob2_input} \
+			--fc_threshold {params.fc_threshold} \
+			--output {output.output}"
+
+rule plot_fraction_missing_values:
+    input:
+        script = "plot_fraction_missing_values.py",
+        triqler_input = "results/{iPipeline}/triqler_input.csv" 
+    output:
+        output = "results/plot/fraction_missing_values_{iPipeline}.png"
+    shell:
+        "python {input.script} \
+            --triqler_input {input.triqler_input} \
+            --output {output.output}"
+
+rule plot_quantile_bins_PS:
+	input:
+		script = "plot_quantile_bins.py",
+		file_directory = config["DIANN_FILEDIR"] + "report.tsv"
+	params:
+		file_name_extension = "PS",
+		threshold = 0.01,
+        quantiles = 8,
+		hline_type = "{iHline_type}",
+		input_type = "PS"
+	output:
+		output = "results/plot/quantile_bins_PS_{iHline_type}.png"
+	shell:
+		"python {input.script} \
+			--file_directory {input.file_directory} \
+			--threshold {params.threshold} \
+			--quantiles {params.quantiles} \
+			--hline_type {params.hline_type} \
+			--input_type {params.input_type} \
+			--output {output.output}"
+
+
+'''
+'''
+
+

@@ -35,7 +35,11 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
-# 2022-05-02 Workshop day 1
+## 2022-05-09 09:30 Check paper
+### 09:30 check paper and finish remaking the pipeline
+### 19:20 finsihed - pipeline  running
+## 2022-05-03-2022-05-13 Workshop
+## 2022-05-02 Workshop day 1
 Project i finished was the final project... 
 Project need to have some supervised part. I should include autoencoders in the project.
 
