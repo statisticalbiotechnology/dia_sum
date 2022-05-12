@@ -35,6 +35,23 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-05-12
+### 08:00 practice presentation
+### 12:00 presentation
+### 14:00 Finishing up paper work, adding plots to supplements and updating in docs
+### 16:30 Finished with paper
+
+## 2022-05-11
+### 09:00 Recomputing results
+### 09:30 working on paper, correcting spelling
+### 15:00 working on presentation
+### 24:00 done with presentation
+
+## 2022-05-10
+### 09:00 Working on paper
+### 09:30 Group meeting
+### 12:00 Working on presentation
+### 20:00 done
 ## 2022-05-09 09:30 Check paper
 ### 09:30 check paper and finish remaking the pipeline
 ### 19:20 finsihed - pipeline  running
