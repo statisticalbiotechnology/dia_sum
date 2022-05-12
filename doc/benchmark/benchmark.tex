@@ -162,7 +162,7 @@ We observe that Triqler and Top3 have less bias than MSstats and MSqRob2, by the
 	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} \\
         C & D 
     \end{tabular}
-    \caption{{\bf Comparison of reported fold-change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicate the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, as the apex of their distribution was found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_again} for reported fold-change distributions for both ID and PS workflows). For these histograms, we included all the summarized proteins and did not remove any proteins based on  the significance or fold-change thresholds. \label{fig:fc_histogram}}
+    \caption{{\bf Comparison of reported fold-change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicate the true log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, as the apex of their distribution was found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_supplement} for reported fold-change distributions for both ID and PS workflows). For these histograms, we included all the summarized proteins and did not remove any proteins based on  the significance or fold-change thresholds. \label{fig:fc_histogram}}
 \end{figure}
 
 \subsubsection*{Comparison of ability to discriminate differentially from equivalently abundant proteins}
@@ -180,7 +180,7 @@ As the first quantitative test of performance, we compared the methods' reported
 
 \subsubsection*{Comparison of statistical calibration}
 
-Further, we tested the statistical calibration of the summarization methods. We hence investigated the relationship between the fraction of wrongly reported differential abundant proteins (i.e. the fraction of HeLa proteins among all reported differential abundant proteins), and each inference method's estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). Since the FDR is calculated for a specific dataset, we recalculate the FDR:s using q-value method after thresholding, so that the FDRs are recalibrated to the smaller data set. We observe that when we don't apply any fold-change threshold the calibration for MSstats, MSqRob2 and Top3 are bad, but they get better with a fold-change threshold. Triqler does not require any fold-change thresholding. We observe that Triqler is closer to the diagonal line (perfect calibration line) than the other methods and does not have a sigmoid-shaped calibration curve as MSstats and MSqRob2 after applying the fold-change threshold. 
+Further, we tested the statistical calibration of the summarization methods. We hence investigated the relationship between the fraction of wrongly reported differential abundant proteins (i.e. the fraction of HeLa proteins among all reported differential abundant proteins), and each inference method's estimated false discovery rate (See Figure \ref{fig:frac_hela_vs_fdr}). Since the FDR is calculated for a specific dataset, we recalculate the FDR:s using q-value method after thresholding, so that the FDRs are recalibrated to the smaller data set. We observe that when we don't apply any fold-change threshold the calibration for MSstats, MSqRob2 and Top3 are bad, but they get better with a fold-change threshold. Triqler does not require any fold-change thresholding. We observe that Triqler is closer to the diagonal line (perfect calibration line) than the other methods and does not have a polynomial calibration curve as MSstats and MSqRob2 after applying the fold-change threshold. 
 
 %We observed that Triqler, Top3, and MSqRob2 give estimates that are close to the true fold-change level than MSstats. This is somewhat surprising given that both MSstats and MSqRob2 are using the Benjamini-Hochberger corrections which are generally found more conservative than $q$~value estimates.
 
@@ -189,11 +189,11 @@ Further, we tested the statistical calibration of the summarization methods. We 
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc} 
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.48.png} & 
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.48.png} \\
+        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.png} & 
+        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.51.png} \\
         A & B
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value threshold for (A) ID spectral library pipeline and (B) PS spectral library pipeline. The multiple test correction is performed with the $q$~value for Triqler and Top3, while Benjamini-Hochberger corrections were used for MSstats and MSqRob2. \label{fig:frac_hela_vs_fdr}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value threshold for (A) non fold-change thresholded and (B) fold-change thresholded at 0.51, which is the lower bound computer by Triqler. The multiple test correction is performed with the $q$~value for Triqler and Top3, while Benjamini-Hochberger corrections were used for MSstats and MSqRob2. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
 %\subsubsection*{Differential abundance reported by the protein quantification tools.}

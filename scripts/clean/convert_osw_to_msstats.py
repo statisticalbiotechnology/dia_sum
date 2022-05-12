@@ -126,7 +126,8 @@ def disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "In
     return df
 
 
-def filter_and_convert_osw_to_msstats(input_file, output, m_score_threshold, n_transitions = 6, min_peptides = 2, max_peptides = 10):
+def filter_and_convert_osw_to_msstats(input_file, output, m_score_threshold_file, n_transitions = 6, min_peptides = 2, max_peptides = 10):
+    m_score_threshold = float(open(m_score_threshold_file).read())
     df = pd.read_csv(input_file, sep = "\t")
     df = df[df.m_score < m_score_threshold] # 82190
     #print(df)
@@ -155,7 +156,7 @@ parser.add_argument('--input_file', type=str,
 parser.add_argument('--output', type=str,
                     help='Output name.')
 
-parser.add_argument('--m_score_threshold', type=float, default = 0.01,
+parser.add_argument('--m_score_threshold_file', type=str,
                     help='mscore threshold. It should be computed with mscore4pepfdr.')
 
 parser.add_argument('--n_transitions', type=int, default = 6,
@@ -172,7 +173,7 @@ parser.add_argument('--max_peptides', type=int, default = 10,
 args = parser.parse_args()
 input_file = args.input_file
 output = args.output
-m_score_threshold = args.m_score_threshold
+m_score_threshold_file = args.m_score_threshold_file
 n_transitions = args.n_transitions
 min_peptides = args.min_peptides
 max_peptides = args.max_peptides
@@ -186,7 +187,8 @@ max_peptides = args.max_peptides
 #output = "osw_msstats_input.csv"
 
 if __name__ == "__main__":
-    filter_and_convert_osw_to_msstats(input_file = input_file, output = output, m_score_threshold = m_score_threshold, n_transitions = n_transitions, min_peptides = min_peptides, max_peptides = max_peptides)
+    print(output)
+    filter_and_convert_osw_to_msstats(input_file = input_file, output = output, m_score_threshold_file = m_score_threshold_file, n_transitions = n_transitions, min_peptides = min_peptides, max_peptides = max_peptides)
 
 
 

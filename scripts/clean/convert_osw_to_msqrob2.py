@@ -36,7 +36,9 @@ def compute_fdr(df_run, start_i, end_i, n_proc):
             print(str(iteration) + " of " + str(len(df_run.index.unique())/n_proc))
     return dict(zip(cscores, fdrs))
 
-def convert_osw_to_msqrob2(input_file, output, fdr_threshold = 0.01):
+def convert_osw_to_msqrob2(input_file, output, mscore_threshold_file):
+    mscore_threshold = float(open(mscore_threshold_file).read())
+
     df = pd.read_csv(input_file, sep = "\t")
     
     # For each run take top psm.
@@ -57,7 +59,7 @@ def convert_osw_to_msqrob2(input_file, output, fdr_threshold = 0.01):
     df_res = pd.concat(df_runs).reset_index()
     df_res.set_index("m_score", inplace = True)
     df_res.sort_values("m_score", ascending = True, inplace = True)
-        
+    """
     n_proc = 7
     unique_index = len(df_res.index.unique())
     step = floor(unique_index/n_proc)
@@ -102,6 +104,15 @@ def convert_osw_to_msqrob2(input_file, output, fdr_threshold = 0.01):
             col_map.update({i:i})
     
     msq = msq.rename(columns=col_map)
+    """
+    df_res = df_res[df_res.index < mscore_threshold]
+    df_res = df_res[df_res.decoy == 0] #filter away decoy 
+    
+    df_pivot = df_res.pivot(index=["FullPeptideName", "ProteinName"], columns = "filename", values = "Intensity")
+    df_pivot.reset_index(inplace=True)
+    df_pivot["Proteins"] = df_pivot["ProteinName"]
+    df_pivot.drop("ProteinName", axis = 1)
+    msq = df_pivot
     msq.to_csv(output, sep = "\t", index = False)
         
  
@@ -112,7 +123,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--input_file', type=str,
                     help='input file name.')
 
-parser.add_argument('--fdr_threshold', type=float, default = 0.01,
+parser.add_argument('--mscore_threshold_file', type=str,
                     help='fdr threshold to apply on qCol.')
 
 parser.add_argument('--output', type=str, default = "osw_msqrob2_input.csv",
@@ -121,9 +132,9 @@ parser.add_argument('--output', type=str, default = "osw_msqrob2_input.csv",
 # parse arguments from command line
 args = parser.parse_args()
 input_file = args.input_file
-fdr_threshold = args.fdr_threshold
+mscore_threshold_file = args.mscore_threshold_file
 output = args.output
       
 if __name__ == "__main__":
-    convert_osw_to_msqrob2(input_file, output, fdr_threshold)
+    convert_osw_to_msqrob2(input_file, output, mscore_threshold_file)
     

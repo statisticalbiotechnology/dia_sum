@@ -3,7 +3,7 @@ PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
 HLINE_TYPE = ["median", "mean"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
-FC_THRESHOLDS = [0.51]
+FC_THRESHOLDS = [0, 0.51]
 
 
 rule compute:
@@ -315,7 +315,7 @@ rule plot_differential_HeLa_vs_nonHela:
 
 rule plot_calibration_plot:
     input:
-        script = "plot_calibration_curve.py",
+        script = "plot_calibration_curve_step.py",
         triqler_input = "results/{iPipeline}/triqler_results.csv",
         top3_input = "results/{iPipeline}/top3_results.csv",
         msstats_input = "results/{iPipeline}/msstats_results.csv",

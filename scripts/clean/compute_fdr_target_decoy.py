@@ -84,7 +84,7 @@ def target_decoy_fdr(input_file, output):
   for i in range(len(res)):
       fdr_map.update(res[i])   
   df_res["q"] = df_res.index.map(fdr_map).fillna(0)
-  df_res.to_csv(output, sep = "\t", index = False)
+  df_res.to_csv(output, sep = "\t", index = True)
   
   
 parser = argparse.ArgumentParser(

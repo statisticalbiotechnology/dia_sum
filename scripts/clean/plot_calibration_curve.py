@@ -88,6 +88,7 @@ def calculate_actual_error(df, fc_threshold = 0.6):
     df = df[df["abs(log2FC)"] > fc_threshold].copy(deep=True)
     if "p" in df.columns:
         df["FDR"] = qvalues(df,pcol="p")["q"]
+   #     df["FDR"] = qvalues(df,pcol="FDR")["q"]
     
     df["count_HUMAN"] = df.Protein.str.contains("_HUMAN").astype(int)
     df["count_ECOLI"] = df.Protein.str.contains("_ECOLI").astype(int)
@@ -112,19 +113,20 @@ def get_actual_error_df(zipped_files, fc_threshold = 0.48):
     res = res.reset_index().drop("index", axis = 1)
     return res
 
-def calibration_plot(df, output, xlim = [0,0.025]):
+def calibration_plot(df, output, xlim = [0,0.05], ylim = [0,0.05]):
     fig, axs = plt.subplots(1, 1, figsize=(10,6))
     #sns.lineplot(x = "FDR", y = "actual_error", data = df, ax = axs, hue = "method")
     sns.lineplot(x = "actual_error", y = "FDR", data = df, ax = axs, hue = "method")
     #axs.set_xlabel(r"\textit{q}-value / FDR ", fontsize=34)
     #axs.set_ylabel("Fraction HeLa", fontsize=38)
 
-    axs.set_xlabel("FDR / Q-value", fontsize=34)
+    axs.set_xlabel("Actual FDR", fontsize=34)
     axs.set_ylabel(r"Fraction HeLa", fontsize=38)
 
     axs.tick_params(axis='x', which='major', labelsize=42)#labelrotation=90)
     axs.tick_params(axis='y', which='major', labelsize=42)
     axs.set_xlim(xlim)
+    axs.set_ylim(ylim)
 
     def abline(slope, intercept):
         """Plot a line from slope and intercept"""
@@ -181,15 +183,27 @@ if __name__ == "__main__":
 
 
 
+"""
+plt.plot(df[df["method"] == "Triqler"].actual_error, df[df["method"] == "Triqler"].FDR)
+plt.plot(df[df["method"] == "Top3"].actual_error, df[df["method"] == "Top3"].FDR)
+plt.plot(df[df["method"] == "MsStats"].actual_error, df[df["method"] == "MsStats"].FDR)
+plt.plot(df[df["method"] == "MsqRob2"].actual_error, df[df["method"] == "MsqRob2"].FDR)        
+        
 
-            
-        
-        
-        
+plt.plot(df[df["method"] == "Triqler"].FDR, df[df["method"] == "Triqler"].actual_error)
+plt.plot(df[df["method"] == "Top3"].FDR, df[df["method"] == "Top3"].actual_error)
+plt.plot(df[df["method"] == "MsStats"].FDR, df[df["method"] == "MsStats"].actual_error)
+plt.plot(df[df["method"] == "MsqRob2"].FDR, df[df["method"] == "MsqRob2"].actual_error)        
     
-    
 
+df_methods = []
+for method in df.method.unique():
+    df_method = df[df.method == method]
+    df_method["FDR"] = qvalues(df_method,pcol="p")["q"]
 
+ if "p" in df.columns:
+     df["FDR"] = qvalues(df,pcol="p")["q"]
+"""
 
 
 

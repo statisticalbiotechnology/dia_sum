@@ -16,7 +16,7 @@ sample_id_mapper = lambda x: x.split("_")[8]
 specie_mapper = lambda x: x.split("_")[-1]
 
 # OSW
-def avg_3_largest_precursor_on_run_level(filename, m_score_treshold = 0.01):  
+def avg_3_largest_precursor_on_run_level(filename, m_score_treshold):  
     print("Reading in: " + filename)
     df = pd.read_csv(filename, sep = "\t")
     df = df[df.decoy != 1]
@@ -39,7 +39,9 @@ def avg_3_largest_precursor_on_run_level(filename, m_score_treshold = 0.01):
     
     return df
 
-def avg_3_largest_precursor(result_file_directory, m_score_threshold = 0.01):
+def avg_3_largest_precursor(result_file_directory, m_score_threshold_file):
+    m_score_threshold = float(open(m_score_threshold_file).read())
+
     dfs = []
     for file in os.listdir(result_file_directory):
         dfs.append(avg_3_largest_precursor_on_run_level(result_file_directory + "/" + file, m_score_treshold=m_score_threshold))
@@ -53,7 +55,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--file_dir', type=str,
                     help='OpenSwath output with dscore file directory. Note: The OpenSwath output with dscore need to be in a seperate directory for themselves.')
 
-parser.add_argument('--m_score_threshold', type=float,
+parser.add_argument('--m_score_threshold_file', type=str,
                     help='m_score level to cut-off at. Note: use mscore4pepfdr() in Bioconductor SWATH2stats to compute m_score for desired peptide level fdr.')
 
 parser.add_argument('--output', type=str, default = "osw_top3_input_formatted.csv",
@@ -63,10 +65,10 @@ parser.add_argument('--output', type=str, default = "osw_top3_input_formatted.cs
 # parse arguments from command line
 args = parser.parse_args()
 file_dir = args.file_dir
-m_score_threshold = args.m_score_threshold
+m_score_threshold_file = args.m_score_threshold_file
 output = args.output
 
 if __name__ == "__main__":
-    df = avg_3_largest_precursor(file_dir, m_score_threshold = 0.01)
+    df = avg_3_largest_precursor(file_dir, m_score_threshold_file = m_score_threshold_file)
     print("Generating output file: " + output)
     df.to_csv(output, sep = "\t")
