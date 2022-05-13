@@ -35,6 +35,19 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+## 2022-05-13
+### 09:30 Meeting
+### 17:40
+
+Fixed workflow diagram
+Fixed scatter plot
+Fixed snakemake pipeline
+ToDo:
+- Fix log2(B) intensity for triqler scatterplot
+- Check calibration plot
+- Investigate gap for ID vs PS pipeline 
+- Add FC-threshold for all plots..
+
 ## 2022-05-12
 ### 08:00 practice presentation
 ### 12:00 presentation
