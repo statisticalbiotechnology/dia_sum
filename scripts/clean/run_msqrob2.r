@@ -6,7 +6,7 @@ suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(gridExtra))
 suppressPackageStartupMessages(library("argparse"))
 
-run_msqrob2 <- function(input, output){
+run_msqrob2 <- function(input, output, output_protein){
   peptidesFile = (input)
   ecols <- grep("HYE124\\_", names(read.delim(peptidesFile)))
   
@@ -45,6 +45,7 @@ run_msqrob2 <- function(input, output){
   
   msqrob2_df <-rowData(pe[["protein"]])$conditionB
   write.csv(msqrob2_df, output)
+  write.csv(assay(pe[["protein"]]), output_protein)
 }
 
 
@@ -54,9 +55,11 @@ parser$add_argument("--input",
                     help = "MSqRob2 input file. NOTE: The input file needs to be formatted and filtered before using this script.")
 parser$add_argument("--output", 
                     help = "Output name.")
+parser$add_argument("--output_protein", 
+                    help = "Output name for protein quantity file.")
 args <- parser$parse_args()
 
-run_msqrob2(input = args$input, output = args$output)
+run_msqrob2(input = args$input, output = args$output, output_protein = args$output_protein)
 
 
 

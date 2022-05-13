@@ -3,7 +3,7 @@ PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
 HLINE_TYPE = ["median", "mean"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
-FC_THRESHOLDS = [0, 0.51]
+FC_THRESHOLDS = [0, 0.76]
 
 
 rule compute:
@@ -16,7 +16,12 @@ rule compute:
         expand("results/PS/top3_results.csv"),
         expand("results/PS/triqler_results.csv"),
         expand("results/PS/msstats_results.csv"),
+        expand("results/PS/msstats_protein_quant_results.csv"),
         expand("results/PS/msqrob2_results.csv"),
+        expand("results/PS/msqrob2_protein_quant_results.csv"),
+        expand("results/PS/msqrob2_scatter_format_input.csv"),
+        expand("results/PS/msstats_scatter_format_input.csv"),
+        expand("results/PS/triqler_scatter_format_input.csv"),
         expand("results/concatenated_osw_results.csv"),
         expand("results/mscore_threshold.csv"),
         expand("results/ID/msstats_input.csv"),
@@ -26,7 +31,12 @@ rule compute:
         expand("results/ID/top3_results.csv"),
         expand("results/ID/triqler_results.csv"),
         expand("results/ID/msstats_results.csv"),
+        expand("results/ID/msstats_protein_quant_results.csv"),
         expand("results/ID/msqrob2_results.csv"),
+        expand("results/ID/msqrob2_protein_quant_results.csv"),
+        expand("results/ID/msqrob2_scatter_format_input.csv"),
+        expand("results/ID/msstats_scatter_format_input.csv"),
+        expand("results/ID/triqler_scatter_format_input.csv"),
         expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
         expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
         expand("results/plot/quantile_bins_PS_{iHline}.png", iHline = HLINE_TYPE),
@@ -131,22 +141,23 @@ rule diann_compute_msstats:
         script = "run_msstats.r",
         input = "results/PS/msstats_input.csv"
     output:
-        output = "results/PS/msstats_results.csv"
+        output = "results/PS/msstats_results.csv",
+        output_protein = "results/PS/msstats_protein_quant_results.csv"
     shell:
         "Rscript {input.script} \
             --input {input.input} \
-            --output {output.output}"
+            --output {output.output} \
+            --output_protein {output.output_protein}"
 
 rule diann_compute_msqrob2:
     input:
         script = "run_msqrob2.r",
         input = "results/PS/msqrob2_input.csv"
     output:
-        output = "results/PS/msqrob2_results.csv"
+        output = "results/PS/msqrob2_results.csv",
+        output_protein = "results/PS/msqrob2_protein_quant_results.csv"
     shell:
-        "Rscript {input.script} \
-            --input {input.input} \
-            --output {output.output}"
+        "Rscript {input.script} --input {input.input} --output {output.output} --output_protein {output.output_protein}"
 
 ##############
 # ID Compute #
@@ -232,11 +243,13 @@ rule compute_osw_msqrob2:
         script = "run_msqrob2.r",
         input = "results/ID/msqrob2_input.csv"
     output:
-        output = "results/ID/msqrob2_results.csv"
+        output = "results/ID/msqrob2_results.csv",
+        output_protein = "results/ID/msqrob2_protein_quant_results.csv"
     shell:
         "Rscript {input.script} \
             --input {input.input} \
-            --output {output.output}"
+            --output {output.output} \
+            --output_protein {output.output_protein}"
 
     
 rule compute_osw_msstats:
@@ -244,11 +257,13 @@ rule compute_osw_msstats:
         script = "run_msstats.r",
         input = "results/ID/msstats_input.csv"
     output:
-        output = "results/ID/msstats_results.csv"
+        output = "results/ID/msstats_results.csv",
+        output_protein = "results/ID/msstats_protein_quant_results.csv"
     shell:
         "Rscript {input.script} \
             --input {input.input} \
-            --output {output.output}"
+            --output {output.output} \
+            --output_protein {output.output_protein}"
 
 rule compute_osw_triqler:
     input:
@@ -273,6 +288,48 @@ rule compute_osw_top3:
         "python {input.script} \
             --input {input.input_file} \
             --output {output.output}"
+
+
+#######################
+# Plot pre-processing #
+#######################
+rule convert_msqrob2_to_scatter_format:
+    input:
+        script = "convert_msqrob2_to_scatterplot_input.py",
+        input_res = "results/{iPipeline}/msqrob2_results.csv",
+        input_protein_quant = "results/{iPipeline}/msqrob2_protein_quant_results.csv"
+    output:
+        output = "results/{iPipeline}/msqrob2_scatter_format_input.csv"
+    shell:
+        "python {input.script} \
+            --input_res {input.input_res} \
+            --input_protein_quant {input.input_protein_quant} \
+            --output {output.output}" 
+
+rule convert_msstats_to_scatter_format:
+    input:
+        script = "convert_msstats_to_scatterplot_input.py",
+        input_res = "results/{iPipeline}/msstats_results.csv",
+        input_protein_quant = "results/{iPipeline}/msstats_protein_quant_results.csv"
+    output:
+        output = "results/{iPipeline}/msstats_scatter_format_input.csv"
+    shell:
+        "python {input.script} \
+            --input_res {input.input_res} \
+            --input_protein_quant {input.input_protein_quant} \
+            --output {output.output}" 
+
+rule convert_triqler_to_scatter_format:
+    input:
+        script = "convert_triqler_to_scatterplot_input.py",
+        input_res = "results/{iPipeline}/triqler_results.csv",
+    output:
+        output = "results/{iPipeline}/triqler_scatter_format_input.csv"
+    shell:
+        "python {input.script} \
+            --input_res {input.input_res} \
+            --output {output.output}" 
+
 
 #############
 # Plot ######
