@@ -10,73 +10,59 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from parsers.parse_triqler import parse_triqler
+import argparse
 
+#df_top3 = pd.read_csv("top3_results.csv", sep = "\t")
+#df = pd.read_csv("msstats_scatter_format_input.csv", sep = "\t")
+#df = pd.read_csv("msqrob2_scatter_format_input.csv", sep = "\t")
+#df = pd.read_csv("triqler_scatter_format_input.csv", sep = "\t")
+#df["log2(A,B)"] = -df["log2(A,B)"]
+#df["log2(A,B)"] = df["2"]-df["1"]
 
-
-def convert_msqrob2_to_scatterplot(input_res, input_protein_quant):
-    df = pd.read_csv(input_protein_quant, sep = ",").rename({'Unnamed: 0':"Proteins"}, axis = 1).set_index("Proteins")
-    df_ = pd.read_csv(input_res, sep = ",").rename({'Unnamed: 0':"Proteins"}, axis = 1).set_index("Proteins")
-    df = pd.concat([df ,df_], axis=1, join='inner')
-    df["2"] = df.iloc[:,df.columns.str.contains("Sample_2")].mean(axis = 1)
-    df["1"] = df.iloc[:,df.columns.str.contains("Sample_1")].mean(axis = 1)
+def plot_scatterplot(df, output, fdr_threshold = 1.00):
+    df = df[df["q"] < fdr_threshold]
     
-    df = df[["1", "2", "pval", "adjPval", "logFC"]].reset_index()
-    df["specie"] = df.Proteins.map(lambda x:x.split("_")[1])
-    df = df[["specie", "Proteins", "1", "2", "pval", "adjPval", "logFC"]].rename({"Proteins": "ProteinName", 
-                                                                                  "logFC":"log2(A,B)",
-                                                                                  "pval":"p",
-                                                                                  "adjPval":"q"}, axis = 1)
-    return df
+    df = df[np.isfinite(df["2"])]
+    df = df[np.isfinite(df["log2(A,B)"])]
+    
+    f, ax = plt.subplots(1, 1, figsize = (15,8))
+    sns.regplot(data = df[df.specie == "ECOLI"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label ="ECOLI", fit_reg = True)
+    sns.regplot(data = df[df.specie == "HUMAN"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "HUMAN", fit_reg = True)
+    sns.regplot(data = df[df.specie == "YEAST"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "YEAST", fit_reg = True)
+    ax.legend()
+    ax.axhline(2, linestyle = "--", color="tab:blue", alpha = 0.5)
+    ax.axhline(0, linestyle = "--", color="tab:orange", alpha = 0.5)
+    ax.axhline(-1, linestyle = "--", color="tab:green", alpha = 0.5)
+    ax.set_ylim([-2,3])
+    #ax.set_xlim([0,10])
+    ax.set_xlabel("log2(B)")
+    plt.title("std/mu ratio for log-transformed peptide values")
+        
+    fig = ax.get_figure()
+    print(f"Saving output {output}")
+    fig.savefig(output)
 
-def convert_msstats_to_scatterplot(input_res, input_protein_quant):    
-    df = pd.read_csv(input_protein_quant, sep = ",")
-    df_ = pd.read_csv(input_res, sep = ",")
-    df = df[["Protein", "LogIntensities", "GROUP"]]
-    df = pd.concat([df_.set_index("Protein"), 
-               pd.DataFrame(df[df.GROUP == 1].groupby("Protein").mean().LogIntensities).rename({"LogIntensities": "1"}, axis = 1),
-               pd.DataFrame(df[df.GROUP == 2].groupby("Protein").mean().LogIntensities).rename({"LogIntensities": "2"}, axis = 1)],
-              axis = 1)
-    df.reset_index(inplace=True)
-    df["specie"] = df.Protein.map(lambda x:x.split("_")[1])
-    df = df[["specie", "Protein", "1", "2", "pvalue", "adj.pvalue", "log2FC"]].rename(
-        {"Protein": "ProteinName", "log2FC":"log2(A,B)", "pvalue":"p", "adj.pvalue":"q"}, axis = 1)
-    return df
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='This script takes scatter plot formatted input file and produces a scatter plot.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-def convert_triqler_to_scatterplot(input_file):
-    df = parse_triqler(input_file)
-    df["2"] = df.iloc[:,df.columns.str.contains("2:")].mean(axis = 1)
-    df["1"] = df.iloc[:,df.columns.str.contains("1:")].mean(axis = 1)
-    df["decoy"] = df.protein.map(lambda x:x.split("_")[0])
-    df = df[df["decoy"] != "DECOY"] #dilter away decoy
-    df["specie"] = df.protein.map(lambda x:x.split("_")[1])
-    df = df.rename({"protein":"ProteinName", "q_value":"q", "log2_fold_change":"log2(A,B)"}, axis = 1)
-    df = df[["specie", "ProteinName", "1", "2", "q", "log2(A,B)"]]
-    df.specie.unique()
-    return df
+    parser.add_argument('--input_file', type=str,
+                        help='Scatterplot converter input file.')
 
+    parser.add_argument('--output', type=str,
+                        help='Output name.')
 
-
-df_top3 = pd.read_csv("top3_results.csv", sep = "\t")
+    parser.add_argument('--fdr_threshold', type=float, default = 1.00,
+                        help='FDR threshold limit. Default: 1.00')
 
 
-f, ax = plt.subplots(1, 1, figsize = (15,8))
-#sns.scatterplot(ax = ax, data = df_final, x = "log2(B)", y = "log2(A,B)", alpha = 0.7, hue = "specie")
-#df_final["specie"] = df_final.index.get_level_values("specie")
-sns.regplot(data = df[df.specie == "ECOLI"], x = "1", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label ="ECOLI")
-sns.regplot(data = df[df.specie == "HUMAN"], x = "1", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "HUMAN")
-sns.regplot(data = df[df.specie == "YEAST"], x = "1", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "YEAST")
-ax.legend()
-ax.axhline(1, linestyle = "--", color="tab:green", alpha = 0.5)
-ax.axhline(0, linestyle = "--", color="tab:orange", alpha = 0.5)
-ax.axhline(-2, linestyle = "--", color="tab:blue", alpha = 0.5)
-#ax.grid()
-#plt.legend(labels=['HUMAN (sample 1)', 'YEAST (sample 1)', "ECOLI (sample 1)", "HUMAN (sample 2)", "YEAST (sample 2)", "ECOLI (sample 2)"])
-plt.title("std/mu ratio for log-transformed peptide values")
-
-
- 
-##### Converters
-
-
-
+    # parse arguments from command line
+    args = parser.parse_args()
+    input_file = args.input_file
+    fdr_threshold = args.fdr_threshold
+    output = args.output
+    df = pd.read_csv(input_file, sep = "\t")
+    plot_scatterplot(df, output, fdr_threshold)
+    
+    

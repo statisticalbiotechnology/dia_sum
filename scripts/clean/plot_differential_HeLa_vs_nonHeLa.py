@@ -74,39 +74,42 @@ def get_differential_abundance_count(zipped_files, specie = "all"):
     res = res.reset_index().drop("index", axis = 1)
     return res
 
-parser = argparse.ArgumentParser(
-    description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots differential HeLa vs differential non-HeLa lineplot.',
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-parser.add_argument('--triqler_input', type=str,
-                    help='Triqler results file.')
-
-parser.add_argument('--top3_input', type=str,
-                    help='Top3 results file.')
-
-parser.add_argument('--msstats_input', type=str,
-                    help='MsStats results file.')
-
-parser.add_argument('--msqrob2_input', type=str,
-                    help='MSqRob2 results file.')
-
-parser.add_argument('--specie', type=str,
-                    help='specie "all", "ecoli" or "yeast" as y-axis for the differential plot.',
-                    default = "all")
-
-parser.add_argument('--output', type=str,
-                    help='Output name.')
-
-# parse arguments from command line
-args = parser.parse_args()
-triqler_file = args.triqler_input
-top3_file = args.top3_input
-msstats_file = args.msstats_input
-msqrob2_file = args.msqrob2_input
-specie = args.specie
-output = args.output
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(
+        description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots differential HeLa vs differential non-HeLa lineplot.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('--triqler_input', type=str,
+                        help='Triqler results file.')
+
+    parser.add_argument('--top3_input', type=str,
+                        help='Top3 results file.')
+
+    parser.add_argument('--msstats_input', type=str,
+                        help='MsStats results file.')
+
+    parser.add_argument('--msqrob2_input', type=str,
+                        help='MSqRob2 results file.')
+
+    parser.add_argument('--specie', type=str,
+                        help='specie "all", "ecoli" or "yeast" as y-axis for the differential plot.',
+                        default = "all")
+
+    parser.add_argument('--output', type=str,
+                        help='Output name.')
+
+    # parse arguments from command line
+    args = parser.parse_args()
+    triqler_file = args.triqler_input
+    top3_file = args.top3_input
+    msstats_file = args.msstats_input
+    msqrob2_file = args.msqrob2_input
+    specie = args.specie
+    output = args.output
+
+    
     print(f"""
           Reading in files:
               triqler : {triqler_file}
@@ -151,8 +154,8 @@ if __name__ == "__main__":
     
     
 
-for method, df in zipped_files:
-    print(method)
+#for method, df in zipped_files:
+#    print(method)
     
     
     
