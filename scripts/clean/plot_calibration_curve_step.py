@@ -113,7 +113,7 @@ def get_DE_for_triqler(triqler):
     #df_res = pd.DataFrame(vals, index = np.arange(0,0.101, 0.001), columns = ["HUMAN", "YEAS8", "ECOLI", "HUMAN_factor", "YEAST_factor", "ECOLI_factor"])
     return df_res
 
-def calibration_plot(df, output, xlim = [0,0.05], ylim = [0,0.05]):
+def calibration_plot(df, output, xlim = [0,0.10], ylim = [0,0.20]):
     fig, axs = plt.subplots(1, 1, figsize=(10,6))
     #sns.lineplot(x = "FDR", y = "actual_error", data = df, ax = axs, hue = "method")
     sns.lineplot(x = "FDR", y = "Fraction_HeLa", data = df, ax = axs, hue = "Method")
@@ -144,8 +144,37 @@ def calibration_plot(df, output, xlim = [0,0.05], ylim = [0,0.05]):
     print("Outputting : " + output)
     plt.savefig(output, bbox_inches="tight")
 
+def get_fraction_hela(df_in, method):
+    df=df_in.copy()
+    df.sort_values(by = "FDR", inplace = True)
+    df["count_HUMAN"] = df.Protein.str.contains("_HUMAN").astype(int)
+    df["count_ECOLI"] = df.Protein.str.contains("_ECOLI").astype(int)
+    df["count_YEAST"] = df.Protein.str.contains("_YEAST").astype(int)
+    df["cumsum_HUMAN"] = df["count_HUMAN"].cumsum()
+    df["cumsum_ECOLI"] = df["count_ECOLI"].cumsum()
+    df["cumsum_YEAST"] = df["count_YEAST"].cumsum()
+    df["Fraction_HeLa"] = df["cumsum_HUMAN"] / (df["cumsum_HUMAN"] + df["cumsum_ECOLI"] + df["cumsum_YEAST"])
+    df["Method"] = method
+    df.fillna(1, inplace = True) # assume NaN is maxed out FDR
+    #df = df.reset_index().drop("index",axis = 1)
+    return df[["FDR", "Fraction_HeLa", "Method"]]
 
-def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_threshold = 0.0, xlim = [0,0.05], ylim = [0,0.05]):
+def get_fraction_hela_df(triqler, top3, msstats, msqrob2):
+    fdrs = []
+    for df, method in zip([triqler, top3, msstats, msqrob2], ["Triqler", "Top3", "MSstats", "MSqRob2"]):
+        fdrs.append(get_fraction_hela(df, method))
+    df = pd.concat(fdrs)
+    df = df.reset_index().drop("index", axis = 1).copy()
+    return df
+
+def threshold_fc(df, fc_threshold):
+    fc_threshold = 0.0
+    df_fc = df[abs(df["log2FC"]) > fc_threshold].copy()
+    df_fc["FDR"] = qvalues(df_fc, pcol = "FDR")["q"] #recompute FDR for thresholded set
+    return df_fc
+
+
+def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_threshold = 0, xlim = [0,0.05], ylim = [0,0.05]):
     
     #fc_threshold = 0.0 #should be same as triqler fc_eval
 
@@ -155,34 +184,27 @@ def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_thresho
     #msqrob2_file = "msqrob2_results.csv"
     
     triqler = parse_triqler(triqler_file)
+    #triqler[~triqler.protein.str.contains("DECOY")]
     triqler["specie"] = triqler.protein.map(lambda x:x.split("_")[1])
+    triqler["FDR"] = triqler["q_value"]
+    triqler.rename({"protein":"Protein"}, axis = 1, inplace = True)
     top3 = pd.read_csv(top3_file, sep = "\t").rename({"q":"FDR", 'log2(A,B)':"log2FC"}, axis = 1)
+    top3.rename({"ProteinName":"Protein"}, axis = 1, inplace = True)
     msstats = pd.read_csv(msstats_file, sep = ",").rename({"adj.pvalue":"FDR"}, axis = 1)
     msstats["specie"] = msstats.Protein.map(lambda x:x.split("_")[1])
     msqrob2 = pd.read_csv(msqrob2_file, sep = ",").rename({"Unnamed: 0":"protein", "adjPval":"FDR", "logFC":"log2FC"}, axis = 1)
-    msqrob2["specie"] = msqrob2.protein.map(lambda x:x.split("_")[1])
+    msqrob2.rename({"protein":"Protein"}, axis = 1, inplace = True)
+    msqrob2["specie"] = msqrob2.Protein.map(lambda x:x.split("_")[1])
+    msqrob2.rename({"protein":"Protein"}, axis = 1, inplace = True)
 
-    triqler_pq = get_DE_for_triqler(triqler)
-    #top3_pq = pq_data(top3, fc = fc_threshold)
-    #msstats_pq = pq_data(msstats, fc = fc_threshold)
-    #msqrob2_pq = pq_data(msqrob2, fc = fc_threshold)
-
-    triqler_frac = (triqler_pq["HUMAN"] / triqler_pq.sum(axis=1))
-    triqler_frac = pd.DataFrame(triqler_frac, columns = ["DE"])
-    triqler_frac["method"] = "Triqler"
-    top3_frac = pq_data(top3[top3.specie == "HUMAN"], fc = fc_threshold) / pq_data(top3, fc = fc_threshold)
-    top3_frac = pd.DataFrame(top3_frac.fillna(0), columns = ["DE"])
-    top3_frac["method"] = "Top3"
-    ms_frac = pq_data(msstats[msstats["specie"] == "HUMAN"], fc = fc_threshold) / pq_data(msstats, fc = fc_threshold)
-    ms_frac["method"] = "MsStats"
-    msqrob2_frac = pq_data(msqrob2[msqrob2["specie"] == "HUMAN"], fc = fc_threshold) / pq_data(msqrob2, fc = fc_threshold)
-    msqrob2_frac = msqrob2_frac.fillna(0)
-    msqrob2_frac["method"] = "MsqRob2"
-
-    df_frac = pd.concat([triqler_frac, top3_frac, ms_frac, msqrob2_frac], axis = 0)
-    df_frac = pd.DataFrame(df_frac.reset_index().values, columns = ["FDR", "Fraction_HeLa", "Method"])
+    if fc_threshold != 0:
+        #triqler = threshold_fc(triqler, fc_threshold)
+        top3 = threshold_fc(top3, fc_threshold)
+        msstats = threshold_fc(msstats, fc_threshold)
+        msqrob2 = threshold_fc(msqrob2, fc_threshold)
+        
+    df = get_fraction_hela_df(triqler, top3, msstats, msqrob2)
     
-    df = df_frac
     calibration_plot(df = df, output = output, xlim = xlim, ylim = ylim)
 
 parser = argparse.ArgumentParser(
