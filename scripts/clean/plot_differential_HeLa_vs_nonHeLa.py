@@ -13,12 +13,58 @@ import seaborn as sns
 import pandas as pd
 from parsers.parse_triqler import  parse_triqler
 import argparse
+import numpy.random as npr
+import numpy as np
 
 sns.set_context("talk")
 
 negCol = "Differential HeLa"
 posCol = "Differential non-HeLa"
 eCol = "Actual Error Rate"
+
+
+def bootstrap(invec):
+    idx = npr.randint(0, len(invec), len(invec))
+    return [invec[i] for i in idx]
+
+def estimatePi0(p, numBoot=100, numLambda=100, maxLambda=0.95):
+    p.sort()
+    n=len(p)
+    lambdas=np.linspace(maxLambda/numLambda,maxLambda,numLambda)
+    Wls=np.array([n-np.argmax(p>=l) for l in lambdas])
+    pi0s=np.array([Wls[i] / (n * (1 - lambdas[i])) for i in range(numLambda)])
+    minPi0=np.min(pi0s)
+    mse = np.zeros(numLambda)
+    for boot in range(numBoot):
+        pBoot = bootstrap(p)
+        pBoot.sort()
+        WlsBoot =np.array([n-np.argmax(pBoot>=l) for l in lambdas])
+        pi0sBoot =np.array([WlsBoot[i] / (n *(1 - lambdas[i])) for i in range(numLambda)])
+        mse = mse + np.square(pi0sBoot-minPi0)
+    minIx = np.argmin(mse)
+    return pi0s[minIx]
+
+def qvalues(pvalues, pcol = "p"):
+    m = pvalues.shape[0] # The number of p-values
+    pvalues.sort_values(pcol,inplace=True) # sort the pvalues in acending order
+    pi0 = estimatePi0(list(pvalues[pcol].values))
+    print("pi_0 estimated to " + str(pi0))
+    
+    # calculate a FDR(t) as in Storey & Tibshirani
+    num_p = 0.0
+    for ix in pvalues.index:
+        num_p += 1.0
+        fdr = pi0*pvalues.loc[ix,pcol]*m/num_p
+        pvalues.loc[ix,"q"] = fdr
+    
+    # calculate a q(p) as the minimal FDR(t)
+    old_q=1.0
+    for ix in reversed(list(pvalues.index)):
+        q = min(old_q,pvalues.loc[ix,"q"])
+        old_q = q
+        pvalues.loc[ix,"q"] = q
+    return pvalues
+
 
 def remove_decoy(df, protein_column):   
     res = df[~df[protein_column].str.contains("DECOY_")].copy(deep=True)
@@ -54,10 +100,10 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     msqrob2_results = pd.read_csv(msqrob2_file, sep = ",").rename({"Unnamed: 0":"Protein"},axis=1)
     
     #Rename protein, fdr to same name
-    triqler_results = triqler_results.rename({"q_value":"FDR", "protein":"Protein"}, axis = 1)
-    top3_results = top3_results.rename({"q":"FDR", "ProteinName":"Protein"}, axis = 1)
-    msstats_results = msstats_results.rename({"adj.pvalue":"FDR"}, axis = 1)
-    msqrob2_results = msqrob2_results.rename({"adjPval":"FDR"}, axis = 1)
+    triqler_results = triqler_results.rename({"q_value":"FDR", "protein":"Protein", "log2_fold_change": "log2FC"}, axis = 1)
+    top3_results = top3_results.rename({"q":"FDR", "ProteinName":"Protein", "log2(A,B)": "log2FC"}, axis = 1)
+    msstats_results = msstats_results.rename({"adj.pvalue":"FDR", "pvalue":"p"}, axis = 1)
+    msqrob2_results = msqrob2_results.rename({"adjPval":"FDR", "logFC":"log2FC", "pval":"p"}, axis = 1)
     
     methods = ["Triqler", "Top3", "MsStats", "MsqRob2"]
     data = [triqler_results, top3_results, msstats_results, msqrob2_results]
@@ -65,10 +111,16 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     return zipped_files
 
 
-def get_differential_abundance_count(zipped_files, specie = "all"):
+def get_differential_abundance_count(zipped_files, specie = "all", fc_threshold = 0.01):
     dfs = []
+    test = []
     for method, df in zipped_files:
+        if method != "Triqler":
+            if fc_threshold > 0:
+                df = df[abs(df.log2FC) > fc_threshold]
+                df["FDR"] = qvalues(df, pcol = "p")["q"]
         df_count = countProteins(df, method, specie = specie)
+        test.append(df)
         dfs.append(df_count.loc[:,["Protein", "FDR", posCol, negCol, "method"]])
     res = pd.concat(dfs)
     res = res.reset_index().drop("index", axis = 1)
@@ -96,6 +148,9 @@ if __name__ == "__main__":
     parser.add_argument('--specie', type=str,
                         help='specie "all", "ecoli" or "yeast" as y-axis for the differential plot.',
                         default = "all")
+    
+    parser.add_argument('--fc_threshold', type=float, default = 0,
+                        help='Apply fold-cahnge threshold to Top3, MSstats and MSqRob2.')
 
     parser.add_argument('--output', type=str,
                         help='Output name.')
@@ -107,6 +162,7 @@ if __name__ == "__main__":
     msstats_file = args.msstats_input
     msqrob2_file = args.msqrob2_input
     specie = args.specie
+    fc_threshold = args.fc_threshold
     output = args.output
 
     
@@ -122,7 +178,7 @@ if __name__ == "__main__":
                       msstats_file = msstats_file,
                       msqrob2_file = msqrob2_file)
     print("Counting differentially abundant proteins")
-    df_count = get_differential_abundance_count(zipped_files, specie = specie)
+    df_count = get_differential_abundance_count(zipped_files, specie = specie, fc_threshold = fc_threshold)
     
     print("Plotting lineplot")
     fig, ax = plt.subplots(1, 1, figsize=(18,12))
