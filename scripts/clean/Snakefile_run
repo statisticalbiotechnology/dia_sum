@@ -43,6 +43,7 @@ rule compute:
         expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
         expand("results/plot/quantile_bins_PS_{iHline}.png", iHline = HLINE_TYPE),
         expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}_{iFc_threshold}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS, iFc_threshold = FC_THRESHOLDS),
+        expand("results/plot/count_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
         expand("results/plot/calibration_{iPipeline}_{iFc_threshold}.png", iPipeline = PIPELINES, iFc_threshold = FC_THRESHOLDS),
         expand("results/plot/scatter_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS)
 
@@ -386,6 +387,27 @@ rule plot_differential_HeLa_vs_nonHela:
             --msqrob2_input {input.msqrob2_input} \
             --specie {params.specie} \
             --fc_threshold {params.fc_threshold} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule plot_count_HeLa_vs_nonHela:
+    input:
+        script = "plot_differential_HeLa_vs_nonHeLa.py",
+        triqler_input = "results/{iPipeline}/triqler_results.csv",
+        top3_input = "results/{iPipeline}/top3_results.csv",
+        msstats_input = "results/{iPipeline}/msstats_results.csv",
+        msqrob2_input = "results/{iPipeline}/msqrob2_results.csv"
+    params:
+        specie = "{iSpecie}",
+        fdr_threshold = 0.01,
+    output:
+        output = "results/plot/count_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png"
+    shell:
+        "python {input.script} --triqler_input {input.triqler_input} \
+            --top3_input {input.top3_input} \
+            --msstats_input {input.msstats_input} \
+            --msqrob2_input {input.msqrob2_input} \
+            --specie {params.specie} \
             --fdr_threshold {params.fdr_threshold} \
             --output {output.output}"
 
