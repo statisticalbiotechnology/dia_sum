@@ -3,7 +3,7 @@ PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
 HLINE_TYPE = ["median", "mean"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
-FC_THRESHOLDS = [0, 0.76]
+FC_THRESHOLDS = [0, 0.51]
 
 
 rule compute:
@@ -22,6 +22,7 @@ rule compute:
         expand("results/PS/msqrob2_scatter_format_input.csv"),
         expand("results/PS/msstats_scatter_format_input.csv"),
         expand("results/PS/triqler_scatter_format_input.csv"),
+        expand("results/PS/top3_scatter_format_input.csv"),
         expand("results/concatenated_osw_results.csv"),
         expand("results/mscore_threshold.csv"),
         expand("results/ID/msstats_input.csv"),
@@ -37,11 +38,13 @@ rule compute:
         expand("results/ID/msqrob2_scatter_format_input.csv"),
         expand("results/ID/msstats_scatter_format_input.csv"),
         expand("results/ID/triqler_scatter_format_input.csv"),
+        expand("results/ID/top3_scatter_format_input.csv"),
         expand("results/plot/histogram_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
         expand("results/plot/fraction_missing_values_{iPipeline}.png", iPipeline = PIPELINES),
         expand("results/plot/quantile_bins_PS_{iHline}.png", iHline = HLINE_TYPE),
-        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
+        expand("results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}_{iFc_threshold}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS, iFc_threshold = FC_THRESHOLDS),
         expand("results/plot/calibration_{iPipeline}_{iFc_threshold}.png", iPipeline = PIPELINES, iFc_threshold = FC_THRESHOLDS),
+        expand("results/plot/scatter_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS)
 
 
 ##############
@@ -322,14 +325,26 @@ rule convert_msstats_to_scatter_format:
 rule convert_triqler_to_scatter_format:
     input:
         script = "convert_triqler_to_scatterplot_input.py",
-        input_res = "results/{iPipeline}/triqler_results.csv",
+        triqler_results = "results/{iPipeline}/triqler_results.csv",
+        triqler_input = "results/{iPipeline}/triqler_input.csv"
     output:
         output = "results/{iPipeline}/triqler_scatter_format_input.csv"
     shell:
         "python {input.script} \
-            --input_res {input.input_res} \
+            --triqler_results {input.triqler_results} \
+            --triqler_input {input.triqler_input} \
             --output {output.output}" 
 
+rule copy_top3_to_scatterplot_input:
+    input:
+        script = "copy_top3_to_scatterplot_input.py",
+        top3_input =  "results/{iPipeline}/top3_results.csv"
+    output:
+        output = "results/{iPipeline}/top3_scatter_format_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.top3_input} \
+            --output {output.output}" 
 
 #############
 # Plot ######
@@ -350,25 +365,29 @@ rule plot_histogram:
 			--output {output.output_file}"
 
 # plot_differential_HeLa_vs_nonHela is actually count plot not differential abundance
-rule plot_differential_HeLa_vs_nonHela: 
-	input:
-		script = "plot_differential_HeLa_vs_nonHeLa.py",
-		triqler_input = "results/{iPipeline}/triqler_results.csv",
-		top3_input = "results/{iPipeline}/top3_results.csv",
-		msstats_input = "results/{iPipeline}/msstats_results.csv",
-		msqrob2_input = "results/{iPipeline}/msqrob2_results.csv"
-	params:
-		specie = "{iSpecie}"
-	output:
-		output = "results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png"
-	shell:
-		"python {input.script} \
-			--triqler_input {input.triqler_input} \
-			--top3_input {input.top3_input} \
-			--msstats_input {input.msstats_input} \
-			--msqrob2_input {input.msqrob2_input} \
-			--specie {params.specie} \
-			--output {output.output}"
+
+rule plot_differential_HeLa_vs_nonHela:
+    input:
+        script = "plot_differential_HeLa_vs_nonHeLa.py",
+        triqler_input = "results/{iPipeline}/triqler_results.csv",
+        top3_input = "results/{iPipeline}/top3_results.csv",
+        msstats_input = "results/{iPipeline}/msstats_results.csv",
+        msqrob2_input = "results/{iPipeline}/msqrob2_results.csv"
+    params:
+        specie = "{iSpecie}",
+        fdr_threshold = 0.01,
+        fc_threshold = "{iFc_threshold}",
+    output:
+        output = "results/plot/diff_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}_{iFc_threshold}.png"
+    shell:
+        "python {input.script} --triqler_input {input.triqler_input} \
+            --top3_input {input.top3_input} \
+            --msstats_input {input.msstats_input} \
+            --msqrob2_input {input.msqrob2_input} \
+            --specie {params.specie} \
+            --fc_threshold {params.fc_threshold} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
 
 rule plot_calibration_plot:
     input:
@@ -423,7 +442,15 @@ rule plot_quantile_bins_PS:
 			--output {output.output}"
 
 
-'''
-'''
+rule plot_scatter_no_threshold:
+    input:
+        script = "plot_scatter.py",
+        input_file = "results/{iPipeline}/{iMethod}_scatter_format_input.csv"
+    output:
+        output = "results/plot/scatter_{iPipeline}_{iMethod}.png"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
 
 

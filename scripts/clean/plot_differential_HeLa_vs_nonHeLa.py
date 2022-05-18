@@ -111,14 +111,15 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     return zipped_files
 
 
-def get_differential_abundance_count(zipped_files, specie = "all", fc_threshold = 0.01):
+def get_differential_abundance_count(zipped_files, specie = "all", fc_threshold = 0.01, fdr_threshold = 1.00):
     dfs = []
     test = []
     for method, df in zipped_files:
         if method != "Triqler":
             if fc_threshold > 0:
                 df = df[abs(df.log2FC) > fc_threshold]
-                df["FDR"] = qvalues(df, pcol = "p")["q"]
+                df["FDR"] = qvalues(df, pcol = "p")["q"].copy()
+        df = df[df.FDR < fdr_threshold].copy()
         df_count = countProteins(df, method, specie = specie)
         test.append(df)
         dfs.append(df_count.loc[:,["Protein", "FDR", posCol, negCol, "method"]])
@@ -150,7 +151,10 @@ if __name__ == "__main__":
                         default = "all")
     
     parser.add_argument('--fc_threshold', type=float, default = 0,
-                        help='Apply fold-cahnge threshold to Top3, MSstats and MSqRob2.')
+                        help='Apply fold-change threshold to Top3, MSstats and MSqRob2.')
+
+    parser.add_argument('--fdr_threshold', type=float, default = 1.00,
+                        help='Apply q-value threshold.')
 
     parser.add_argument('--output', type=str,
                         help='Output name.')
@@ -163,6 +167,7 @@ if __name__ == "__main__":
     msqrob2_file = args.msqrob2_input
     specie = args.specie
     fc_threshold = args.fc_threshold
+    fdr_threshold = args.fdr_threshold
     output = args.output
 
     
