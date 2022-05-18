@@ -35,6 +35,28 @@ Check what is endogenous component
 Check what is endogenous peptide.
 
 # Log
+
+## 2022-05-18 
+### 09:00 Finishing up scatterplot, histogram and differential abudande plots 
+### 13:00 meeting 
+ToDo 
+
+Download new dataset to process
+Prosit-transformer instead of prosit run on dia-sum benchmark
+Skriv ner filtrering på artikel (för histogram)
+Dubbelkolla openswath FASTA input
+Skriv om trtiqler log2FC 1.0 proteinmm quantity removal
+Undersök vad som händer i FC 1 och 0.5 i triqler scatter plot. Är det olika många peptider i scatterplotten i olika regioner.
+    De som ligger på topparna har fler peptider än de som är mellan topparna
+Prosit transformer
+Skriv om ID/PS i statistical calibratiopn plot
+Kolla fraction hela på statistical calibration plot
+Dubbelkolla om vi använder adj.p när vi ska ha p i q-värdes omräkning.
+
+## 16:30 calibration plot analysis
+
+## 2022-05-17 09:30-17:00
+## 2022-05-16 09:00-18:30
 ## 2022-05-13
 ### 09:30 Meeting
 ### 17:40

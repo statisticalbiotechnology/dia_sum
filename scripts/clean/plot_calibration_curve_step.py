@@ -126,7 +126,7 @@ def calibration_plot(df, output, xlim = [0,0.10], ylim = [0,0.20]):
     #axs.set_xlabel(r"\textit{q}-value / FDR ", fontsize=34)
     #axs.set_ylabel("Fraction HeLa", fontsize=38)
 
-    axs.set_xlabel("FDR", fontsize=24)
+    axs.set_xlabel("q-value", fontsize=24)
     axs.set_ylabel(r"Fraction HeLa", fontsize=24)
 
     axs.tick_params(axis='x', which='major', labelsize=21)#labelrotation=90)
@@ -170,11 +170,11 @@ def get_fraction_hela_df(triqler, top3, msstats, msqrob2):
 def threshold_fc(df, fc_threshold):
     fc_threshold = 0.0
     df_fc = df[abs(df["log2FC"]) > fc_threshold].copy()
-    df_fc["FDR"] = qvalues(df_fc, pcol = "FDR")["q"] #recompute FDR for thresholded set
+    df_fc["FDR"] = qvalues(df_fc, pcol = "p")["q"] #recompute FDR for thresholded set
     return df_fc
 
 
-def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_threshold = 0, xlim = [0,0.05], ylim = [0,0.05]):
+def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_threshold = 0, xlim = [0,0.10], ylim = [0,0.2]):
     
     #fc_threshold = 0.0 #should be same as triqler fc_eval
 
@@ -190,9 +190,9 @@ def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_thresho
     triqler.rename({"protein":"Protein"}, axis = 1, inplace = True)
     top3 = pd.read_csv(top3_file, sep = "\t").rename({"q":"FDR", 'log2(A,B)':"log2FC"}, axis = 1)
     top3.rename({"ProteinName":"Protein"}, axis = 1, inplace = True)
-    msstats = pd.read_csv(msstats_file, sep = ",").rename({"adj.pvalue":"FDR"}, axis = 1)
+    msstats = pd.read_csv(msstats_file, sep = ",").rename({"adj.pvalue":"FDR", "pvalue":"p"}, axis = 1)
     msstats["specie"] = msstats.Protein.map(lambda x:x.split("_")[1])
-    msqrob2 = pd.read_csv(msqrob2_file, sep = ",").rename({"Unnamed: 0":"protein", "adjPval":"FDR", "logFC":"log2FC"}, axis = 1)
+    msqrob2 = pd.read_csv(msqrob2_file, sep = ",").rename({"Unnamed: 0":"protein", "adjPval":"FDR", "pval":"p", "logFC":"log2FC"}, axis = 1)
     msqrob2.rename({"protein":"Protein"}, axis = 1, inplace = True)
     msqrob2["specie"] = msqrob2.Protein.map(lambda x:x.split("_")[1])
     msqrob2.rename({"protein":"Protein"}, axis = 1, inplace = True)
@@ -207,56 +207,59 @@ def main(triqler_file, top3_file, msstats_file, msqrob2_file, output, fc_thresho
     
     calibration_plot(df = df, output = output, xlim = xlim, ylim = ylim)
 
-parser = argparse.ArgumentParser(
-    description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots calibration plots.',
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--triqler_input', type=str,
-                    help='Triqler results file.')
-
-parser.add_argument('--top3_input', type=str,
-                    help='Top3 results file.')
-
-parser.add_argument('--msstats_input', type=str,
-                    help='MsStats results file.')
-
-parser.add_argument('--msqrob2_input', type=str,
-                    help='MSqRob2 results file.')
-
-parser.add_argument('--fc_threshold', type=float,
-                    help='Log2FC threshold to apply on Top3, MsStats and MSqRob2 results. NOTE: Triqler does not need Log2FC thresholding. Use the same fold_change_eval parameter when running triqler.')
-
-parser.add_argument('--output', type=str,
-                    help='Output name.')
-
-parser.add_argument('--x_min', type=float, default = 0.0,
-                    help='x_min for plot.')
-
-parser.add_argument('--x_max', type=float, default = 0.1,
-                    help='x_max for plot.')
-
-parser.add_argument('--y_min', type=float, default = 0.0,
-                    help='y_min for plot.')
-
-parser.add_argument('--y_max', type=float, default = 0.2,
-                    help='y_max for plot.')
-
-
-# parse arguments from command line
-args = parser.parse_args()
-triqler_file = args.triqler_input
-top3_file = args.top3_input
-msstats_file = args.msstats_input
-msqrob2_file = args.msqrob2_input
-fc_threshold = args.fc_threshold
-output = args.output
-x_min = args.x_min
-x_max = args.x_max
-y_min = args.y_min
-y_max = args.y_max
                             
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(
+        description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots calibration plots.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('--triqler_input', type=str,
+                        help='Triqler results file.')
+
+    parser.add_argument('--top3_input', type=str,
+                        help='Top3 results file.')
+
+    parser.add_argument('--msstats_input', type=str,
+                        help='MsStats results file.')
+
+    parser.add_argument('--msqrob2_input', type=str,
+                        help='MSqRob2 results file.')
+
+    parser.add_argument('--fc_threshold', type=float,
+                        help='Log2FC threshold to apply on Top3, MsStats and MSqRob2 results. NOTE: Triqler does not need Log2FC thresholding. Use the same fold_change_eval parameter when running triqler.')
+
+    parser.add_argument('--output', type=str,
+                        help='Output name.')
+
+    parser.add_argument('--x_min', type=float, default = 0.0,
+                        help='x_min for plot.')
+
+    parser.add_argument('--x_max', type=float, default = 0.1,
+                        help='x_max for plot.')
+
+    parser.add_argument('--y_min', type=float, default = 0.0,
+                        help='y_min for plot.')
+
+    parser.add_argument('--y_max', type=float, default = 0.2,
+                        help='y_max for plot.')
+
+
+    # parse arguments from command line
+    args = parser.parse_args()
+    triqler_file = args.triqler_input
+    top3_file = args.top3_input
+    msstats_file = args.msstats_input
+    msqrob2_file = args.msqrob2_input
+    fc_threshold = args.fc_threshold
+    output = args.output
+    x_min = args.x_min
+    x_max = args.x_max
+    y_min = args.y_min
+    y_max = args.y_max
+    
     main(triqler_file = triqler_file, 
          top3_file = top3_file, 
          msstats_file = msstats_file, 
