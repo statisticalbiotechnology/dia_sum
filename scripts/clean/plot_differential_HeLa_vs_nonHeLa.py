@@ -204,7 +204,7 @@ if __name__ == "__main__":
 
     ax.tick_params(axis='x', which='major', labelsize=42)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=42)
-    #ax.set_xlim(xlim)
+    ax.set_xlim([0,50])
 
     plt.setp(ax.get_legend().get_texts(), fontsize='32') # for legend text
     plt.setp(ax.get_legend().get_title(), fontsize='38') # for legend title
