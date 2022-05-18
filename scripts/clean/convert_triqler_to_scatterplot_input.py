@@ -19,6 +19,8 @@ def convert_triqler_to_scatterplot_input(triqler_results, triqler_input):
     (It only contains relative values).
     """
     df_triqler_res = parse_triqler(triqler_results)
+    df_triqler_res = (df_triqler_res[~((df_triqler_res.iloc[:,df_triqler_res.columns.str.contains("Pedro")] == 1).sum(axis=1) == 6)]) # Remove proteins that are not updates at any sample
+
     df_triqler_input = pd.read_csv(triqler_input, sep = "\t")
     
     df_triqler_res["decoy"] = df_triqler_res.protein.map(lambda x:x.split("_")[0])

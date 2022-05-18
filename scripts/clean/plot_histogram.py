@@ -48,6 +48,8 @@ def read_triqler(triqler_file):
     df.rename({"log2_fold_change":"log2FC", "q_value":"FDR"}, axis = 1, inplace = True)
     df = df[~df.protein.str.contains("DECOY")]
     df.sort_values(by = ["specie"], inplace = True)
+    
+    df = (df[~((df.iloc[:,df.columns.str.contains("Pedro")] == 1).sum(axis=1) == 6)]) # Remove proteins that are not updates at any sample
     return df
 
 def read_top3(top3_file):
@@ -71,33 +73,35 @@ def read_msqrob2(msqrob2_file):
     df.sort_values(["specie"], inplace = True)
     return df
 
- 
-parser = argparse.ArgumentParser(
-    description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots differential HeLa vs differential non-HeLa lineplot.',
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--input_file', type=str,
-                    help='input file name.')
-
-parser.add_argument('--input_type', type=str,
-                    help='the input_type is one of triqler/top3/msstats/msqrob2.')
-
-parser.add_argument('--bins', type=int,
-                    help='Number of bins in the histogram.',
-                    default=50)
-
-parser.add_argument('--output', type=str,
-                    help='output name.')
-
-
-# parse arguments from command line
-args = parser.parse_args()
-input_file = args.input_file
-input_type = args.input_type
-bins = args.bins
-output = args.output
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(
+        description='This script takes triqler results, top3 results, msstat results and msqrob2 results and plots differential HeLa vs differential non-HeLa lineplot.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    
+    parser.add_argument('--input_file', type=str,
+                        help='input file name.')
+    
+    parser.add_argument('--input_type', type=str,
+                        help='the input_type is one of triqler/top3/msstats/msqrob2.')
+    
+    parser.add_argument('--bins', type=int,
+                        help='Number of bins in the histogram.',
+                        default=50)
+    
+    parser.add_argument('--output', type=str,
+                        help='output name.')
+    
+    
+    # parse arguments from command line
+    args = parser.parse_args()
+    input_file = args.input_file
+    input_type = args.input_type
+    bins = args.bins
+    output = args.output
+    
     print("Reading in : " + input_file)
     if input_type == "triqler":
         df = read_triqler(input_file)
