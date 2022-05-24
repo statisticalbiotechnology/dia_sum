@@ -26,7 +26,7 @@ def plot_scatterplot(df, output, fdr_threshold = 1.00):
     df = df[np.isfinite(df["2"])]
     df = df[np.isfinite(df["log2(A,B)"])]
     
-    f, ax = plt.subplots(1, 1, figsize = (15,8))
+    f, ax = plt.subplots(1, 1, figsize = (15,10))
     sns.regplot(data = df[df.specie == "ECOLI"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label ="ECOLI", fit_reg = False)
     sns.regplot(data = df[df.specie == "HUMAN"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "HUMAN", fit_reg = False)
     sns.regplot(data = df[df.specie == "YEAST"], x = "2", y = "log2(A,B)", ax = ax, line_kws = {"ls":"--"}, label = "YEAST", fit_reg = False)

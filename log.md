@@ -36,6 +36,15 @@ Check what is endogenous peptide.
 
 # Log
 
+## 2022-05-25
+### 09:00 Cleaning up article and plots
+
+## 2022-05-24
+### 19:00 Done
+### 13:00 Do we even need for other methods?
+### 12:00 Fixing number of peptides plot
+### 09:30 EncyclopeDIA Error
+
 ## 2022-05-18 
 ### 09:00 Finishing up scatterplot, histogram and differential abudande plots 
 ### 13:00 meeting 
@@ -54,6 +63,8 @@ Kolla fraction hela på statistical calibration plot
 Dubbelkolla om vi använder adj.p när vi ska ha p i q-värdes omräkning.
 
 ## 16:30 calibration plot analysis
+
+## 18:30 Started Encyclopedia on LFQBENCH set
 
 ## 2022-05-17 09:30-17:00
 ## 2022-05-16 09:00-18:30
