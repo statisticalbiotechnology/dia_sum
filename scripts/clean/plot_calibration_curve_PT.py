@@ -59,21 +59,10 @@ def qvalues(pvalues, pcol = "p"):
         pvalues.loc[ix,"q"] = q
     return pvalues
 
-def get_DE_for_triqler(triqler):
-    qs = []
-    dfs = []
-    q_range = np.arange(0,0.101, 0.001) 
-    for q in q_range:
-        qs.append(q)
-        dfs.append(get_pq_data_triqler(triqler, q))
-    
-    df_res = pd.concat(dfs).set_index(q_range)
-    #df_res = pd.DataFrame(vals, index = np.arange(0,0.101, 0.001), columns = ["HUMAN", "YEAS8", "ECOLI", "HUMAN_factor", "YEAST_factor", "ECOLI_factor"])
-    return df_res
-
 def get_fraction_hela(df_in, method):
     df=df_in.copy()
     df.sort_values(by = "FDR", inplace = True)
+    df.drop(df[df["Protein"].str.contains("DECOY_")].index, inplace=True)
     df["count_HUMAN"] = df.Protein.str.contains("_HUMAN").astype(int)
     df["count_ECOLI"] = df.Protein.str.contains("_ECOLI").astype(int)
     df["count_YEAST"] = df.Protein.str.contains("_YEAST").astype(int)
@@ -82,7 +71,8 @@ def get_fraction_hela(df_in, method):
     df["cumsum_YEAST"] = df["count_YEAST"].cumsum()
     df["Fraction_HeLa"] = df["cumsum_HUMAN"] / (df["cumsum_HUMAN"] + df["cumsum_ECOLI"] + df["cumsum_YEAST"])
     df["Method"] = method
-    df.fillna(1, inplace = True) # assume NaN is maxed out FDR
+#    df.fillna(1, inplace = True) # assume NaN is maxed out FDR
+    df.FDR = df.FDR.fillna(value = 1)
     #df = df.reset_index().drop("index",axis = 1)
     return df[["FDR", "Fraction_HeLa", "Method"]]
 
@@ -150,7 +140,8 @@ def plot(triqler_file, top3_file, msstats_file, msqrob2_file, fc_threshold = 0, 
         msqrob2 = threshold_fc(msqrob2, fc_threshold)
         
     df = get_fraction_hela_df(triqler, top3, msstats, msqrob2)
-    
+    df = df[df.Fraction_HeLa != 0] # remove artifical 1 when cumsum
+    df = df[df.FDR != 0] #remove FDR that are 0, these cant be exactly zero...
     calibration_plot(df = df, xlim = xlim, ylim = ylim)
 
  
@@ -168,6 +159,17 @@ def plot_calibration_PT(method = "ID"):
     plot(triqler_file, top3_file, msstats_file, msqrob2_file, 
          fc_threshold = fc_threshold, 
          xlim = xlim, ylim = ylim)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
