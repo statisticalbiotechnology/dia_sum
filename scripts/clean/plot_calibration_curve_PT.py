@@ -59,48 +59,6 @@ def qvalues(pvalues, pcol = "p"):
         pvalues.loc[ix,"q"] = q
     return pvalues
 
-
-def pq_data(df, fc):
-    df_gt = df[df.log2FC > fc]
-    df_lt = df[df.log2FC < -fc]
-    df_fc = pd.concat([df_gt, df_lt])
-    if "p" in df.columns:
-        df_fc["FDR"] = qvalues(df_fc, pcol = "p") ["q"]
-    n_array = []
-    for q in np.arange(0,0.101,0.001):
-        n = (df_fc["FDR"] <= q).sum()
-        n_array.append(n)
-    res = pd.DataFrame(n_array, index = np.arange(0, 0.101, 0.001), columns = ["DE"])
-    return res
-
-def get_pq_data_triqler(triqler, q_val):
-    fc_tresh = []
-    n_hs = []
-    n_ye = []
-    n_ec = []
-    ecoli_scaling_factor = []
-    yeast_scaling_factor = []
-    human_scaling_factor = []
-   
-    #fc = float(file.split("_")[1])
-    triqler["specie"] = triqler.protein.map(lambda x:x.split("_")[1])
-    df_triq = triqler
-    ecoli_factor = (df_triq["specie"] == "ECOLI").sum()/(df_triq["specie"] == "HUMAN").sum()
-    yeast_factor = (df_triq["specie"] == "YEAST").sum()/(df_triq["specie"] == "HUMAN").sum()
-    human_factor = (df_triq["specie"] == "HUMAN").sum()/(df_triq["specie"] == "HUMAN").sum()
-    df_triq = df_triq[df_triq.q_value < q_val]
-    n_hs.append((df_triq["specie"] == "HUMAN").sum())
-    n_ye.append((df_triq["specie"] == "YEAST").sum())
-    n_ec.append((df_triq["specie"] == "ECOLI").sum())
-    ecoli_scaling_factor.append(ecoli_factor) #Should be same for all values because we want the full length of protein list
-    yeast_scaling_factor.append(yeast_factor) #Should be same for all values because we want the full length of protein list
-    human_scaling_factor.append(human_factor)
-    #fc_tresh.append(fc)
-    df =pd.DataFrame(np.array([n_hs, n_ye, n_ec,
-                               human_scaling_factor, yeast_scaling_factor, ecoli_scaling_factor]).T, 
-                     columns = ["HUMAN", "YEAST", "ECOLI", "HUMAN_factor", "YEAST_factor", "ECOLI_factor"])
-    return df
-
 def get_DE_for_triqler(triqler):
     qs = []
     dfs = []
