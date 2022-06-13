@@ -94,7 +94,7 @@ def threshold_fc(df, fc_threshold):
 def calibration_plot(df, xlim = [0,0.10], ylim = [0,0.20]):
     fig, axs = plt.subplots(1, 1, figsize=(10,6))
     sns.lineplot(x = "FDR", y = "Fraction_HeLa", data = df, ax = axs, hue = "Method")
-    axs.set_xlabel("q-value", fontsize=24)
+    axs.set_xlabel("FDR", fontsize=24)
     axs.set_ylabel(r"Fraction HeLa", fontsize=24)
     axs.tick_params(axis='x', which='major', labelsize=21)#labelrotation=90)
     axs.tick_params(axis='y', which='major', labelsize=21)
@@ -145,14 +145,14 @@ def plot(triqler_file, top3_file, msstats_file, msqrob2_file, fc_threshold = 0, 
     calibration_plot(df = df, xlim = xlim, ylim = ylim)
 
  
-def plot_calibration_PT_origo(method = "ID"):
+def plot_calibration_PT_origo(method = "ID", fc_threshold = 0):
     directory = "results/" + method + "/"
     triqler_file = directory + "triqler_results.csv"
     top3_file = directory + "top3_results.csv"
     msstats_file = directory + "msstats_results.csv"
     msqrob2_file = directory + "msqrob2_results.csv"
     
-    fc_threshold = 0
+    fc_threshold = fc_threshold
     xlim = [0, 0.10]
     ylim = [0, 0.2]
 
