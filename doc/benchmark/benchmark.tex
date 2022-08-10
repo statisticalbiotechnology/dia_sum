@@ -89,8 +89,8 @@ We used two separate strategies to generate peptide abundances from the DIA-runs
 
 \begin{figure}[htp]
     \centering
-    \includegraphics[width=1.0\linewidth]{../../result/report_plots/DIA_benchmark_truncated.png} 
-    \caption{{\bf The DDA identification-driven matching (ID) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). A FDR-threshold at 1\% PSM-level was applied to Top3 and MSstats, and a FDR-threshold at 1\% at peptide-level identification false discovery rate (FDR) was applied to MSqRob2. No FDR-filtration was used for used for Triqler. \label{fig:flowchart}}      
+    \includegraphics[width=1.0\linewidth]{./img/methods.png} 
+    \caption{{\bf The DDA identification-driven matching (ID) and pseudo spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP is run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). Identification thresholds of 1\% on PSM-level was applied for Top3 and MSstats, and peptide-level for MSqRob2, while the identifications were provided unfiltered to Triqler. \label{fig:flowchart}}      
 \end{figure}
 
 
