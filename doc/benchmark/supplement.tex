@@ -51,11 +51,10 @@
     \multicolumn{7}{c}{ID workflow}                                                                                                                                                                                   \\ \hline
     Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
     Filename       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
-    Peptides  & 20 747                        & 21 445                        & 21 016                        & 20 494                        & 22 792                        & 22 787                        \\
-    Proteins  & 2 836                         & 2 857                         & 2 869                         & 2 818                         & 2 909                         & 2 918                         \\ \hline
+    Peptides  & 12 934                        & 13 819                        & 13 063                        & 12 023                        & 14 858                        & 15 208                        \\
+    Proteins  & 2 252                         & 2 321                         & 2 243                         & 2 159                         & 2 427                         & 2 433                         \\ \hline
     \end{tabular}
-    \todo[inline]{Spell out which FDR treshholds that were used when deriving the figures. These figures are for instance not relevant to triqler.}
-     \caption{{\bf Number of identified peptides and proteins for the samples using the ID workflow.}
+     \caption{{\bf Number of identified peptides and proteins} for the samples using the ID workflow and a peptide-level FDR at 0.01. The FDR-level is obtained with an $m\_score$ cutoff at 0.00079. This $m\_score$ cutoff is computed by setting the desired peptide-level FDR of 0.01 with \texttt{mscore4pepfdr} in the \texttt{SWATH2stats} package.
           \label{fig:osw_peptide_and_protein_id}}
 \end{table}
         
@@ -66,11 +65,10 @@
     \multicolumn{7}{c}{PS workflow}                                                                                                                                                                                   \\ \hline
     Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
     Filename       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
-    Peptides  & 21 036                        & 20 783                        & 21 040                        & 21 243                        & 21 325                        & 21 248                        \\
-    Proteins  & 3 377                         & 3 350                         & 3 368                         & 3 358                         & 3 381                         & 3 356                         \\ \hline
+    Peptides  & 20 880                        & 20 653                        & 20 907                        & 21 118                        & 21 192                        & 21 137                        \\
+    Proteins  & 3 228                         & 3 224                         & 3 240                         & 3 243                         & 3 255                         & 3 249                         \\ \hline
     \end{tabular}
-    \todo[inline]{Spell out which FDR treshholds that were used when deriving the figures. These figures are for instance not relevant to triqler.}
-     \caption{{\bf Number of identified peptides and proteins for the samples using the PS workflow.}
+     \caption{{\bf Number of identified peptides and proteins} for the samples using the PS workflow with a peptide-level FDR at 0.01.
           \label{fig:diann_peptide_and_protein_id}}
 \end{table}
 
@@ -101,9 +99,7 @@
         A & \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/quantile_bins_ID_median.png} &
         B & \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/quantile_bins_PS_median.png} \\
     \end{tabular}
-\todo[inline]{What is a Log of Peptide?}
-\todo[inline]{Change }
-  \caption{{\bf Standard deviation of peptide abundance as a function of mean abundance in DIA experiments.} We plotted the standard deviation across samples as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set. We used a log-log scale for abundances derived by the (A) ID pipeline and (C-D) PS pipeline.  We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. Linear scale plots are reported as reference.  \label{fig:uniform_offset_in_standard_deviation_boxplot}}
+  \caption{{\bf Standard deviation of peptide abundance as a function of mean abundance in DIA experiments.} We performed quantile binning using pandas qcut function and plotted the standard deviation across samples as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set. The x-axis value indicate the median of the bin-range. We used a log-log scale for abundances derived by the (A) ID pipeline and (B) PS pipeline.  We observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$. Linear scale plots are reported as reference.  \label{fig:uniform_offset_in_standard_deviation_boxplot}}
 \end{figure}
 
 
@@ -143,17 +139,31 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
     \newcolumntype{V}{>{\centering\arraybackslash} m{.4\linewidth} }
     \setlength{\tabcolsep}{0pt}
     %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
+    
+    %\begin{tabular}{>{\centering\arraybackslash} m{3cm} V V} 
+    %    & ID & PS \\
+    %    Triqler & \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_triqler.png} & 
+    %    \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_triqler.png} \\ 
+    %    MSqRob2 &\includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} & 
+    %    \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msqrob2.png} \\ 
+    %    MSstats & \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msstats.png} & 
+    %    \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msstats.png} \\ 
+    %    Top3 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_top3.png} &
+    %    \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_top3.png} 
+    %\end{tabular}
+    
     \begin{tabular}{>{\centering\arraybackslash} m{3cm} V V} 
         & ID & PS \\
-        Triqler & \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_triqler.png} & 
-        \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_triqler.png} \\ 
-        MSqRob2 &\includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} & 
-        \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msqrob2.png} \\ 
-        MSstats & \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msstats.png} & 
-        \includegraphics[trim=0 70 0 -70, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msstats.png} \\ 
-        Top3 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_top3.png} &
-        \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_top3.png} 
+        Triqler & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_triqler.png} & 
+        \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_triqler.png} \\ 
+        MSqRob2 & \vspace{-1cm}\includegraphics[trim={0 0 0 6}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} & 
+        \vspace{-1cm}\includegraphics[trim={0 0 0 6}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msqrob2.png} \\ 
+        MSstats & \vspace{-1cm}\includegraphics[trim={0 0 0 16}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_msstats.png} & 
+        \vspace{-1cm}\includegraphics[trim={0 0 0 18}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_msstats.png} \\ 
+        Top3 & \vspace{-0.9cm}\includegraphics[trim={0 0 0 10}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_ID_top3.png} &
+        \vspace{-1.1cm}\includegraphics[trim={0 0 0 15}, clip, width=\linewidth]{../../result/report_plots_pipeline/histogram_PS_top3.png} 
     \end{tabular}
+
     \caption{{\bf Comparison of reported fold change distributions.} We used protein data from (A-D) ID and (E-H) PS pipelines as generated by 
     (A,E) Triqler, (B,F) MSqRob2, (C,G) MSstats, and (D,H) Top3. \label{fig:fc_histogram_supplement}}
 \end{figure}
@@ -166,16 +176,15 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
    %\includegraphics[width=16cm]{../../result/2021-08-13_docs_plots/intensity_plot.png}
     \begin{tabular}{   >{\centering\arraybackslash} m{3cm} V V}
                 & ID & PS \\
-        Triqler & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler.png}  
+        {\rotatebox[origin=c]{90}{Triqler}} & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler.png}  
                 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_PS_triqler.png} \\ 
-        MSqRob2 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_msqrob2.png}  
+        {\rotatebox[origin=c]{90}{MSqRob2}} & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_msqrob2.png}  
                 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_PS_msqrob2.png} \\ 
-        MSstats & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_msstats.png}  
+        {\rotatebox[origin=c]{90}{MSstats}} & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_msstats.png}  
                 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_PS_msstats.png} \\ 
-        Top3    & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_top3.png}
+        {\rotatebox[origin=c]{90}{Top3}}    & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_ID_top3.png}
                 & \includegraphics[width=\linewidth]{../../result/report_plots_pipeline/scatter_PS_top3.png} 
     \end{tabular}
-    \todo[inline]{Change Y-axis to $\log_2(A/B)$}
     \caption{{\bf Summarized protein abundances by the compared methods.} from (A-D) ID and (E-H) PS pipelines as generated by 
     (A,E) Triqler, (B,F) MSqRob2, (C,G) MSstats, and (D,H) Top3. \label{fig:fc_scatter_supplement}}
 \end{figure}
@@ -192,8 +201,6 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
         B \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         D \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.51.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-    \todo[inline]{Change X-axis to ``Estimated FDR/$q$-value''}
-    \todo[inline]{Change Y-axis to ``Fraction of HeLa samples''}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value for (A,C) ID pipeline and (B,D) PS pipeline. (A,C) is non FC-thresholded and (C,D) is FC-thresholded at 0.51. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
 
@@ -206,8 +213,6 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
         A \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/fc_peptide_count_ID_triqler.png} & &
         B \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/fc_peptide_count_PS_triqler.png} & \\
     \end{tabular}
-    \todo[inline]{Change X-axis to $\log_2(A/B)$}
-    \todo[inline]{Change Y-axis to median number of peptides}
     \caption{{\bf Proteins with a different Triqler-estimated abundance than expected are summarized by less peptides than ones that are well estimated.} We plotted the median number of peptides per protein for    
   We binned the peptides into regions of 0.1 ranged bins of estimated fold change and plotted them median for all bins between [-2,3], and plotted the median number of peptides as a function of bin-centers of the fold change. (A) is the ID pipeline and (B) is the PS pipeline \label{fig:number_of_peptides_supplement}}
 \end{figure}

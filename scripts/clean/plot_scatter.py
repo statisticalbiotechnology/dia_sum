@@ -37,7 +37,7 @@ def plot_scatterplot(df, output, fdr_threshold = 1.00):
     ax.set_ylim([-2,3])
     #ax.set_xlim([0,10])
     ax.set_xlabel("log2(B)", fontsize=34)
-    ax.set_ylabel("log2(A,B)", fontsize=34)
+    ax.set_ylabel("log2(A/B)", fontsize=34)
     
     ax.tick_params(axis='x', which='major', labelsize=32)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=32)

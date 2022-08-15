@@ -43,7 +43,7 @@ specie_mapper = lambda x: x.split("_")[-1]
 
 def read_triqler(triqler_file):
     df = parse_triqler(triqler_file)
-    df["log2_fold_change"] = -df.log2_fold_change
+    #df["log2_fold_change"] = -df.log2_fold_change
     df["specie"] = df.protein.map(specie_mapper)
     df.rename({"log2_fold_change":"log2FC", "q_value":"FDR"}, axis = 1, inplace = True)
     df = df[~df.protein.str.contains("DECOY")]
@@ -55,7 +55,7 @@ def read_triqler(triqler_file):
 def read_top3(top3_file):
     df = pd.read_csv(top3_file, sep = "\t")
     df.rename({"q":"FDR", "log2(A,B)":"log2FC"}, axis = 1, inplace = True)
-    df.log2FC = -df.log2FC
+    #df.log2FC = -df.log2FC
     df.sort_values(by = ["specie"], inplace = True)
     return df
 
@@ -64,6 +64,7 @@ def read_msstats(msstats_file):
     df.rename({"adj.pvalue":"FDR"}, axis = 1, inplace = True)
     df["specie"] = df.Protein.map(specie_mapper)
     df.sort_values(["specie"], inplace = True)
+    df.log2FC = -df.log2FC # added for reverse A/B
     return df
 
 def read_msqrob2(msqrob2_file):
@@ -71,6 +72,7 @@ def read_msqrob2(msqrob2_file):
     df.rename({"Unnamed: 0":"protein", "logFC":"log2FC", "adjPval":"FDR"}, axis = 1, inplace = True)
     df["specie"] = df.protein.map(specie_mapper)
     df.sort_values(["specie"], inplace = True)
+    df.log2FC = -df.log2FC # added for reverse log2FC
     return df
 
 
