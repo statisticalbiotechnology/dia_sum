@@ -87,7 +87,7 @@
         F & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\ 
 
     \end{tabular}
-    \caption{{\bf The compared methods ability to differentiate differentially abundant proteins.} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) SL pipeline and (B) PS pipeline. For the test we selected a fold-change evaluation of 0.51 for Triqler and fold-change treshold of 0.51 for Top3, MSstats and MSqRob2. All methods have an protein-level FDR threshold of 0.01. \label{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}}
+    \caption{{\bf The compared methods ability to differentiate differentially abundant proteins.} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test we selected a fold-change evaluation of 0.51 for Triqler and fold-change treshold of 0.51 for Top3, MSstats and MSqRob2. All methods have an protein-level FDR threshold of 0.01. \label{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}}
 \end{figure}
 
 
@@ -128,7 +128,7 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
         A \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/fraction_missing_values_ID.png} & &%\includegraphics[width=0.3\linewidth]{} & 
         B \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/fraction_missing_values_PS.png} & \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-    \caption{{\bf Comparison of actual missing values against fit to the censored normal distribution used in triqler.} We imputed the missing values as the mean of sample peptide intensities and used these imputed values to approximate the missingness for a given intensity. We binned the intensities to an arbitrary small range and plotted the fraction os missing values for each intensity range. A cubic spline fit was used to fit the values against the mentioned censored normal distribution for (A) SL pipeline  and (B) PS pipeline. \label{fig:fraction_missing_values}}
+    \caption{{\bf Comparison of actual missing values against fit to the censored normal distribution used in triqler.} We imputed the missing values as the mean of sample peptide intensities and used these imputed values to approximate the missingness for a given intensity. We binned the intensities to an arbitrary small range and plotted the fraction os missing values for each intensity range. The curve\_fit function from scipy.optimize was used to fit the values against the mentioned censored normal distribution for (A) ID pipeline  and (B) PS pipeline. \label{fig:fraction_missing_values}}
 
 \end{figure}
 

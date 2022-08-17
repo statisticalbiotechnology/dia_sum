@@ -150,7 +150,7 @@ def main():
     ax.plot(xdata, pmissing(xdata, popt[0], popt[1]), "r--", label='fit: muLogit=%5.3f, sigmaLogit=%5.3f' % tuple(popt), linewidth=5)
     
     # NOTE THIS IS NOT LOG-INTENSITY
-    ax.set_xlabel("Intensity", fontsize = 34)
+    ax.set_xlabel("Peptide intensity", fontsize = 34)
     #ax.tick_params(axis='both', which='major', labelsize=20)
     ax.tick_params(axis='x', which='major')
     #ax.set_ylabel("Fraction missing values within binned interval", fontsize = 38)
