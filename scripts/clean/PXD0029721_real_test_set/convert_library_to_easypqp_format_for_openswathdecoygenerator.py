@@ -34,7 +34,7 @@ def parse_triqler(triqler_output_file):
 
 
 
-lib_pxd = pd.read_csv("lib.tsv", sep = "\t")
+lib_pxd = pd.read_csv("lib_decoy.tsv", sep = "\t")
 lib_input = pd.read_csv("library_specie.tsv", sep = "\t")
             
 lib_pxd = lib_pxd[["PrecursorMz", "ProductMz", "ProteinName", "Genes", "PeptideSequence", "ModifiedPeptide",
@@ -54,7 +54,7 @@ lib_pxd = lib_pxd[["PrecursorMz", "ProductMz", "Annotation", "ProteinId", "GeneN
          "FragmentLossType"]]
 
 
-
+1
 
 lib_pxd.to_csv("lib_converted.tsv", sep = "\t", index = False)
 
@@ -63,9 +63,10 @@ lib_pxd.to_csv("lib_converted.tsv", sep = "\t", index = False)
 import os
 
 os.chdir("/hdd_14T/data/PXD029721_PBMC_dia_sum_test/ftp.pride.ebi.ac.uk/pride/data/archive/2022/04/PXD029721/test/lib_converted_decoy")
-
+os.chdir("/hdd_14T/data/PXD031075_covid_bat_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/01/PXD031075")
 lib = pd.read_csv("lib_converted_decoy.tsv", sep  = "\t")
 lib = pd.read_csv("2021-9_fullExp-lib.decoy.tsv", sep = "\t")
+lib = pd.read_csv("lib_decoy.tsv", sep = "\t")
 lib = lib[["PrecursorMz", "ProductMz", "ProteinId", "GeneName", "PeptideSequence", "ModifiedPeptideSequence",
      "PrecursorCharge", "LibraryIntensity", "NormalizedRetentionTime",
      "PrecursorIonMobility", "FragmentType", "ProductCharge", 

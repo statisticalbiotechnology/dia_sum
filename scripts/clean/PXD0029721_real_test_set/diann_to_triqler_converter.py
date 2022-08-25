@@ -16,7 +16,7 @@ def convert_diann_to_triqler(filename, output):
                                 "Protein.Ids"])
     df["condition"] = df.Run.map(lambda x: x.split("_")[-2])
     df.rename({"Run":"run", "Precursor.Charge":"charge", "Q.Value":"searchScore",
-               "Precursor.Quantity":"intensity", "Stripped.Sequence":"peptide",
+               "Precursor.Normalised":"intensity", "Stripped.Sequence":"peptide",
                "Protein.Ids":"proteins"}, axis = 1, inplace = True)
     df = df[["run", "condition", "charge", "searchScore", "intensity", "peptide", "proteins"]]
     df["searchScore"] = -np.log(df["searchScore"])
