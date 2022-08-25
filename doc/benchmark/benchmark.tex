@@ -52,7 +52,7 @@
 
 \begin{abstract}
 
-A frequently desired goal when processing data from a quantitative shotgun proteomics experiment is to obtain a list of proteins that are differentially abundant under the examined experimental conditions. Unfortunately, this is a challenging process, as the mass spectrometer analyses the proteolytic peptides of a protein, rather than the proteins themselves. We have previously designed a Bayesian hierarchical probabilistic model, Triqler, for combining peptide identification and quantification errors into probabilities of proteins being differentially abundant. 
+A frequent goal or subgoal when processing data from a quantitative shotgun proteomics experiment is a list of proteins that are differentially abundant under the examined experimental conditions. Unfortunately, obtaining such a list a challenging process, as the mass spectrometer analyses the proteolytic peptides of a protein, rather than the proteins themselves. We have previously designed a Bayesian hierarchical probabilistic model, Triqler, for combining peptide identification and quantification errors into probabilities of proteins being differentially abundant. 
 
 Here we show that Triqler, is well compatible with data-independent acquisition data, despite being designed for data-dependent acquisition data. Furthermore, we find that it has better performance than other protein summarization tools when compared against a set of state-of-the-art DIA processing methods. 
 \end{abstract}
@@ -153,8 +153,24 @@ Triqler is not meant as a tool to give point estimates of abundances, instead tr
 
 We applied Triqler, MSstats, MSqRob2, and Top3(see the Methods section) to the peptide abundances derived from the ID and PS workflows from the varying concentrations of {\em E. Coli} and yeast concentrations in a background of HeLa-cells of the LFQBench set. As a first overview of the results we made histograms of  Triqler's protein-level fold change MAPs as well as the compared methods estimated fold-changes (Figure \ref{fig:fc_histogram}). For the comparison removed the methods' fold change selection mechanisms.
 
-Triqler and Top3 appears to have less fold-change bias than MSstats and MSqRob2, that is, the apex of the distributions is centered more closely to the lysate mixture rates. MSstats and MSqRob2 have distribution apexes that for each species that are centered at lower fold changes than the true lysate mixture rates.  We also observe that the apex of the distributions has higher values for Triqler than the other methods. We also observe in Figure \ref{fig:fc_scatter} that the regression line goes towards the true fold-change values for Triqler, while it remains constantly postive for Top3, MSstats and MSqRob2. We also observe that Triqler has longer tails for the estimated yeast and {\em E. Coli} fold change distributions. These values are explained by proteins quantified with fewer peptides, i.e. less certain protein quantification. A figure of number of peptides per protein in different fold change regions can be seen in the supplement \ref{fig:number_of_peptides_supplement}.
- 
+Triqler and Top3 appears to have less fold-change bias than MSstats and MSqRob2, that is, the apex of the distributions is centered more closely to the lysate mixture rates. MSstats and MSqRob2 have distribution apexes that for each species that are centered at lower fold changes than the true lysate mixture rates. Reprocessing the data with replaced labels led to the reversed result, i.e. the apxeses centered around values higher that the pipetted mixture rates for both MSstats and MSqRob2 (data not shown).  We also observe that the apex of the distributions has higher values for Triqler than the other methods. We also observe in Figure \ref{fig:fc_scatter} that the regression line goes towards the true fold-change values for Triqler, while it remains constantly postive for Top3, MSstats and MSqRob2. We also observe that Triqler has longer tails for the estimated yeast and {\em E. Coli} fold change distributions. These values are explained by proteins quantified with fewer peptides, i.e. less certain protein quantification. It appears as the proteins with correctly estimated foldchanges are identified by more peptides that the one off from their expected fold change, as can be seen in in Figure S\ref{fig:number_of_peptides_supplement}, which show the number of peptides per protein for different Triqler estimated fold changes.
+
+
+\begin{figure}[hbt]
+    \centering
+    \begin{tabular}{cc}
+	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler.png} & 
+	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_top3.png} \\ 
+        A & B \\ 
+	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_msstats.png} & 
+	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_msqrob2.png} \\
+        C & D 
+    \end{tabular}
+    \caption{{\bf Summarized protein fold changes as a function if abundance.} The distribution of estimated fold changes as a function of estimated abundance as reported through the (A) MAP estimates from Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2.  As Triqler reports relative values for protein abundances the Triqler plot includes  Top3 reported protein abundances as a stand-in for the $log_2(B)$ values. The actual pipetted fold changes were indicated by a dashed line. See Supplementary Figure \ref{fig:fc_scatter_supplement} for protein-level results for both ID and PS workflows. \label{fig:fc_scatter}}
+\end{figure}
+
+
+
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc}
@@ -168,18 +184,6 @@ Triqler and Top3 appears to have less fold-change bias than MSstats and MSqRob2,
     \caption{{\bf Comparison of reported fold-change distributions.} We used protein data from the ID spectral library pipeline and (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. The dashed lines indicate the pipetted log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, as the apex of their distribution was found closer to the true fold-change difference (see Supplementary Figure \ref{fig:fc_histogram_supplement} for reported fold-change distributions for both ID and PS workflows). For these histograms, we included all the summarized proteins and did not remove any proteins based on  the significance or fold-change thresholds. \label{fig:fc_histogram}}
 \end{figure}
 
-\begin{figure}[hbt]
-    \centering
-    \begin{tabular}{cc}
-	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler.png} & 
-	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_top3.png} \\ 
-        A & B \\ 
-	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_msstats.png} & 
-	    \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/scatter_ID_msqrob2.png} \\
-        C & D 
-    \end{tabular}
-    \caption{{\bf Protein-level benchmark results} from (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2. A regression fit is marked by the dashed line. The results for Triqler indicates that the regression line beta is negative for the yeast and positive for the \it{E.Coli}. This hows that as we have more signal we have a beta tilted towards the true values, while Top3, MSstats and MSqRob2 has a positive beta regardless of specie (see Supplementary Figure \ref{fig:fc_scatter_supplement} for protein-level results for both ID and PS workflows). \label{fig:fc_scatter}}
-\end{figure}
 
 
 \subsubsection*{Comparison of ability to discriminate differentially from equivalently abundant proteins}

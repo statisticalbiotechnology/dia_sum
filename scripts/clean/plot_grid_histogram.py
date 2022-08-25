@@ -144,16 +144,19 @@ def grid_histogram(output, bins = 50, test = False):
             ax.xaxis.set_ticklabels([])
         if i >= 6:
             ax.set_xlabel("log2(A/B)", fontsize=34)
-    
-        if test == True:
-            ax.set_title(str(title))
+        if i > 0:
+            ax.get_legend().remove()
+        #if test == True:
+        #    ax.set_title(str(title))
         i+=1
          
         ax.tick_params(axis='x', which='major', labelsize=28)#labelrotation=90)
         ax.tick_params(axis='y', which='major', labelsize=28) 
-        g.legend_.set_title(None)
-        plt.setp(ax.get_legend().get_texts(), fontsize='20')
         
+        if g.legend_ != None:
+            g.legend_.set_title(None)
+        #plt.setp(ax.get_legend().get_texts(), fontsize='20')
+
         ax.axvline(x = 0, color = "orange", linestyle = "--", alpha = 0.4)
         ax.axvline(x = -1, color = "green", linestyle = "--", alpha = 0.4)
         ax.axvline(x = 2, color = "blue", linestyle = "--", alpha = 0.4)
