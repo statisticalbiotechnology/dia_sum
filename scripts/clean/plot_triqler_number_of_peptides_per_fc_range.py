@@ -12,8 +12,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from parsers.parse_triqler import parse_triqler
 import argparse
-sns.set_context("talk")
-
+#sns.set_context("talk")
+from matplotlib import rcParams
+rcParams['text.usetex'] = True
 
 
 def get_stats(df, df_inp, step = 0.2):
@@ -42,24 +43,28 @@ def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2
     df = pd.read_csv(input_file, sep = "\t")
     df_inp = parse_triqler(result_file)
     step = step
-    f, ax = plt.subplots(1, 1, figsize = (18,10))
+    f, ax = plt.subplots(1, 1, figsize = (24,14))
 
     res_ecoli = get_stats(df[df.specie == "ECOLI"], df_inp, step = step) # g
     res_yeast = get_stats(df[df.specie == "YEAST"], df_inp, step = step) # o
     res_human = get_stats(df[df.specie == "HUMAN"], df_inp, step = step) # b
-    sns.lineplot(data = res_ecoli, x = "log2FC", y = "median", linestyle='-', color = "tab:blue", ax = ax, label = "ECOLI")
-    sns.lineplot(data = res_yeast, x = "log2FC", y = "median", linestyle='-', color = "tab:green", ax = ax, label = "YEAST")
-    sns.lineplot(data = res_human, x = "log2FC", y = "median", linestyle='-', color = "tab:orange", ax = ax, label = "HUMAN")
+    sns.lineplot(data = res_ecoli, x = "log2FC", y = "median", linestyle='-', color = "tab:blue", ax = ax, label = r'\textit{E.Coli}')
+    sns.lineplot(data = res_yeast, x = "log2FC", y = "median", linestyle='-', color = "tab:green", ax = ax, label = "Yeast")
+    sns.lineplot(data = res_human, x = "log2FC", y = "median", linestyle='-', color = "tab:orange", ax = ax, label = "HeLa")
     #plt.legend(labels=["ECOLI","YEAST", "HUMAN"])
+    
+    
+    
     
     ax.legend()
     ax.axvline(2, linestyle = "--", color="tab:blue", alpha = 0.5)
     ax.axvline(0, linestyle = "--", color="tab:orange", alpha = 0.5)
     ax.axvline(-1, linestyle = "--", color="tab:green", alpha = 0.5)
     ax.set_ylim(bottom = 0)
-    #ax.set_xlim([0,10])
-    ax.set_xlabel("log2(A/B)", fontsize=34)
-    ax.set_ylabel("median number of peptides", fontsize=34)
+    ax.legend(fontsize=30)
+
+    ax.set_xlabel("Log2(A/B)", fontsize=34)
+    ax.set_ylabel("Median number of peptides", fontsize=34)
     
     ax.tick_params(axis='x', which='major', labelsize=32)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=32)
