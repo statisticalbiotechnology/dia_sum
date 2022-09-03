@@ -157,7 +157,7 @@ def main():
     #ax.tick_params(axis='both', which='major', labelsize=20)
     ax.tick_params(axis='x', which='major')
     #ax.set_ylabel("Fraction missing values within binned interval", fontsize = 38)
-    ax.set_ylabel("Fraction missing values", fontsize = 40)
+    ax.set_ylabel("Fraction Missing Values", fontsize = 40)
     ax.set_xlim(0, 100)
     #ax.set_ylim(0, 0.0)
     ax.legend(fontsize=30)
