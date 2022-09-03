@@ -64,7 +64,7 @@ def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2
     ax.legend(fontsize=30)
 
     ax.set_xlabel("Log2(A/B)", fontsize=34)
-    ax.set_ylabel("Median number of peptides", fontsize=34)
+    ax.set_ylabel("Median Number of Peptides", fontsize=34)
     
     ax.tick_params(axis='x', which='major', labelsize=32)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=32)
