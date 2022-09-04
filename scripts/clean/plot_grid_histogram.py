@@ -147,7 +147,7 @@ def grid_histogram(output, bins = 50, test = False):
         if i > 0:
             ax.get_legend().remove()
         if i == 0:
-            ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop={"size":20})
+            ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop={"size":24})
         
             
         #if test == True:

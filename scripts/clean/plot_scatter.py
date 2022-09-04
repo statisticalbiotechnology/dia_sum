@@ -42,9 +42,9 @@ def plot_scatterplot(df, output, fdr_threshold = 1.00):
     ax.set_xlabel("Log2(B)", fontsize=34)
     ax.set_ylabel("Log2(A/B)", fontsize=34)
     
-    ax.tick_params(axis='x', which='major', labelsize=32)#labelrotation=90)
-    ax.tick_params(axis='y', which='major', labelsize=32)
-    ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop = {"size":20}) 
+    ax.tick_params(axis='x', which='major', labelsize=38)#labelrotation=90)
+    ax.tick_params(axis='y', which='major', labelsize=38)
+    ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop = {"size":40}) 
     
     #plt.title("std/mu ratio for log-transformed peptide values")
         
