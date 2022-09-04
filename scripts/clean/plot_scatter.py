@@ -11,7 +11,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import argparse
+from matplotlib import rcParams
+
 sns.set_context("talk")
+rcParams["text.usetex"] = True
 
 #df_top3 = pd.read_csv("top3_results.csv", sep = "\t")
 #df = pd.read_csv("msstats_scatter_format_input.csv", sep = "\t")
@@ -41,7 +44,7 @@ def plot_scatterplot(df, output, fdr_threshold = 1.00):
     
     ax.tick_params(axis='x', which='major', labelsize=32)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=32)
-    
+    ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop = {"size":20}) 
     
     #plt.title("std/mu ratio for log-transformed peptide values")
         

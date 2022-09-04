@@ -48,7 +48,7 @@ def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2
     res_ecoli = get_stats(df[df.specie == "ECOLI"], df_inp, step = step) # g
     res_yeast = get_stats(df[df.specie == "YEAST"], df_inp, step = step) # o
     res_human = get_stats(df[df.specie == "HUMAN"], df_inp, step = step) # b
-    sns.lineplot(data = res_ecoli, x = "log2FC", y = "median", linestyle='-', color = "tab:blue", ax = ax, label = r'\textit{E.Coli}')
+    sns.lineplot(data = res_ecoli, x = "log2FC", y = "median", linestyle='-', color = "tab:blue", ax = ax, label = r'\textit{E.coli}')
     sns.lineplot(data = res_yeast, x = "log2FC", y = "median", linestyle='-', color = "tab:green", ax = ax, label = "Yeast")
     sns.lineplot(data = res_human, x = "log2FC", y = "median", linestyle='-', color = "tab:orange", ax = ax, label = "HeLa")
     #plt.legend(labels=["ECOLI","YEAST", "HUMAN"])

@@ -143,13 +143,19 @@ def grid_histogram(output, bins = 50, test = False):
             ax.set_xlabel("")
             ax.xaxis.set_ticklabels([])
         if i >= 6:
-            ax.set_xlabel("log2(A/B)", fontsize=34)
+            ax.set_xlabel("Log2(A/B)", fontsize=34)
         if i > 0:
             ax.get_legend().remove()
+        if i == 0:
+            ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop={"size":20})
+        
+            
         #if test == True:
         #    ax.set_title(str(title))
         i+=1
          
+        #ax.get_legend()
+
         ax.tick_params(axis='x', which='major', labelsize=28)#labelrotation=90)
         ax.tick_params(axis='y', which='major', labelsize=28) 
         
