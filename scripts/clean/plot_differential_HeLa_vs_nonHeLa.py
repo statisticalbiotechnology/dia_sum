@@ -190,24 +190,24 @@ if __name__ == "__main__":
 
     if specie == "all":
         sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count, ax = ax, linewidth = 5)
-        ax.set_ylabel("Differential non-HeLa", fontsize = 38)
+        ax.set_ylabel("Differential non-HeLa", fontsize = 42)
     elif specie == "yeast":
         sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count, ax = ax, linewidth = 5)
-        ax.set_ylabel("Differential yeast", fontsize = 38)
+        ax.set_ylabel("Differential Yeast", fontsize = 42)
     elif specie == "ecoli":
         sns.lineplot(x = negCol, y = posCol, hue = "method", data = df_count, ax = ax, linewidth = 5)
-        ax.set_ylabel("Differential ecoli", fontsize = 38)
+        ax.set_ylabel("Differential E.coli", fontsize = 42)
     ax.set_xlim(-1,200)
 
-    ax.set_xlabel("Differential HeLa", fontsize=34)
+    ax.set_xlabel("Differential HeLa", fontsize=42)
     #ax.set_ylabel(fontsize=38)
 
-    ax.tick_params(axis='x', which='major', labelsize=42)#labelrotation=90)
-    ax.tick_params(axis='y', which='major', labelsize=42)
+    ax.tick_params(axis='x', which='major', labelsize=44)#labelrotation=90)
+    ax.tick_params(axis='y', which='major', labelsize=44)
     ax.set_xlim([0,50])
 
-    plt.setp(ax.get_legend().get_texts(), fontsize='32') # for legend text
-    plt.setp(ax.get_legend().get_title(), fontsize='38') # for legend title
+    plt.setp(ax.get_legend().get_texts(), fontsize='38') # for legend text
+    plt.setp(ax.get_legend().get_title(), fontsize='42') # for legend title
 
     fig = ax.get_figure()
     print(f"Saving output {output}")
