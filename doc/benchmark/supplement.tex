@@ -156,8 +156,8 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
         D & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_ecoli_0.51.png} \\ 
         B & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_yeast_0.51.png} & 
         E & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\
-        C & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
-        F & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\ 
+        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
+        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\ 
 
     \end{tabular}
     \caption{{\bf The compared methods ability to differentiate differentially abundant proteins.} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test we selected a fold-change evaluation of 0.51 for Triqler and fold-change treshold of 0.51 for Top3, MSstats and MSqRob2. All methods have an protein-level FDR threshold of 0.01. \label{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}}
@@ -173,8 +173,10 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
 
 
     \caption{{\bf Comparison of reported fold change distributions.} We can see that the Triqler and Top3 log2(A/B) empirical distributions have apexes that are more centered toward the true lysate values, which are indicated by the dashed lines. The apexes for Triqler have higher protein count than MSqRob2, MSstats and Top3. This shows that there are more proteins closer to the true values identified by Triqler than the other methods. \label{fig:fc_histogram_supplement}}
-    \todo[inline]{Remove legend in all but one subplot.}
+    \todo[inline]{FIXED - Remove legend in all but one subplot.}
     \todo[inline]{Harmonize font sizes.}
+    \todo[inline]{FIXED - x-label Capital}
+    
 \end{figure}
 
 
