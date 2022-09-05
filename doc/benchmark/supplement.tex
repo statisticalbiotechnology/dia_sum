@@ -62,30 +62,36 @@ Yeast   & 6 050      & 5 848      & 5 847                       \\ \hline
 
 
 \begin{table}[h]
-    \begin{tabular}{lllllll}
+    \begin{tabular}{l|lll|lll}
     \hline
     \multicolumn{7}{c}{ID workflow}                                                                                                                                                                                   \\ \hline
-    Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
-    Filename       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
+    Condition & \multicolumn{3}{c|}{A}          & \multicolumn{3}{c}{B}                                                                         \\
+    \hline
+    Filename       & 002-Pedro & 004-Pedro & 006-Pedro & 003-Pedro & 005-Pedro & 007-Pedro \\
+    \hline
     Peptides  & 12 934                        & 13 819                        & 13 063                        & 12 023                        & 14 858                        & 15 208                        \\
     Proteins  & 2 252                         & 2 321                         & 2 243                         & 2 159                         & 2 427                         & 2 433                         \\ \hline
     \end{tabular}
      \caption{{\bf Number of identified peptides and proteins for the ID workflow.} A peptide-level FDR at 0.01 was obtained using a an $m\_score$ cutoff at 0.00079 computed by setting the desired peptide-level FDR with \texttt{mscore4pepfdr} in the \texttt{SWATH2stats} package.
           \label{fig:osw_peptide_and_protein_id}}
+    \todo[inline]{At which FDR tresholds?}
 \end{table}
         
 
 \begin{table}[h]
-    \begin{tabular}{lllllll}
+    \begin{tabular}{l|lll|lll}
     \hline
     \multicolumn{7}{c}{PS workflow}                                                                                                                                                                                   \\ \hline
-    Condition & \multicolumn{3}{c}{1}                                                                         & \multicolumn{3}{c}{2}                                                                         \\
-    Filename       & \multicolumn{1}{c}{002-Pedro} & \multicolumn{1}{c}{004-Pedro} & \multicolumn{1}{c}{006-Pedro} & \multicolumn{1}{c}{003-Pedro} & \multicolumn{1}{c}{005-Pedro} & \multicolumn{1}{c}{007-Pedro} \\
+    Condition & \multicolumn{3}{c|}{A}                                                                         & \multicolumn{3}{c}{B}                                                                         \\
+    \hline
+    Filename       & 002-Pedro & 004-Pedro & 006-Pedro & 003-Pedro & 005-Pedro & 007-Pedro \\
+    \hline
     Peptides  & 20 880                        & 20 653                        & 20 907                        & 21 118                        & 21 192                        & 21 137                        \\
     Proteins  & 3 228                         & 3 224                         & 3 240                         & 3 243                         & 3 255                         & 3 249                         \\ \hline
     \end{tabular}
      \caption{{\bf Number of identified peptides and proteins for the PS workflow} A peptide-level FDR at 0.01 was used for the purpose of reporting these figures.
           \label{fig:diann_peptide_and_protein_id}}
+          \todo[inline]{At which FDR tresholds?}
 \end{table}
 
 
