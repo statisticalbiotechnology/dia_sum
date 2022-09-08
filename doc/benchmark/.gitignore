@@ -3,4 +3,5 @@
 *.aux
 *.blg
 *.fls
+*.out
 *.synctex.gz
