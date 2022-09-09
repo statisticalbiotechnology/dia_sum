@@ -1,6 +1,7 @@
 configfile: "config.yaml"
 PIPELINES = ["ID", "PS"]
 METHODS = ["triqler", "top3", "msstats", "msqrob2"]
+METHODS_NO_TRIQLER = ["top3", "msstats", "msqrob2"]
 HLINE_TYPE = ["median", "mean"]
 DIFF_HELA_VS_NONHELA_PARAMS = ["all", "ecoli", "yeast"]
 FC_THRESHOLDS = [0, 0.51]
@@ -46,9 +47,14 @@ rule compute:
         expand("results/plot/count_HeLa_vs_nonHeLa_{iPipeline}_{iSpecie}.png", iPipeline = PIPELINES, iSpecie = DIFF_HELA_VS_NONHELA_PARAMS),
         expand("results/plot/calibration_{iPipeline}_{iFc_threshold}.png", iPipeline = PIPELINES, iFc_threshold = FC_THRESHOLDS),
         expand("results/plot/scatter_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS),
-        expand("results/plot/fc_peptide_count_{iPipeline}_triqler.png", iPipeline = PIPELINES),
-        #expand("results/plot/fc_peptide_count_{iPipeline}_msqrob2.png", iPipeline = PIPELINES),
-        #expand("results/plot/fc_peptide_count_{iPipeline}_msstats.png", iPipeline = PIPELINES)
+        expand("results/plot/fc_peptide_count_{iPipeline}_triqler.png", iPipeline = PIPELINES), #
+        expand("results/PS/triqler_scatter_format_input_special_top3.csv"),
+        expand("results/PS/triqler_scatter_format_input_special_msstats.csv"),
+        expand("results/PS/triqler_scatter_format_input_special_msqrob2.csv"),
+        expand("results/ID/triqler_scatter_format_input_special_top3.csv"),
+        expand("results/ID/triqler_scatter_format_input_special_msstats.csv"),
+        expand("results/ID/triqler_scatter_format_input_special_msqrob2.csv"),
+        expand("results/plot/scatter_special_triqler_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS_NO_TRIQLER),
 
 ##############
 # PS Compute #
@@ -338,6 +344,20 @@ rule convert_triqler_to_scatter_format:
             --triqler_input {input.triqler_input} \
             --output {output.output}" 
 
+
+rule convert_triqler_to_scatter_format_special:
+    input:
+        script = "convert_triqler_to_scatterplot_input_special.py",
+        triqler_results = "results/{iPipeline}/triqler_results.csv",
+        method_input = "results/{iPipeline}/{iMethod}_scatter_format_input.csv"
+    output:
+        output = "results/{iPipeline}/triqler_scatter_format_input_special_{iMethod}.csv"
+    shell:
+        "python {input.script} \
+            --triqler_results {input.triqler_results} \
+            --method_input {input.method_input} \
+            --output {output.output}" 
+
 rule copy_top3_to_scatterplot_input:
     input:
         script = "copy_top3_to_scatterplot_input.py",
@@ -472,6 +492,17 @@ rule plot_scatter_no_threshold:
         input_file = "results/{iPipeline}/{iMethod}_scatter_format_input.csv"
     output:
         output = "results/plot/scatter_{iPipeline}_{iMethod}.png"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
+
+rule plot_scatter_no_threshold_special:
+    input:
+        script = "plot_scatter.py",
+        input_file = "results/{iPipeline}/triqler_scatter_format_input_special_{iMethod}.csv"
+    output:
+        output = "results/plot/scatter_special_triqler_{iPipeline}_{iMethod}.png"
     shell:
         "python {input.script} \
             --input_file {input.input_file} \
