@@ -50,7 +50,27 @@ def plot_scatterplot(df_triqler, df_method, output, fdr_threshold = 1.00):
     ax.axhline(0, linestyle = "--", color="tab:orange", alpha = 0.5)
     ax.axhline(-1, linestyle = "--", color="tab:green", alpha = 0.5)
 
+    ax.axvline(2, linestyle = "--", color="tab:blue", alpha = 0.5)
+    ax.axvline(0, linestyle = "--", color="tab:orange", alpha = 0.5)
+    ax.axvline(-1, linestyle = "--", color="tab:green", alpha = 0.5)
+
+    def add_identity(axes, *line_args, **line_kwargs):
+    identity, = axes.plot([], [], *line_args, **line_kwargs)
+        def callback(axes):
+            low_x, high_x = axes.get_xlim()
+            low_y, high_y = axes.get_ylim()
+            low = max(low_x, low_y)
+            high = min(high_x, high_y)
+            identity.set_data([low, high], [low, high])
+    callback(axes)
+    axes.callbacks.connect('xlim_changed', callback)
+    axes.callbacks.connect('ylim_changed', callback)
+    return axes
+
+    add_identity(ax, color='r', ls='--')
+
     ax.set_ylim([-2,3])
+    ax.set_xlim([-2,3])
     #ax.set_xlim([0,10])
     ax.set_xlabel("Log2(B)", fontsize=38)
     ax.set_ylabel("Log2(A/B)", fontsize=38)
