@@ -55,6 +55,8 @@ rule compute:
         expand("results/ID/triqler_scatter_format_input_special_msstats.csv"),
         expand("results/ID/triqler_scatter_format_input_special_msqrob2.csv"),
         expand("results/plot/scatter_special_triqler_{iPipeline}_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS_NO_TRIQLER),
+        expand("results/plot/scatter_{iPipeline}_triqler_vs_{iMethod}.png", iPipeline = PIPELINES, iMethod = METHODS_NO_TRIQLER),
+
 
 ##############
 # PS Compute #
@@ -555,4 +557,18 @@ rule plot_number_of_peptides_triqler:
 #            --protein_quant_result_file {input.result_file} \
 #            --step {params.step} \
 #            --output {output.output}"
-            
+
+rule plot_triqler_vs_method_scatter:
+    input:
+        script = "plot_triqler_vs_method_scatter.py",
+        triqler_file = "results/{iPipeline}/triqler_scatter_format_input.csv",
+        method_file = "results/{iPipeline}/{iMethod}_scatter_format_input.csv"
+    output:
+        output = "results/plot/scatter_{iPipeline}_triqler_vs_{iMethod}.png"
+    shell:
+        "python {input.script} \
+            --triqler_input {input.triqler_file} \
+            --method_input {input.method_file} \
+            --output {output.output}"
+
+

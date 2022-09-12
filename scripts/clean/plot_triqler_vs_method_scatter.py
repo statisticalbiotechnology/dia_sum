@@ -26,8 +26,8 @@ rcParams["text.usetex"] = True
 
 def plot_scatterplot(df_triqler, df_method, output, fdr_threshold = 1.00):
     
-    df_triqler = pd.read_csv("triqler_scatter_format_input.csv", sep = "\t")
-    df_method = pd.read_csv("top3_scatter_format_input.csv", sep = "\t")
+    df_triqler = pd.read_csv(df_triqler, sep = "\t")
+    df_method = pd.read_csv(df_method, sep = "\t")
     df_triqler = df_triqler[df_triqler["q"] < fdr_threshold]
     df_method = df_method[df_method["q"] < fdr_threshold]
     df_triqler.set_index("ProteinName", inplace = True)
