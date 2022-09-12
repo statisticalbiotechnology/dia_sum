@@ -19,9 +19,9 @@ triqler = pd.read_csv("enrichr_triqler_fc_0.415_whole_bgr.tsv", sep = "\t")
 def intersection(lst1, lst2):
     return list(set(lst1) & set(lst2))
 
-intersection(reported[reported.group == cluster].Term, triqler[triqler.group == cluster].Term)
+#intersection(reported[reported.group == cluster].Term, triqler[triqler.group == cluster].Term)
 
-reported[reported.group == cluster].append(reported[reported.group == cluster])
+#reported[reported.group == cluster].append(reported[reported.group == cluster])
 
 reported_total = pd.DataFrame()
 triqler_total = pd.DataFrame()

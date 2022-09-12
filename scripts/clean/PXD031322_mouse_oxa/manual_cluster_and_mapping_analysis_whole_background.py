@@ -76,6 +76,14 @@ def get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
     C4 = (df["lt-st:upregulated"] == True)
     C5 = (df["ctrl-st:upregulated"] == True)
     C6 = (df["ctrl-st:upregulated"] == False)
+
+    C1 = ~C1 
+    C2 = ~C2
+    C3 = ~C3
+    C4 = ~C4
+    C5 = ~C5
+    C6 = ~C6
+
     return C1, C2, C3, C4, C5, C6
 
 def get_mapped_proteins(ids):
