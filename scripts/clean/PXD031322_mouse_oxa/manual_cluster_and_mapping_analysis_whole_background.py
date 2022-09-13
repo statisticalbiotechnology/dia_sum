@@ -24,7 +24,7 @@ from uniprot_idmapper import *
 from gseapy_plot import *
 
 os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run")
-
+os.chdir("/home/ptruong/data/pxd031322/2022-09-09_triqler_and_enrichr_results/fc_0.415")
 
 def parse_triqler(triqler_output_file):
     """
@@ -51,40 +51,77 @@ def parse_triqler(triqler_output_file):
 
 def get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
                  ctrl_st_file = "proteins.1vs3.tsv",
-                 lt_st_file = "proteins.2vs3.tsv"):
+                 lt_st_file = "proteins.2vs3.tsv",
+                 fdr_threshold = 0.05):
     cols = ['q_value', 'log2_fold_change', "upregulated"]
     
     ctrl_lt = parse_triqler(ctrl_lt_file).set_index("protein")
     ctrl_st = parse_triqler(ctrl_st_file).set_index("protein")
     lt_st = parse_triqler(lt_st_file).set_index("protein")
     
-    ctrl_lt["upregulated"] = ctrl_lt.log2_fold_change > 0
-    ctrl_st["upregulated"] = ctrl_st.log2_fold_change > 0 
-    lt_st["upregulated"] = lt_st.log2_fold_change > 0
-    
+    ctrl_lt["upregulated"] = ctrl_lt.log2_fold_change < 0
+    ctrl_st["upregulated"] = ctrl_st.log2_fold_change < 0 
+    lt_st["upregulated"] = lt_st.log2_fold_change < 0
     
     ctrl_lt = ctrl_lt[cols].rename({"q_value":"ctrl-lt:q_value", "upregulated":"ctrl-lt:upregulated", "log2_fold_change":"ctrl-lt:log2_fold_change"}, axis = 1)
     ctrl_st = ctrl_st[cols].rename({"q_value":"ctrl-st:q_value", "upregulated":"ctrl-st:upregulated", "log2_fold_change":"ctrl-st:log2_fold_change"}, axis = 1)
     lt_st = lt_st[cols].rename({"q_value":"lt-st:q_value", "upregulated":"lt-st:upregulated", "log2_fold_change":"lt-st:log2_fold_change"}, axis = 1)
     
-    df = pd.concat([ctrl_lt, ctrl_st, lt_st], axis = 1)
+    ctrl_lt = ctrl_lt[ctrl_lt["ctrl-lt:q_value"] < fdr_threshold] 
+    ctrl_st = ctrl_st[ctrl_st["ctrl-st:q_value"] < fdr_threshold]
+    lt_st = lt_st[lt_st["lt-st:q_value"] < fdr_threshold]
     
-    # Clusters 
-    C1 = ((df["ctrl-lt:upregulated"] == True) & (df["ctrl-st:upregulated"] == True) & (df["lt-st:upregulated"] == False))
-    C2 = ((df["ctrl-lt:upregulated"] == False) & (df["ctrl-st:upregulated"] == False) & (df["lt-st:upregulated"] == True))
-    C3 = (df["lt-st:upregulated"] == False)      
-    C4 = (df["lt-st:upregulated"] == True)
-    C5 = (df["ctrl-st:upregulated"] == True)
-    C6 = (df["ctrl-st:upregulated"] == False)
+    
+    # C1
+    C1 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == True), (lt_st["lt-st:upregulated"] == False)])
+    C1 = C1[C1 == True]
+    C1 = C1.reset_index().protein.unique()
+    # C2 
+    C2 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == False), (lt_st["lt-st:upregulated"] == True)])
+    C2 = C2[C2 == True]
+    C2 = C2.reset_index().protein.unique()
+    
+    # C3
+    C3 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
+                    lt_st[lt_st["lt-st:upregulated"] == False].reset_index().protein.unique())))
+    
+    # C4 
+    C4 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
+                    lt_st[lt_st["lt-st:upregulated"] == True].reset_index().protein.unique())))
+    
+    # C5
+    C5 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
+                ctrl_st[ctrl_st["ctrl-st:upregulated"] == True].reset_index().protein.unique())))
+    
+    # C6
+    C6 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
+                ctrl_st[ctrl_st["ctrl-st:upregulated"] == False].reset_index().protein.unique())))
+    
+    
+    # Clusters - its something funky with the nameing
+    #C1 = ((df["ctrl-lt:upregulated"] == True) & (df["ctrl-st:upregulated"] == True) & (df["lt-st:upregulated"] == False))
+    #C1 = ((df["ctrl-st:upregulated"] == True) & (df["lt-st:upregulated"] == False))
 
-    C1 = ~C1 
-    C2 = ~C2
-    C3 = ~C3
-    C4 = ~C4
-    C5 = ~C5
-    C6 = ~C6
+    #C2 = ((df["ctrl-lt:upregulated"] == False) & (df["ctrl-st:upregulated"] == False) & (df["lt-st:upregulated"] == True))
+    #C2 = ((df["ctrl-st:upregulated"] == False) & (df["lt-st:upregulated"] == True))
+    #C3 = (df["lt-st:upregulated"] == False) # same as st-lt upregulated
+    #C4 = (df["lt-st:upregulated"] == True) # same as st-lt downregulated
+    #C5 = (df["ctrl-st:upregulated"] == True)
+    #C6 = (df["ctrl-st:upregulated"] == False)
 
+
+    def A_exclude_B(A, B):
+        A = [i for i in A if i not in B]
+        return A 
+
+    C3 = A_exclude_B(C3,C1)
+    C4 = A_exclude_B(C4,C2)
+    C5 = A_exclude_B(C5,C1)
+    C6 = A_exclude_B(C6,C2)
+    
     return C1, C2, C3, C4, C5, C6
+
+
 
 def get_mapped_proteins(ids):
     # ids = list(c1.index)
@@ -253,24 +290,24 @@ bgr_proteins = pd.concat([ctrl_lt.reset_index(),ctrl_st.reset_index(), lt_st.res
 # all proteins
 
 # Check ctrl-lt C1,C2
-c1 = ctrl_lt[C1 & (ctrl_lt.q_value < fdr_threshold)]
-c2 = ctrl_lt[C2 & (ctrl_lt.q_value < fdr_threshold)]
+#c1 = ctrl_lt[C1 & (ctrl_lt.q_value < fdr_threshold)]
+#c2 = ctrl_lt[C2 & (ctrl_lt.q_value < fdr_threshold)]
 
 # Check lt-st C3, c4
-c3 = lt_st[C3 & (lt_st.q_value < fdr_threshold)]
-c4 = lt_st[C4 & (lt_st.q_value < fdr_threshold)]
+#c3 = lt_st[C3 & (lt_st.q_value < fdr_threshold)]
+#c4 = lt_st[C4 & (lt_st.q_value < fdr_threshold)]
 
 # Check ctrl-st C5, C6
-c5 = ctrl_lt[C5 & (ctrl_lt.q_value < fdr_threshold)]
-c6 = ctrl_lt[C6 & (ctrl_lt.q_value < fdr_threshold)]
+#c5 = ctrl_lt[C5 & (ctrl_lt.q_value < fdr_threshold)]
+#c6 = ctrl_lt[C6 & (ctrl_lt.q_value < fdr_threshold)]
 
 
-c1_mapped = get_mapped_proteins(ids = list(c1.index))
-c2_mapped = get_mapped_proteins(ids = list(c2.index))
-c3_mapped = get_mapped_proteins(ids = list(c3.index))
-c4_mapped = get_mapped_proteins(ids = list(c4.index))
-c5_mapped = get_mapped_proteins(ids = list(c5.index))
-c6_mapped = get_mapped_proteins(ids = list(c6.index))
+c1_mapped = get_mapped_proteins(ids = list(C1))
+c2_mapped = get_mapped_proteins(ids = list(C2))
+c3_mapped = get_mapped_proteins(ids = list(C3))
+c4_mapped = get_mapped_proteins(ids = list(C4))
+c5_mapped = get_mapped_proteins(ids = list(C5))
+c6_mapped = get_mapped_proteins(ids = list(C6))
 
 bgr_mapped = get_mapped_proteins(ids = list(bgr_proteins))
 # we might need to chunk this for api request quicker
@@ -304,7 +341,7 @@ c6_pathways = qprofiler_run(query_genes = list(c6_mapped.geneName),
 
 #gene_list = c1_mapped.geneName
 #background_list = c1_bgr_mapped.geneName
-mouse_library = gp.get_library_name(organism="Mouse")
+#mouse_library = gp.get_library_name(organism="Mouse")
 
 enr_c1 = gp.enrichr(gene_list=c1_mapped.geneName,
                  gene_sets=['KEGG_2019_Mouse'],
@@ -343,6 +380,33 @@ enr_c6 = gp.enrichr(gene_list=c6_mapped.geneName,
                  outdir=None, # don't write to disk
                 )
 
+
+### some other version of enrichr without background and organism
+enr_c1 = gp.enrichr(gene_list=c1_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+enr_c2 = gp.enrichr(gene_list=c2_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+enr_c3 = gp.enrichr(gene_list=c3_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+enr_c4 = gp.enrichr(gene_list=c4_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+enr_c5 = gp.enrichr(gene_list=c5_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+enr_c6 = gp.enrichr(gene_list=c6_mapped.geneName,
+                 gene_sets=['KEGG_2019_Mouse'],
+                 outdir=None, # don't write to disk
+                )
+
 enr_c1.res2d["group"] = "C1"
 enr_c2.res2d["group"] = "C2"
 enr_c3.res2d["group"] = "C3"
@@ -375,6 +439,15 @@ plot_dotplot(df = plot_input_paper_term, size = 15, title = "KEGG_2019_mouse, fc
 
 
 df.to_csv("enrichr_triqler_fc_0.415_whole_bgr.tsv", sep = "\t", index = False)
+
+
+
+
+
+
+dna = "ATCGATGGAAAT"
+triplets_list = [dna[i:i+3]  for i in range(0, len(dna),3)]
+print(triplets_list)
 
 
 
