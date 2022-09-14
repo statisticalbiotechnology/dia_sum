@@ -563,12 +563,15 @@ rule plot_triqler_vs_method_scatter:
         script = "plot_triqler_vs_method_scatter.py",
         triqler_file = "results/{iPipeline}/triqler_scatter_format_input.csv",
         method_file = "results/{iPipeline}/{iMethod}_scatter_format_input.csv"
+    params:
+        method_label = "{iMethod}"
     output:
         output = "results/plot/scatter_{iPipeline}_triqler_vs_{iMethod}.png"
     shell:
         "python {input.script} \
             --triqler_input {input.triqler_file} \
             --method_input {input.method_file} \
+            --method_label {params.method_label} \
             --output {output.output}"
 
 

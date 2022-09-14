@@ -24,7 +24,7 @@ rcParams["text.usetex"] = True
 #df["log2(A,B)"] = df["2"]-df["1"]
 
 
-def plot_scatterplot(df_triqler, df_method, output, fdr_threshold = 1.00):
+def plot_scatterplot(df_triqler, df_method, method_name, output, fdr_threshold = 1.00):
     
     df_triqler = pd.read_csv(df_triqler, sep = "\t")
     df_method = pd.read_csv(df_method, sep = "\t")
@@ -55,25 +55,28 @@ def plot_scatterplot(df_triqler, df_method, output, fdr_threshold = 1.00):
     ax.axvline(-1, linestyle = "--", color="tab:green", alpha = 0.5)
 
     def add_identity(axes, *line_args, **line_kwargs):
-    identity, = axes.plot([], [], *line_args, **line_kwargs)
+        identity, = axes.plot([], [], *line_args, **line_kwargs)
         def callback(axes):
             low_x, high_x = axes.get_xlim()
             low_y, high_y = axes.get_ylim()
             low = max(low_x, low_y)
             high = min(high_x, high_y)
             identity.set_data([low, high], [low, high])
-    callback(axes)
-    axes.callbacks.connect('xlim_changed', callback)
-    axes.callbacks.connect('ylim_changed', callback)
-    return axes
+        callback(axes)
+        axes.callbacks.connect('xlim_changed', callback)
+        axes.callbacks.connect('ylim_changed', callback)
+        return axes
 
-    add_identity(ax, color='r', ls='--')
+    add_identity(ax, color='k', ls='--')
 
     ax.set_ylim([-2,3])
     ax.set_xlim([-2,3])
     #ax.set_xlim([0,10])
-    ax.set_xlabel("Log2(B)", fontsize=38)
-    ax.set_ylabel("Log2(A/B)", fontsize=38)
+    ax.set_xlabel("Triqler - Log2(A/B)", fontsize=38)
+    first_letter = method_name[0].upper()
+    rest_of_letters = method_name[1:].lower()
+    method_name = first_letter + rest_of_letters
+    ax.set_ylabel(f"{method_name} - Log2(A/B)", fontsize=38)
     
     ax.tick_params(axis='x', which='major', labelsize=38)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=38)
@@ -95,7 +98,9 @@ if __name__ == "__main__":
 
     parser.add_argument('--method_input', type=str,
                         help='Scatterplot converter top3, msstats, msqrob2 input file.')
-    
+   
+    parser.add_argument('--method_label', type=str, default = "METHOD",
+                        help='String for y-axis.')
     parser.add_argument('--output', type=str,
                         help='Output name.')
 
@@ -107,8 +112,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     triqler_input = args.triqler_input
     method_input = args.method_input
+    method_label = args.method_label
     fdr_threshold = args.fdr_threshold
     output = args.output
-    plot_scatterplot(triqler_input, method_input, output, fdr_threshold)
+    plot_scatterplot(triqler_input, method_input, method_label, output, fdr_threshold)
     
     
