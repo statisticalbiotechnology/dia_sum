@@ -1,18 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Aug 31 14:54:35 2022
+Created on Wed Sep 14 17:19:49 2022
 
 @author: ptruong
-
-https://www.uniprot.org/help/id_mapping
-https://biit.cs.ut.ee/gprofiler/page/apis
-
-
-ToDo:
-    
-    Continue on gprofiler background
-    Plot gprofiler KEGG pathways as in paper
 """
 
 import pandas as pd 
@@ -27,46 +18,29 @@ os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/prid
 os.chdir("/home/ptruong/data/pxd031322/2022-09-09_triqler_and_enrichr_results/fc_0.415")
 os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run/2022-09-14_top3_msstats_msqrob2")
 
-def parse_triqler(triqler_output_file):
-    """
-    Parses triqler output format to pandas dataframe.
-    """
-    f = open(triqler_output_file, "r")
-    lines = f.readlines()
-    line = lines.pop(0)
-    cols = line.split("\n")[0].split("\t")[:]
-    n_cols = len(cols)
-    
-    data_array = []
-    for line in lines:
-        line = line.split("\n")[0].split("\t")
-        vals = line[:n_cols-1]
-        peptides = ";".join(line[n_cols-1:])
-        data = vals + [peptides]
-        data_array.append(data)
-    df = pd.DataFrame(data_array, columns = cols)
-
-    df = pd.concat([df[["protein", "peptides"]], df.drop(["protein", "peptides"], axis = 1).astype(float)], axis = 1)
-    
-    return df
-
-def get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
+def top3_get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
                  ctrl_st_file = "proteins.1vs3.tsv",
                  lt_st_file = "proteins.2vs3.tsv",
                  fdr_threshold = 0.05):
-    cols = ['q_value', 'log2_fold_change', "upregulated"]
+    cols = ['q', 'log2(A,B)', "upregulated"]
+        
+    ctrl_lt = pd.read_csv("Ctrl_LT_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+    ctrl_st = pd.read_csv("Ctrl_ST_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+    lt_st = pd.read_csv("LT_ST_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+
+    # Fc thresholding procedure as in paper
+    ctrl_lt = pd.concat([ctrl_lt[(ctrl_lt["log2(A,B)"] > 1.5)],ctrl_lt[(ctrl_lt["log2(A,B)"] < 0.67)]])
+    ctrl_st = pd.concat([ctrl_st[(ctrl_st["log2(A,B)"] > 1.5)],ctrl_st[(ctrl_st["log2(A,B)"] < 0.67)]])
+    lt_st = pd.concat([lt_st[(lt_st["log2(A,B)"] > 1.5)],lt_st[(lt_st["log2(A,B)"] < 0.67)]])
+
+
+    ctrl_lt["upregulated"] = ctrl_lt["log2(A,B)"] < 0
+    ctrl_st["upregulated"] = ctrl_st["log2(A,B)"] < 0 
+    lt_st["upregulated"] = lt_st["log2(A,B)"] < 0
     
-    ctrl_lt = parse_triqler(ctrl_lt_file).set_index("protein")
-    ctrl_st = parse_triqler(ctrl_st_file).set_index("protein")
-    lt_st = parse_triqler(lt_st_file).set_index("protein")
-    
-    ctrl_lt["upregulated"] = ctrl_lt.log2_fold_change < 0
-    ctrl_st["upregulated"] = ctrl_st.log2_fold_change < 0 
-    lt_st["upregulated"] = lt_st.log2_fold_change < 0
-    
-    ctrl_lt = ctrl_lt[cols].rename({"q_value":"ctrl-lt:q_value", "upregulated":"ctrl-lt:upregulated", "log2_fold_change":"ctrl-lt:log2_fold_change"}, axis = 1)
-    ctrl_st = ctrl_st[cols].rename({"q_value":"ctrl-st:q_value", "upregulated":"ctrl-st:upregulated", "log2_fold_change":"ctrl-st:log2_fold_change"}, axis = 1)
-    lt_st = lt_st[cols].rename({"q_value":"lt-st:q_value", "upregulated":"lt-st:upregulated", "log2_fold_change":"lt-st:log2_fold_change"}, axis = 1)
+    ctrl_lt = ctrl_lt[cols].rename({"q":"ctrl-lt:q_value", "upregulated":"ctrl-lt:upregulated", "log2(A,B)":"ctrl-lt:log2_fold_change"}, axis = 1)
+    ctrl_st = ctrl_st[cols].rename({"q":"ctrl-st:q_value", "upregulated":"ctrl-st:upregulated", "log2(A,B)":"ctrl-st:log2_fold_change"}, axis = 1)
+    lt_st = lt_st[cols].rename({"q":"lt-st:q_value", "upregulated":"lt-st:upregulated", "log2(A,B)":"lt-st:log2_fold_change"}, axis = 1)
     
     ctrl_lt = ctrl_lt[ctrl_lt["ctrl-lt:q_value"] < fdr_threshold] 
     ctrl_st = ctrl_st[ctrl_st["ctrl-st:q_value"] < fdr_threshold]
@@ -277,12 +251,17 @@ def plot_dotplot(df, size = 10, title = "KEGG"):
     
     ax.set_title(title, fontsize=20, fontweight="bold")
 
-ctrl_lt = parse_triqler("proteins.1vs2.tsv").set_index("protein")
-ctrl_st = parse_triqler("proteins.1vs3.tsv").set_index("protein")
-lt_st = parse_triqler("proteins.2vs3.tsv").set_index("protein")
-C1, C2, C3, C4, C5, C6 = get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
-                                      ctrl_st_file = "proteins.1vs3.tsv",
-                                      lt_st_file = "proteins.2vs3.tsv")
+os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run/2022-09-14_top3_msstats_msqrob2")
+
+ctrl_lt = pd.read_csv("Ctrl_LT_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+ctrl_st = pd.read_csv("Ctrl_ST_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+lt_st = pd.read_csv("LT_ST_top3_results.csv", sep = "\t").rename({"ProteinName":"protein"}, axis = 1).set_index("protein")
+  
+
+
+C1, C2, C3, C4, C5, C6 = top3_get_clusters(ctrl_lt_file = "Ctrl_LT_top3_results.csv",
+                                      ctrl_st_file = "Ctrl_ST_top3_results.csv",
+                                      lt_st_file = "LT_ST_top3_results.csv")
 
 fdr_threshold = 0.05
 
@@ -439,7 +418,7 @@ plot_dotplot(df = plot_input, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.4
 plot_dotplot(df = plot_input_paper_term, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.415, fdr = 0.05, reported pathways")
 
 
-df.to_csv("enrichr_triqler_fc_0.415_whole_bgr.tsv", sep = "\t", index = False)
+df.to_csv("enrichr_top3_whole_bgr.tsv", sep = "\t", index = False)
 
 
 
@@ -449,10 +428,4 @@ df.to_csv("enrichr_triqler_fc_0.415_whole_bgr.tsv", sep = "\t", index = False)
 dna = "ATCGATGGAAAT"
 triplets_list = [dna[i:i+3]  for i in range(0, len(dna),3)]
 print(triplets_list)
-
-
-
-
-
-
 

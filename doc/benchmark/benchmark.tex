@@ -72,16 +72,19 @@ Here, we set out to investigate Triqler ability to summarize protein concentrati
 
 
 \subsection*{Data description}
-\subsubsection*{Mass spectrometry data}
+\subsubsection*{LFQBench mass spectrometry data}
 
 
 We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE identifier PXD002952. Here we used the TripleTOF6600 section of the study, which was harvested with a setup of 32 fixed windows MS2-windows. We also restricted ourselves to the low ratio difference samples, referred to as the HYE124 hybrid proteome samples in the original study. That consists of triplicates of Sample A composed of tryptically digested proteins from 65\% w/w HeLa, 30\% w/w yeast, and 5\% w/w \textit{E. coli} cells, and triplicates of Sample B, composed of 65\% w/w, 15\% w/w yeast, and 20\% w/w \textit{E. coli} proteins. Samples from HYE110 and the TripleTOF5600 section of PXD002952 were omitted in this study. Further details about mass spectrometric instrumentation and data acquisition are available in Navarro et al.~\cite{navarro2016multicenter}. The \verb|.wiff| files were converted to \verb|.mzML| files in a centroided format using msconvert (using windows OS msconvert version 3.0) with peakPicking filter msLevel=1-). 
 
 
-\subsubsection*{Sequence database}
+\subsubsection*{LFQBench sequence database}
 
 Uniprot FASTA files with one protein sequence per gene were downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 \textit{E. coli} proteins. To reduce the effect of the different protein inference strategies for the tested protein summarization tools, a modified FASTA file, without shared peptides, was used for database search. The filter randomly removed protein sequences with shared peptides, so that the final database did not contain any tryptic peptides with length $>$7 amino acids mapping to peptides shared with other proteins. After filtering the FASTA file contained 20 302 proteins (288 human proteins fewer proteins than an unfiltered database), 5 848 yeast proteins (198 yeast proteins fewer proteins than an unfiltered database), and 4 306 \textit{E. Coli} proteins (67 \textit{E. Coli} proteins than unfiltered database). Replacing the I/L amino acids to handle mass-equivalence did not result in any considerable differences (See Supplementary Table \ref{table:proteins_in_database}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
 
+
+\subsubsection*{Biological study data}
+We downloaded a dataset containing quantitative proteomic analysis of oxaliplatin(OXA) induced peripheral neurotoxicity \cite{YANG2022104682} referred here as the OXA-dataset from PRIDE identifier PXD031322. The OXA-dataset consist of DIA mass-spectrometry data of three groups; control (Ctrl), 1 week post OXA injection called short-term(ST) and 2 weeks post OXA injection called long-term(LT). The Ctrl group contains 5 samples, the ST group contains 5 samples and the LT group contains 4 samples. The OXA-dataset also contains a set of gas phase fragmentation (GPF) DIA mass spectrometry data which were used to for spectral library generation in by Yang et al. For this part of the study we used the supplied spectral library from the data repository. Further details about the mass spectrometry instrumentation and data acquisition are available in Yang et al. \cite{YANG2022104682}.   
 
 \subsection*{General workflow}
 
@@ -130,6 +133,9 @@ As Triqler's model accounts for the assessed uncertainty in the prior identifica
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR (and will therefore result in an FDR equal to or higher than the $q$~value). As a consequence, the statistics from MSstats and MSqRob2 should be more conservative than the estimates from Triqler and Top3\cite{korthauer2019practical}.
 
+
+\subsection*{Application to real biological data}
+To show that our results are relevant for real biological application we reanalyse the OXA-dataset. We group the data as in Yang et al. \cite{YANG2022104682}. The proteins in cluster 1(C1) and 2(C2) were continually up-regulated or down-regulated from Ctrl to ST and from ST to LT. The proteins in cluster 3(C3) and 4(C4) were proteins up-regulated or down-regulated from ST to LT, and the proteins in cluster 5(C5) and 6(C6) were up-regulated or down-regulated from Ctrl to ST.  
 
 \section*{Results}
 
