@@ -1,31 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Aug 31 14:54:35 2022
+Created on Fri Sep 16 17:21:23 2022
 
 @author: ptruong
-
-https://www.uniprot.org/help/id_mapping
-https://biit.cs.ut.ee/gprofiler/page/apis
-
-
-ToDo:
-    
-    Continue on gprofiler background
-    Plot gprofiler KEGG pathways as in paper
 """
 
 import pandas as pd 
 import numpy as np
 import gseapy as gp
 import os
-os.chdir("/home/ptruong/git/dia_sum/scripts/clean/PXD031322_mouse_oxa")
 from uniprot_idmapper import *
 from gseapy_plot import *
-
-os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run")
-os.chdir("/home/ptruong/data/pxd031322/2022-09-09_triqler_and_enrichr_results/fc_0.415")
-os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run/2022-09-14_top3_msstats_msqrob2")
+import argparse
 
 def parse_triqler(triqler_output_file):
     """
@@ -235,9 +222,6 @@ def get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
         C5 = cluster_belonging[cluster_belonging == "C5"].index
         C6 = cluster_belonging[cluster_belonging == "C6"].index
         return C1, C2, C3, C4, C5, C6
-    
-   
-
 
 def get_mapped_proteins(ids):
     # ids = list(c1.index)
@@ -402,206 +386,167 @@ def protein_count_table(C1,C2,C3,C4,C5,C6):
     return cluster_table
 
 
-ctrl_lt = parse_triqler("proteins.1vs2.tsv").set_index("protein")
-ctrl_st = parse_triqler("proteins.1vs3.tsv").set_index("protein")
-lt_st = parse_triqler("proteins.2vs3.tsv").set_index("protein")
-C1, C2, C3, C4, C5, C6 = get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
-                                      ctrl_st_file = "proteins.1vs3.tsv",
-                                      lt_st_file = "proteins.2vs3.tsv",
-                                      fdr_threshold = 0.05,
-                                      prioritize = "C1-C2")
-
-C1, C2, C3, C4, C5, C6 = get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
-                                      ctrl_st_file = "proteins.1vs3.tsv",
-                                      lt_st_file = "proteins.2vs3.tsv",
-                                      fdr_threshold = 0.05,
-                                      prioritize = "C3-C4")
-
-C1_, C2_, C3_, C4_, C5_, C6_ = get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
-                                      ctrl_st_file = "proteins.1vs3.tsv",
-                                      lt_st_file = "proteins.2vs3.tsv",
-                                      fdr_threshold = 0.05,
-                                      prioritize = "non")
-
-protein_table = protein_count_table(C1,C2,C3,C4,C5,C6)
-protein_table = protein_table.idxmax(axis=1)
-protein_table.to_csv("triqler_protein_fc_0.415_C4C5.tsv", sep = "\t")
-count_table = pd.DataFrame(protein_count_table(C1,C2,C3,C4,C5,C6).sum(), columns = ["Triqler"])
-count_table.to_csv("triqler_protein_count_fc_0.415_C4C5.tsv", sep = "\t")
-
-len(np.concatenate([C1,C2,C3,C4,C5,C6]))
-len(np.unique(np.concatenate([C1,C2,C3,C4,C5,C6])))
-
-
-fdr_threshold = 0.05
-
-bgr_proteins = pd.concat([ctrl_lt.reset_index(),ctrl_st.reset_index(), lt_st.reset_index()]).protein.unique()
-
-# all proteins
-
-# Check ctrl-lt C1,C2
-#c1 = ctrl_lt[C1 & (ctrl_lt.q_value < fdr_threshold)]
-#c2 = ctrl_lt[C2 & (ctrl_lt.q_value < fdr_threshold)]
-
-# Check lt-st C3, c4
-#c3 = lt_st[C3 & (lt_st.q_value < fdr_threshold)]
-#c4 = lt_st[C4 & (lt_st.q_value < fdr_threshold)]
-
-# Check ctrl-st C5, C6
-#c5 = ctrl_lt[C5 & (ctrl_lt.q_value < fdr_threshold)]
-#c6 = ctrl_lt[C6 & (ctrl_lt.q_value < fdr_threshold)]
-
-
-c1_mapped = get_mapped_proteins(ids = list(C1))
-c2_mapped = get_mapped_proteins(ids = list(C2))
-c3_mapped = get_mapped_proteins(ids = list(C3))
-c4_mapped = get_mapped_proteins(ids = list(C4))
-c5_mapped = get_mapped_proteins(ids = list(C5))
-c6_mapped = get_mapped_proteins(ids = list(C6))
-
-bgr_mapped = get_mapped_proteins(ids = list(bgr_proteins))
-# we might need to chunk this for api request quicker
 
 
 
-"""
-user_threshold = 0.05
+def main(ctrl_lt_input, 
+            ctrl_st_input,
+            lt_st_input,
+            protein_table_output, 
+            count_table_output,
+            enrichr_output,
+            fdr_threshold = 0.05,
+            prioritize_group = "C1-C2"
+    ):
+    ctrl_lt = parse_triqler(ctrl_lt_input).set_index("protein")
+    ctrl_st = parse_triqler(ctrl_st_input).set_index("protein")
+    lt_st = parse_triqler(lt_st_input).set_index("protein")
 
-c1_pathways = qprofiler_run(query_genes = list(c1_mapped.geneName),
-              background_genes = list(c1_bgr_mapped.geneName),
-              user_threshold = 0.05)
-c2_pathways = qprofiler_run(query_genes = list(c2_mapped.geneName),
-              background_genes = list(c2_bgr_mapped.geneName),
-              user_threshold = 0.05)
-c3_pathways = qprofiler_run(query_genes = list(c3_mapped.geneName),
-              background_genes = list(c3_bgr_mapped.geneName),
-              user_threshold = 0.05)
-c4_pathways = qprofiler_run(query_genes = list(c4_mapped.geneName),
-              background_genes = list(c4_bgr_mapped.geneName),
-              user_threshold = 0.05)
-c5_pathways = qprofiler_run(query_genes = list(c5_mapped.geneName),
-              background_genes = list(c5_bgr_mapped.geneName),
-              user_threshold = 0.05)
-c6_pathways = qprofiler_run(query_genes = list(c6_mapped.geneName),
-              background_genes = list(c6_bgr_mapped.geneName),
-              user_threshold = 0.05)
-
-"""
-
-
-#gene_list = c1_mapped.geneName
-#background_list = c1_bgr_mapped.geneName
-#mouse_library = gp.get_library_name(organism="Mouse")
-
-enr_c1 = gp.enrichr(gene_list=c1_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-enr_c2 = gp.enrichr(gene_list=c2_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-enr_c3 = gp.enrichr(gene_list=c3_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-enr_c4 = gp.enrichr(gene_list=c4_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-enr_c5 = gp.enrichr(gene_list=c5_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-enr_c6 = gp.enrichr(gene_list=c6_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 background=bgr_mapped.geneName,
-                 organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
-                 outdir=None, # don't write to disk
-                )
-
-
-### some other version of enrichr without background and organism
-enr_c1 = gp.enrichr(gene_list=c1_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-enr_c2 = gp.enrichr(gene_list=c2_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-enr_c3 = gp.enrichr(gene_list=c3_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-enr_c4 = gp.enrichr(gene_list=c4_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-enr_c5 = gp.enrichr(gene_list=c5_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-enr_c6 = gp.enrichr(gene_list=c6_mapped.geneName,
-                 gene_sets=['KEGG_2019_Mouse'],
-                 outdir=None, # don't write to disk
-                )
-
-enr_c1.res2d["group"] = "C1"
-enr_c2.res2d["group"] = "C2"
-enr_c3.res2d["group"] = "C3"
-enr_c4.res2d["group"] = "C4"
-enr_c5.res2d["group"] = "C5"
-enr_c6.res2d["group"] = "C6"
-
-enr_clusters = pd.concat([enr_c1.res2d, enr_c2.res2d, enr_c3.res2d,enr_c4.res2d, enr_c5.res2d, enr_c6.res2d])
-enr_clusters["pathway_DEG"] = enr_clusters.Overlap.map(lambda x:float(x.split("/")[0]))
-enr_clusters["pathway_genes"] = enr_clusters.Overlap.map(lambda x:float(x.split("/")[1]))
-enr_clusters["% Path is DEG"] = enr_clusters["pathway_DEG"] / enr_clusters["pathway_genes"]
-
-paper_term = ["Ribosome", "Spliceosome", "Endocytosis", "Steroid biosynthesis",
-              "Dopaminergic synapse", "RNA transport", "Glutathione metabolism",
-              "Proteasome", "Tight junction", "Complement and coagulation cascades", 
-              "Metabolism of xenobiotics by cytochrome P450", "Fructose and mannose metabolism",
-              "mRNA surveillance pathway", "Arginine biosynthesis", "Protein export",
-              "Protein processing in endoplasmic reticulum", "N-Glycan biosynthesis",
-              "Tyrosine metabolism", "Metabolic pathways", "Adrenaergic signaling in cardiomyocytes"]
-
-plot_input = enr_clusters[enr_clusters["Adjusted P-value"] < 0.05]
-plot_input_paper_term = plot_input[plot_input.Term.isin(paper_term)]
-
-df = plot_input
-size = 10 # dot size baseline
-title="KEGG_2019_mouse" #title
-
-plot_dotplot(df = plot_input, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.415, fdr = 0.05, all pathways")
-plot_dotplot(df = plot_input_paper_term, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.415, fdr = 0.05, reported pathways")
-
-
-df.to_csv("enrichr_triqler_fc_0.415_whole_bgr_C3C4.tsv", sep = "\t", index = False)
+    C1, C2, C3, C4, C5, C6 = get_clusters(ctrl_lt_file = ctrl_lt_input,
+                                          ctrl_st_file = ctrl_st_input,
+                                          lt_st_file = lt_st_input,
+                                          fdr_threshold = fdr_threshold,
+                                          prioritize = prioritize_group)
+    
+    
+    protein_table = protein_count_table(C1,C2,C3,C4,C5,C6)
+    protein_table = protein_table.idxmax(axis=1)
+    protein_table.to_csv(protein_table_output, sep = "\t")
+    
+    count_table = pd.DataFrame(protein_count_table(C1,C2,C3,C4,C5,C6).sum(), columns = ["Triqler"])
+    count_table.to_csv(count_table_output, sep = "\t")
+    
+    
+    
+    bgr_proteins = pd.concat([ctrl_lt.reset_index(),ctrl_st.reset_index(), lt_st.reset_index()]).protein.unique()
+    
+    c1_mapped = get_mapped_proteins(ids = list(C1))
+    c2_mapped = get_mapped_proteins(ids = list(C2))
+    c3_mapped = get_mapped_proteins(ids = list(C3))
+    c4_mapped = get_mapped_proteins(ids = list(C4))
+    c5_mapped = get_mapped_proteins(ids = list(C5))
+    c6_mapped = get_mapped_proteins(ids = list(C6))
+    
+    bgr_mapped = get_mapped_proteins(ids = list(bgr_proteins))
+    
+    
+    enr_c1 = gp.enrichr(gene_list=c1_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    enr_c2 = gp.enrichr(gene_list=c2_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    enr_c3 = gp.enrichr(gene_list=c3_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    enr_c4 = gp.enrichr(gene_list=c4_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    enr_c5 = gp.enrichr(gene_list=c5_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    enr_c6 = gp.enrichr(gene_list=c6_mapped.geneName,
+                     gene_sets=['KEGG_2019_Mouse'],
+                     background=bgr_mapped.geneName,
+                     organism='mouse', # don't forget to set organism to the one you desired! e.g. Yeast
+                     outdir=None, # don't write to disk
+                    )
+    
+    enr_c1.res2d["group"] = "C1"
+    enr_c2.res2d["group"] = "C2"
+    enr_c3.res2d["group"] = "C3"
+    enr_c4.res2d["group"] = "C4"
+    enr_c5.res2d["group"] = "C5"
+    enr_c6.res2d["group"] = "C6"
+    
+    enr_clusters = pd.concat([enr_c1.res2d, enr_c2.res2d, enr_c3.res2d,enr_c4.res2d, enr_c5.res2d, enr_c6.res2d])
+    enr_clusters["pathway_DEG"] = enr_clusters.Overlap.map(lambda x:float(x.split("/")[0]))
+    enr_clusters["pathway_genes"] = enr_clusters.Overlap.map(lambda x:float(x.split("/")[1]))
+    enr_clusters["% Path is DEG"] = enr_clusters["pathway_DEG"] / enr_clusters["pathway_genes"]
+    
+    paper_term = ["Ribosome", "Spliceosome", "Endocytosis", "Steroid biosynthesis",
+                  "Dopaminergic synapse", "RNA transport", "Glutathione metabolism",
+                  "Proteasome", "Tight junction", "Complement and coagulation cascades", 
+                  "Metabolism of xenobiotics by cytochrome P450", "Fructose and mannose metabolism",
+                  "mRNA surveillance pathway", "Arginine biosynthesis", "Protein export",
+                  "Protein processing in endoplasmic reticulum", "N-Glycan biosynthesis",
+                  "Tyrosine metabolism", "Metabolic pathways", "Adrenaergic signaling in cardiomyocytes"]
+    
+    plot_input = enr_clusters[enr_clusters["Adjusted P-value"] < 0.05]
+    plot_input_paper_term = plot_input[plot_input.Term.isin(paper_term)]
+    
+    #df = plot_input
+    #size = 10 # dot size baseline
+    #title="KEGG_2019_mouse" #title
+    
+    #plot_dotplot(df = plot_input, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.415, fdr = 0.05, all pathways")
+    #plot_dotplot(df = plot_input_paper_term, size = 15, title = "KEGG_2019_mouse, fc_eval = 0.415, fdr = 0.05, reported pathways")
+    
+    
+    df.to_csv(enrichr_output, sep = "\t", index = False)
+    
 
 
 
 
+            fdr_threshold = 0.05,
+            enrichr_output = "C1-C2"
+    ):
+    
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='This script takes triqler inputs and generate enrichr enrichment analysis and protein counts.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('--ctrl_lt_input', type=str,
+                        help='Scatterplot converter input file.')
+    parser.add_argument('--ctrl_st_input', type=str,
+                        help='Scatterplot converter input file.')
+    parser.add_argument('--lt_st_input', type=str,
+                        help='Scatterplot converter input file.')
+    parser.add_argument('--protein_table_output', type=str,
+                        help='Output name.')
+    parser.add_argument('--count_table_output', type=str,
+                        help='Output name.')
+    parser.add_argument('--enrichr_output', type=str,
+                        help='Output name.')
+    parser.add_argument('--fdr_threshold', type=float, default = 0.05,
+                        help='FDR threshold limit. Default: 1.00')
+    parser.add_argument('--prioritize_group', type=str, default = "C1-C2",
+                        help='Output name.')
 
 
-dna = "ATCGATGGAAAT"
-triplets_list = [dna[i:i+3]  for i in range(0, len(dna),3)]
-print(triplets_list)
-
-
-
-
-
-
-
+    # parse arguments from command line
+    args = parser.parse_args()
+    ctrl_lt_file = args.ctrl_lt_input
+    ctrl_st_file = args.ctrl_st_input
+    lt_st_file = args.lt_st_input
+    protein_table_output = args.protein_table_output
+    count_table_output = args.count_table_output
+    enrichr_output = args.enrichr_output
+    fdr_threshold = args.fdr_threshold
+    prioritize_group = args.prioritize_group
+    main(ctrl_lt_file, 
+                ctrl_st_file,
+                lt_st_file,
+                protein_table_output, 
+                count_table_output,
+                enrichr_output,
+                fdr_threshold,
+                prioritize_group
+        )

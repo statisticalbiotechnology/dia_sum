@@ -21,7 +21,8 @@ os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/prid
 def msqrob2_get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
                  ctrl_st_file = "proteins.1vs3.tsv",
                  lt_st_file = "proteins.2vs3.tsv",
-                 fdr_threshold = 0.05):
+                 fdr_threshold = 0.05,
+                 cluster_by_most_significant_protein = False):
     cols = ['adjPval', 'logFC', "upregulated"]
         
     ctrl_lt = pd.read_csv("Ctrl_LT_msqrob2_results.csv", sep = ",").rename({"Unnamed: 0": "protein"}, axis = 1).set_index("protein")
@@ -47,56 +48,111 @@ def msqrob2_get_clusters(ctrl_lt_file = "proteins.1vs2.tsv",
     lt_st = lt_st[lt_st["lt-st:q_value"] < fdr_threshold]
     
     
-    # C1
-    C1 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == True), (lt_st["lt-st:upregulated"] == False)])
-    C1 = C1[C1 == True]
-    C1 = C1.reset_index().protein.unique()
-    # C2 
-    C2 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == False), (lt_st["lt-st:upregulated"] == True)])
-    C2 = C2[C2 == True]
-    C2 = C2.reset_index().protein.unique()
+    unique_proteins = np.unique(np.concatenate((ctrl_lt.index, ctrl_st.index, lt_st.index)))
+   
+    if cluster_by_most_significant_protein == False:
+        ctrl_st = ctrl_st[~ctrl_st.index.isin(list(ctrl_lt.index))]
+        lt_st = lt_st[~lt_st.index.isin(list(ctrl_lt.index))]    
     
-    # C3
-    C3 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
-                    lt_st[lt_st["lt-st:upregulated"] == False].reset_index().protein.unique())))
+        #len(unique_proteins)
+        #len(np.concatenate((ctrl_lt.index, ctrl_st.index, lt_st.index)))
+        #len(np.unique(np.concatenate((ctrl_lt.index, ctrl_st.index, lt_st.index))))
+        C1 = ctrl_lt[ctrl_lt["ctrl-lt:upregulated"]].reset_index().protein.unique()
+        C2 = ctrl_lt[~ctrl_lt["ctrl-lt:upregulated"]].reset_index().protein.unique()
+        C3 = lt_st[lt_st["lt-st:upregulated"]].reset_index().protein.unique()
+        C4 = lt_st[~lt_st["lt-st:upregulated"]].reset_index().protein.unique()
+        C5 = ctrl_st[ctrl_st["ctrl-st:upregulated"]].reset_index().protein.unique()
+        C6 = ctrl_st[~ctrl_st["ctrl-st:upregulated"]].reset_index().protein.unique()
+        #len(C1)+len(C2)+len(C3)+len(C4)+len(C5)+len(C6)
+        # Intersecting elements allocate with most significant protein
+        
+        # C3 or C5 allocation
+        for protein in (list(set(C3) & set(C5))): #ctrl_st vs lt_st
+            C3_group_fdr = lt_st[lt_st.index == protein]["lt-st:q_value"][0]
+            C5_group_fdr = ctrl_st[ctrl_st.index == protein]["ctrl-st:q_value"][0]
+            if C3_group_fdr > C5_group_fdr:
+                C3 = np.delete(C3, np.where(C3 == protein))
+            else:
+                C5 = np.delete(C5, np.where(C5 == protein))
+        # C4 or C6 allocation
+        for protein in (list(set(C4) & set(C6))): #ctrl_st vs lt_st
+            C4_group_fdr = lt_st[lt_st.index == protein]["lt-st:q_value"][0]
+            C6_group_fdr = ctrl_st[ctrl_st.index == protein]["ctrl-st:q_value"][0]
+            if C4_group_fdr > C6_group_fdr:
+                C4 = np.delete(C4, np.where(C4 == protein))
+            else:
+                C6 = np.delete(C6, np.where(C6 == protein))
+        return C1, C2, C3, C4, C5, C6
+   
+    else: # Allocate proteins to cluster by lowest significance
+        df = pd.concat([ctrl_st, ctrl_lt, lt_st], axis = 1)
+       
+        # C1
+        C1 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == True), (lt_st["lt-st:upregulated"] == False)])
+        C1 = C1[C1 == True]
+        C1 = C1.reset_index().protein.unique()
+        # C2 
+        C2 = pd.concat([(ctrl_st["ctrl-st:upregulated"] == False), (lt_st["lt-st:upregulated"] == True)])
+        C2 = C2[C2 == True]
+        C2 = C2.reset_index().protein.unique()
+        
+        # C3
+        C3 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
+                        lt_st[lt_st["lt-st:upregulated"] == False].reset_index().protein.unique())))
+        
+        # C4 
+        C4 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
+                        lt_st[lt_st["lt-st:upregulated"] == True].reset_index().protein.unique())))
+        
+        # C5
+        C5 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
+                    ctrl_st[ctrl_st["ctrl-st:upregulated"] == True].reset_index().protein.unique())))
+        
+        # C6
+        C6 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
+                    ctrl_st[ctrl_st["ctrl-st:upregulated"] == False].reset_index().protein.unique())))
+        
+        unique_proteins_boolean = []
+        for protein in unique_proteins:
+            unique_proteins_boolean.append([(protein in C1), (protein in C2), (protein in C3), (protein in C4), (protein in C5), (protein in C6)])
+        cluster_table = pd.DataFrame(unique_proteins_boolean, columns = ["C1", "C2", "C3", "C4", "C5", "C6"], index = unique_proteins)
+        
+        unique_proteins_fdrs = []
+        for protein in unique_proteins:
+            prot_row = df[df.index == protein]
+            ctrl_lt_fdr = prot_row["ctrl-lt:q_value"][0]
+            lt_st_fdr = prot_row["lt-st:q_value"][0]
+            ctrl_st_fdr = prot_row["ctrl-st:q_value"][0]
+            if prot_row["ctrl-lt:upregulated"][0]:
+                c1_val = ctrl_lt_fdr
+                c2_val = np.nan
+            else:
+                c1_val = np.nan
+                c2_val = ctrl_lt_fdr
+            if prot_row["lt-st:upregulated"][0]:
+                c3_val = lt_st_fdr
+                c4_val = np.nan
+            else:
+                c3_val = np.nan
+                c4_val = lt_st_fdr
+            if prot_row["ctrl-st:upregulated"][0]:
+                c5_val = ctrl_st_fdr
+                c6_val = np.nan
+            else:
+                c5_val = np.nan
+                c6_val = ctrl_st_fdr
+            unique_proteins_fdrs.append([c1_val, c2_val, c3_val, c4_val, c5_val, c6_val])     
+        cluster_table_fdrs = pd.DataFrame(unique_proteins_fdrs, columns = ["C1", "C2", "C3", "C4", "C5", "C6"], index = unique_proteins)
+        cluster_fdrs = (cluster_table * cluster_table_fdrs).replace(0, np.nan)
+        cluster_belonging = cluster_fdrs.idxmin(axis=1)
     
-    # C4 
-    C4 = np.unique(np.concatenate((ctrl_st.reset_index().protein.unique(),
-                    lt_st[lt_st["lt-st:upregulated"] == True].reset_index().protein.unique())))
-    
-    # C5
-    C5 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
-                ctrl_st[ctrl_st["ctrl-st:upregulated"] == True].reset_index().protein.unique())))
-    
-    # C6
-    C6 = np.unique(np.concatenate((lt_st.reset_index().protein.unique(),
-                ctrl_st[ctrl_st["ctrl-st:upregulated"] == False].reset_index().protein.unique())))
-    
-    
-    # Clusters - its something funky with the nameing
-    #C1 = ((df["ctrl-lt:upregulated"] == True) & (df["ctrl-st:upregulated"] == True) & (df["lt-st:upregulated"] == False))
-    #C1 = ((df["ctrl-st:upregulated"] == True) & (df["lt-st:upregulated"] == False))
-
-    #C2 = ((df["ctrl-lt:upregulated"] == False) & (df["ctrl-st:upregulated"] == False) & (df["lt-st:upregulated"] == True))
-    #C2 = ((df["ctrl-st:upregulated"] == False) & (df["lt-st:upregulated"] == True))
-    #C3 = (df["lt-st:upregulated"] == False) # same as st-lt upregulated
-    #C4 = (df["lt-st:upregulated"] == True) # same as st-lt downregulated
-    #C5 = (df["ctrl-st:upregulated"] == True)
-    #C6 = (df["ctrl-st:upregulated"] == False)
-
-
-    def A_exclude_B(A, B):
-        A = [i for i in A if i not in B]
-        return A 
-
-    C3 = A_exclude_B(C3,C1)
-    C4 = A_exclude_B(C4,C2)
-    C5 = A_exclude_B(C5,C1)
-    C6 = A_exclude_B(C6,C2)
-    
-    return C1, C2, C3, C4, C5, C6
-
-
+        C1 = cluster_belonging[cluster_belonging == "C1"].index
+        C2 = cluster_belonging[cluster_belonging == "C2"].index
+        C3 = cluster_belonging[cluster_belonging == "C3"].index
+        C4 = cluster_belonging[cluster_belonging == "C4"].index
+        C5 = cluster_belonging[cluster_belonging == "C5"].index
+        C6 = cluster_belonging[cluster_belonging == "C6"].index
+        return C1, C2, C3, C4, C5, C6
 
 def get_mapped_proteins(ids):
     # ids = list(c1.index)
@@ -251,6 +307,16 @@ def plot_dotplot(df, size = 10, title = "KEGG"):
     
     ax.set_title(title, fontsize=20, fontweight="bold")
 
+
+def protein_count_table(C1,C2,C3,C4,C5,C6):
+    unique_proteins = np.unique(np.concatenate([C1,C2,C3,C4,C5,C6]))
+    unique_proteins_boolean = []
+    for protein in unique_proteins:
+        unique_proteins_boolean.append([(protein in C1), (protein in C2), (protein in C3), (protein in C4), (protein in C5), (protein in C6)])
+    cluster_table = pd.DataFrame(unique_proteins_boolean, columns = ["C1", "C2", "C3", "C4", "C5", "C6"], index = unique_proteins)
+    return cluster_table
+
+
 os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-08-11_run/2022-09-14_top3_msstats_msqrob2")
 
 ctrl_lt = pd.read_csv("Ctrl_LT_msqrob2_results.csv", sep = ",").rename({"Unnamed: 0": "protein"}, axis = 1).set_index("protein")
@@ -262,6 +328,10 @@ lt_st = pd.read_csv("LT_ST_msqrob2_results.csv", sep = ",").rename({"Unnamed: 0"
 C1, C2, C3, C4, C5, C6 = msqrob2_get_clusters(ctrl_lt_file = "Ctrl_LT_msqrob2_results.csv",
                                       ctrl_st_file = "Ctrl_ST_msqrob2_results.csv",
                                       lt_st_file = "LT_ST_msqrob2_results.csv")
+
+protein_table = protein_count_table(C1, C2, C3, C4, C5, C6)
+count_table = pd.DataFrame(protein_count_table(C1,C2,C3,C4,C5,C6).sum(), columns = ["MSqRob2"])
+count_table.to_csv("msqrob2_protein_count.tsv", sep = "\t")
 
 fdr_threshold = 0.05
 
