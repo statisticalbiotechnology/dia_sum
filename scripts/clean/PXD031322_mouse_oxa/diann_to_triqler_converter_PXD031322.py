@@ -109,9 +109,10 @@ convert_diann_to_triqler_PXD031322(filename = "report.tsv",
 
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
-                                   output = "triqler_input_report_ST_LT_CTRL_adj_pg.tsv",
+                                   output = "triqler_input_report_ST_LT_CTRL_no_adj_pg.tsv",
                                    conditions = "ST|LT|Ctrl",
-                                   fdr_max = 1)
+                                   fdr_max = 1,
+                                   protein_group_adjustment = False)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
                                    output = "triqler_input_report_ST_CTRL.tsv",
@@ -119,9 +120,10 @@ convert_diann_to_triqler_PXD031322(filename = "report.tsv",
                                    fdr_max = 1)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
-                                   output = "triqler_input_report_LT_CTRL.tsv",
+                                   output = "triqler_input_report_LT_CTRL_no_adj_pg.tsv",
                                    conditions = "LT|Ctrl",
-                                   fdr_max = 1)
+                                   fdr_max = 1,
+                                   protein_group_adjustment = False)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
                                    output = "triqler_input_report_LT_ST.tsv",
