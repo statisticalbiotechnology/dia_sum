@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Sep 20 09:33:25 2022
+Created on Thu Sep 22 19:19:18 2022
 
 @author: ptruong
 """
-
 
 import pandas as pd 
 import numpy as np
@@ -290,7 +289,7 @@ def check_inversed(triqler, reported_S3, fdr_threshold, fc_threshold, s3_mapper)
     return df_comparison
 
 
-os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-09-20_ctrl_vs_LT_study")
+os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-09-22_ST_vs_LT_study")
 
 # divide into S3 and S4 analysis and into 0.1 to 0.6 FC, including fc 0.415 
 # Count protein [Done]
@@ -300,21 +299,21 @@ os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/prid
 fc_threshold = 0.2
 fdr_threshold = 0.05
 
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
+reported_S3 = pd.read_excel("S4_list_of_differential_regulation_protein_in_six_subclusters.xlsx", header = 1)
+reported_S3.rename({"LT-ST_p adj":"Adjusted_P_value", "LT-ST_diff":"log2（FC）"}, axis = 1, inplace = True)
 #reported_S4 = pd.read_excel("S4_list_of_differential_regulation_protein_in_six_subclusters.xlsx", header = 1)
 #reported_S5 = pd.read_excel("S5_KEGG_enrichment_analysis_of_proteins_in_six_subclusters.xlsx", header = 1) # thier Kegg pathway, as reference
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
+triqler = parse_triqler("proteins_fc_0.1")
 s3_mapper = get_mapper(reported_S3, protein_col = "Protein.Ids")
 triqler_mapper = get_mapper(triqler, protein_col = "protein")
 #S3_statistics(reported_S3)
 #S4_statistics(reported_S4)
-
-os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-09-20_ctrl_vs_LT_study")
+#os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-09-20_ctrl_vs_LT_study")
 
 fc_threshold = 0.1
 fdr_threshold = 0.05
 
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
+triqler = parse_triqler("proteins_fc_0.1")
 output_name = f"total_count_table_fc_{fc_threshold}_fdr_{fdr_threshold}.tsv"
 reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
 #reported_S4 = pd.read_excel("S4_list_of_differential_regulation_protein_in_six_subclusters.xlsx", header = 1)
@@ -324,22 +323,11 @@ fdr_threshold = 0.05
 fc_threshold = 0.1
 pathway_fdr_threshold = 0.05
 percent_DEG_in_pathway_threshold = 0.0
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
+reported_S3 = pd.read_excel("S4_list_of_differential_regulation_protein_in_six_subclusters.xlsx", header = 1)
+reported_S3.rename({"LT-ST_p adj":"Adjusted_P_value", "LT-ST_diff":"log2（FC）"}, axis = 1, inplace = True)
+triqler = parse_triqler("proteins_fc_0.1")
 triqler["log2_fold_change"] = -triqler["log2_fold_change"]
-res = output_count_table(reported_S3, triqler, s3_mapper = s3_mapper, triqler_mapper = triqler_mapper, 
-           fdr_threshold = fdr_threshold, fc_threshold = fc_threshold,
-           pathway_fdr_threshold = pathway_fdr_threshold, 
-           percent_DEG_threshold = percent_DEG_in_pathway_threshold)
-res.to_csv(f"count_table_fc_{fc_threshold}_fdr_{fdr_threshold}_pathwayFDR_{pathway_fdr_threshold}_percentDEG_{percent_DEG_in_pathway_threshold}.tsv", sep = "\t")
-
-fdr_threshold = 0.05
-fc_threshold = 0.2
-pathway_fdr_threshold = 0.05
-percent_DEG_in_pathway_threshold = 0.0
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
-triqler["log2_fold_change"] = -triqler["log2_fold_change"]
+#check = check_inversed(triqler, reported_S3, fdr_threshold, fc_threshold, s3_mapper)
 res = output_count_table(reported_S3, triqler, s3_mapper = s3_mapper, triqler_mapper = triqler_mapper, 
            fdr_threshold = fdr_threshold, fc_threshold = fc_threshold,
            pathway_fdr_threshold = pathway_fdr_threshold, 
@@ -347,35 +335,7 @@ res = output_count_table(reported_S3, triqler, s3_mapper = s3_mapper, triqler_ma
 res.to_csv(f"count_table_fc_{fc_threshold}_fdr_{fdr_threshold}_pathwayFDR_{pathway_fdr_threshold}_percentDEG_{percent_DEG_in_pathway_threshold}.tsv", sep = "\t")
 
 
-fdr_threshold = 0.05
-fc_threshold = 0.3
-pathway_fdr_threshold = 0.05
-percent_DEG_in_pathway_threshold = 0.0
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
-triqler["log2_fold_change"] = -triqler["log2_fold_change"]
-res = output_count_table(reported_S3, triqler, s3_mapper = s3_mapper, triqler_mapper = triqler_mapper, 
-           fdr_threshold = fdr_threshold, fc_threshold = fc_threshold,
-           pathway_fdr_threshold = pathway_fdr_threshold, 
-           percent_DEG_threshold = percent_DEG_in_pathway_threshold)
-res.to_csv(f"count_table_fc_{fc_threshold}_fdr_{fdr_threshold}_pathwayFDR_{pathway_fdr_threshold}_percentDEG_{percent_DEG_in_pathway_threshold}.tsv", sep = "\t")
-
-
-fdr_threshold = 0.05
-fc_threshold = 0.6
-pathway_fdr_threshold = 0.05
-percent_DEG_in_pathway_threshold = 0.0
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
-triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
-triqler["log2_fold_change"] = -triqler["log2_fold_change"]
-res = output_count_table(reported_S3, triqler, s3_mapper = s3_mapper, triqler_mapper = triqler_mapper, 
-           fdr_threshold = fdr_threshold, fc_threshold = fc_threshold,
-           pathway_fdr_threshold = pathway_fdr_threshold, 
-           percent_DEG_threshold = percent_DEG_in_pathway_threshold)
-res.to_csv(f"count_table_fc_{fc_threshold}_fdr_{fdr_threshold}_pathwayFDR_{pathway_fdr_threshold}_percentDEG_{percent_DEG_in_pathway_threshold}.tsv", sep = "\t")
-
-
-########## enriched clusters analysis - biological
+#alysis - biological
 
 fdr_threshold = 0.05
 fc_threshold = 0.1
@@ -417,95 +377,3 @@ comparison[~comparison.reported_pathway_FDR.isna()]
 comparison.to_csv(f"pathway_comparison_fcFDR_{fdr_threshold}_fcThreshold_{fc_threshold}.tsv", sep = "\t")
 comparison.to_csv(f"pathway_comparison_fcFDR_{fdr_threshold}_fcThreshold_{fc_threshold}_noFilter.tsv", sep = "\t")
 
-
-
-############### Time consuming run below....
-from time import time
-
-reported_S3 = pd.read_excel("S3_list_of_proteins_differentially_regulated_between_LT_and_Ctrl.xlsx", header = 1)
-
-start = time()
-res_list = []
-#for fc in np.arange(0.1, 0.7, 0.1):
-for fc in [0.5, 0.6]:
-    start_epoch = time()
-    fc_threshold = round(fc,2)
-    triqler = parse_triqler(f"triqler_results_fdr_1.00_noAdjPG_onlyCtrlLT/proteins_fc{fc_threshold}_noAdjPG_onlyCtrlLT")
-    triqler["log2_fold_change"] = -triqler["log2_fold_change"]
-    #for log2fc in np.arange(0.001, 0.105, 0.005):
-    for log2fc in np.arange(0.036, 0.105, 0.005):
-        fdr_threshold = round(log2fc-0.001, 4)
-        if fdr_threshold == 0:
-            fdr_threshold = 0.001
-        triqler_filtered = filter_and_map_triqler(triqler, fdr_threshold = fdr_threshold, fc_threshold = fc_threshold, triqler_mapper = triqler_mapper)
-        reported_S3_filtered = filter_and_map_reported_s3(reported_S3, fdr_threshold = fdr_threshold, fc_threshold = fc_threshold, s3_mapper = s3_mapper)
-        enr_clusters = enr_pathway_analysis(triqler_filtered, reported_S3_filtered, triqler_mapper, s3_mapper)
-        enr_clusters_UP = enr_pathway_analysis(triqler_filtered[triqler_filtered["log2_fold_change"]>0], reported_S3_filtered[reported_S3_filtered['log2（FC）']>0], triqler_mapper, s3_mapper)
-        enr_clusters_DOWN = enr_pathway_analysis(triqler_filtered[triqler_filtered["log2_fold_change"]<0], reported_S3_filtered[reported_S3_filtered['log2（FC）']<0],triqler_mapper, s3_mapper)
-        for pathway_fdr in np.arange(0.001, 0.105, 0.005):
-            pathway_fdr_threshold = round(pathway_fdr-0.001, 4)
-            for percent_DEG_in_pathway in np.arange(0.0, 0.6, 0.1):
-                percent_DEG_in_pathway = round(percent_DEG_in_pathway, 2)
-                #FILTER ENRIRCHR RESULTS
-                count_table = get_count_table(triqler_filtered, reported_S3_filtered) # TABLE
-                count_table_UP = get_count_table(triqler_filtered[triqler_filtered["log2_fold_change"]>0], reported_S3_filtered[reported_S3_filtered['log2（FC）']>0])
-                count_table_DOWN = get_count_table(triqler_filtered[triqler_filtered["log2_fold_change"]<0], reported_S3_filtered[reported_S3_filtered['log2（FC）']<0])
-                enr_clusters_filtered = filter_enrichr(enr_clusters, pathway_fdr_threshold, percent_DEG_in_pathway)
-                enr_clusters_UP_filtered = filter_enrichr(enr_clusters_UP, pathway_fdr_threshold, percent_DEG_in_pathway)
-                enr_clusters_DOWN_filtered = filter_enrichr(enr_clusters_DOWN, pathway_fdr_threshold, percent_DEG_in_pathway)
-                count_table = add_pathways_to_count_table(count_table, enr_clusters_filtered)
-                count_table.rename(dict(zip(count_table.columns,count_table.columns.map(lambda x:x+"_Total"))), axis = 1, inplace = True)    
-                count_table_UP = add_pathways_to_count_table(count_table_UP, enr_clusters_UP_filtered)
-                count_table_UP.rename(dict(zip(count_table_UP.columns,count_table_UP.columns.map(lambda x:x+"_Upregulated"))), axis = 1, inplace = True)
-                count_table_DOWN = add_pathways_to_count_table(count_table_DOWN, enr_clusters_DOWN_filtered)
-                count_table_DOWN.rename(dict(zip(count_table_DOWN.columns,count_table_DOWN.columns.map(lambda x:x+"_Downregulated"))), axis = 1, inplace = True)
-                
-                res = pd.concat([count_table, count_table_UP, count_table_DOWN], axis = 1)
-                res["log2FC_fdr"] = fdr_threshold
-                res["abs(log2FC)"] = fc_threshold
-                res["pathway_fdr"] = pathway_fdr_threshold
-                res["%DEG_in_pathway"] = percent_DEG_in_pathway
-                res_list.append(res)
-                print(f"fc_threshold: {fc_threshold}, log2_fdr_threshold: {fdr_threshold}, pathway_fdr_threshold: {pathway_fdr_threshold}, percent_DEG_in_pathway: {percent_DEG_in_pathway}")
-                print(f"Epoch time {time()-start_epoch}")
-end = time()
-print(f"Total process time: {end-start}")
-
-full_list = pd.concat(res_list)
-
-
-#full_list.to_csv("count_table.tsv", sep = "\t")
-
-#comp = check_inversed(triqler, reported_S3, fdr_threshold = 0.05, fc_threshold = 0.4, s3_mapper = s3_mapper)
-#comp
-#comp.inversed.sum()
-
-full_list = pd.read_csv("count_table.tsv", sep = "\t", index_col = 0)
-
-#query full count table 
-log2FC_fdr_threshold = 0.05
-fc_threshold = 0.3
-pathway_fdr = 0.05
-percent_DEG = 0
-q = full_list[(full_list["log2FC_fdr"] == log2FC_fdr_threshold) &
- (full_list["abs(log2FC)"] == fc_threshold) &
- (full_list["pathway_fdr"] == pathway_fdr) &
- (full_list["%DEG_in_pathway"] == percent_DEG)
- ]
-q.to_csv(f"countTable_log2FC{log2FC_fdr_threshold}_FC{fc_threshold}_pathwayFDR{pathway_fdr}_percentDEG{percent_DEG}.tsv", sep = "\t")
-
-
-
-log2FC_fdr_threshold = 0.05
-pathway_fdr = 0.05
-percent_DEG = 0
-q = full_list[(full_list["log2FC_fdr"] == log2FC_fdr_threshold) &
- (full_list["pathway_fdr"] == pathway_fdr) &
- (full_list["%DEG_in_pathway"] == percent_DEG)
- ]
-
-
-
-
-
-full_list

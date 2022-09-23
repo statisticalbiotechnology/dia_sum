@@ -109,15 +109,16 @@ convert_diann_to_triqler_PXD031322(filename = "report.tsv",
 
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
-                                   output = "triqler_input_report_ST_LT_CTRL_no_adj_pg.tsv",
+                                   output = "triqler_input_report_ST_LT_CTRL_adj_pg.tsv",
                                    conditions = "ST|LT|Ctrl",
                                    fdr_max = 1,
-                                   protein_group_adjustment = False)
+                                   protein_group_adjustment = True)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
-                                   output = "triqler_input_report_ST_CTRL.tsv",
+                                   output = "triqler_input_report_ST_CTRL_no_adh_pg.tsv",
                                    conditions = "ST|Ctrl",
-                                   fdr_max = 1)
+                                   fdr_max = 1,
+                                   protein_group_adjustment = False)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
                                    output = "triqler_input_report_LT_CTRL_no_adj_pg.tsv",
@@ -126,9 +127,10 @@ convert_diann_to_triqler_PXD031322(filename = "report.tsv",
                                    protein_group_adjustment = False)
 
 convert_diann_to_triqler_PXD031322(filename = "report.tsv",
-                                   output = "triqler_input_report_LT_ST.tsv",
+                                   output = "triqler_input_report_LT_ST_no_adj_pg.tsv",
                                    conditions = "ST|LT",
-                                   fdr_max = 1)
+                                   fdr_max = 1,
+                                   protein_group_adjustment = False)
 
 #import os
 #os.chdir("/home/ptruong/data/PXD004873_quick_test")
