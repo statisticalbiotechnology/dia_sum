@@ -465,17 +465,4 @@ p53 = get_KEGG_pathway_proteins(final_df = final, pathway_df = pathways, pathway
 p53.to_csv("p53_signaling_pathway.tsv", sep = "\t")
  
 
-final.to_csv("protein_table_output.tsv", sep = "\t")
-
-
-
-
-
-
-
-
-
-
-
-
 
