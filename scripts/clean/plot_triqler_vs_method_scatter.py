@@ -24,7 +24,7 @@ rcParams["text.usetex"] = True
 #df["log2(A,B)"] = df["2"]-df["1"]
 
 
-def plot_scatterplot(df_triqler, df_method, method_name, output, fdr_threshold = 1.00):
+def plot_scatterplot(df_triqler, df_method, method_name, output, fdr_threshold = 1.00, xlim = False):
     
     df_triqler = pd.read_csv(df_triqler, sep = "\t")
     df_method = pd.read_csv(df_method, sep = "\t")
@@ -71,7 +71,8 @@ def plot_scatterplot(df_triqler, df_method, method_name, output, fdr_threshold =
 
     ax.set_ylim([-2,3])
     ax.set_xlim([-2,3])
-    #ax.set_xlim([0,10])
+    if xlim != False:
+        ax.set_xlim(xlim)
     ax.set_xlabel("Triqler - Log2(A/B)", fontsize=38)
     first_letter = method_name[0].upper()
     rest_of_letters = method_name[1:].lower()
@@ -106,7 +107,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--fdr_threshold', type=float, default = 1.00,
                         help='FDR threshold limit. Default: 1.00')
-
+    parser.add_argument('--xlim', default = False)
 
     # parse arguments from command line
     args = parser.parse_args()
@@ -115,6 +116,7 @@ if __name__ == "__main__":
     method_label = args.method_label
     fdr_threshold = args.fdr_threshold
     output = args.output
-    plot_scatterplot(triqler_input, method_input, method_label, output, fdr_threshold)
+    xlim = args.xlim
+    plot_scatterplot(triqler_input, method_input, method_label, output, fdr_threshold, xlim)
     
     

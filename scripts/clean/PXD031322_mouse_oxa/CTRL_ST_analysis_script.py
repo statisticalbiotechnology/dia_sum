@@ -307,18 +307,30 @@ os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/prid
 fc_threshold = 0.2
 fdr_threshold = 0.05
 
+
+triqler_input = "proteins.1vs2.tsv"
 reported_S3 = pd.read_excel("S2_list_of_proteins_differentially_regulated_between_ST_and_Ctrl.xlsx", header = 1)
 #reported_S4 = pd.read_excel("S4_list_of_differential_regulation_protein_in_six_subclusters.xlsx", header = 1)
 #reported_S5 = pd.read_excel("S5_KEGG_enrichment_analysis_of_proteins_in_six_subclusters.xlsx", header = 1) # thier Kegg pathway, as reference
-triqler = parse_triqler("proteins_fc_0.1")
+triqler = parse_triqler(triqler_input)
+#posterior_protein_id_q = triqler.sort_values(by = "protein_id_posterior_error_prob").protein_id_posterior_error_prob.cumsum().reset_index().drop("index", axis = 1)
+#posterior_protein_id_q=posterior_protein_id_q.reset_index()
+#triqler["protein_id_q_value"] = posterior_protein_id_q.protein_id_posterior_error_prob / (posterior_protein_id_q.index + 1)
+#triqler = triqler[triqler["protein_id_q_value"] < 0.01]
+#triqler
+#triqler.protein.str.contains("DECOY").sum()
+
 s3_mapper = get_mapper(reported_S3, protein_col = "Protein.Ids")
 triqler_mapper = get_mapper(triqler, protein_col = "protein")
 #S3_statistics(reported_S3)
 #S4_statistics(reported_S4)
 
+# triqler posterior to q
+
+
 #os.chdir("/hdd_14T/data/PXD031322_oxaliplatin_dia_study/ftp.pride.ebi.ac.uk/pride/data/archive/2022/07/PXD031322/2022-09-20_ctrl_vs_LT_study")
 
-fc_threshold = 0.1
+fc_threshold = 0.6
 fdr_threshold = 0.05
 
 triqler = parse_triqler("proteins_fc_0.1")
@@ -359,7 +371,7 @@ res.to_csv(f"count_table_fc_{fc_threshold}_fdr_{fdr_threshold}_pathwayFDR_{pathw
 ########## enriched clusters analysis - biological
 
 fdr_threshold = 0.05
-fc_threshold = 0.1
+fc_threshold = 0.6
 triqler = filter_and_map_triqler(triqler, fdr_threshold = fdr_threshold, fc_threshold = fc_threshold, triqler_mapper = triqler_mapper)
 reported_S3 = filter_and_map_reported_s3(reported_S3, fdr_threshold = fdr_threshold, fc_threshold = fc_threshold, s3_mapper = s3_mapper)
 enr_clusters = enr_pathway_analysis(triqler, reported_S3, triqler_mapper, s3_mapper)

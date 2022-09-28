@@ -66,3 +66,18 @@ sns.scatterplot(data=df, x="triqler_log2FC", y="reported_log2FC", hue = "compari
 
 add_identity(ax, color='k', ls='--')
 
+
+# check so that nothing is inversed
+
+ctrl_st_check = (df[df.comparison == "CTRL_ST"].triqler_log2FC * df[df.comparison == "CTRL_ST"].reported_log2FC)
+(ctrl_st_check[(ctrl_st_check > 0.001) & (~ctrl_st_check.isna())] > 0).sum()
+ctrl_st_check[(ctrl_st_check > 0.001) & (~ctrl_st_check.isna())]
+
+ctrl_lt_check = (df[df.comparison == "CTRL_LT"].triqler_log2FC * df[df.comparison == "CTRL_LT"].reported_log2FC)
+(ctrl_lt_check[(ctrl_lt_check > 0.001) & (~ctrl_lt_check.isna())] > 0).sum()
+ctrl_lt_check[(ctrl_lt_check > 0.001) & (~ctrl_lt_check.isna())]
+
+lt_st_check = (df[df.comparison == "LT_ST"].triqler_log2FC * df[df.comparison == "LT_ST"].reported_log2FC)
+(lt_st_check[(lt_st_check > 0.001) & (~lt_st_check.isna())] > 0).sum()
+lt_st_check[(lt_st_check > 0.001) & (~lt_st_check.isna())]
+
