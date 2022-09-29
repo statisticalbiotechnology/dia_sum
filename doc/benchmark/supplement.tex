@@ -55,7 +55,7 @@ Human   & 20 614     & 20 302     \\
 Yeast   & 6 050      & 5 848      \\ \hline
 \end{tabular}
 
-  \caption{{\bf Protein count in the Uniprot FASTA protein database.} The database is a FASTA file with one protein sequence per gene for each species (UP000005640, UP000000625, and UP000002311. Acquired on 2021-06-16). The "no\_shared" filter is applied by splitting the protein sequences at amino acids "K" and "R" and keeping all the sequences with length $>$ 7 for each protein. We then mapped each sequence to all possible protein matchings and counted how many proteins each split-sequence was mapped to, and filtered it so that each sequence only kept one protein match. Therefore, creating a database library with only one peptide sequence per protein. For the "no\_shared\_IL\_equivalence" all I are replaced by L before performing the filtering. \label{table:proteins_in_database}}
+  \caption{{\bf Protein count in the Uniprot FASTA protein database.} The database is a FASTA file with one protein sequence per gene for each species (UP000005640, UP000000625, and UP000002311. Acquired on 2021-06-16). We further filtered the sequences to assure that no two proteins shared tryptic peptides longer than 7 amino acids. The number of sequences remaining after this operation is reported in the no\_shared column. \label{table:proteins_in_database}}
 
 \end{table}
 
