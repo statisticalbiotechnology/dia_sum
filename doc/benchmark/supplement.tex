@@ -74,7 +74,6 @@ Yeast   & 6 050      & 5 848      \\ \hline
     \end{tabular}
      \caption{{\bf Number of identified peptides and proteins for the ID workflow.} A peptide-level FDR at 0.01 was obtained using a an $m\_score$ cutoff at 0.00079 computed by setting the desired peptide-level FDR with \texttt{mscore4pepfdr} in the \texttt{SWATH2stats} package.
           \label{fig:osw_peptide_and_protein_id}}
-    \todo[inline]{At which FDR thresholds?}
 \end{table}
         
 
@@ -91,7 +90,6 @@ Yeast   & 6 050      & 5 848      \\ \hline
     \end{tabular}
      \caption{{\bf Number of identified peptides and proteins for the PS workflow} A peptide-level FDR at 0.01 was used for the purpose of reporting these figures.
           \label{fig:diann_peptide_and_protein_id}}
-          \todo[inline]{At which FDR thresholds?}
 \end{table}
 
 
@@ -105,8 +103,8 @@ Yeast   & 6 050      & 5 848      \\ \hline
   \caption{{\bf Standard deviation of peptide abundance as a function of mean abundance in DIA experiments.} We performed quantile binning with 10 bins using pandas qcut function and plotted the standard deviation across samples as a function of the mean of every peptide intensity in the TripleTOF6600 section of the LFQ Bench set. The bins are constructed so that each bin contains an equal amount of data points and the unequal bin sizes are an effect of the quantile binning procedure. The x-axis value shows the bin ranges. We used a log-log scale for abundances derived by the (A) ID pipeline and (B) PS pipeline. (A) show a slight increase in peptide intensity standard deviation as we increase the mean peptide intensity. In (B) we observe a nearly uniform offset in standard deviation across the intensity scale, demonstrating that (B) holds the Triqler assumption $\log(\sigma) \approx \log(\mu) + \log(k)$ and hence   $\sigma \approx \mu k$ very well. While (A) does not hold the assumption as well, Triqler is still used to analyse this data.  \label{fig:uniform_offset_in_standard_deviation_boxplot}}
 
  \end{figure}
- 
 
+ 
 \begin{figure}[hbt]
     \centering
     \centering
@@ -114,9 +112,10 @@ Yeast   & 6 050      & 5 848      \\ \hline
         A & \includegraphics[width=0.80\linewidth]{../../result/report_plots_pipeline/fraction_missing_values_ID.png} \\ %\includegraphics[width=0.3\linewidth]{} & 
         B & \includegraphics[width=0.80\linewidth]{../../result/report_plots_pipeline/fraction_missing_values_PS.png} \\%\includegraphics[width=0.3\linewidth]{} \\ 
     \end{tabular}
-    \caption{{\bf Comparison of actual missing values against fit to the censored normal distribution used in Triqler.} We imputed the missing values as the mean of sample peptide intensities and used these imputed values to approximate the missingness for a given intensity. We binned the intensities to an arbitrary small range and plotted the fraction of missing values for each intensity range. The curve\_fit function from scipy.optimize was used to fit the values against the mentioned censored normal distribution for (A) ID pipeline  and (B) PS pipeline. \label{fig:fraction_missing_values}}
+    \caption{{\bf Comparison of actual missing values against fit to the censored normal distribution used in Triqler.} We modified Triqler to use an alternative censoring function for DIA data. To compute the parameters of the function we imputed the missing values as the mean of sample peptide intensities and used these imputed values to approximate the missingness for a given intensity. We binned the intensities to an arbitrary small range and plotted the fraction of missing values for each intensity range. The curve\_fit function from scipy.optimize was used to fit the values against the mentioned censored normal function using the variance of a binomial distribution to weight for the uncertainty for each bin (A) ID pipeline  and (B) PS pipeline. \label{fig:fraction_missing_values}}
 \end{figure}
 
+\iffalse  
 \begin{figure}[hbt]
     \centering
     \centering
@@ -126,8 +125,8 @@ Yeast   & 6 050      & 5 848      \\ \hline
     \end{tabular}
     \caption{{\bf Proteins with a different Triqler-estimated abundance than expected are summarized by fewer peptides than ones that are well estimated.} We plotted the median number of peptides per protein for    
   We binned the peptides into regions of 0.1 ranged bins of estimated fold change and plotted them median for all bins between [-2,3], and plotted the median number of peptides as a function of bin-centers of the fold change. (A) is the ID pipeline and (B) is the PS pipeline \label{fig:number_of_peptides_supplement}}
-  \todo[inline]{I still not sure what to get from this plot. It might be interesting to show that there is a difference in triqler as compared to other methods in this aspect, is that something we should claim? }
 \end{figure}
+\fi
 
 \begin{figure}[hbt]
     \centering
@@ -151,12 +150,12 @@ Yeast   & 6 050      & 5 848      \\ \hline
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{lclc} 
-        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_ID_ecoli_0.51}.png} & 
-        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_PS_ecoli_0.51}.png} \\ 
-        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_ID_yeast_0.51}.png} & 
-        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_PS_yeast_0.51}.png} \\
-        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_ID_all_0.51}.png} & 
-        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/{diff_HeLa_vs_nonHeLa_PS_yeast_0.51}.png} \\ 
+        A & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_ecoli_0.51.png} & 
+        D & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_ecoli_0.51.png} \\ 
+        B & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_yeast_0.51.png} & 
+        E & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\
+        C & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
+        F & \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_yeast_0.51.png} \\ 
 
     \end{tabular}
     \caption{{\bf The compared methods' ability to differentiate differentially abundant proteins.} We plotted the number of reported differentially abundant  {\em E. Coli} and Yeast proteins as a function of the number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test, we selected a fold-change evaluation of 0.51 for Triqler and fold-change threshold of 0.51 for Top3, MSstats, and MSqRob2. All methods have a protein-level FDR threshold of 0.01. \label{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}}
@@ -172,7 +171,7 @@ Yeast   & 6 050      & 5 848      \\ \hline
 
 
     \caption{{\bf Comparison of reported fold change distributions.} We can see that the Triqler and Top3 log2(A/B) empirical distributions have apexes that are more centered toward the true lysate values, which are indicated by the dashed lines. The apexes for Triqler have higher protein count than MSqRob2, MSstats and Top3. This shows that there are more proteins closer to the true values identified by Triqler than the other methods. \label{fig:fc_histogram_supplement}}
-    \todo[inline]{Harmonize font sizes.}
+    %\todo[inline]{Harmonize font sizes.}
     
 \end{figure}
 
@@ -180,17 +179,12 @@ Yeast   & 6 050      & 5 848      \\ \hline
 \begin{figure}[hbt]
     \centering
     \centering
-    \begin{tabular}{c} 
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.png} \\
-        A \\ 
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/{calibration_ID_0.51}.png} \\
-        B \\
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.png} \\
-        C \\
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/{calibration_PS_0.51}.png} \\
-        D 
+    \begin{tabular}{cc} 
+        \includegraphics[width=0.49\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.png} &
+        \includegraphics[width=0.49\linewidth]{../../result/report_plots_pipeline/calibration_PS_0.png} \\
+        A & B \\
     \end{tabular}
-  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value for (A,B) ID pipeline and (C,D) PS pipeline. The non-Triqler estimated proteins abundances were both (A,C) not subject to fold change thresholds and (B,D) subject to a 0.51 fold change threshold. \label{fig:frac_hela_vs_fdr_supp}}
+  \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of $q$~value for (A) ID pipeline and (B) PS pipeline. \label{fig:frac_hela_vs_fdr_supp}}
 \end{figure}
 
 
