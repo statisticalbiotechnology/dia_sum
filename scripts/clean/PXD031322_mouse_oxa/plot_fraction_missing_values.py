@@ -59,7 +59,13 @@ def create_pivot_table_with_missing_count_per_condition(df):
     # Compute mean, standard deviation and na_count
     pivot_missing["mu"] = pivot_missing.mean(axis = 1)
     pivot_missing["std"] = pivot_missing.std(axis = 1) 
-    pivot_missing["na_count"] = pivot_missing.isna().sum(axis = 1) - 10 # remove three because we do not want to count missing on both samples
+    pivot_missing["na_count"] = pivot_missing.isna().sum(axis = 1)# remove three because we do not want to count missing on both samples
+    
+    pivot_missing["na_count"] = pd.concat([pivot_missing[pivot_missing.index.get_level_values(0) == "Ctrl"].na_count - 9,
+    pivot_missing[pivot_missing.index.get_level_values(0) == "ST"].na_count - 9,
+    pivot_missing[pivot_missing.index.get_level_values(0) == "LT"].na_count - 10])
+
+    
     return pivot_missing, conditions_cols
 
 
@@ -100,7 +106,7 @@ def compute_missing_value_factions(df, bins = np.arange(0,1000,10)):
     # Bin the imputed values and intensities.
     df_binned_imputed_mean_nans = pd.cut(df_imputed_nans_with_condition_mean["value"], bins, include_lowest=True)
     df_binned_vals = pd.cut(df_intensities, bins, include_lowest=True)
-    
+
     # For each bin  count(imputed) / count(intensities)
     # Now each bin is an intensity range and each ratio is the fraction of missing value for that intensity.
     df_binned_missing_value_fraction = (df_binned_imputed_mean_nans.value_counts() / (df_binned_vals.value_counts()+df_binned_imputed_mean_nans.value_counts()))
@@ -108,7 +114,7 @@ def compute_missing_value_factions(df, bins = np.arange(0,1000,10)):
     df_binned_missing_value_fraction["n_count"] = (df_binned_vals.value_counts()+df_binned_imputed_mean_nans.value_counts())
     df_binned_missing_value_fraction.reset_index(inplace =True)
     df_binned_missing_value_fraction.index = bins[:-1]
-    df_binned_missing_value_fraction = df_binned_missing_value_fraction[df_binned_missing_value_fraction.n_count > 10]
+    df_binned_missing_value_fraction = df_binned_missing_value_fraction[df_binned_missing_value_fraction.n_count > 500]
     return df_binned_missing_value_fraction
 
 # From triqler code
@@ -141,17 +147,17 @@ def main():
     print(f"Reading in: {triqler_input_file}")
     df = read_file(triqler_input_file)
     df.intensity = df.intensity.replace([0], np.nan)
-
     df.intensity = np.log10(df.intensity)
-    
+    df.replace([np.inf, -np.inf], np.nan, inplace = True)
+     
     print("Imputing nans with mean...")
 
     print("Computing missing value fraction...")
-    df_binned_missing_value_fraction = compute_missing_value_factions(df, bins = np.arange(-1,4,0.1))
-    df_binned_missing_value_fraction.fraction.fillna(value = 0, inplace = True)
+    df_binned_missing_value_fraction = compute_missing_value_factions(df, bins = np.arange(df.intensity.min(),df.intensity.max(),0.05))
+    #df_binned_missing_value_fraction.fraction.fillna(value = 0, inplace = True)
+    df_binned_missing_value_fraction = df_binned_missing_value_fraction[df_binned_missing_value_fraction.fraction != 0]
     print("Generating plot...")
     fig, ax = plt.subplots(1, 1, figsize=(21,10))
-    df_binned_missing_value_fraction = df_binned_missing_value_fraction[df_binned_missing_value_fraction.fraction != 0]
     xdata = df_binned_missing_value_fraction.index
     ydata = df_binned_missing_value_fraction.fraction
     ax.plot(xdata, ydata, 'b-', label='Fraction missing values', linewidth = 5)
@@ -160,13 +166,11 @@ def main():
     sigma = np.sqrt(ydata * (1-ydata) / df_binned_missing_value_fraction.n_count) # uncertainty estimator
     # binaomial distribution wiki
     #sigma.plot()
-    
-    # We fit the fraction data we have to pmissings
     popt, pcov = curve_fit(pmissing, xdata, ydata, sigma=sigma)
     ax.plot(xdata, pmissing(xdata, popt[0], popt[1]), "r--", label='fit: muLogit=%5.3f, sigmaLogit=%5.3f' % tuple(popt), linewidth=5)
     
     # NOTE THIS IS NOT LOG-INTENSITY
-    ax.set_xlabel("Log10(Peptide Intensity)", fontsize = 40)
+    ax.set_xlabel("Peptide Intensity", fontsize = 40)
     #ax.tick_params(axis='both', which='major', labelsize=20)
     ax.tick_params(axis='x', which='major')
     #ax.set_ylabel("Fraction missing values within binned interval", fontsize = 38)
@@ -176,7 +180,7 @@ def main():
     ax.legend(fontsize=30)
     ax.tick_params(axis='x', which='major', labelsize=36)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=36)
-    #ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))
+    ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))
     #ax.set_title("DIANN - Fraction Missing Values for mean intensity", fontsize = 22, fontweight = "bold")
     fig = ax.get_figure()
     print(f"Saving output {output}")
