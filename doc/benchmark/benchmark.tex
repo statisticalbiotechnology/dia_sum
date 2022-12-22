@@ -126,6 +126,11 @@ We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triq
 
 As Triqler's model accounts for the assessed uncertainty in the prior identification steps of the data, it does not threshold the PSMs but instead takes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply the negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
+\subsubsection*{Limma analysis on DIA-NN protein groups}
+
+Many DIA-NN users prefer to perform a LIMMA analysis on the protein group quantification matrices provided by the software. To perform the LIMMA-analysis we use the default empirical Bayes method for variance moderation to estimate variances in samples and compute differential expression \cite{limma}.  
+
+
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR (and will therefore result in an FDR equal to or higher than the $q$~value). As a consequence, the statistics from MSstats and MSqRob2 should be more conservative than the estimates from Triqler and Top3\cite{korthauer2019practical}.
 
