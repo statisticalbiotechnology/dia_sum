@@ -1,6 +1,6 @@
 main=benchmark
 
-all: ${main}.pdf supplement.pdf coverletter.pdf # biorxiv.pdf # diff.pdf
+all: ${main}.pdf supplement.pdf coverletter.pdf diff.pdf # biorxiv.pdf # 
 
 ${main}.pdf: ${main}.tex ${main}.bib # img/*
 
