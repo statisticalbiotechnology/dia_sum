@@ -6,8 +6,7 @@ ${main}.pdf: ${main}.tex ${main}.bib # img/*
 
 diff.tex: ${main}.tex
 	git show sub1:./$? > /tmp/$?
-	latexdiff /tmp/$? $? > diff.tex
-
+	latexdiff --disable-citation-markup /tmp/$? $? > diff.tex
 
 %.pdf: %.tex
 	pdflatex -shell-escape $*.tex
