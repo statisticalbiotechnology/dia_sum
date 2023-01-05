@@ -19,6 +19,7 @@ specie_mapper = lambda x: x.split("_")[-1]
 def avg_3_largest_precursor_on_run_level(filename, m_score_treshold):  
     print("Reading in: " + filename)
     df = pd.read_csv(filename, sep = "\t")
+    df.ProteinName = df.ProteinName.str.replace("YEAS8", "YEAST")
     df = df[df.decoy != 1]
     df = df[df.m_score < m_score_treshold] 
     df["experiment_id"] = df["filename"].map(experiment_id_mapper)
@@ -31,6 +32,7 @@ def avg_3_largest_precursor_on_run_level(filename, m_score_treshold):
         return df
     df_reduced = df[["ProteinName", "Intensity"]]
     df_protein = top3(df_reduced)
+    
     df = df_protein
     df["specie"] = df.ProteinName.map(specie_mapper)
     midx = pd.MultiIndex(levels = [[sample_id],[experiment_id]], codes = [[0],[0]], names = ["sample_id", "experiment_id"])
