@@ -1,13 +1,12 @@
 main=benchmark
 
-all: ${main}.pdf supplement.pdf coverletter.pdf # biorxiv.pdf # diff.pdf
+all: ${main}.pdf supplement.pdf coverletter.pdf diff.pdf # biorxiv.pdf # 
 
 ${main}.pdf: ${main}.tex ${main}.bib # img/*
 
 diff.tex: ${main}.tex
 	git show sub1:./$? > /tmp/$?
-	latexdiff /tmp/$? $? > diff.tex
-
+	latexdiff --disable-citation-markup /tmp/$? $? > diff.tex
 
 %.pdf: %.tex
 	pdflatex -shell-escape $*.tex
