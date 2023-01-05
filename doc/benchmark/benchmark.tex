@@ -90,7 +90,7 @@ We used two separate strategies to generate peptide abundances from the DIA runs
     \centering
     \includegraphics[width=1.0\linewidth]{./img/methods.png} 
     \caption{{\bf The DDA identification-driven matching (ID) and pseudo-spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP are run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). A 1\% PSM-level identification threshold was applied to Top3 and MSstats, a 1\% peptide-level threshold to MSqRob2, while all the identifications were provided unfiltered to Triqler. \label{fig:flowchart}}  
-    \todo[inline]{Is limma included the right way?}    
+    \todo[inline]{Is limma included the right way? ANSW: No, I run Limma on the protein.group output matrix from DIA-NN and i removed filtering to generate this pg.group.report.tsv file because we wanted the full dataset for triqler. So I am running Limma without any filtering.}    
 \end{figure}
 
 
@@ -114,7 +114,7 @@ We implemented a short script that takes the average of the 3 most abundant PSMs
 
 \subsubsection*{MSstats}
 
-We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats use feature-level data, allowing for multiple PSM hits per peptide identification. We filtered so that every protein had at least 2 peptides and a maximum of 10 peptides, and we thresholded with a \texttt{m\_score} which corresponds to a peptide identification FDR lower than 0.01 for both ID and PS pipelines. In the PS pipeline, the data was filtered on the \texttt{Q.Value} columns from the DIA-NN output file. In the ID pipeline, we computed an \texttt{m\_score} corresponding to a 1\% FDR and used this \texttt{m\_score} to filter the data. MSstats was run using the MSstats command \texttt{dataProcess}. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
+We installed MSstats version 3.18.5 using R/Bioconductor (available at \url{https://www.bioconductor.org/packages/release/bioc/html/MSstats.html}). MSstats use feature-level data, allowing for multiple PSM hits per peptide identification. We use the dissaggregate function to dissaggregate the PSMs to fragment-level data. We filtered so that every protein had at least 2 peptides and a maximum of 10 peptides, and we thresholded with a \texttt{m\_score} which corresponds to a peptide identification FDR lower than 0.01 for both ID and PS pipelines. In the PS pipeline, the data was filtered on the \texttt{Q.Value} columns from the DIA-NN output file. In the ID pipeline, we computed an \texttt{m\_score} corresponding to a 1\% FDR and used this \texttt{m\_score} to filter the data. MSstats was run using the MSstats command \texttt{dataProcess}. The significance testing between conditions was performed using the MSstats function \texttt{groupComparison}.  
 
 \subsubsection*{MSqRob2}
 %
@@ -123,7 +123,7 @@ MSqRob2 uses \texttt{lme4} to construct a linear-mixed model with random effect,
 %clear
 \subsubsection*{Limma analysis on DIA-NN protein groups}
 
-We downloaded limma\cite{limma} version FIXME from FIXME. We applied limma with default parameters to the protein groups inferred from DIA-NN in the PS pipline.  
+We downloaded limma\cite{limma} version 3.50.3 from Bioconductor. We applied limma with default parameters to the protein groups inferred from DIA-NN in the PS pipline.  
 
 
 \subsubsection*{Triqler}
@@ -132,7 +132,7 @@ We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triq
 
 As Triqler's model accounts for the assessed uncertainty in the prior identification steps of the data, it does not threshold the PSMs but instead takes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply the negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
-\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold.}
+\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this.}
 When evaluating Triqler we fold-change valuation tresholds as estimated by a previously described heuristic ensures that $99\%$ of the 
 probability distribution of the normal distribution is contained, as,
 \begin{equation}
@@ -142,6 +142,7 @@ probability distribution of the normal distribution is contained, as,
 where $\sigma_y$ is the standard deviation of the protein prior in $\log_{10}$ 
 abundance units, $N$ is the number of samples in the group.
 
+Furthermore, Triqler removes any peptides that are not unambiguously attributed to one protein.
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR (and will therefore result in an FDR equal to or higher than the $q$~value). As a consequence, the statistics from MSstats and MSqRob2 should be more conservative than the estimates from Triqler and Top3\cite{korthauer2019practical}.
@@ -160,7 +161,7 @@ To establish that Triqler is useful when evaluating DIA data, we first examined 
 
 DIA data is assumed to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqler's assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% PSM-level identification false discovery rate (FDR) from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relationship between standard deviation and mean (Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot}A-D). 
 
-However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA (<2\% for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a XXX function as for DDA data we instead fit a YYY fuction (See Supplementary Figure \ref{fig:fraction_missing_values})\todo{Replace XXX and YYY}. The alternative curve fitting procedure is  enabled by a command line option in Triqler. 
+However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA (<2\% for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a censored normal distribtion function over all XIC values as for DDA data, we use the means of the missing values to fit a censored normal distribution fuction (See Supplementary Figure \ref{fig:fraction_missing_values})\todo{Replace XXX and YYY, FIXED.}. The alternative curve fitting procedure is  enabled by a command line option in Triqler. 
 
 \subsubsection*{Harmonization of protein inference procedures.}
 
