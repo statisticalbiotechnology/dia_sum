@@ -135,7 +135,7 @@ We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triq
 
 As Triqler's model accounts for the assessed uncertainty in the prior identification steps of the data, it does not threshold the PSMs but instead takes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply the negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
-\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this.}
+\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this. LK: Nej, det är stycket härunder vi pratrar om. Kan du säga om jag beskriver metoden för ett lower-bound treshold är korrekt?}
 When evaluating Triqler we fold-change valuation tresholds as estimated by a previously described heuristic ensures that $99\%$ of the 
 probability distribution of the normal distribution is contained, as,
 \begin{equation}
@@ -164,7 +164,7 @@ To establish that Triqler is useful when evaluating DIA data, we first examined 
 
 DIA data is assumed to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqler's assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% PSM-level identification false discovery rate (FDR) from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relationship between standard deviation and mean (Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot}A-D). 
 
-However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA (<2\% for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a censored normal distribtion function over all XIC values as for DDA data, we use the means of the missing values to fit a censored normal distribution fuction (See Supplementary Figure \ref{fig:fraction_missing_values})\todo{Replace XXX and YYY, FIXED.}. The alternative curve fitting procedure is  enabled by a command line option in Triqler. 
+However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA ($<2\%$ for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a censored normal distribtion function over all XIC values as for DDA data, we use the mean value of the missing values to fit a censored normal distribution fuction (See Supplementary Figure \ref{fig:fraction_missing_values}). The alternative curve fitting procedure is  enabled by a command line option in Triqler named \verb|--XXX|. \todo{Replace XXX.}
 
 \subsubsection*{Harmonization of protein inference procedures.}
 
@@ -214,11 +214,14 @@ As the first quantitative test of performance, we compared the methods' reported
 
 \begin{figure}[hbt]
     \centering
-    \begin{tabular}{lclc} 
-        A & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
-        B & \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_all_0.51_Limma.png} \\
+    \begin{tabular}{cc} 
+        \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
+        \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_all_0.51_Limma.png}\\
+        A & B 
     \end{tabular} 
-    \caption{{\bf Comparison of ability to differentiate proteins with differential abundance between conditions} We plotted the number of reported differentially abundant  {\em E. Coli} and yeast proteins as a function of the number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test, we selected a fold change evaluation of 0.51 for Triqler and a fold change threshold of 0.51 for Top3, MSstats and MSqRob2. (Supplement Figure \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}-\ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela_full_lib} shows differential abundance for each specie). \label{fig:diff_vs_hela}}
+    \caption{{\bf Comparison of ability to differentiate proteins with differential abundance between conditions.} We plotted the number of reported differentially abundant  {\em E. Coli} and yeast proteins as a function of the number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test, we selected a fold change evaluation of 0.51 for Triqler and a fold change threshold of 0.51 for Top3, MSstats and MSqRob2. See the Supplement Figures \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}-\ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela_full_lib} for the number of differential abundant protein for each species. \label{fig:diff_vs_hela}}
+\todo[inline]{Add a word 'protein' to the x/y labels. i.e. 'Differential HeLa proteins' and  'Differential non-HeLa proteins'}
+
 \end{figure}
 
 \subsubsection*{Comparison of statistical calibration}
