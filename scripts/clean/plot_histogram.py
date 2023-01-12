@@ -24,6 +24,7 @@ def plot_histogram(output, bins = 50):
                                                   bins=bins, range=(-2,3), weights=None))
     g.legend_.set_title(None)
     axs.set_xlim([-2, 3])
+    axs.set_ylim([0, 900])
     axs.set_xlabel("log2 fold change", fontsize=34)
     axs.set_ylabel("Protein count", fontsize=34)
     
@@ -43,7 +44,7 @@ specie_mapper = lambda x: x.split("_")[-1]
 
 def read_triqler(triqler_file):
     df = parse_triqler(triqler_file)
-    #df["log2_fold_change"] = -df.log2_fold_change
+    df["log2_fold_change"] = -df.log2_fold_change
     df["specie"] = df.protein.map(specie_mapper)
     df.rename({"log2_fold_change":"log2FC", "q_value":"FDR"}, axis = 1, inplace = True)
     df = df[~df.protein.str.contains("DECOY")]
@@ -55,7 +56,7 @@ def read_triqler(triqler_file):
 def read_top3(top3_file):
     df = pd.read_csv(top3_file, sep = "\t")
     df.rename({"q":"FDR", "log2(A,B)":"log2FC"}, axis = 1, inplace = True)
-    #df.log2FC = -df.log2FC
+    df.log2FC = -df.log2FC
     df.sort_values(by = ["specie"], inplace = True)
     return df
 
@@ -64,7 +65,7 @@ def read_msstats(msstats_file):
     df.rename({"adj.pvalue":"FDR"}, axis = 1, inplace = True)
     df["specie"] = df.Protein.map(specie_mapper)
     df.sort_values(["specie"], inplace = True)
-    df.log2FC = -df.log2FC # added for reverse A/B
+    #df.log2FC = -df.log2FC # added for reverse A/B
     return df
 
 def read_msqrob2(msqrob2_file):
@@ -72,10 +73,16 @@ def read_msqrob2(msqrob2_file):
     df.rename({"Unnamed: 0":"protein", "logFC":"log2FC", "adjPval":"FDR"}, axis = 1, inplace = True)
     df["specie"] = df.protein.map(specie_mapper)
     df.sort_values(["specie"], inplace = True)
-    df.log2FC = -df.log2FC # added for reverse log2FC
+    #df.log2FC = -df.log2FC # added for reverse log2FC
     return df
 
-
+def read_limma(limma_file):
+    df = pd.read_csv(limma_file, sep = "\t")    
+    df.rename({"Unnamed: 0":"protein", "logFC":"log2FC", "adj.P.Val":"FDR"}, axis = 1, inplace = True)
+    df.log2FC = -df.log2FC
+    df["specie"] = df.protein.map(specie_mapper)
+    df.sort_values(["specie"], inplace = True)
+    return df
 
 if __name__ == "__main__":
     
@@ -116,6 +123,9 @@ if __name__ == "__main__":
         plot_histogram(output, bins = bins)
     elif input_type == "msqrob2":
         df = read_msqrob2(input_file)
+        plot_histogram(output, bins = bins)
+    elif input_type == "limma":
+        df = read_limma(input_file)
         plot_histogram(output, bins = bins)
     else:
         print("No input_type specified. Exiting!")

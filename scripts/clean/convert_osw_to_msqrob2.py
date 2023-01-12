@@ -107,6 +107,7 @@ def convert_osw_to_msqrob2(input_file, output, mscore_threshold_file):
     """
     df_res = df_res[df_res.index < mscore_threshold]
     df_res = df_res[df_res.decoy == 0] #filter away decoy 
+    df_res["filename"] = df_res.filename.map(lambda x:x.split("_")[8]).map(lambda x:"A" if (x=="1") else "B") + "_" + df_res["filename"]
     
     df_pivot = df_res.pivot(index=["FullPeptideName", "ProteinName"], columns = "filename", values = "Intensity")
     df_pivot.reset_index(inplace=True)

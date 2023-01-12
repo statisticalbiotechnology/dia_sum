@@ -22,7 +22,7 @@ contrast.mat <- makeContrasts(
 
 #df <- fread("report.pg_matrix.tsv", select = c(1,6,7,8,9,10,11))
 df <- fread("report.pg_matrix.tsv", select = c(1,6,8,10,7,9,11))
-df
+df <- log2(df)
 names(df)
 df <- df %>% column_to_rownames(., var = 'Protein.Group')
 
@@ -35,9 +35,12 @@ fit_contrast <- contrasts.fit(fit, contrast.mat)# Bayes statistics of differenti
 fit_contrast <- eBayes(fit_contrast)# Generate a vocalno plot to visualize differential expression
 volcanoplot(fit_contrast)
 
-fit_contrast
-write.table(fit_contrast$p.value, "limma_p_values.csv", sep = "\t")
+head(fit_contrast)
 
+help(topTable)
+
+write.table(fit_contrast$p.value, "limma_p_values.csv", sep = "\t")
+write.table(topTable(fit_contrast, n =Inf), "limma_results.csv", sep = "\t")
 
 
 

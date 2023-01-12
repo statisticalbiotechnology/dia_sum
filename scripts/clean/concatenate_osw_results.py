@@ -39,8 +39,12 @@ def concatenate_osw_results(file_directory, output):
     print(end-start)
     
     df = pd.concat(dfs)
+    df.Intensity = df.Intensity.map(lambda x: x if (type(x) == float) else float(x.replace(",", ".")))
+    df.ProteinName = df.ProteinName.map(lambda x:x.replace("YEAS8", "YEAST"))
+    df["ProteinNameCount"] = df.ProteinName.map(lambda x:len(x.split("|"))) # removed PSMS that have more than 1 protein
+    df = df[df.ProteinNameCount <= 3]
     df.to_csv(output, sep = "\t")
-    
+
 if __name__ == "__main__":
     concatenate_osw_results(file_directory, output)
     

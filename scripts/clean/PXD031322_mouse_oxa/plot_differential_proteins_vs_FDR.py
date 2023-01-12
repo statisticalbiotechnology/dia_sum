@@ -94,7 +94,7 @@ def read_in_files(triqler_file = "triqler_results/fc_0.96",
     msstats_results = msstats_results.rename({"adj.pvalue":"FDR", "pvalue":"p"}, axis = 1)
     msqrob2_results = msqrob2_results.rename({"adjPval":"FDR", "logFC":"log2FC", "pval":"p"}, axis = 1)
     
-    methods = ["Triqler", "Top3", "MsStats", "MsqRob2"]
+    methods = ["Triqler", "Top3", "MSstats", "MsqRob2"]
     data = [triqler_results, top3_results, msstats_results, msqrob2_results]
     zipped_files = zip(methods, data)
     return zipped_files
@@ -140,7 +140,8 @@ if __name__ == "__main__":
 
     parser.add_argument('--fdr_threshold', type=float, default = 1.00,
                         help='Apply q-value threshold.')
-
+    parser.add_argument('--xlim', type=float, default = 0.01, help="Set xlim.")
+    parser.add_argument('--ylim', type=int, default = 400, help="Set ylim.")
     parser.add_argument('--output', type=str,
                         help='Output name.')
 
@@ -152,6 +153,8 @@ if __name__ == "__main__":
     msqrob2_file = args.msqrob2_input
     fc_threshold = args.fc_threshold
     fdr_threshold = args.fdr_threshold
+    xlim = args.xlim
+    ylim = args.ylim
     output = args.output
 
     
@@ -172,10 +175,10 @@ if __name__ == "__main__":
     print("Plotting lineplot")
     fig, ax = plt.subplots(1, 1, figsize=(18,12))
     sns.lineplot(x = "FDR", y = "differential_proteins_cumsum", hue = "method", data = df_count, ax = ax, linewidth = 5, ci = None)
-    ax.set_ylabel("Differential proteins")
+    ax.set_ylabel("Differential proteins", fontsize=42)
     ax.set_xlabel("FDR / q-value", fontsize=42)
-    ax.set_xlim(0,0.01)
-    ax.set_ylim(0,400)
+    ax.set_xlim(0,xlim)
+    ax.set_ylim(0,ylim)
 
 
     ax.tick_params(axis='x', which='major', labelsize=44)#labelrotation=90)

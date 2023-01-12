@@ -78,8 +78,11 @@ def read_msqrob2(msqrob2_file):
     #df.log2FC = -df.log2FC # added for reverse log2FC
     return df
 
-
-
+def read_limma(limma_file):
+    df = pd.read_csv(limma_file, sep = "\t").rename({"Unnamed: 0": "protein", "logFC":"log2FC", "adj.P.Val":"FDR"}, axis = 1)
+    df["specie"] = df.protein.map(specie_mapper)
+    df.sort_values(["specie"], inplace = True)
+    return df
 
 def grid_histogram(output, bins = 50, test = False):
     bins = bins
@@ -93,9 +96,10 @@ def grid_histogram(output, bins = 50, test = False):
     top3_PS = read_top3("results/PS/top3_results.csv")
     msstats_PS = read_msstats("results/PS/msstats_results.csv")
     msqrob2_PS= read_msqrob2("results/PS/msqrob2_results.csv")
-
+    limma_PS = read_limma("data/PS/limma_results.csv")
+    limma_PS.log2FC = -limma_PS.log2FC
     fig2 = plt.figure(constrained_layout=False, figsize=(20,14))
-    spec2 = fig2.add_gridspec(ncols=2, nrows=4, wspace=0.0, hspace=0.0)
+    spec2 = fig2.add_gridspec(ncols=2, nrows=5, wspace=0.0, hspace=0.0)
     
     f2_ax1 = fig2.add_subplot(spec2[0, 0])
     f2_ax2 = fig2.add_subplot(spec2[0, 1])
@@ -105,19 +109,23 @@ def grid_histogram(output, bins = 50, test = False):
     f2_ax6 = fig2.add_subplot(spec2[2, 1])
     f2_ax7 = fig2.add_subplot(spec2[3, 0])
     f2_ax8 = fig2.add_subplot(spec2[3, 1])
+    f2_ax9 = fig2.add_subplot(spec2[4, 1])
         
     titles = ["Triqler,ID", "Triqler,PS",
                           "MSqRob2,ID", "MSqRob2,PS",
                           "MSstats,ID", "MSstats,PS",
-                          "Top3,ID", "Top3,PS"]
+                          "Top3,ID", "Top3,PS",
+                          "Limma,PS"]
     dfs = [triqler_ID, triqler_PS, 
            msqrob2_ID, msqrob2_PS,
            msstats_ID, msstats_PS,
-           top3_ID, top3_PS]
+           top3_ID, top3_PS,
+           limma_PS]
     axs = [f2_ax1, f2_ax2,
            f2_ax3, f2_ax4,
            f2_ax5, f2_ax6,
-           f2_ax7, f2_ax8]
+           f2_ax7, f2_ax8,
+           f2_ax9]
     data = list(zip(titles,dfs,axs))
     
     i=0
@@ -136,18 +144,22 @@ def grid_histogram(output, bins = 50, test = False):
             ax.yaxis.set_ticklabels([])
             ax.set_ylabel("")
             ax.tick_params(left=False)
+            method = title.split(",")[0]
+            ax.set_ylabel(method+"\nProtein count", fontsize=22)
+            ax.yaxis.set_label_position("right")
         if i % 2 == 0:
             method = title.split(",")[0]
-            ax.set_ylabel(method+"\nProtein count", fontsize=24)
+            ax.set_ylabel(method+"\nProtein count", fontsize=22)
+            ax.yaxis.set_label_position("right")
         if i < 6:
             ax.set_xlabel("")
             ax.xaxis.set_ticklabels([])
         if i >= 6:
             ax.set_xlabel("Log2(A/B)", fontsize=34)
-        if i > 0:
+        if i >= 0:
             ax.get_legend().remove()
-        if i == 0:
-            ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop={"size":24})
+        if i == 1:
+            ax.legend(["Yeast", "HeLa", r"\textit{E.coli}"], prop={"size":22})
         
             
         #if test == True:

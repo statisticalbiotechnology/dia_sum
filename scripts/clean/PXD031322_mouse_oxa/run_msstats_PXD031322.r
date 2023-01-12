@@ -17,18 +17,47 @@ input <- "LT_ST_msstats_input.csv"
 output <- "LT_ST_msstats_results.csv"
 output_protein <- "LT_ST_msstats_protein_results.csv"
 
+
+input <- "LT_ST_Ctrl_msstats_input.csv"
+output <- "LT_ST_Ctrl_msstats_results.csv"
+output_protein <- "LT_ST_Ctrl_msstats_protein_results.csv"
+
+
 run_msstats <- function(input, output, output_protein){
   data <- data.frame(fread(input, sep = ',', header = TRUE))
   MSstats.input <- data
   QuantData <- dataProcess(MSstats.input)
+  #head(QuantData$FeatureLevelData)
   write.csv(QuantData$ProteinLevelData, output_protein, row.names=FALSE)
-  comparison <- matrix(c(-1,1), nrow=1)
-  row.names(comparison) <- "T2-T1"
-  colnames(comparison) <- c("ST","LT") #MODIFY HERE
-  testResultOneComparison <- groupComparison(contrast.matrix=comparison, data=QuantData)
-  write.csv(testResultOneComparison$ComparisonResult, output, row.names=FALSE)
+  comparison1 <- matrix(c(-1,1,0), nrow=1)
+  comparison2 <- matrix(c(-1,0,1), nrow=1)
+  comparison3 <- matrix(c(0,-1,1), nrow=1)
+  comparison <- rbind(comparison1, comparison2, comparison3)
+  #row.names(comparison) <- c("T2-T1", "T3-T1", "T3-T2")
+  colnames(comparison) <- unique(QuantData$ProteinLevelData$GROUP)
+  row.names(comparison) <- unique(QuantData$ProteinLevelData$GROUP)
+  #comparison
+  #colnames(comparison) <- c("ST","LT") #MODIFY HERE
+  #testResultOneComparison <- groupComparison(contrast.matrix=comparison, data=QuantData)
+  c("LT-Ctrl", "ST-Ctrl", "ST-LT")<-groupComparison(contrast.matrix=comparison,data=QuantData)
+  write.csv(testResultMultiComparisons$ComparisonResult, output, row.names=FALSE)
   
 }
+
+
+
+#run_msstats <- function(input, output, output_protein){
+#  data <- data.frame(fread(input, sep = ',', header = TRUE))
+#  MSstats.input <- data
+#  QuantData <- dataProcess(MSstats.input)
+#  write.csv(QuantData$ProteinLevelData, output_protein, row.names=FALSE)
+#  comparison <- matrix(c(-1,1), nrow=1)
+#  row.names(comparison) <- "T2-T1"
+#  colnames(comparison) <- c("ST","LT") #MODIFY HERE
+#  testResultOneComparison <- groupComparison(contrast.matrix=comparison, data=QuantData)
+#  write.csv(testResultOneComparison$ComparisonResult, output, row.names=FALSE)
+#}
+
 
 parser <- ArgumentParser()
 

@@ -22,6 +22,7 @@ def convert_osw_to_triqler(input_file, output):
     df_triq = df_triq.rename(columns={"experiment_id": "run", "sample_id": "condition", "Charge": "charge", 
                             "m_score":"searchScore", "Intensity":"intensity", "FullPeptideName":"peptide",
                             "ProteinName":"proteins"}, errors="raise")
+    df_triq.searchScore += 0.000001
     df_triq["searchScore"] = -np.log10(df_triq["searchScore"])
     df_triq.to_csv(output, sep = "\t", index=False)
 

@@ -132,7 +132,7 @@ def convert_diann_to_msqrob2(input_file, output, fdr_threshold):
     msq.T[~msq.columns.str.contains("ST")].T.to_csv("Ctrl_LT_"+output, sep = "\t", index = False) #Ctrl-LT
     msq.T[~msq.columns.str.contains("LT")].T.to_csv("Ctrl_ST_"+output, sep = "\t", index = False) #Ctrl-ST
     msq.T[~msq.columns.str.contains("Ctrl")].T.to_csv("LT_ST_"+output, sep = "\t", index = False) #LT-ST
-    msq.to_csv(output, sep = "\t", index = False)
+    msq.to_csv("LT_ST_Ctrl_" + output, sep = "\t", index = False)
 
 
 parser = argparse.ArgumentParser(

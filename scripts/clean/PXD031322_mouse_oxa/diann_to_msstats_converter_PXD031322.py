@@ -116,6 +116,7 @@ def convert_diann_to_msstats(input_file = "report_recomputed_fdr.tsv", output = 
     df[df.Condition.isin(["Ctrl", "ST"])].to_csv("Ctrl_ST_"+output, sep = ",", index = False)
     df[df.Condition.isin(["Ctrl", "LT"])].to_csv("Ctrl_LT_"+output, sep = ",", index = False)
     df[df.Condition.isin(["LT", "ST"])].to_csv("LT_ST_"+output, sep = ",", index = False)
+    df.to_csv("LT_ST_Ctrl_"+output, sep = ",", index = False)
     
     
 

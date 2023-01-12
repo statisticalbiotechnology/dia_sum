@@ -40,3 +40,14 @@ os.chdir("/home/ptruong/git/dia_sum/scripts/clean")
 os.chdir("/home/ptruong/data/results/PS")
 os.chdir("/home/ptruong/data/results/DID")
 
+# PXD17217
+os.chdir("/hdd_14T/data/PXD017217/ftp.pride.ebi.ac.uk/pride/data/archive/2020/05/PXD017217")
+
+# proteoform project
+os.chdir("/home/ptruong/git/formprotein/script/proteoform_simulator_rebuild_2022-10-04")
+
+# pyprophet test data
+os.chdir("/home/ptruong/git/pyprophet/tests/data")
+
+# pg_matrix_p_value res 
+os.chdir("/home/ptruong/git/dia_sum/scripts/clean/data/PS")

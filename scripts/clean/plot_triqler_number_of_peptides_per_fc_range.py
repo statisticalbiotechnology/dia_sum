@@ -39,6 +39,8 @@ def get_stats(df, df_inp, step = 0.2):
     res["log2FC"] = (res.min_fc + res.max_fc)/2
     return res
 
+
+
 def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2):
     df = pd.read_csv(input_file, sep = "\t")
     df_inp = parse_triqler(result_file)
@@ -46,11 +48,13 @@ def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2
     f, ax = plt.subplots(1, 1, figsize = (24,14))
 
     res_ecoli = get_stats(df[df.specie == "ECOLI"], df_inp, step = step) # g
+    #res_ecoli["mean"] = res_ecoli["mean"]-2
     res_yeast = get_stats(df[df.specie == "YEAST"], df_inp, step = step) # o
+    #res_yeast["mean"] = res_yeast["mean"]+1
     res_human = get_stats(df[df.specie == "HUMAN"], df_inp, step = step) # b
-    sns.lineplot(data = res_ecoli, x = "log2FC", y = "median", linestyle='-', color = "tab:blue", ax = ax, label = r'\textit{E.coli}')
-    sns.lineplot(data = res_yeast, x = "log2FC", y = "median", linestyle='-', color = "tab:green", ax = ax, label = "Yeast")
-    sns.lineplot(data = res_human, x = "log2FC", y = "median", linestyle='-', color = "tab:orange", ax = ax, label = "HeLa")
+    sns.lineplot(data = res_ecoli, x = "log2FC", y = "mean", linestyle='-', color = "tab:blue", ax = ax, label = r'\textit{E.coli}')
+    sns.lineplot(data = res_yeast, x = "log2FC", y = "mean", linestyle='-', color = "tab:green", ax = ax, label = "Yeast")
+    sns.lineplot(data = res_human, x = "log2FC", y = "mean", linestyle='-', color = "tab:orange", ax = ax, label = "HeLa")
     #plt.legend(labels=["ECOLI","YEAST", "HUMAN"])
     
     
@@ -64,7 +68,7 @@ def plot_number_of_peptides_per_log2FC_range(result_file, input_file, step = 0.2
     ax.legend(fontsize=30)
 
     ax.set_xlabel("Log2(A/B)", fontsize=52)
-    ax.set_ylabel("Median Number of Peptides", fontsize=52)
+    ax.set_ylabel("Mean Number of Peptides", fontsize=52)
     
     ax.tick_params(axis='x', which='major', labelsize=36)#labelrotation=90)
     ax.tick_params(axis='y', which='major', labelsize=36)
