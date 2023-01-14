@@ -78,15 +78,15 @@ def filter_n_fragments(df, min_fragments = 4, max_fragments = 6, aggr_fragment_c
 
 
 def filter_on_min_peptide(df, n_peptides):
-    peptide_count = df.groupby("PeptideSequence").count().ProteinName
+    peptide_count = df.groupby("ProteinName").count().PeptideSequence
     min_peptide = peptide_count[peptide_count >= n_peptides] # greater than
-    df = df[df.PeptideSequence.isin(min_peptide.index)]
+    df = df[df.ProteinName.isin(min_peptide.index)]
     return  df
 
 def filter_on_max_peptide(df, n_peptides):
-    peptide_count = df.groupby("PeptideSequence").count().ProteinName
-    max_peptide = peptide_count[peptide_count <= 10] # less than
-    df = df[df.PeptideSequence.isin(max_peptide.index)]
+    peptide_count = df.groupby("ProteinName").count().PeptideSequence
+    max_peptide = peptide_count[peptide_count <= n_peptides] # less than
+    df = df[df.ProteinName.isin(max_peptide.index)]
     return df
 
 def drop_decoy_proteins(df):
@@ -104,12 +104,18 @@ def convert_diann_to_msstats(input_file = "report_recomputed_fdr.tsv", output = 
     df = df[df[qCol] < fdr_threshold] # filter PSMs Q.Value - 167463
 
     df = convert_diann_to_msconvert_aggregated(df)
+        
     #df # 167463
     df = filter_on_min_peptide(df, n_peptides = 2) # 166236
     df = filter_on_max_peptide(df, n_peptides = 10) # 93395
     df = filter_n_fragments(df, min_fragments = 1, max_fragments = 6, aggr_fragment_col = "FragmentIon")
     df = drop_decoy_proteins(df)
     
+    #count_table = df.groupby("PeptideSequence")["Condition"].unique()
+    #count_table = (count_table.apply(len) > 2)
+    #count_table = count_table[count_table == True]
+    
+    #df = df[df.PeptideSequence.isin(count_table.index)]
     df = disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "Intensity", seperator = ";")
     
     df.to_csv(output, sep = ",", index = False)
@@ -118,7 +124,13 @@ def convert_diann_to_msstats(input_file = "report_recomputed_fdr.tsv", output = 
     df[df.Condition.isin(["LT", "ST"])].to_csv("LT_ST_"+output, sep = ",", index = False)
     df.to_csv("LT_ST_Ctrl_"+output, sep = ",", index = False)
     
-    
+
+
+df_red = df.copy()
+df_full = df.copy()
+
+len(df_red.ProteinName.unique())
+len(df_full.ProteinName.unique())
 
 parser = argparse.ArgumentParser(
     description='Convert DIA-NN to MSstats input format.',
