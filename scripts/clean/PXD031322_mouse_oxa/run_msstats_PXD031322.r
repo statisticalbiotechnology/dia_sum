@@ -18,9 +18,15 @@ suppressPackageStartupMessages(library("argparse"))
 #output_protein <- "LT_ST_msstats_protein_results.csv"
 
 
+<<<<<<< Updated upstream
 #input <- "LT_ST_Ctrl_msstats_input.csv"
 #output <- "LT_ST_Ctrl_msstats_results.csv"
 #output_protein <- "LT_ST_Ctrl_msstats_protein_results.csv"
+=======
+input <- "LT_ST_Ctrl_msstats_input.csv"
+output <- "LT_ST_Ctrl_msstats_results_.csv"
+output_protein <- "LT_ST_Ctrl_msstats_protein_results.csv"
+>>>>>>> Stashed changes
 
 
 run_msstats <- function(input, output, output_protein){
@@ -34,12 +40,18 @@ run_msstats <- function(input, output, output_protein){
   comparison3 <- matrix(c(0,-1,1), nrow=1)
   comparison <- rbind(comparison1, comparison2, comparison3)
   #row.names(comparison) <- c("T2-T1", "T3-T1", "T3-T2")
+  #comparison <- matrix(c(-1,1), nrow=1)
+  
+  row.names(comparison) <- "T2-T1"
+  colnames(comparison) <- c("ST","LT")
+  
   colnames(comparison) <- unique(QuantData$ProteinLevelData$GROUP)
-  row.names(comparison) <- unique(QuantData$ProteinLevelData$GROUP)
+  row.names(comparison) <- c("LT-Ctrl", "ST-Ctrl","ST-LT")
   #comparison
   #colnames(comparison) <- c("ST","LT") #MODIFY HERE
   #testResultOneComparison <- groupComparison(contrast.matrix=comparison, data=QuantData)
-  c("LT-Ctrl", "ST-Ctrl", "ST-LT")<-groupComparison(contrast.matrix=comparison,data=QuantData)
+  #c("LT-Ctrl", "ST-Ctrl", "ST-LT")<-groupComparison(contrast.matrix=comparison,data=QuantData)
+  testResultMultiComparisons<-groupComparison(contrast.matrix=comparison,data=QuantData)
   write.csv(testResultMultiComparisons$ComparisonResult, output, row.names=FALSE)
   
 }

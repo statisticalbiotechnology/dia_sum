@@ -86,7 +86,11 @@ def filter_on_min_peptide(df, n_peptides):
 def filter_on_max_peptide(df, n_peptides):
     peptide_count = df.groupby("ProteinName").count().PeptideSequence
     max_peptide = peptide_count[peptide_count <= n_peptides] # less than
+<<<<<<< Updated upstream
     df = df[df.ProteinName.isin(max_peptide.index)]
+=======
+    df = df[df.PeptideSequence.isin(max_peptide.index)]
+>>>>>>> Stashed changes
     return df
 
 def drop_decoy_proteins(df):
@@ -107,15 +111,23 @@ def convert_diann_to_msstats(input_file = "report_recomputed_fdr.tsv", output = 
         
     #df # 167463
     df = filter_on_min_peptide(df, n_peptides = 2) # 166236
-    df = filter_on_max_peptide(df, n_peptides = 10) # 93395
+    df = filter_on_max_peptide(df, n_peptides = 14) # 93395
     df = filter_n_fragments(df, min_fragments = 1, max_fragments = 6, aggr_fragment_col = "FragmentIon")
     df = drop_decoy_proteins(df)
     
+<<<<<<< Updated upstream
     #count_table = df.groupby("PeptideSequence")["Condition"].unique()
     #count_table = (count_table.apply(len) > 2)
     #count_table = count_table[count_table == True]
     
     #df = df[df.PeptideSequence.isin(count_table.index)]
+=======
+    count_table = df.groupby("PeptideSequence")["Condition"].unique()
+    count_table = (count_table.apply(len) > 2)
+    count_table = count_table[count_table == True]
+    
+    df = df[df.PeptideSequence.isin(count_table.index)]
+>>>>>>> Stashed changes
     df = disaggregate(df, fragment_info_col = "FragmentIon", fragment_quant_col = "Intensity", seperator = ";")
     
     df.to_csv(output, sep = ",", index = False)
