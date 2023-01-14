@@ -69,19 +69,19 @@ run_msqrob2 <- function(input, output, output_protein){
   write.csv(msqrob2_df$`conditionS - conditionL`, paste("ST_LT_", output))
 
   
-  write.csv(msqrob2_df$`L - C`, paste("LT_Ctrl_", output))
-  write.csv(msqrob2_df, output)
-  write.csv(assay(pe[["protein"]]), output_protein)
+  #write.csv(msqrob2_df$`L - C`, paste("LT_Ctrl_", output))
+  #write.csv(msqrob2_df, output)
+  #write.csv(assay(pe[["protein"]]), output_protein)
 }
 
 #input <- "msqrob2_input.csv"
-input <- "LT_ST_msqrob2_input.csv"
-output <- "LT_ST_msqrob2_output.csv"
-output_protein <- "LT_ST_msqrob2_protein_output.csv"
+#input <- "LT_ST_msqrob2_input.csv"
+#output <- "LT_ST_msqrob2_output.csv"
+#output_protein <- "LT_ST_msqrob2_protein_output.csv"
 
-input <- "msqrob2_input.csv"
-output <- "msqrob2_output.csv"
-output_protein <- "Ctrl_LT_ST_msqrob2_protein_output.csv"
+#input <- "msqrob2_input.csv"
+#output <- "msqrob2_output.csv"
+#output_protein <- "Ctrl_LT_ST_msqrob2_protein_output.csv"
 
 
 parser <- ArgumentParser()

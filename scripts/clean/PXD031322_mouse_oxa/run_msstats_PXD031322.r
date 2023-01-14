@@ -5,22 +5,22 @@ suppressPackageStartupMessages(library(MSstats))
 suppressPackageStartupMessages(library("argparse"))
 
 
-input <- "Ctrl_ST_msstats_input.csv"
-output <- "Ctrl_ST_msstats_results.csv"
-output_protein <- "CTRL_ST_msstats_protein_results.csv"
+#input <- "Ctrl_ST_msstats_input.csv"
+#output <- "Ctrl_ST_msstats_results.csv"
+#output_protein <- "CTRL_ST_msstats_protein_results.csv"
 
-input <- "Ctrl_LT_msstats_input.csv"
-output <- "Ctrl_LT_msstats_results.csv"
-output_protein <- "CTRL_LT_msstats_protein_results.csv"
+#input <- "Ctrl_LT_msstats_input.csv"
+#output <- "Ctrl_LT_msstats_results.csv"
+#output_protein <- "CTRL_LT_msstats_protein_results.csv"
 
-input <- "LT_ST_msstats_input.csv"
-output <- "LT_ST_msstats_results.csv"
-output_protein <- "LT_ST_msstats_protein_results.csv"
+#input <- "LT_ST_msstats_input.csv"
+#output <- "LT_ST_msstats_results.csv"
+#output_protein <- "LT_ST_msstats_protein_results.csv"
 
 
-input <- "LT_ST_Ctrl_msstats_input.csv"
-output <- "LT_ST_Ctrl_msstats_results.csv"
-output_protein <- "LT_ST_Ctrl_msstats_protein_results.csv"
+#input <- "LT_ST_Ctrl_msstats_input.csv"
+#output <- "LT_ST_Ctrl_msstats_results.csv"
+#output_protein <- "LT_ST_Ctrl_msstats_protein_results.csv"
 
 
 run_msstats <- function(input, output, output_protein){
