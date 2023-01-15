@@ -132,7 +132,7 @@ We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triq
 
 As Triqler's model accounts for the assessed uncertainty in the prior identification steps of the data, it does not threshold the PSMs but instead takes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply the negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
-\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this. LK: Nej, det är stycket härunder vi pratrar om. Kan du säga om jag beskriver metoden för ett lower-bound treshold är korrekt?}
+\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this. LK: Nej, det är stycket härunder vi pratrar om. Kan du säga om jag beskriver metoden för ett lower-bound treshold är korrekt?. Det är korrekt. se line 351 triqler.py i triqler scriptet och line 59 i hyperparameters.py. }
 When evaluating Triqler we fold-change valuation tresholds as estimated by a previously described heuristic ensures that $99\%$ of the 
 probability distribution of the normal distribution is contained, as,
 \begin{equation}
