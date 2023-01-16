@@ -66,7 +66,7 @@ Mass spectrometry (MS)-based proteomics enables efficient detection of proteins 
 We have previously designed a hierarchical Bayesian model, Triqler, able to control for errors from both the identification and quantification process in LFQ experiments\cite{the2019integrated}. By integrating the error probabilities from identification and quantification, one can obtain better accuracy in calling differentially abundant proteins. Triqler does so by assuming that peptide abundances follow a probability distribution. This abundance distribution is initiated according to a prior distribution, but updated based on each samples registered peptide ambundance values. This results in peptide abundance distributions that are integrated into protein abundance and subsequently fold change distributions. In the processing Triqler weights in information on differences of peptide abundances within sample groups and search engine identification error probabilities. Data that indicate uncertanty results in wider abundance distributions, while certainty result in tighter abundance distributions. Triqler also integrates the resulting fold change distributions to dereive a posterior probabilities for each protein having an actual fold change larger than a preset treshold value. These posterior probabilities are also averaged into $q$~values \cite{the2019integrated}.
 
 Triqler was originally designed for handling LFQ data from Data-dependent acquisition (DDA). However, in principle, once once peptide abundances and identities are estimated, there are only small differences between data from DDA and Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated}. Here, we set out to investigate Triqler's ability to summarize protein concentrations from peptide abundances derived from DIA data. We used the LFQBench from Navarro et al. \cite{navarro2016multicenter} for the evaluation. In the original benchmark, Navarro et al. included a comparison of different protein summarization strategies and found that the so-called Top3 method generally resulted in lower variance and better quantification accuracy than the built-in methods from OpenSwath, SWATH2.0, Skyline, Spectronaut, and DIA-Umpire\cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than the Top3-method. Simple summarization methods based on mean and median peptide intensity have been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data have been proposed in the literature \cite{silva2006absolute,cox2014accurate}. Summarization techniques such as PQPQ~\cite{forshed2011enhanced}, MSstats~\cite{choi2014msstats}, Diffacto~\cite{zhang2017covariation}, MSqRob2~\cite{sticker2020robust} and Triqler~\cite{the2019integrated} have all been shown to outperform Top3 and there are no theoretical reasons why the stated methods would not perform well for DIA data. Hence, we found it apt to benchmark Triqler against a set of state-of-the-art protein summarization methods using peptide quantities from the LFQBench DIA data set.
-\todo{Add description of ``biological'' study.} 
+\todo{Add description of ``biological'' study. Possibly also to the abstract.} 
  
 \section*{Materials and methods}
 
@@ -79,7 +79,11 @@ We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from PRIDE (PXD
 
 \subsubsection*{LFQBench sequence database}
 
-Uniprot FASTA files with one protein sequence per gene were downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 \textit{E. coli} proteins. To reduce the effect of the different protein inference strategies for the tested protein summarization tools, a modified FASTA file, without shared peptides, was used for database search. The filter removed protein sequences with shared peptides so that the final database did not contain any two proteins sharing tryptic peptides longer than 7 amino acids. After filtering the FASTA file contained 20 302 proteins (288 human proteins fewer proteins than an unfiltered database), 5 848 yeast proteins (198 yeast proteins fewer proteins than an unfiltered database), and 4 306 \textit{E. Coli} proteins (67 \textit{E. Coli} proteins than an unfiltered database). Replacing the I/L amino acids to handle the mass equivalence did not result in any considerable differences (See Supplementary Table \ref{table:proteins_in_database}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. \todo{Was this the script you used for generating decoys for the biological study as well? YES} 
+Uniprot FASTA files with one protein sequence per gene were downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 \textit{E. coli} proteins. To reduce the effect of the different protein inference strategies for the tested protein summarization tools, a modified FASTA file, without shared peptides, was used for database search. The filter removed protein sequences with shared peptides so that the final database did not contain any two proteins sharing tryptic peptides longer than 7 amino acids. After filtering the FASTA file contained 20 302 proteins (288 human proteins fewer proteins than an unfiltered database), 5 848 yeast proteins (198 yeast proteins fewer proteins than an unfiltered database), and 4 306 \textit{E. Coli} proteins (67 \textit{E. Coli} proteins than an unfiltered database). Replacing the I/L amino acids to handle the mass equivalence did not result in any considerable differences (See Supplementary Table \ref{table:proteins_in_database}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
+
+\subsubsection*{Cancer proteomics study}
+TWe downloaded DIA data from  frozen lung squamous cell carcinomas and four adjacent tissues, from the proteomeexchange project PXD004684.
+\todo{description of sources of data here.}
 
 \subsection*{General workflow}
 
@@ -89,7 +93,6 @@ We used two separate strategies to generate peptide abundances from the DIA runs
     \centering
     \includegraphics[width=1.0\linewidth]{./img/methods.png} 
     \caption{{\bf The DDA identification-driven matching (ID) and pseudo-spectrum workflow pipelines (PS).} In the pipelines DIA-Umpire(SE), MSFragger and EasyPQP are run from Fragpipe (\protect\url{https://fragpipe.nesvilab.org/}). A 1\% PSM-level identification threshold was applied to Top3 and MSstats, a 1\% peptide-level threshold to MSqRob2, while all the identifications were provided unfiltered to Triqler. \label{fig:flowchart}}  
-    \todo[inline]{Is limma included the right way?}    
 \end{figure}
 
 
@@ -132,7 +135,6 @@ We downloaded Triqler from \url{https://github.com/statisticalbiotechnology/triq
 
 As Triqler's model accounts for the assessed uncertainty in the prior identification steps of the data, it does not threshold the PSMs but instead takes all of the PSMs as input. The \texttt{searchScore} column should reflect increasing certainty in PSMs. Therefore we apply the negative log-transform to the \texttt{m\_score} or \texttt{Q.Value} to indicate \texttt{searchScore} for the two different pipelines. 
 
-\todo{Patrick, does the decription below cover what you did? Also is there a command line option that you used for estimating this threshold. ANS: This is correct, PS pipeline -np.log() and ID pipelin -np.log10() was used on the searchScore, I don't think there was any particular reason i did this. LK: Nej, det är stycket härunder vi pratrar om. Kan du säga om jag beskriver metoden för ett lower-bound treshold är korrekt?. Det är korrekt. se line 351 triqler.py i triqler scriptet och line 59 i hyperparameters.py. }
 When evaluating Triqler we fold-change valuation tresholds as estimated by a previously described heuristic ensures that $99\%$ of the 
 probability distribution of the normal distribution is contained, as,
 \begin{equation}
@@ -140,9 +142,7 @@ probability distribution of the normal distribution is contained, as,
 2.5,
 \end{equation}
 where $\sigma_y$ is the standard deviation of the protein prior in $\log_{10}$ 
-abundance units, $N$ is the number of samples in the group.
-
-Furthermore, Triqler removes any peptides that are not unambiguously attributed to one protein.
+abundance units, $N$ is the number of samples in the group. Furthermore, Triqler removes any peptides that are not unambiguously attributed to one protein.
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR (and will therefore result in an FDR equal to or higher than the $q$~value). As a consequence, the statistics from MSstats and MSqRob2 should be more conservative than the estimates from Triqler and Top3\cite{korthauer2019practical}.
