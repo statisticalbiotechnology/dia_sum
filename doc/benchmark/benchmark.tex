@@ -142,7 +142,8 @@ probability distribution of the normal distribution is contained, as,
 2.5,
 \end{equation}
 where $\sigma_y$ is the standard deviation of the protein prior in $\log_{10}$ 
-abundance units, $N$ is the number of samples in the group. Furthermore, Triqler removes any peptides that are not unambiguously attributed to one protein.
+abundance units, $N$ is the number of samples in the group. Triqler estimates and prints this Minimum advisable fold change treshold by default, and it can be retriewed from triqlers standard output.
+Also, Triqler removes any peptides that are attributed to more than one protein.
 
 \subsubsection*{Multiple Hypothesis Correction}
 There was a slight difference in some of the benchmarking metrics, as the multiple test correction is performed with $q$~value for Triqler and Top3, while MsStats and MSqRob2 use Benjamini-Hochberger \cite{benjamini1995controlling} corrections. The $q$~value approach aims to give an unbiased estimator of FDR, while the Benjamini-Hochberger approach estimates the upper bound of the FDR (and will therefore result in an FDR equal to or higher than the $q$~value). As a consequence, the statistics from MSstats and MSqRob2 should be more conservative than the estimates from Triqler and Top3\cite{korthauer2019practical}.
