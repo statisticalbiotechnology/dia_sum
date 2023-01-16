@@ -167,11 +167,7 @@ To establish that Triqler is useful when evaluating DIA data, we first examined 
 
 DIA data is assumed to encompass a larger dynamic range than DDA data \citation{bilbao2015processing}. This could affect one of Triqler's assumptions, that the noise structure is mainly multiplicative, i.e. that the standard deviation within a sample group is proportional to its mean. When investigating all the peptide abundance measurements at a 1\% PSM-level identification false discovery rate (FDR) from the TripleTOF6600 section of the LFQBench dataset, we found a relatively linear relationship between standard deviation and mean (Supplementary Figure \ref{fig:uniform_offset_in_standard_deviation_boxplot}A-D). 
 
-<<<<<<< HEAD
-However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA ($<2\%$ for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a censored normal distribtion function over all XIC values as for DDA data, we use the mean value of the missing values to fit a censored normal distribution fuction (See Supplementary Figure \ref{fig:fraction_missing_values}). The alternative curve fitting procedure is  enabled by a command line option in Triqler named \verb|--missing_value_prior|. \todo{Replace XXX.}
-=======
 However, when estimating the distribution of missing values with Triqler, we noted that the lower number of missing values in DIA compared to DDA ($<2\%$ for DIA), lead to parameter estimates out of the expected range. We hence introduced an alternative estimation procedure for DIA data. Insted of fitting a censored normal distribtion function over all XIC values as for DDA data, we use the mean value of the missing values to fit a censored normal distribution fuction (See Supplementary Figure \ref{fig:fraction_missing_values}). The alternative curve fitting procedure is  enabled by a command line option in Triqler named \verb|--missingValuePrior=DIA|
->>>>>>> 4023adba5cf63fb24f4f8d85b8ab44dfeedb748c
 
 \subsubsection*{Harmonization of protein inference procedures.}
 
