@@ -146,10 +146,6 @@ if __name__ == "__main__":
 
     parser.add_argument('--msqrob2_input', type=str,
                         help='MSqRob2 results file.')
-
-    parser.add_argument('--specie', type=str,
-                        help='specie "all", "ecoli" or "yeast" as y-axis for the differential plot.',
-                        default = "all")
     
     parser.add_argument('--fc_threshold', type=float, default = 0,
                         help='Apply fold-change threshold to Top3, MSstats and MSqRob2.')
@@ -166,7 +162,6 @@ if __name__ == "__main__":
     top3_file = args.top3_input
     msstats_file = args.msstats_input
     msqrob2_file = args.msqrob2_input
-    specie = args.specie
     fc_threshold = args.fc_threshold
     fdr_threshold = args.fdr_threshold
     output = args.output
