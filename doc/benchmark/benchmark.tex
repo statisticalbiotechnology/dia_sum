@@ -168,11 +168,11 @@ As visible in Figure \ref{fig:fc_histogram}, Triqler's fold change distributions
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc}
-	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_triqler.png} & 
-	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_top3.png} \\ 
+	    \includegraphics[width=0.4\linewidth]{./img/histogram_ID_triqler.png} & 
+	    \includegraphics[width=0.4\linewidth]{./img/histogram_ID_top3.png} \\ 
         A & B \\ 
-	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_msstats.png} & 
-	    \includegraphics[width=0.4\linewidth]{../../result/report_plots_pipeline/histogram_ID_msqrob2.png} \\
+	    \includegraphics[width=0.4\linewidth]{./img/histogram_ID_msstats.png} & 
+	    \includegraphics[width=0.4\linewidth]{./img/histogram_ID_msqrob2.png} \\
         C & D 
     \end{tabular}
     \caption{{\bf Comparison of reported fold change distributions.} The summarized protein abundances from the ID spectral library pipeline for (A) Triqler, (B) Top3, (C) MSstats, and (D) MSqRob2 were binned and plotted as histograms. The dashed lines indicate the pipetted log2-fold change ratio between a specie and HeLa samples. We noted that the empirical densities of the protein counts are less biased for Triqler and Top3 than MSstats and MSqRob2, as the apex of their distribution was found closer to the true fold change difference (see Supplementary Figure \ref{fig:fc_histogram_supplement} for reported fold change distributions for both ID and PS workflows). For these histograms, we included all the summarized proteins and did not remove any proteins based on  the significance or fold change thresholds. \label{fig:fc_histogram}}
@@ -182,9 +182,9 @@ As visible in Figure \ref{fig:fc_histogram}, Triqler's fold change distributions
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{ccc}
-        \includegraphics[width=0.33\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler_vs_top3.png} & 
-        \includegraphics[width=0.33\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler_vs_msstats.png} & 
-        \includegraphics[width=0.33\linewidth]{../../result/report_plots_pipeline/scatter_ID_triqler_vs_msqrob2.png} \\
+        \includegraphics[width=0.33\linewidth]{./img/scatter_ID_triqler_vs_top3.png} & 
+        \includegraphics[width=0.33\linewidth]{./img/scatter_ID_triqler_vs_msstats.png} & 
+        \includegraphics[width=0.33\linewidth]{./img/scatter_ID_triqler_vs_msqrob2.png} \\
         A & B & C
     \end{tabular}
     \caption{{\bf Comparison of the summarized protein fold changes between the methods.} The comparison between the distributions of the MAP estimates from Triqler and (A) Top3, (B) MSstats, and (C) MSqRob2 for the data in the ID pipeline. The actual pipetted fold changes are indicated by dashed lines. Proteins not quantified by both compared methods were excluded from the plots. See Supplementary Figure \ref{fig:fig:fc_scatter_triqler_vs_method_supplement} for protein-level results for both ID and PS workflows. \label{fig:fc_scatter}}
@@ -200,8 +200,8 @@ As the first quantitative test of performance, we compared the methods' reported
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{cc} 
-        \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
-        \includegraphics[width=0.45\linewidth]{../../result/report_plots_pipeline/diff_HeLa_vs_nonHeLa_PS_all_0.51_Limma.png}\\
+        \includegraphics[width=0.45\linewidth]{./img/diff_HeLa_vs_nonHeLa_ID_all_0.51.png} & 
+        \includegraphics[width=0.45\linewidth]{./img/diff_HeLa_vs_nonHeLa_PS_all_0.51_Limma.png}\\
         A & B 
     \end{tabular} 
     \caption{{\bf Comparison of ability to differentiate proteins with differentially abundance between conditions.} We plotted the number of reported differentially abundant  {\em E. Coli} and yeast proteins as a function of the number of proteins from the HeLa background when sorting according to significance for (A) ID pipeline and (B) PS pipeline. For the test, we selected a fold change evaluation of 0.51 for Triqler and a fold change threshold of 0.51 for Top3, MSstats and MSqRob2. See the Supplement Figures \ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela}-\ref{fig:ability_to_differentiate_differentially_abundant_specie_vs_hela_full_lib} for the number of differentially abundant proteins for each proteome. \label{fig:diff_vs_hela}}
@@ -214,7 +214,7 @@ Further, we tested the statistical calibration of the summarization methods. We 
 \begin{figure}[hbt]
     \centering
     \begin{tabular}{c} 
-        \includegraphics[width=0.5\linewidth]{../../result/report_plots_pipeline/calibration_ID_0.png}
+        \includegraphics[width=0.5\linewidth]{./img/calibration_ID_0.png}
     \end{tabular}
   \caption{{\bf Comparison of calibration of the compared summarization methods.} We plotted the fraction of reported differentially abundant HeLa proteins as a function of the $q$~value threshold for protein abundances without any restrictions on the fold change. We used $q$~value for Triqler and Top3, and Benjamini-Hochberg corrections for MSstats and MSqRob2. \label{fig:frac_hela_vs_fdr}}
 \end{figure}
