@@ -77,8 +77,9 @@ We downloaded the LFQBench dataset~\cite{navarro2016multicenter} from ProteomeXc
 
 Uniprot FASTA files with one protein sequence per gene were downloaded for each species (UP000005640, UP000000625, and UP000002311, acquired on 2021-06-16). The unfiltered FASTA files contained 20 590 human proteins, 6 046 yeast proteins, and 4 373 \textit{E. coli} proteins. To reduce the effect of the different protein inference strategies for the tested protein summarization tools, a modified FASTA file, without shared peptides, was used for database search. The filter removed protein sequences with shared peptides so that the final database did not contain any two proteins sharing tryptic peptides longer than 7 amino acids. After filtering the FASTA file contained 20 302 proteins (288 human proteins fewer proteins than an unfiltered database), 5 848 yeast proteins (198 yeast proteins fewer proteins than an unfiltered database), and 4 306 \textit{E. Coli} proteins (67 \textit{E. Coli} proteins than an unfiltered database). Replacing the I/L amino acids to handle the mass equivalence did not result in any considerable differences (See Supplementary Table \ref{table:proteins_in_database}). We also added pseudo-reverse sequences to the database as decoys for target-decoy analysis using OpenSwathDecoyGenerator. 
 
-\subsubsection*{Cancer proteomics study}
-We downloaded DIA data from four frozen lung squamous cell carcinomas and four adjacent tissues harvested with a QExactive Plus\cite{stewart2017relative}, from the ProteomeXchange project PXD004684. 
+\subsubsection*{Cancer proteomics data}
+We also dowloaded two DIA data cancer proteomic related datasets from ProteomeXchange, whith accession numbers PXD004684 and PXD022992.  
+The first set consists of data from four frozen lung squamous cell carcinomas and four adjacent tissues harvested with a Thermo QExactive Plus\cite{stewart2017relative}. The second set consists of data from a comparison of three primary cell lines (SK-MEL-1, A375, and G-361) to three metastatic (RPMI-7951, SH-4, and SK-MEL-3) cell lines analyzed (two samples per cel line) by a Thermo Orbitrap Fusion Lumos Tribrid.
 
 \subsection*{General workflow}
 
