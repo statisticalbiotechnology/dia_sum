@@ -62,7 +62,7 @@ Mass spectrometry (MS)-based proteomics enables efficient detection of proteins 
 
 We have previously designed a hierarchical Bayesian model, Triqler, able to control for errors from both the identification and quantification process in LFQ experiments\cite{the2019integrated}. By integrating the error probabilities from identification and quantification, one can obtain better accuracy in calling differentially abundant proteins. Triqler does so by assuming that peptide abundances follow a probability distribution. This abundance distribution is initiated according to a prior distribution, but updated based on each sample's registered peptide abundance values. This results in peptide abundance distributions that are integrated into protein abundance and subsequently fold change distributions. In the processing Triqler weights in information on differences in peptide abundances within sample groups and search engine identification error probabilities. Data that indicate uncertainty results in wider abundance distributions, while certainty results in tighter abundance distributions. Triqler also integrates the resulting fold change distributions to derive posterior probabilities for each protein having an actual fold change larger than a preset threshold value. These posterior probabilities are also averaged into $q$~values \cite{the2019integrated}.
 
-Triqler was originally designed for handling LFQ data from Data-dependent acquisition (DDA). However, in principle, once peptide abundances and identities are estimated, there are only small differences between data from DDA and Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated}. Here, we set out to investigate Triqler's ability to summarize protein concentrations from peptide abundances derived from DIA data. We used the LFQBench from Navarro et al. \cite{navarro2016multicenter} for the evaluation. In the original benchmark, Navarro et al. included a comparison of different protein summarization strategies and found that the so-called Top3 method generally resulted in lower variance and better quantification accuracy than the built-in methods from OpenSwath, SWATH2.0, Skyline, Spectronaut, and DIA-Umpire\cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than the Top3 method. Simple summarization methods based on mean and median peptide intensity have been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data have been proposed in the literature \cite{silva2006absolute,cox2014accurate}. Summarization techniques such as PQPQ~\cite{forshed2011enhanced}, MSstats~\cite{choi2014msstats}, Diffacto~\cite{zhang2017covariation}, MSqRob2~\cite{sticker2020robust} and Triqler~\cite{the2019integrated} have all been shown to outperform Top3 and there are no theoretical reasons why the stated methods would not perform well for DIA data. Hence, we found it apt to modify Triqler to handle DIA data, and to benchmark it against a set of state-of-the-art protein summarization methods using peptide quantities from some DIA data sets.
+Triqler was originally designed for handling LFQ data from Data-dependent acquisition (DDA). However, in principle, once peptide abundances and identities are estimated, there are only small differences between data from DDA and Data-independent acquisition (DIA) mass spectrometry \cite{venable2004automated}. Here, we set out to investigate Triqler's ability to summarize protein concentrations from peptide abundances derived from DIA data. We used the LFQBench from Navarro et al. \cite{navarro2016multicenter} for the evaluation. In the original benchmark, Navarro et al. included a comparison of different protein summarization strategies and found that the so-called Top3 method generally resulted in lower variance and better quantification accuracy than the built-in methods from OpenSwath, SWATH2.0, Skyline, Spectronaut, and DIA-Umpire\cite{navarro2016multicenter}. However, there are reasons to believe that more sophisticated methods would yield better protein quantification than the Top3 method. Simple summarization methods based on mean and median peptide intensity have been shown to produce unreliable protein abundance estimates \cite{goeminne2015summarization}, and more advanced summarization strategies for LFQ data have been proposed in the literature \cite{silva2006absolute,cox2014accurate}. Summarization techniques such as PQPQ~\cite{forshed2011enhanced}, MSstats~\cite{choi2014msstats}, Diffacto~\cite{zhang2017covariation}, MSqRob2~\cite{sticker2020robust} and Triqler~\cite{the2019integrated} have all been shown to outperform Top3 and there are no theoretical reasons why the stated methods would not perform well for DIA data. Hence, we found it apt to modify Triqler to handle DIA data, and to benchmark it against a set of state-of-the-art protein summarization methods.
  
 \section*{Materials and methods}
 
@@ -85,7 +85,7 @@ We used three separate strategies to generate peptide abundances from the DIA ru
 
 \subsubsection*{DDA identification-driven (ID) spectral library}
 
-For the ID workflow, we searched the LFQBench-provided DDA runs with MSFragger\cite{kong2017msfragger} with default settings, and a spectral library was constructed with EasyPQP \cite{easypqp} with the default setting. No transition refinement was used. OpenSwatchDecoyGenerator was used to generate decoys for the spectral library with a pseudo-reverse method. The DIA data were searched with the spectral library through OpenSwath Workflow, and the \texttt{m\_score} was computed using PyProphet\cite{teleman2015diana}. The \texttt{m\_score} cut-off for a user-specified peptide identification false-discovery rate was computed with SWATH2STATS \cite{blattmann2016swath2stats}. This process resulted in a set of detected peptides together with their assessed peptide identification accuracies and abundance estimates (Supplementary Table \ref{fig:osw_peptide_and_protein_id} shows the number of identified peptides and proteins).
+For the ID workflow, we searched the LFQBench-provided DDA runs with MSFragger\cite{kong2017msfragger} with default settings, and a spectral library was constructed with EasyPQP \cite{easypqp} with the default setting. No transition refinement was used. OpenSwatchDecoyGenerator was used to generate decoys for the spectral library with a pseudo-reverse method. The DIA data were searched with the spectral library through OpenSwath Workflow, and the \texttt{m\_score} was computed using PyProphet\cite{teleman2015diana}. The \texttt{m\_score} cut-off for a user-specified peptide identification false discovery rate was computed with SWATH2STATS \cite{blattmann2016swath2stats}. This process resulted in a set of detected peptides together with their assessed peptide identification accuracies and abundance estimates (Supplementary Table \ref{fig:osw_peptide_and_protein_id} shows the number of identified peptides and proteins).
 
 
 \subsubsection*{Pseudo-spectra generation (PS) spectral library}
@@ -94,8 +94,7 @@ For the PS workflow, we also used the FragPipe software, employing DIA-Umpire to
 
 \subsubsection*{Directly extracted peptide abundances}
 
-For this workflow, we used the quantms nf-core pipeline (\url{https://nf-co.re/quantms}), which converts raw files to mzML with thermorawfileparser~\cite{hulstaert2019thermorawfileparser} and subsequently extracts peptide abundances using DIA-NN~\cite{hulstaert2019thermorawfileparser}. DIA-NN internally generated decoys for FDR calculations which are discarded. To have a substitute for these decoys for Triqler we need to include entrapment sequences in the FASTA database. \cite{granholm2013determining}. This method was used with the two cancer proteomics-related datasets.
-
+For this workflow, we used the quantms nf-core pipeline (\url{https://nf-co.re/quantms}), which converts raw files to mzML with thermorawfileparser~\cite{hulstaert2019thermorawfileparser} and subsequently extracts peptide abundances using DIA-NN~\cite{hulstaert2019thermorawfileparser}. The pipeline generated decoys for FDR calculations which were discarded after DIA-NN processing. To circumvent the lack of decoys in output for Triqler we concatenated shuffled entrapment sequences in the FASTA database \cite{granholm2013determining}. This workflow was used with the two cancer proteomics-related datasets.
 
 \subsection*{Protein summarization}
 
@@ -132,7 +131,7 @@ probability distribution of the normal distribution is contained~\cite{the2021tr
 2.5,
 \end{equation}
 where $\sigma_y$ is the standard deviation of the protein prior in $\log_{10}$ 
-abundance units, $N$ is the number of samples in the group. Triqler estimates and prints this minimum advisable fold change threshold by default, and it can be retriewed from triqlers standard output.
+abundance units, $N$ is the number of samples in the group. Triqler estimates and prints this minimum advisable fold change threshold by default, and it can be retrieved from Triqlers standard output.
 Also, Triqler removes any peptides that are attributed to more than one protein.
 
 \subsubsection*{Multiple Hypothesis Correction}
@@ -253,7 +252,10 @@ Lastly, we want to highlight the benefit and importance of datasets such as the 
 
 This work was supported by grants from the Swedish Research Council (grant 2017-04030).
 
-\section*{Supporting information}
+\section*{Acknowledgements}
+
+We would like to thank Yasset Perez-Riverol, EMBL-EBI for helpful discussions.
+
 
 \bibliographystyle{unsrt}
 %\bibliography{benchmark}
