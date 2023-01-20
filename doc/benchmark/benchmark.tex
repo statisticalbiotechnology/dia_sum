@@ -55,7 +55,6 @@
 A frequent goal, or subgoal, when processing data from a quantitative shotgun proteomics experiment is a list of proteins that are differentially abundant under the examined experimental conditions. Unfortunately, obtaining such a list is a challenging process, as the mass spectrometer analyses the proteolytic peptides of a protein rather than the proteins themselves. We have previously designed a Bayesian hierarchical probabilistic model, Triqler, for combining peptide identification and quantification errors into probabilities of proteins being differentially abundant. However, the model was developed for data from data-dependent acquisition. Here we show that Triqler is also compatible with data-independent acquisition data after applying minor alterations for the missing value distribution. Furthermore, we find that it has better performance than a set of compared state-of-the-art protein summarization tools, when evaluated on data-independent acquisition data.
 \end{abstract}
   
-\listoftodos
 \section*{Introduction}
 
 Mass spectrometry (MS)-based proteomics enables efficient detection of proteins in complex mixtures. There are several different techniques to make the technology quantitative \cite{bantscheff2007quantitative,kall2011computational}. Out of these, label-free quantification (LFQ) \cite{bondarenko2002identification} has the advantage that it can smoothly handle large sample sizes. For data from LFQ experiments, just as in other quantification schemes, there exists a plethora of processing options, all containing several processing steps, each subject to their different error sources, all affecting the result of the processing.
@@ -95,7 +94,7 @@ For the PS workflow, we also used the FragPipe software, employing DIA-Umpire to
 
 \subsubsection*{Directly extracted peptide abundances}
 
-For this workflow, we used the quantms nf-core pipeline (\url{https://nf-co.re/quantms}), which converts raw files to mzML with thermorawfileparser~\cite{hulstaert2019thermorawfileparser} and subsequently extracts peptide abundances using DIA-NN~\cite{hulstaert2019thermorawfileparser}. This method was used with the two cancer proteomics-related datasets.
+For this workflow, we used the quantms nf-core pipeline (\url{https://nf-co.re/quantms}), which converts raw files to mzML with thermorawfileparser~\cite{hulstaert2019thermorawfileparser} and subsequently extracts peptide abundances using DIA-NN~\cite{hulstaert2019thermorawfileparser}. DIA-NN internally generated decoys for FDR calculations which are discarded. To have a substitute for these decoys for Triqler we need to include entrapment sequences in the FASTA database. \cite{granholm2013determining}. This method was used with the two cancer proteomics-related datasets.
 
 
 \subsection*{Protein summarization}
