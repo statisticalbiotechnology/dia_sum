@@ -185,7 +185,7 @@ As visible in Figure \ref{fig:fc_histogram}, Triqler's fold change distributions
         \includegraphics[width=0.33\linewidth]{./img/scatter_ID_triqler_vs_msqrob2.png} \\
         A & B & C
     \end{tabular}
-    \caption{{\bf Comparison of the summarized protein fold changes between the methods.} The comparison between the distributions of the MAP estimates from Triqler and (A) Top3, (B) MSstats, and (C) MSqRob2 for the data in the ID pipeline. The actual pipetted fold changes are indicated by dashed lines. Proteins not quantified by both compared methods were excluded from the plots. See Supplementary Figure \ref{fig:fig:fc_scatter_triqler_vs_method_supplement} for protein-level results for both ID and PS workflows. \label{fig:fc_scatter}}
+    \caption{{\bf Comparison of the summarized protein fold changes between the methods.} The comparison between the distributions of the MAP estimates from Triqler and (A) Top3, (B) MSstats, and (C) MSqRob2 for the data in the ID pipeline. The actual pipetted fold changes are indicated by dashed lines. Proteins not quantified by both compared methods were excluded from the plots. See Supplementary Figure \ref{fig:fc_scatter_triqler_vs_method_supplement} for protein-level results for both ID and PS workflows. \label{fig:fc_scatter}}
 \end{figure}
 
 
@@ -220,7 +220,7 @@ Further, we tested the statistical calibration of the summarization methods. We 
 
 \subsection*{Benchmark on cancer proteomics-related data}
 
-To further compare the different protein inference methods, they were finally tested on two sets of less engineered data --- sets without known relative abundance differences.  Data was downloaded from Stewart {\em et al.}, a set consisting of DIA data contrasting lung squamous cell carcinomas to adjacent tissues~\cite{stewart2017relative}, and from Gao {\em et al.} a set comparing primary to metastatic cell lines\cite{gao2021data}. Peptide abundances were derived with the nf-core quantms pipeline followed by our protein summarization strategies and plotted the number of differentially abundant proteins as a function of each method's estimated quantitative protein-level FDR of $q$~value (Figure~\ref{fig:non-engineered}). As can be seen from the data, Triqler outperforms the other methods, even though the method likely makes more conservative error estimates than the other methods (as previously shown).
+To further compare the different protein inference methods, they were finally tested on two sets of less engineered data --- sets without known relative abundance differences.  Data was downloaded from Stewart {\em et al.}, a set consisting of DIA data contrasting lung squamous cell carcinomas to adjacent tissues~\cite{stewart2017relative}, and from Gao {\em et al.} a set comparing primary to metastatic cell lines\cite{gao2021data}. Peptide abundances were derived with the nf-core quantms pipeline followed by our protein summarization strategies and plotted the number of differentially abundant proteins as a function of each method's estimated quantitative protein-level FDR of $q$~value. We used fold change evaluation of 0.92 resp. 0.63 for Triqler, based on its lower bound estimate. We used the the same lower bound estimate as a fold change threshold when reporting performance of the compared methods. As can be seen in Figure~\ref{fig:non-engineered}, Triqler outperforms the other methods, even though the method likely makes more conservative error estimates than the other methods (as previously shown).
 
 
 \begin{figure}[hbt]
