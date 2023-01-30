@@ -20,8 +20,8 @@ def avg_3_largest_precursor_on_run_level(df_run):
         return df_run.groupby("Protein.Ids")["Precursor.Quantity"].apply(lambda x: x.nlargest(3).mean() if len(x.nlargest(3)) >= 2 else np.nan).reset_index()
     
     res = avg_of_3_largest_precursor(df_run)
-    experiment_id = df_run.sample_id
-    sample_id = df_run.sample_class
+    experiment_id = np.unique(df_run.histology_idx)[0]
+    sample_id = np.unique(df_run.sample_class)[0]
     midx = pd.MultiIndex(levels = [[sample_id],[experiment_id]], codes = [[0],[0]], names = ["sample_id", "experiment_id"])
     df = pd.DataFrame(res.values)
     specie_map = lambda x: x.split("_")[-1]
@@ -72,10 +72,19 @@ if __name__ == "__main__":
     print("Reading in: " + input_file)
     df = pd.read_csv(input_file, sep = "\t")
     meta = pd.read_csv("metadata.csv", sep = "/")
-    mapper = meta.set_index("SampleID")["Histology"].to_dict()
 
+    mapper = meta.set_index("SampleID")["Histology"].to_dict()
+    metas = []
+    for histology in meta.Histology.unique():
+        partial_meta = meta[meta.Histology == histology].reset_index().drop("index", axis = 1).reset_index().rename({"index":"histology_idx"}, axis = 1)
+        metas.append(partial_meta)
+    meta = pd.concat(metas)
+
+    histology_idx_mapper = meta.drop("Histology", axis = 1).set_index("SampleID")["histology_idx"].to_dict()
+        
     df["sample_id"] =  df.Run.map(lambda x: re.findall('\d+',x.split("_")[-1])[0]).astype(int)
     df["sample_class"] = df.sample_id.map(mapper)
+    df["histology_idx"] =df.sample_id.map(histology_idx_mapper)
     
     df = df[df[q_value_column] < fdr_threshold]
     df = avg_3_largest_precursor(df)
