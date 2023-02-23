@@ -10,7 +10,7 @@
 % textcomp package and marvosym package for additional characters
 \usepackage{textcomp,marvosym}
 % cite package, to clean up citations in the main text. Do not remove.
-\usepackage{cite}
+\usepackage[superscript]{cite}
 \usepackage{url}
 % Use nameref to cite supporting information files (see Supporting Information section for more info)
 %\usepackage{nameref,hyperref}
@@ -20,6 +20,7 @@
 %\usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{authblk}
 
 % color can be used to apply background shading to table cells only
 \usepackage[table]{xcolor}
@@ -220,7 +221,7 @@ Further, we tested the statistical calibration of the summarization methods. We 
 
 \subsection*{Benchmark on cancer proteomics-related data}
 
-To further compare the different protein inference methods, they were finally tested on two sets of less engineered data --- sets without known relative abundance differences.  Data was downloaded from Stewart {\em et al.}, a set consisting of DIA data contrasting lung squamous cell carcinomas to adjacent tissues~\cite{stewart2017relative}, and from Gao {\em et al.} a set comparing primary to metastatic cell lines\cite{gao2021data}. Peptide abundances were derived with the nf-core quantms pipeline followed by our protein summarization strategies and plotted the number of differentially abundant proteins as a function of each method's estimated quantitative protein-level FDR of $q$~value. We used fold change evaluation of 0.92 resp. 0.63 for Triqler, based on its lower bound estimate. We used the the same lower bound estimate as a fold change threshold when reporting performance of the compared methods. As can be seen in Figure~\ref{fig:non-engineered}, Triqler outperforms the other methods, even though the method likely makes more conservative error estimates than the other methods (as previously shown).
+To further compare the different protein inference methods, they were finally tested on two sets of less engineered data --- sets without known relative abundance differences.  Data was downloaded from Stewart {\em et al.}, a set consisting of DIA data contrasting lung squamous cell carcinomas to adjacent tissues~\cite{stewart2017relative}, and from Gao {\em et al.} a set comparing primary to metastatic cell lines\cite{gao2021data}. Peptide abundances were derived with the nf-core quantms pipeline followed by our protein summarization strategies and plotted the number of differentially abundant proteins as a function of each method's estimated quantitative protein-level FDR of $q$~value. We used fold change evaluation of 0.92 resp. 0.63 for Triqler, based on its lower bound estimate. We used the the same lower bound estimate as a fold change threshold when reporting performance of the compared methods. As can be seen in Figure~\ref{fig:non-engineered}, Triqler reports more differential proteins than the other methods for similair estimated $q$~values.
 
 
 \begin{figure}[hbt]
@@ -247,6 +248,28 @@ We also see some differences in how DIA and DDA peptide-level abundance data app
 It is quite hard to evaluate how the performance of a data processing pipeline is influenced by its components. This should not stop the field from trying to establish the features of the different processing steps \cite{dufresne2014abrf,gatto2016testing,navarro2016multicenter}. Unbiased comparisons of software tools are challenging for several reasons \cite{dufresne2014abrf}. Methods can be assessed by scientists lacking relevant expertise, the tested methods may be lacking sufficient documentation and the interpretation of test results may be subjective \cite{yates2012toward,leprevost2014best,pak2013clustering,faircomparison2015}. By using the same data set we can assure that the data set is processed consistently and further the analysis by extending it to protein summarization procedures.
 
 Lastly, we want to highlight the benefit and importance of datasets such as the one provided by Navarro et al. \cite{navarro2016multicenter}. These benchmarking datasets make it easy for the scientific community to investigate computational tools by providing a golden standard and significantly facilitating benchmark studies. 
+
+\section*{Supporting Information}
+
+\begin{itemize}
+\item Table S1: Protein count in the Uniprot FASTA protein database.
+\item Table S2: Number of identified peptides and proteins for the ID workflow.
+\item Table S3: Number of identified peptides and proteins for the PS workflow
+\item Figure S1: Standard deviation of peptide abundance as a function of mean abundance in
+DIA experiments.
+\item Figure S2: Comparison of actual missing values against fit to the censoring distribution
+used in Triqler.
+\item Figure S3: Comparison of reported log2-fold change between Triqler and the compared
+methods.
+\item Figure S4: The compared methods’ ability to distinguish differentially abundant proteins
+when applying protein-level fold-change tresholds.
+\item Figure S5: The compared methods’ ability to distinguish differentially abundant proteins
+when not applying fold change treshholds.
+\item Figure S6: The compared methods’ ability to distinguish differentially abundant proteins
+when removing shared peptides after database matching.
+\item Figure S7: Comparison of reported fold change distributions.
+\item Figure S8: Comparison of calibration of the compared summarization methods.
+\end{itemize}
 
 \section*{Funding}
 
