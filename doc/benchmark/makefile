@@ -5,7 +5,7 @@ all: ${main}.pdf supplement.pdf coverletter.pdf diff.pdf # biorxiv.pdf #
 ${main}.pdf: ${main}.tex ${main}.bib # img/*
 
 diff.tex: ${main}.tex
-	git show sub1:./$? > /tmp/$?
+	git show sub2:./$? > /tmp/$?
 	latexdiff --disable-citation-markup /tmp/$? $? > diff.tex
 
 %.pdf: %.tex

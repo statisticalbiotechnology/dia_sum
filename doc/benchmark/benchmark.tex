@@ -11,6 +11,7 @@
 \usepackage{textcomp,marvosym}
 % cite package, to clean up citations in the main text. Do not remove.
 \usepackage[superscript]{cite}
+\usepackage{epstopdf}
 \usepackage{url}
 % Use nameref to cite supporting information files (see Supporting Information section for more info)
 %\usepackage{nameref,hyperref}
@@ -261,11 +262,11 @@ DIA experiments.
 used in Triqler. 
 \item Figure S3: Comparison of reported log2-fold change between Triqler and the compared
 methods.
-\item Figure S4: The compared methods’ ability to distinguish differentially abundant proteins
+\item Figure S4: The compared methods' ability to distinguish differentially abundant proteins
 when applying protein-level fold-change tresholds.
-\item Figure S5: The compared methods’ ability to distinguish differentially abundant proteins
+\item Figure S5: The compared methods' ability to distinguish differentially abundant proteins
 when not applying fold change treshholds.
-\item Figure S6: The compared methods’ ability to distinguish differentially abundant proteins
+\item Figure S6: The compared methods' ability to distinguish differentially abundant proteins
 when removing shared peptides after database matching.
 \item Figure S7: Comparison of reported fold change distributions.
 \item Figure S8: Comparison of calibration of the compared summarization methods.
@@ -283,7 +284,12 @@ We would like to thank Yasset Perez-Riverol, EMBL-EBI for helpful discussions.
 \bibliographystyle{unsrt}
 %\bibliography{benchmark}
 \bibliography{benchmark.bib}
-\end{document}
+
+\newpage
+
+For TOC Only:\\
+\includegraphics[width=\textwidth]{./img/TOC_graphic}
+\end{document} 
 
 
 
