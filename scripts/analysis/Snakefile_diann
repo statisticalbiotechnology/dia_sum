@@ -1,0 +1,131 @@
+
+DIANN_FILEDIR = "/hdd_14T/data/dia_sum_article/diann/"
+FDR_THRESHOLD = 0.01
+TRIQLER_FC_EVAL = 0.48
+
+rule generate_data:
+    input:
+        expand("results/report_recomputed_fdr.tsv"),
+        expand("results/diann_msstats_input.csv"),
+        expand("results/diann_msqrob2_input.csv"),
+        expand("results/diann_triqler_input.csv"),
+        expand("results/diann_top3_input.csv"),
+        expand("results/diann_top3_results.tsv"),
+        expand("results/diann_fc_"+str(TRIQLER_FC_EVAL)),
+        expand("results/diann_msstats_output.csv"),
+        expand("results/diann_msqrob2_output.csv")
+
+
+rule compute_msqrob2:
+    input:
+        script = "run_msqrob2.r",
+        input = "results/diann_msqrob2_input.csv"
+    output:
+        output = "results/diann_msqrob2_output.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+
+rule compute_msstats:
+    input:
+        script = "run_msstats.r",
+        input = "results/diann_msstats_input.csv"
+    output:
+        output = "results/diann_msstats_output.csv"
+    shell:
+        "Rscript {input.script} \
+            --input {input.input} \
+            --output {output.output}"
+
+rule compute_diann_triqler:
+    input:
+        input_file = "results/diann_triqler_input.csv"
+    output:
+        output = "results/diann_fc_"+str(TRIQLER_FC_EVAL)
+    params:
+        fc_eval = TRIQLER_FC_EVAL
+    shell:
+        "python -m triqler {input.input_file} \
+            --out_file {output.output} \
+            --fold_change_eval {params.fc_eval} \
+            --decoy_pattern DECOY"
+    
+
+rule compute_diann_top3:
+    input:
+        script = "top3.py",
+        input_file = "results/diann_top3_input.csv"
+    output:
+        output = "results/diann_top3_results.tsv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
+rule convert_diann_to_top3:
+    input:
+        script = "top3_formatter/diann.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/diann_top3_input.csv"
+    params:
+        fdr_threshold = FDR_THRESHOLD
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+        
+rule convert_diann_to_triqler:
+    input:
+        script = "convert_diann_to_triqler.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/diann_triqler_input.csv"
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --output {output.output}"
+
+
+rule convert_diann_to_msqrob2:
+    input:
+        script = "convert_diann_to_msqrob2_target_decoy_fdr_recompute.py",
+        input_file = DIANN_FILEDIR + "report.tsv"
+    output:
+        output = "results/diann_msqrob2_input.csv"
+    params:
+        fdr_threshold = FDR_THRESHOLD
+    shell:
+        "python {input.script} \
+            --input_file {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule convert_diann_to_msstats:
+    input:
+        script = "convert_diann_to_msstats.py",
+        input_file = "results/report_recomputed_fdr.tsv"
+    output:
+        output = "results/diann_msstats_input.csv"
+    params:
+        fdr_threshold = FDR_THRESHOLD
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --fdr_threshold {params.fdr_threshold} \
+            --output {output.output}"
+
+rule recompute_fdr:
+    input:
+        script = "compute_fdr.py",
+        input_file = DIANN_FILEDIR + "report.tsv"
+    output:
+        output = "results/report_recomputed_fdr.tsv"
+    shell:
+        "python {input.script} \
+            --input {input.input_file} \
+            --output {output.output}"
+
