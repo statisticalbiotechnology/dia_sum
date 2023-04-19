@@ -1,7 +1,0 @@
-{
-    "__default__" :
-    {
-        "OSW_FILEDIR" : "data/ID/osw_results/",
-        "TRIQLER_FC_EVAL" : 0.48,
-    }
-}
